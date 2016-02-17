@@ -28,7 +28,7 @@ var path = require('path'),
 // Application settings
 app.engine('html', require(__dirname + '/lib/template-engine.js').__express);
 app.set('view engine', 'html');
-app.set('vendorViews', __dirname + '/govuk_modules/govuk_template/views/layouts');
+app.set('vendorViews', __dirname + '/app/views/layouts');
 app.set('views', __dirname + '/app/views');
 
 // Middleware to serve static assets
