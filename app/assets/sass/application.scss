@@ -33,7 +33,7 @@ strong {
 /* - - - - - - - - - - - - - - - - - -  */
 
 .back-to-previous {
-font-family: "nta", Arial, sans-serif;
+font-family: "Open Sans", Arial, sans-serif;
 font-size: 16px;
 line-height: 1.25;
 font-weight: 300;
@@ -115,7 +115,7 @@ color: #0b0c0c
   padding-left: 0; }
 
 #global-breadcrumb nav ol li {
-  font-family: "nta", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-size: 15px;
   line-height: 1.25;
   font-weight: 300;
@@ -253,7 +253,7 @@ background-repeat: no-repeat;
     display: inline-block;
     background: #f47738;
     color: #fff;
-    font-family: "nta", Arial, sans-serif;
+    font-family: "Open Sans", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.25;
     font-weight: 300;
@@ -277,7 +277,7 @@ background-repeat: no-repeat;
 }
 
 #content.vehicle-tax-start .contact-numbers li {
-    font-family: "nta", Arial, sans-serif;
+    font-family: "Open Sans", Arial, sans-serif;
     font-size: 24px;
     line-height: 1.25;
     font-weight: 400;
@@ -304,7 +304,7 @@ background-repeat: no-repeat;
 }
 
 #content.vehicle-tax-start .contact-numbers .contact-type {
-    font-family: "nta", Arial, sans-serif;
+    font-family: "Open Sans", Arial, sans-serif;
     font-size: 19px;
     line-height: 1.31579;
     font-weight: 400;
@@ -321,7 +321,7 @@ background-repeat: no-repeat;
 }
 
 #content.vehicle-tax-start .call-charges p {
-    font-family: "nta", Arial, sans-serif;
+    font-family: "Open Sans", Arial, sans-serif;
     font-size: 14px;
     line-height: 1.42857;
     font-weight: 400;
@@ -346,7 +346,7 @@ background-repeat: no-repeat;
 }
 
 #content.vehicle-tax-start .call-charges ul li {
-    font-family: "nta", Arial, sans-serif;
+    font-family: "Open Sans", Arial, sans-serif;
     font-size: 14px;
     line-height: 1.42857;
     font-weight: 400;
@@ -390,7 +390,7 @@ span.beta {
 display: inline-block;
 background: #f47738;
 color: #fff;
-font-family: "nta",Arial,sans-serif;
+font-family: "Open Sans",Arial,sans-serif;
 font-size: 16px;
 line-height: 1.25;
 font-weight: 300;
@@ -534,7 +534,7 @@ u {
 select, .input-select {
 display: block;
 width: auto;
-font-family: "nta",Arial,sans-serif;
+font-family: "Open Sans",Arial,sans-serif;
 line-height: 2;
 padding: 3px;
 margin:5px 0;
@@ -811,4 +811,166 @@ input.parsley-error,
 
 /** Mine start here  **/
 
+/* the calender list, flag icon */
+.flag {
+  width: 84px;
+  height: 50px;
+  margin-right:1em;
+}
+@media (max-width: 640px) {
+  .flag {
+  width: 50px;
+  height: 32px;
+  margin-right:1em;}
+}
+@media (max-width: 400px) {
+  .flag {
+  width: 40px;
+  height: 26px;
+  margin-right:1em;}
+}
+
+
+/* the calender list, impact indicator */
+@media (min-width: 591px) {
+    span.indicator-icon {display:none}
+    span.indicator-text {display:inline-block;color:orange;float:right}
+}
+@media (max-width: 590px) {
+    span.indicator-icon {display:inline-block;background-color:orange;border-radius:0.75em;padding:0.3em 0.6em;color:white;float:right}
+    span.indicator-text {display:none}
+}
+@media (max-width: 450px) {
+    span.indicator-icon {display:inline-block;font-size:0.8em;background-color:orange;border-radius:0.5em;padding:0.2em 0.3em;color:white;float:right}
+    span.indicator-text {display:none}
+}
+
+/* the calender list, action icons */
+.cal-item-icon {
+  width: 23px;
+  height: 23px;
+  margin-right:0.5em;
+}
+@media (max-width: 640px) {
+  .cal-item-icon {
+  width: 16px;
+  height: 16px;
+  margin-right:0.06em;}
+}
+@media (max-width: 400px) {
+  .cal-item-icon {
+  width: 11px;
+  height: 11px;
+  margin-right:0.02em;}
+}
+
+
+/* trying some stuff with a fixed table header */
+section {
+  position: relative;
+  padding-top: 37px;
+}
+section.positioned {
+  position: absolute;
+  top:100px;
+  left:100px;
+  width:800px;
+
+  -webkit-box-shadow: 0px 6px 26px 0px rgba(0,0,0,0.55);
+-moz-box-shadow: 0px 6px 26px 0px rgba(0,0,0,0.55);
+box-shadow: 0px 6px 26px 0px rgba(0,0,0,0.55);
+}
+.container {
+  overflow-y: auto;
+  height: 800px;
+}
+table {
+  border-spacing: 0;
+  width:100%;
+}
+
+td, th {
+  padding: 10px 25px;
+}
+th {
+  height: 0;
+  line-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  color: transparent;
+  border: none;
+  white-space: nowrap;
+
+}
+th div{
+  position: absolute;
+  background: transparent;
+  padding: 9px 25px;
+  top: 0;
+  margin-left: -25px;
+  line-height: normal;
+}
+th:first-child div{
+  border: none;
+
+}
+.header{
+
+}
+.floatingth {
+
+}
+
+
+/* The econ calendar, month + day horizontal slider */
+
+#month {
+background-color: white;
+margin: -5em -5em 0 -5em;
+padding: 5em 0 0.5em 0;
+-webkit-box-shadow: 0px 6px 22px 0px rgba(0,0,0,0.45);
+-moz-box-shadow: 0px 6px 22px 0px rgba(0,0,0,0.45);
+box-shadow: 0px 6px 22px 0px rgba(0,0,0,0.45);
+}
+ul {
+      color: #666;
+}
+ul.month-list {
+  list-style-type:none;
+    white-space:nowrap;
+    overflow-x:auto;
+    padding: 0.75em 0;
+}
+
+ ul.month-list li {
+    display: inline;
+    padding: 0.52em 0.6em;
+
+}
+
+.month-name {
+text-transform: uppercase;
+font-weight: 700;
+font-size:0.9em;
+}
+
+.today {
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  background: #2d6caf;
+  color: white;
+  text-align: center
+}
+
+.daymarked {
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  background: #ddd;
+  color: white;
+  text-align: center
+}
 

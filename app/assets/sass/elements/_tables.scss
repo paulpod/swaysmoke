@@ -10,11 +10,11 @@ table {
 table th,
 table td {
   @include core-16;
-  padding: em(12, 16) em(20, 16) em(9, 16) 0;
+  padding: em(12, 16) 0 em(9, 16) 0;
 
   text-align: left;
   color: #0b0c0c;
-  border-bottom: 1px solid $border-colour;
+  //border-bottom: 1px solid $border-colour;
 }
 
 table th {
