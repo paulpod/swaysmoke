@@ -834,16 +834,29 @@ input.parsley-error,
 /* the calender list, impact indicator */
 @media (min-width: 591px) {
     span.indicator-icon {display:none}
-    span.indicator-text {display:inline-block;color:orange;float:right}
+    span.indicator-text {display:inline-block;float:right}
+    .low-impact {color:#26a0be}
+    .medium-impact {color:#e19b14}
+    .high-impact {color:#f05a00}
 }
 @media (max-width: 590px) {
-    span.indicator-icon {display:inline-block;background-color:orange;border-radius:0.75em;padding:0.3em 0.6em;color:white;float:right}
+    span.indicator-icon {display:inline-block;border-radius:0.75em;padding:0.3em 0.6em;color:white;float:right}
     span.indicator-text {display:none}
+    .low-impact {background-color:#26a0be}
+    .medium-impact {background-color:#e19b14}
+    .high-impact {background-color:#f05a00}
 }
 @media (max-width: 450px) {
-    span.indicator-icon {display:inline-block;font-size:0.8em;background-color:orange;border-radius:0.5em;padding:0.2em 0.3em;color:white;float:right}
+    span.indicator-icon {display:inline-block;font-size:0.8em;border-radius:0.5em;padding:0.2em 0.3em;color:white;float:right}
     span.indicator-text {display:none}
+    .low-impact {background-color:#26a0be}
+    .medium-impact {background-color:#e19b14}
+    .high-impact {background-color:#f05a00}
 }
+
+
+
+
 
 /* the calender list, action icons */
 .cal-item-icon {
@@ -973,4 +986,5 @@ font-size:0.9em;
   color: white;
   text-align: center
 }
+
 
