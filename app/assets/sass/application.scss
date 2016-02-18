@@ -840,14 +840,14 @@ input.parsley-error,
     .high-impact {color:#f05a00}
 }
 @media (max-width: 590px) {
-    span.indicator-icon {display:inline-block;border-radius:0.75em;padding:0.3em 0.6em;color:white;float:right;behavior: url(/public/javascripts/PIE.htc);}
+    span.indicator-icon {display:inline-block;border-radius:0.75em;padding:0.3em 0.6em;color:white;float:right;behavior: url(/public/javascripts/PIE.js);}
     span.indicator-text {display:none}
     .low-impact {background-color:#26a0be}
     .medium-impact {background-color:#e19b14}
     .high-impact {background-color:#f05a00}
 }
 @media (max-width: 450px) {
-    span.indicator-icon {display:inline-block;font-size:0.8em;border-radius:0.5em;padding:0.2em 0.3em;color:white;float:right;behavior: url(/public/javascripts/PIE.htc);}
+    span.indicator-icon {display:inline-block;font-size:0.8em;border-radius:0.5em;padding:0.2em 0.3em;color:white;float:right;behavior: url(/public/javascripts/PIE.js);}
     span.indicator-text {display:none}
     .low-impact {background-color:#26a0be}
     .medium-impact {background-color:#e19b14}
@@ -975,7 +975,7 @@ font-size:0.9em;
   background: #2d6caf;
   color: white;
   text-align: center;
-  behavior: url(/public/javascripts/PIE.htc);
+  behavior: url(/public/javascripts/PIE.js);
 }
 
 .daymarked {
@@ -986,7 +986,7 @@ font-size:0.9em;
   background: #ddd;
   color: white;
   text-align: center;
-  behavior: url(/public/javascripts/PIE.htc);
+  behavior: url(/public/javascripts/PIE.js);
 }
 
 
