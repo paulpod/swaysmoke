@@ -5,6 +5,10 @@
 {{$content}}
 <link href="/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
 
+<!--[if IE]>
+<script type="text/javascript" src="/public/javascripts/PIE.js"></script>
+<![endif]-->
+
 
 
 <main id="content" role="main">
@@ -488,6 +492,20 @@
 
 
 </main>
+
+
+<script>
+$(function() {
+    if (window.PIE) {
+        $('.today').each(function() {
+            PIE.attach(this);
+        });
+    }
+});
+
+</script>
+
+
 {{/content}}
 
 {{/layout}}
