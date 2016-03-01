@@ -531,6 +531,11 @@ u {
   padding:0.2em;
 }
 
+.input-regular {
+  font-size:1em;
+  padding:1em;
+}
+
 select, .input-select {
 display: block;
 width: auto;
@@ -894,8 +899,8 @@ section.positioned {
 box-shadow: 0px 6px 26px 0px rgba(0,0,0,0.55);
 }
 .container {
-  overflow-y: auto;
-  height: 800px;
+  //overflow-y: auto;
+  //height: 800px;
 }
 table {
   border-spacing: 0;
@@ -989,25 +994,37 @@ font-size:0.9em;
 
 
 
-/* Trader styles start here, tables first */
+/* IFE html prototype styles start here */
+
+h4.component-label {
+font-size: 1.2em;
+border-bottom: 4px solid black;
+padding: 27px 0 4px 0;
+}
+
+
+/* Watch list trader tables  */
 .trader {
 //background-color: yellow;
 }
 .stock-table table th, .stock-table table td {
-  padding-top:14px;
   font-size: 0.9em;
-
 }
-.stock-table thead {
-border-bottom: 4px black solid;
+
+.stock-table table thead {
+border-bottom: 1px black solid;
 }
 .stock-table table th {
-  background-color: #eee;
+//background-color: #eee;
+line-height: 1.3;
+font-size: 0.75em;
+font-weight: 700;
+  text-transform: uppercase;
 }
 .stock-table th, .stock-table td {
   text-align: right;
   padding-right:1.6em;
-  line-height: 2.3
+  line-height: 2.35;
 }
 .stock-table th:first-child, .stock-table td:first-child {
   text-align: left;
@@ -1015,12 +1032,16 @@ border-bottom: 4px black solid;
 .stock-table th:last-child, .stock-table td:last-child {
   padding-right:0;
 }
+.stock-table .toprow td {
+  padding-top:4px;
+}
 
-.stock-table td:first-child {
-
+.stock-table th {
+  margin-top: -2px;
 }
 .stock-table table {
   width: initial;
+  margin-top:8px;
 }
 
 
@@ -1053,4 +1074,144 @@ ul.ticket-type  li {
 .i_flash2 {
     background-color: blue;
 }
+
+
+
+/* Heatmap gridded layout */
+
+.heatmap-box {
+  width:320px;
+float:left;
+margin-right:40px;
+}
+
+p.heatmap-stock-name {
+  padding-bottom: 0;
+  margin-bottom: 0.7em;
+}
+span.heatmap-box-menu {
+  width:20px;
+  overflow: hidden;
+  float: right;
+  clear: left;
+}
+
+.heatmap-current {
+padding:-1px 0 -2px 0;
+border-top:1px solid #cf0a0a;
+border-bottom: 5px solid #cf0a0a;
+width: 140px;
+text-align: center;
+font-weight: 700;
+color: #444;
+font-size: 1.4em;
+}
+.heatmap-bignum {
+color: black;
+font-size: 1.6em;
+}
+
+.heatmap-details {
+color: #666;
+font-size: 0.76em;
+font-weight: 600;
+margin-top: 5px;
+}
+
+span.heatmap-low {
+width: 120px;
+float: left;
+}
+
+span.heatmap-spread {
+float: left;
+width:80px;
+text-align: center;
+}
+
+span.heatmap-high {
+width: 120px;
+text-align: right;
+float: right;
+}
+
+.heatmap-change {
+width: 320px;
+padding:12px 0 12px 0;
+font-size: 1.3em;
+border-top:1px solid #00cc41;
+border-bottom: 5px solid #00cc41;
+background-color: #ccf5d9;
+text-align: center;
+color: #008028;
+font-weight: 700;
+
+}
+
+.with-vgrid {
+  background-image: url(/public/images/20-60-vgrid.png);
+  background-repeat: repeat;
+}
+
+
+/* News headlines and story */
+.news {
+
+}
+.news h1 {
+  font-size: 1.7em;
+  font-weight: 300;
+  line-height: 0.967;
+  padding: 17px 0 10px 0;
+}
+.news h3 {
+  font-size: 0.7em;
+  line-height: 1.3;
+  padding: 5px 0 10px 0;
+  margin: 0 0 9px 0;
+  color: #666;
+  border-bottom: 1px #666 solid;
+}
+.news p {
+  font-size: 0.9em;
+  line-height: 1.8;
+  margin-bottom: 30px;
+  font-family: Georgia
+}
+ul.news-list {
+  border-bottom: 2px black solid;
+  margin-bottom: 2em;
+  margin-top: 14px;
+}
+ul.news-list  li {
+  //display: inline-block;
+  font-weight: 500;
+  color: black;
+  font-size: 0.9em;
+  line-height: 1.78;
+  //line-height: 1.579;
+  //padding-bottom: 1.579em;
+  padding: 0.5em 0.6em 1.2em 0;
+  border-top: 0.1em #ccc solid;
+}
+span.news-timecode {
+  font-size: 0.8em;
+  color:#0066cc;
+  width: 3em;
+  display: inline-block;
+}
+span.market-arrow {
+  font-size: 0.8em;
+  color:#0066cc;
+  width: 3em;
+  text-align: right;
+  float: right;
+  display: inline-block;
+}
+span.market-arrow a {
+  text-decoration: none;
+}
+
+
+
 
