@@ -29,7 +29,7 @@ Copyright 2014-2015-2016 ChartIQ LLC
 		console.log("Mismatched kernel version stxChart:" + STXChart.version[0] + " stxKernel:" + version[0]);
 	}
 
-	var domains=["127.0.0.1","localhost","chartiq.com","fiddle.jshell.net","jsfiddle.net"];
+	var domains=["127.0.0.1","herokuapp.com","localhost","chartiq.com","fiddle.jshell.net","jsfiddle.net"];
 	if(domains.length){
 		var href=document.location.href;
 		var foundOne=false;
