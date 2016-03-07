@@ -100,7 +100,7 @@
 
 .gs-resize-handle,
 .gs-w.dragging .gs-resize-handle {
-    opacity: 0;
+    opacity: 0.8;
 }
 
 .gs-resize-disabled .gs-resize-handle {
@@ -120,12 +120,4 @@
 */
 
 
-.gridster li header {
-background: #eee;
-display: block;
-cursor: move;
-font-size: 1.2em;
-border-bottom: 4px solid black;
-padding: 5px 0 4px 0;
-}
 

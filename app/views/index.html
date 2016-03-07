@@ -1,14 +1,12 @@
 {{<layout}}
 
 {{$pageTitle}}
-  DVLA Design Kit
+  GAIN CAPITAL Design Kit
 {{/pageTitle}}
 
-{{$propositionHeader}}
-  {{>includes/govuk_dvladesignprop}}
-{{/propositionHeader}}
 
 {{$content}}
+  <link href="/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
 
 <main id="content" role="main">
   <form action="examples/elements/start" method="get" class="get-started" style="margin-top:1.5em">
@@ -19,13 +17,14 @@
 <div class="grid-row">
   <div class="column-two-thirds">
 
-  <h1 class="heading-xlarge">DVLA Design</h1>
+  <h1 class="heading-xlarge">GAIN CAPITAL Design Kit</h1>
 
 
 
-  <p><strong>What's this?</strong> The DVLA where possible follows the guidance for GOV.UK services, and uses the current best practice and most appropriate elements as discussed on the Design Elements hackpad.</p>
+  <p><strong>What's this?</strong> It's a simple HTML/CSS prototyping kit, built on NodeJS and ExpressJS framework, and leans heaviliy on the the GOV.UK prototyping kit.</p>
 
-  <p>Where specialist needs have presented themselves, this document aims to provide consistent guidance for use on DVLA services.</p>
+  <p><strong>Why?</strong> Building prototypes out of web technologies is a useful way to try out design ideas, and take them to users for research. It's usually a little slower, at first, than making a static screen design &mdash; but quicker once you want to iterate and try out different things.</p>
+
 
 
   <ul class="list-number" style="font-size:0.85em">
@@ -45,6 +44,14 @@
   <h2 class="heading-large" id="resources">Resources - use these first</h2>
 
   <ul class="list-bullet">
+
+    <li>
+      <a href="#">
+        GAIN CAPITAL Design patterns
+      </a>
+       - when we have this, we can link to it.
+    </li>
+
     <li>
       <a href="https://designpatterns.hackpad.com">
         GOV.UK Design patterns Hackpad
@@ -96,76 +103,14 @@
 
 
 
-  <h2 class="heading-large" style="padding-top:2em" id="dvlaresources">Extra DVLA resources</h2>
-
-  <h3 class="heading-medium" id="reg">Vehicle registration marks</h3>
-
-  <p><strong>Usage:</strong> Where the mark is presented to the user, outside of longer copy, consider presenting the mark styled like a physical number plate.</p>
-
-  <p><strong>Benefits:</strong> User recognition is high, the distinctive style allows it to be presented without a label telling the user it is a vehicle registration mark.</p>
-
-  <p><strong>Implementation:</strong> The mark looks best when presented at medium to large headline sizes:</p>
-
-
-  <div id="example-marks">
-    <link href="/public/stylesheets/numberplate.css" media="screen" rel="stylesheet" type="text/css" />
-
-    <p style="margin:2.5em 0">
-    <span class="reg-mark" style="font-size:300%;margin-right:0.4em">
-    CU57&nbsp;ABD
-    </span>
-     300%
-     </p>
-
-
-    <p style="margin:3.5em 0 2.75em 0">
-    <span class="reg-mark" style="font-size:200%;margin-right:0.6em">
-    CU57&nbsp;ABC
-    </span>
-     200%
-    </p>
-
-    <p style="margin:1.5em 0 2em 0">
-     <span class="reg-mark" style="font-size:150%;margin-right:0.85em">
-    CU57&nbsp;ABC
-    </span>
-     150%
-
-
-     <span class="reg-mark" style="font-size:120%;margin-left:2em;margin-right:1.1em">
-    CU57&nbsp;ABC
-    </span>
-     120%
-    </p>
-  </div>
-
-  <p>A class <code>.reg-mark</code> is available for inclusion in markup. The border width and rounded corner are measured using em units, so they scale with the font size. Use of a non-breaking space <code>&amp;nbsp;</code> between character chunks is recommended.</p>
-
-  <p>The UK number plate font is available as a base64 encoded webfont and can be added to pages that need it using:</p>
-
-  <p><a href="/public/stylesheets/numberplate.css">Numberplate Font encoded as base64 in a CSS file</a></p>
-
-  <p>And where it's needed in your HTML use:<br>
-
-  <code style="overflow:visible;white-space:nowrap">&lt;link href="/public/stylesheets/numberplate.css" media="screen" rel="stylesheet" type="text/css" /&gt;</code> or just include in your main CSS styles. File size is minimal, just 48k, compared to 270k for the GDS Transport font used across the site.</p>
-
-  <p>Fallback to New Transport or sans is acceptable.</p>
-
-  <p>More on the way GDS Transport has been embedded as a webfont (which is similar to this usage) by Chris Heathcote <a href="https://gds.blog.gov.uk/2012/07/17/webfonts-in-practice/">on the GDS Blog</a>.
-
-
-
-
-
-
-
 
 
 
   <h2 class="heading-large" style="padding-top:2em" id="tools">Tools</h2>
 
+  <p>For people starting from scratch this might be useful, otherwise use the tools you are most familiar with</p>
+
   <p><strong>Powerpoint</strong> has been a good place to start before diving into code, or when you have no other tools available. It's good for making screengrabbed mockups and allows simple clicks and flows.</p>
-  <p>Here's a good starter GOV.UK styled template: <a href="/public/images/Prototype-Template.pptx">Prototype-Template.pptx</a></p>
 
   <p>Adobe Creative Suite is really big and expensive, and you probably only need 5% of the functionality. <strong>Sketch app</strong> has that 5% covered, and is fast and lightweight. <a href="http://bohemiancoding.com/sketch/">Try it out</a>.</p>
 
@@ -173,7 +118,44 @@
 
   <p>There are lots of different text editors around, but many people like <strong>Sublime Text</strong> to edit multiple files in one project. <a href="http://www.sublimetext.com">Try it out</a>.</p>
 
-  <p><strong>Fonts</strong> for GOV.UK sites <a href="https://gds.blog.gov.uk/2012/07/05/a-few-notes-on-typography/">are Transport in light and bold</a>, ask someone on your team or from GDS Design for the files if you need them, <a href="https://designnotes.blog.gov.uk/2015/03/11/can-i-use-the-gov-uk-fonts/">they can't be distributed widely</a>. A UK numberplate font for use in design apps can be downloaded: <a href="/public/images/UKNumberPlate-2-webfont.ttf">UKNumberPlate-2-webfont.ttf</a></p>
+  
+
+
+
+  <div id="typescale">
+
+    <h3 class="heading-medium">Typography</h3>
+      
+    <p class="note"><strong>Fonts</strong> for GAIN CAPITAL trading platforms we should look at standardising on a more modern screen font, City Index has already been using <strong>Open Sans</strong> for their marketing collateral, and this is a good choice for platforms too.</p>
+    
+    <div style="overflow:hidden">
+    
+    <p style="text-indent:0;line-height:1.4">
+    <span class="note">72pt</span>&nbsp;<span style="font-size:4em;font-weight:300">Abcdefghijklmnopqrstuvxyz<br /></span>
+    <span class="note">48pt</span>&nbsp;<span style="font-size:2.65em;font-weight:300">Abcdefghijklmnopqrstuvxyz<br /></span>
+    <span class="note">32pt</span>&nbsp;<span style="font-size:1.8em;font-weight:300">Abcdefghijklmnopqrstuvxyz<br /></span>
+    <span class="note">28pt</span>&nbsp;<span style="font-size:1.55em;line-height:1.3;font-weight:300">Abcdefghijklmnopqrstuvxyz<br /></span>
+    <span class="note">21pt</span>&nbsp;<span style="font-size:1.15em;line-height:1.5;font-weight:300">Abcdefghijklmnopqrstuvxyz<span style="color:#9be">&nbsp;300 Book<br /></span></span>
+    <span class="note">18pt</span>&nbsp;<span style="font-size:1em;line-height:1.5;font-weight:400">Abcdefghijklmnopqrstuvxyz <span style="color:#9be">400 Normal<br /></span></span>
+    <span class="note">16pt</span>&nbsp;<span style="font-size:0.9em;line-height:1.2;font-weight:400">Abcdefghijklmnopqrstuvxyz <span style="color:#9be">400 Normal<br /></span></span>
+    <span class="note">14pt</span>&nbsp;<span style="font-size:0.8em;line-height:0.6;font-weight:600">Abcdefghijklmnopqrstuvxyz <span style="color:#9be">600 Semi-Bold<br /></span></span>
+    <span class="note">12pt</span>&nbsp;<span style="font-size:0.66em;line-height:0.6;font-weight:600">Abcdefghijklmnopqrstuvxyz <span style="color:#9be">600 Semi-Bold<br /></span></span>
+    <span class="note">10pt</span>&nbsp;<span style="font-size:0.55em;line-height:0.6;font-weight:700">Abcdefghijklmnopqrstuvxyz <span style="color:#9be">700 Bold<br /></span></span>
+    </p>
+    
+    <h3>Weights</h3>
+          
+    <p style="text-indent:0;line-height:1.;font-size:1.6em">
+    <span style="font-weight:300">Font-weight 300 Book<br /></span>
+    <span style="font-weight:400">Font-weight 400 Normal<br /></span>
+    <span style="font-weight:600">Font-weight 600 Semi-Bold<br /></span>
+    <span style="font-weight:700">Font-weight 700 Bold<br /></span>
+    <span style="font-weight:800">Font-weight 800 Extra Bold<br /></span>
+    </p>
+    
+    <p class="note">300 Book looks great at larger sizes, at medium sizes 400 Normal looks better and is more readable. Similarly, at small sizes 14pt and lower 600 Semi-Bold is preferred.</p>
+      
+  </div>
 
 
 
