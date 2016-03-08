@@ -21,17 +21,17 @@
   <title>Demo &raquo; Resize &raquo; gridster.js</title>
   <!--<link rel="stylesheet" type="text/css" href="/public/stylesheets/jquery.gridster.css">
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/griddemo.css">-->
-  <link href="/public/stylesheets/application3.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/public/stylesheets/application5.css" media="screen" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="http://basehold.it/30">
 
 </head>
 
 <body>
 
-<div class="grid-stack">
+<div class="grid-stack with-vgrid" style="background-position: 10px 0">
     <div class="grid-stack-item"
         data-gs-x="0" data-gs-y="0"
-        data-gs-width="10" data-gs-height="1"
+        data-gs-width="12" data-gs-height="1"
         data-gs-no-resize="yes" data-gs-no-move="yes" data-gs-locked="yes">
             <div class="grid-stack-item-content">
 
@@ -42,36 +42,69 @@
             </div>
     </div>
     <div class="grid-stack-item"
-        data-gs-x="0" data-gs-y="2"
-        data-gs-width="2" data-gs-height="4">
+        data-gs-x="0" data-gs-y="1"
+        data-gs-width="2" data-gs-height="7" 
+        data-gs-no-resize="yes" data-gs-no-move="yes" data-gs-locked="yes">
             <div class="grid-stack-item-content">
 
-            <header class="component-label">
-              <span style="font-size:1.25em;color:#888">&#10996;</span> Market search
-            </header>
+            
 
-              <ol class="info-list">
+              <h2>Paul Pod</h2>
 
-              <li>
-              <a href="#" style="text-decoration: none;">&lt; Popular</a></li>
+              <p><a href="#">Account</a></p>
+           
 
-              <li>
-              Popular spreads <span class="market-arrow"><a href="#">&gt;</a></span></li>
 
-              <li>
-              Popular Australia <span class="market-arrow"><a href="#">&gt;</a></span></li>
+              <ol class="nav-list">
 
-              <li>
-              Popular UK <span class="market-arrow"><a href="#">&gt;</a></span></li>
+              <li style="padding-bottom:30px;">
+              Open positions <span class="market-arrow"><a href="#">&gt;</a></span></li>
+
+              <!-- - - - -->
 
               <li>
-              Popular German <span class="market-arrow"><a href="#">&gt;</a></span></li>
+              Market search <span class="market-arrow"><a href="#">&gt;</a></span></li>
 
               <li>
-              Popular IFX Equities <span class="market-arrow"><a href="#">&gt;</a></span></li>
+              News headlines <span class="market-arrow"><a href="#">&gt;</a></span></li>
 
               <li>
-              Popular MT4 <span class="market-arrow"><a href="#">&gt;</a></span></li>
+              Watchlists <span class="market-arrow"><a href="#">&gt;</a></span></li>
+
+              <ol class="subnav-list">
+                <li><a href="#">Popular markets</a></li>
+
+                <li><a href="#">Companies I like</a></li>
+
+                <li><a href="#">People I follow</a></li>
+
+                <li><a href="#">Algorithms I use</a></li>
+
+                <li><a href="#">+ add a new watchlist</a></li>
+
+              </ol>
+
+
+              <li>
+              People <span class="market-arrow"><a href="#">&gt;</a></span></li>
+
+              <li>
+              Algorithms <span class="market-arrow"><a href="#">&gt;</a></span></li>
+
+              <li>
+              Expert advise <span class="market-arrow"><a href="#">&gt;</a></span></li>
+
+
+
+              <li>
+              Market search <span class="market-arrow"><a href="#">&gt;</a></span></li>
+
+              
+              <li>
+              Charts <span class="market-arrow"><a href="#">&gt;</a></span></li>
+
+              <li>
+              History <span class="market-arrow"><a href="#">&gt;</a></span></li>
 
               </ol>
 
@@ -102,6 +135,7 @@
               <th>Buy/Sell</th>
               <th>Quantity</th>
               <th>Current</th>
+              <th>Close position</th>
             </tr>
             </thead>
 
@@ -166,7 +200,7 @@
         </div>
     </div>
     <div class="grid-stack-item"
-        data-gs-x="0" data-gs-y="6"
+        data-gs-x="2" data-gs-y="6"
         data-gs-width="2" data-gs-height="4">
             <div class="grid-stack-item-content">
 
@@ -216,7 +250,7 @@
 
 
     <div class="grid-stack-item"
-        data-gs-x="2" data-gs-y="6"
+        data-gs-x="4" data-gs-y="6"
         data-gs-width="3" data-gs-height="6">
       <div class="grid-stack-item-content">
 
@@ -245,7 +279,7 @@
 
 
 
-    <div class="grid-stack-item"
+    <!--<div class="grid-stack-item"
         data-gs-x="7" data-gs-y="2"
         data-gs-width="5" data-gs-height="5">
         <div class="grid-stack-item-content">
@@ -384,31 +418,14 @@
           </table>
         </div>
       </div>
-    </div>
+    </div> -->
 
 
 
 
 
 
-    <div class="grid-stack-item"
-      data-gs-x="7" data-gs-y="10"
-      data-gs-width="3" data-gs-height="2">
-      <div class="grid-stack-item-content">
-
-        <header class="component-label">
-          <span style="font-size:1.25em;color:#888">&#10996;</span> Chart: USD/EUR
-        </header>
-
-        <div>
-        <iframe src="test-chart1" width="100%" height="100%" style="border:none;"></iframe>
-        </div>
-
-        </div>
-      </div>
-    </div>
-
-
+    
 
 
 
@@ -441,6 +458,7 @@
     <script type="text/javascript">
     $(function () {
         var options = {
+            cellWidth: 100,
             cellHeight: 80,
             verticalMargin: 10,
             draggable: {handle: 'header', scroll: true, appendTo: 'body'},
