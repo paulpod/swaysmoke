@@ -991,7 +991,7 @@ font-weight: 700;
 .stock-table th, .stock-table td {
   text-align: right;
   padding-right:1.6em;
-  line-height: 2.2;
+  line-height: 1.8;
 }
 .stock-table th:first-child, .stock-table td:first-child {
   text-align: left;
@@ -1307,7 +1307,8 @@ font-weight: 700;
 }
 
 .promptbubble {
-padding: 0.5em 0.5em 0.5em 2.4em;
+font-size: 0.85em;
+padding: 0.5em 0.85em 0.5em 2.4em;
 color: #666;
 border-radius: 0.75em;
 margin: 1em 0 0 0;
@@ -1333,7 +1334,7 @@ margin-bottom: 1.5em;
 
 .headsummary table thead {
 border-bottom: 1px black solid;
-font-style: 0.5em;
+font-size: 0.5em;
 }
 
 .headsummary table thead th {
