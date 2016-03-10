@@ -3,19 +3,9 @@
 <head>
 
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Responsive grid demo</title>
+  <title>Chat UI demo</title>
 
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/public/stylesheets/gridstack.css"/>
-  <link rel="stylesheet" href="/public/stylesheets/gridstack-extra.css"/>
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
-  <script src="/public/javascripts/gridstack.js"></script>
 
   <link href="/public/stylesheets/chat1.css" media="screen" rel="stylesheet" type="text/css" />
   <!-- <link rel="stylesheet" href="http://basehold.it/30">-->
@@ -24,241 +14,28 @@
 
 <body>
 
-  <div class="grid-stack" style="background-position: 10px 0">
+  <div class="chat-window">
 
-    <div class="grid-stack-item"
-        data-gs-x="2" data-gs-y="0"
-        data-gs-width="4" data-gs-height="1"
-        data-gs-no-resize="yes" data-gs-no-move="yes" data-gs-locked="yes">
-      <div class="grid-stack-item-content" style="overflow: hidden">
 
-        <div style="background-color: yellow; width:100%;padding:1em 10em 1em 1em;border-bottom:black solid 4em">
-        
-        <strong>Brand</strong>
+  <strong>Brand</strong>
 
-        </div>
+    
 
-      </div>
-    </div>
+  <p>A Chat Log from a future trading platform</p>
 
+  <div class="bubble" style="float:right"><span class="sysbubble">Hi Paul, here's your watchlist</span></div>
 
-    <div class="grid-stack-item"
-        data-gs-x="2" data-gs-y="1"
-        data-gs-width="4" data-gs-height="8" 
-        data-gs-no-resize="yes" data-gs-no-move="yes" data-gs-locked="yes">
+  <br clear="all">
 
+    
 
-      <div class="grid-stack-item-content chat">
 
-  			<p>A Chat Log from a future trading platform</p>
-
-  			<div class="bubble" style="float:right"><span class="sysbubble">Hi Paul, here's your watchlist</span></div>
-
-        <br clear="all">
-
-        <div class="stock-table" style="">
-
-            
-
-
-            <table style="width:100%">
-            <thead>
-            <tr>
-              <th>Market</th>
-              <th>&lt;-&gt;</th>
-              <th>Sell</th>
-              <th>Buy</th>
-              <th>+/- %</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr class="toprow">
-              <td class="stock-name"><strong>1</strong> Wall Street CFD</td>
-              <td class="stock-spread">4.0</td>
-              <td class="stock-sell">16190.8</td>
-              <td class="stock-buy">16194.8</td>
-              <td class="stock-change">224.8</td>
-            </tr>
-
-            <tr>
-              <td class="stock-name"><strong>2</strong> UK100 CFD</td>
-              <td class="stock-spread">1.0</td>
-              <td class="stock-sell">5831.3</td>
-              <td class="stock-buy">5832.3</td>
-              <td class="stock-change">102.5</td>
-            </tr>
-
-            <tr>
-              <td class="stock-name"><strong>3</strong> Germany 30 CFD</td>
-              <td class="stock-spread">1.0</td>
-              <td class="stock-sell">9231.5</td>
-              <td class="stock-buy">9232.5</td>
-              <td class="stock-change">243.7</td>
-            </tr>
-
-            <tr>
-              <td class="stock-name"><strong>4</strong> Gold CFD</td>
-              <td class="stock-spread">0.4</td>
-              <td class="stock-sell">1209.4</td>
-              <td class="stock-buy">1209.8</td>
-              <td class="stock-change">-28.8</td>
-            </tr>
-
-            <tr>
-              <td class="stock-name"><strong>5</strong> EUR/USD CFD</td>
-              <td class="stock-spread">1.0</td>
-              <td class="stock-sell">1.11891</td>
-              <td class="stock-buy">1.11901</td>
-              <td class="stock-change">-0.00470</td>
-            </tr>
-
-            <tr>
-              <td class="stock-name"><strong>6</strong> GBP/USD CFD</td>
-              <td class="stock-spread">1.5</td>
-              <td class="stock-sell">1.44692</td>
-              <td class="stock-buy">1.44707</td>
-              <td class="stock-change">-0.00280</td>
-            </tr>
-
-            <tr>
-              <td class="stock-name"><strong>7</strong> Japan 225 CFD</td>
-              <td class="stock-spread">10</td>
-              <td class="stock-sell">15894</td>
-              <td class="stock-buy">15904</td>
-              <td class="stock-change">40</td>
-            </tr>
-
-            
-
-            </tbody>
-
-          </table>
-        </div>
-
-        <div class="bubble promptbubble"><span class="">Buy [b], Sell [s], [space] for more, [h] for Help</span></div>
-
-
-  			<div class="bubble"><span class="userbubble">&gt; S 2</span></div>
-
-  			<div class="bubble" style="float:right"><span class="sysbubble">Sell USD/GBP at current market?</span></div>
-
-        <br clear="all">
-
-
-
-  			<div class="bubble promptbubble"><span class="">Enter $ quantity or [esc] to cancel</span></div>
-
-  			<div class="bubble"><span class="userbubble calc-helper">$ 3600 
-  			<span class="input-helper">= 360,000 units | 3.64% of equity</span></div>
-
-  			<div class="bubble sysbubble" style="float:right">Your standard trade options are set at
-  			-$1,000 stop loss   x100 leverage   $1,800 take profit</span></div>
-
-        <br clear="all">
-
-
-  			
-  			<div class="bubble promptbubble"><span class="">Confirm [y], Change [c] or Cancel [esc]</span></div>
-
-  			<div class="bubble"><span class="userbubble">&gt; Y</span></div>
-
-  			<div class="bubble" style="float:right"><span class="sysbubble">OK</span></div>
-  			
-        <div class="bubble sysbubble">Sell postion in USD/GBP opened at 1.1453</span></div>
-  			
-        <div class="bubble sysbubble">Please note overnight fee of $10.20 daily, $28.40 weekend applies </span></div>
-
-        <br clear="all">
-
-
-  			<div class="bubble promptbubble"><span class="">
-        [o] for your Open positions, 
-        [t] for Trade history, [n] News headlines. [h] for Help any time.</span></div>
-
-  			<div class="bubble"><span class="userbubble">&gt; 3</span></div>
-
-  			<h2 class="heading-medium">Latest news</h2>
-
-  			<ol class="news-list">
-  				<li>1. <span class="news-timecode">14.31</span>
-  				US Stocks Snapshot - Wall St opens little changed as oil edges up</li>
-
-  				<li>2. <span class="news-timecode">14:30</span>
-  				Swiss Basilea says profits still 2-3 years away</li>
-
-  				<li>3. <span class="news-timecode">14:30</span>
-  				UPDATE 1 - Standard &amp; Poor’s affirms BHP Billiton’s credit rating</li>
-
-  				<li>4. <span class="news-timecode">14:30</span>
-  				Ex-divs to take 13.2 points off FTSE 100 on Mar.3</li>
-
-  				<li>5. <span class="news-timecode">14:28</span>
-  				UK’s Avonmouth LNG storage site to stop operations on April 30</li>
-
-  				<li>6. <span class="news-timecode">14:23</span>
-  				UPDATE 2 - Kenya’s inflation falls, may pave way for easing of rates</li>
-
-  				<li>7. <span class="news-timecode">14:23</span>
-  				UPDATE 1 - Russia to cut high-grade diesel exports from Primorsk in March - traders</li>
-
-  				<li>8.<span class="news-timecode">14:23</span>
-  				Belgian Q4 GDP confirmed at 0.3 pct qtr/qtr</li>
-
-  			</ol>
-
-        <div class="bubble promptbubble"><span class="">1-7 for these stories, [space] for more, type any other option</span></div>
-
-      </div>
-    </div>
-
-
-
-    <div id="bottom-bar">
-
-        <div style="background-color: #ccc; width:100%;padding:1em 10em 1em 1em;border-top:black solid 0.2em">
-        
-          <div id="form-field">
-
-            <!-- <label class="form-label" for="ref-v11" style="padding-top:0.75em">
-            
-              16 digit reference number
-            
-            </label>-->
-
-
-            <div id="validfield-1">
-
-              <input class="num form-control" type="text" maxlength="16" autocomplete="off" size="16" id="v11" name="v11"
-              style="border:#666 solid 2px;font-size:120%;width:280px;border-radius:4px;line-height:1.8;padding:0.3em;height:2em" 
-              data-parsley-trigger="change focusout" required data-parsley-errors-container="validfield-1" 
-              data-parsley-minlength="16" 
-              data-parsley-minlength-message="The reference number should contain 16 digits" 
-              data-parsley-required-message="The reference number is required">
-
-            </div>
-
-        </div><!-- end of form field -->
-
-
-    </div>
-
+  
   </div>
 
-</div>
 
 
 
-<script type="text/javascript">
-    $(function () {
-        var options = {
-            cellHeight: 80,
-            verticalMargin: 10,
-            draggable: {handle: 'header', scroll: true, appendTo: 'body'},
-        };
-        $('.grid-stack').gridstack(options);
-    });
-    </script>
 
 </body>
 </html>
