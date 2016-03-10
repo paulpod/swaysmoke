@@ -18,7 +18,7 @@
   <script src="/public/javascripts/gridstack.js"></script>
 
   <link href="/public/stylesheets/chat1.css" media="screen" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" href="http://basehold.it/30">
+  <!-- <link rel="stylesheet" href="http://basehold.it/30">-->
 
 </head>
 
@@ -136,7 +136,7 @@
           </table>
         </div>
 
-        <div class="bubble"><span class="promptbubble">Buy [b], Sell [s], [space] for more, [h] for Help</span></div>
+        <div class="bubble promptbubble"><span class="">Buy [b], Sell [s], [space] for more, [h] for Help</span></div>
 
 
   			<div class="bubble"><span class="userbubble">&gt; S 2</span></div>
@@ -147,7 +147,7 @@
 
 
 
-  			<div class="bubble"><span class="promptbubble">Enter $ quantity or [esc] to cancel</span></div>
+  			<div class="bubble promptbubble"><span class="">Enter $ quantity or [esc] to cancel</span></div>
 
   			<div class="bubble"><span class="userbubble calc-helper">$ 3600 
   			<span class="input-helper">= 360,000 units | 3.64% of equity</span></div>
@@ -159,7 +159,7 @@
 
 
   			
-  			<div class="bubble"><span class="promptbubble">Confirm [y], Change [c] or Cancel [esc]</span></div>
+  			<div class="bubble promptbubble"><span class="">Confirm [y], Change [c] or Cancel [esc]</span></div>
 
   			<div class="bubble"><span class="userbubble">&gt; Y</span></div>
 
@@ -214,11 +214,7 @@
 
 
 
-    <div class="grid-stack-item"
-        data-gs-x="2" data-gs-y="9"
-        data-gs-width="4" data-gs-height="1"
-        data-gs-no-resize="yes" data-gs-no-move="yes" data-gs-locked="yes">
-      <div class="grid-stack-item-content" style="overflow: hidden">
+    <div id="bottom-bar">
 
         <div style="background-color: #ccc; width:100%;padding:1em 10em 1em 1em;border-top:black solid 0.2em">
         
@@ -244,7 +240,6 @@
 
         </div><!-- end of form field -->
 
-      </div>
 
     </div>
 

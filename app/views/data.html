@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script language="javascript" type="text/javascript" src="/public/javascripts/jquery-1.11.0.min.js"></script>
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.js"></script>
+ </head>
+<body>
+<h1>Graph</h1>
+<script language="javascript" type="text/javascript">  
+$(document).ready(function(){
+    $.getJSON("/public/data/barLine.json", function(json) {
+       //succes - data loaded, now use plot:
+           var plotarea = $("#placeholder");
+           var dataBar=json.dataBar;
+            var dataLine=json.dataLine;
+            $.plot(plotarea , [
+                {
+                    data: dataBar,
+                    bars: {show: true}
+                },
+                {
+                    data: dataLine,
+                    lines: { show: true, steps: false }
+                }               
+            ]
+        );
+    });
+});
+
+</script>       
+    <div id="placeholder" style="width:600px;height:300px;"></div>
+</body>
+</html>
