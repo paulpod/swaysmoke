@@ -1303,3 +1303,91 @@ padding-top:0.33em;
   padding: 0;
   margin: 0;
 }
+
+.secondary-button {
+  //background-color: #777;
+  font-family: "Open Sans", Arial, sans-serif;
+  font-weight: 700;
+  font-size:1em;
+  color: white;
+  border: none;
+  border-bottom: 2px #444 solid;
+  border-radius: 3px;
+  padding: 0.5em 1.5em;
+  margin: 0.5em 0;
+}
+.secondary-button p {
+  font-size: 0.8em;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+}
+.sell {
+  background-color: #e54e59;
+  border-bottom-color: #b33941;
+}
+.buy {
+  background-color: #157db1;
+  border-bottom-color: #1f5a78;
+}
+.sell .upward:before {
+  content: '\25B2';
+  padding-right:0.33em;
+  margin-left:-0.25em;
+}
+.sell .downward:before {
+  content: '\25BC';
+  padding-right:0.33em;
+  margin-left:-0.25em;
+}
+.buy .upward:after {
+  content: '\25B2';
+  padding-left:0.33em;
+  margin-right:-0.25em;
+}
+.buy .downward:after {
+  content: '\25BC';
+  padding-left:0.33em;
+  margin-right:-0.25em;
+}
+
+
+
+.control-button-solid {
+  background-color: #333;
+  color: white;
+  border: 2px #333 solid;
+  border-bottom: 2px #111 solid;
+  border-radius: 3px;
+  padding: 0;
+  margin: 0;
+}
+
+.control-button-outline {
+  background-color: #fefefe;
+  color: #333;
+  //border: none;
+  border: 2px #111 solid;
+  border-radius: 3px;
+  padding: 0;
+  margin: 0;
+}
+
+.highlighted {
+  background-color: #fbee48;
+}
+.glyphicons-mini {
+  margin: -0.3em -0.4em -0.3em -0.4em;
+  padding: 0;
+  font-size: 100%;
+}
+.glyphicons-mid {
+  margin: -0.1em -0.2em -0.1em -0.2em;
+  padding: 0;
+  font-size: 140%;
+}
+.glyphicons-maxi {
+//margin: -0.2em -0.3em -0.3em -0.3em;
+  padding: 0;
+  font-size: 166%;
+}

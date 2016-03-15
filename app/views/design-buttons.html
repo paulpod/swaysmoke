@@ -6,12 +6,12 @@
 
 
 {{$content}}
-  <link href="/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
+
+<link href="/public/stylesheets/glyphicons.css" media="screen" rel="stylesheet" type="text/css" />
+
 
 <main id="content" role="main" style="font-family: 'Open Sans', Arial, sans-serif;">
-  <form action="examples/elements/start" method="get" class="get-started" style="margin-top:1.5em">
-  <!--<input type="hidden" name="nextlink" value="start">
-  <input type="hidden" name="nextbacklink" value="start">-->
 
 
 <div class="grid-row">
@@ -23,70 +23,178 @@
 
   <button class="primary-button">Place trade</button>
 
-  <p>Primary buttons are the main action in any context, and there should only be one.</p>
+  <p>Primary buttons are the main action in any context, and there should only be one. It must be labelled, and may have an additional indicator.</p>
 
   <button class="primary-button">
-  Place trade
-  <p>Margin required &pound;1,224.56</p>
-
+    Place trade
+    <p>Margin required &pound;1,224.56</p>
   </button>
 
- 
+  <p>Secondary buttons are for us mostly the Sell and Buy buttons. In most places where we show live prices for markets, the area is a button which will initiate a trade in that direction.</p>
 
-      
+  <code>Note: use commas in 1000s for prices if not in currency?</code>
+
+  <div id="buysell-pair">
+
+    <button class="secondary-button sell">
+      <p>Sell</p>
+      <span class="upward">6,659.2</span>
+    </button>
+
+    <button class="secondary-button buy">
+      <p>Buy</p>
+      <span class="downward">6,659.32</span>
+    </button>
+
   </div>
 
+  <p>There are other buttons that function as controls, some of these are toggle switches which highlight to show their activity and others are simple actions.</p>
+
+  <div id="glyph-minis">
+    <div id="link-button-set" style="float:left;margin-right:2em">
+      <button class="control-button-solid"><span class="glyphicons glyphicons-mini glyphicons-link"></span></button>
+
+      <button class="control-button-outline"><span class="glyphicons glyphicons-mini glyphicons-link"></span></button>
+
+      <button class="control-button-outline highlighted"><span class="glyphicons glyphicons-mini glyphicons-link"></span></button>
+    </div>
+
+
+    <div id="link-button-set" style="float:left;margin-right:2em">
+      <button class="control-button-solid"><span class="glyphicons glyphicons-mini glyphicons-bell"></span></button>
+
+      <button class="control-button-outline"><span class="glyphicons glyphicons-mini  glyphicons-bell"></span></button>
+
+      <button class="control-button-outline highlighted"><span class="glyphicons glyphicons-mini  glyphicons-bell"></span></button>
+    </div>
+
+
+    <div id="link-button-set" style="float:left;">
+      <button class="control-button-solid"><span class="glyphicons glyphicons-mini  glyphicons-remove"></span></button>
+
+      <button class="control-button-outline"><span class="glyphicons glyphicons-mini  glyphicons-remove"></span></button>
+
+      <button class="control-button-outline highlighted"><span class="glyphicons glyphicons-mini  glyphicons-remove"></span></button>
+    </div>
+  </div>
+
+
+  <br clear="all">
+
+
+  <div id="glyph-mid" style="margin-top:1em;">
+    <div id="link-button-set" style="float:left;margin-right:2em">
+      <button class="control-button-solid"><span class="glyphicons glyphicons-mid glyphicons-link"></span></button>
+
+      <button class="control-button-outline"><span class="glyphicons glyphicons-mid glyphicons-link"></span></button>
+
+      <button class="control-button-outline highlighted"><span class="glyphicons glyphicons-mid glyphicons-link"></span></button>
+    </div>
+
+
+    <div id="link-button-set" style="float:left;margin-right:2em">
+      <button class="control-button-solid"><span class="glyphicons glyphicons-mid glyphicons-bell"></span></button>
+
+      <button class="control-button-outline"><span class="glyphicons glyphicons-mid glyphicons-bell"></span></button>
+
+      <button class="control-button-outline highlighted"><span class="glyphicons glyphicons-mid glyphicons-bell"></span></button>
+    </div>
+
+
+    <div id="link-button-set" style="float:left;">
+      <button class="control-button-solid"><span class="glyphicons glyphicons-mid glyphicons-remove"></span></button>
+
+      <button class="control-button-outline"><span class="glyphicons glyphicons-mid glyphicons-remove"></span></button>
+
+      <button class="control-button-outline highlighted"><span class="glyphicons glyphicons-mid glyphicons-remove"></span></button>
+    </div>
+  </div>
+
+
+  <br clear="all">
+
+
+  <div id="glyph-maxi" style="margin-top:1em;">
+    <div id="link-button-set" style="float:left;margin-right:2em">
+      <button class="control-button-solid"><span class="glyphicons glyphicons-maxi glyphicons-link"></span></button>
+
+      <button class="control-button-outline"><span class="glyphicons glyphicons-maxi glyphicons-link"></span></button>
+
+      <button class="control-button-outline highlighted"><span class="glyphicons glyphicons-maxi glyphicons-maxi glyphicons-link"></span></button>
+    </div>
+
+
+    <div id="link-button-set" style="float:left;margin-right:2em">
+      <button class="control-button-solid"><span class="glyphicons glyphicons-maxi glyphicons-bell"></span></button>
+
+      <button class="control-button-outline"><span class="glyphicons glyphicons-maxi glyphicons-bell"></span></button>
+
+      <button class="control-button-outline highlighted"><span class="glyphicons glyphicons-maxi glyphicons-bell"></span></button>
+    </div>
+
+
+    <div id="link-button-set" style="float:left;">
+      <button class="control-button-solid"><span class="glyphicons glyphicons-maxi glyphicons-remove"></span></button>
+
+      <button class="control-button-outline"><span class="glyphicons glyphicons-maxi glyphicons-remove"></span></button>
+
+      <button class="control-button-outline highlighted"><span class="glyphicons glyphicons-maxi glyphicons-remove"></span></button>
+    </div>
+  </div><!-- end glyphs -->
+
+  <br clear="all">
+
+
+  <p>Hellos</p>
+
+  </div><!-- end column -->
+  
 
 
 
   <div class="column-third">
-
-  <div style="background-color:#ff9;padding:1em 1em;margin-bottom:1em;font-size:90%">
-    <h3 class="heading-medium" style="margin-top:0">GAIN CAPITAL Design patterns <span style="color:orange">BETA</span></h3>
-
+    <div style="background-color:#ff9;padding:1em 1em;margin-bottom:1em;font-size:90%">
+      <h3 class="heading-medium" style="margin-top:0">GAIN CAPITAL Design patterns <span style="color:orange">BETA</span></h3>
   
-    <div style="float:left">
-      <h4 class="heading-small">Fundamental<br>elements</h4>
+      <div>
+        <h4 class="heading-small">Fundamental<br>elements</h4>
 
-      <ol style="font-size:0.9em;line-height:1.5;float:left;padding-right:2em">
-        <li><a href="design-text">Text</a></li>
-        <li><a href="design-colour">Colours</a></li>
-        <li><a href="design-prices">Prices</a></li>
-        <li><a href="design-tables">Tables</a></li>
-        <li><a href="design-buttons">Buttons</a></li>
-        <li><a href="design-checkboxes">Checkboxes</a></li>
-      </ol>
+        <ol style="font-size:0.9em;line-height:1.5;padding-right:2em">
+          <li><a href="design-text">Text</a></li>
+          <li><a href="design-colour">Colours</a></li>
+          <li><a href="design-prices">Prices</a></li>
+          <li><a href="design-tables">Tables</a></li>
+          <li><a href="design-buttons">Buttons</a></li>
+          <li><a href="design-checkboxes">Checkboxes</a></li>
+        
+          <li><a href="design-menus">Menus</a></li>
+          <li><a href="design-icons">Icons</a></li>
+          <li><a href="design-forms">Form fields</a></li>
+          <li><a href="design-tooltips">Tool tips</a></li>
+          <li><a href="design-panels">Panels</a></li>
+          <li><a href="design-showhide">Show/Hide controllers</a></li>
+        </ol>
+      </div>
 
-      <ol style="font-size:0.9em;line-height:1.5;float:left;padding-right:2em">
-        <li><a href="design-menus">Menus</a></li>
-        <li><a href="design-icons">Icons</a></li>
-        <li><a href="design-forms">Form fields</a></li>
-        <li><a href="design-tooltips">Tool tips</a></li>
-        <li><a href="design-panels">Panels</a></li>
-        <li><a href="design-showhide">Show/Hide controllers</a></li>
-      </ol>
+
+      <div>
+        <h4 class="heading-small">Platform<br>components</h4>
+
+        <ol style="font-size:0.9em;line-height: 1.5">
+          <li><a href="design-ticket">Trade ticket</a></li>
+          <li>Watch lists</li>
+          <li>Open orders</li>
+          <li>News headlines</li>
+          <li>News story</li>
+        </ol>
+      </div>
+
+      <br clear="all">
+
     </div>
-  
-
-
-
-  <div style="float:left">
-    <h4 class="heading-small">Platform<br>components</h4>
-
-    <ol style="font-size:0.9em;line-height: 1.5">
-      <li><a href="design-ticket">Trade ticket</a></li>
-      <li>Watch lists</li>
-      <li>Open orders</li>
-      <li>News headlines</li>
-      <li>News story</li>
-    </ol>
-  </div>
-
-  <br clear="all">
 
   </div>
 
-  </div>
 </div>
 
 
