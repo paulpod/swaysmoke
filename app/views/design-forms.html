@@ -1,0 +1,177 @@
+{{<layout}}
+
+{{$pageTitle}}
+  GAIN CAPITAL Design Kit
+{{/pageTitle}}
+
+
+{{$content}}
+  <link href="/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
+
+<main id="content" role="main" style="font-family: 'Open Sans', Arial, sans-serif;">
+  <form action="examples/elements/start" method="get" class="get-started" style="margin-top:1.5em">
+  <!--<input type="hidden" name="nextlink" value="start">
+  <input type="hidden" name="nextbacklink" value="start">-->
+
+
+<div class="grid-row">
+  <div class="column-third" style="background-color: #f0f0f0;padding-bottom:4em">
+
+    <h1 class="heading-small" style="padding-bottom:0;margin-bottom:0;background: url('/public/images/icon-caret-left.png') left 0.4em no-repeat;
+  padding-left: 0.75em;"><a href="design-index">GAIN CAPITAL Design Kit</a></h1>
+
+
+    <div>
+      <h4 class="heading-small">Fundamental elements</h4>
+
+      <ol style="font-size:0.9em;line-height:1.5">
+        <li><a href="design-text">Text</a></li>
+        <li><a href="design-colour">Colours</a></li>
+        <li><a href="design-prices">Prices</a></li>
+        <li><a href="design-tables">Tables</a></li>
+        <li><a href="design-buttons">Buttons</a></li>
+        <li><a href="design-checkboxes">Checkboxes</a></li>
+        <li><a href="design-menus">Menus</a></li>
+        <li><a href="design-icons">Icons</a></li>
+        <li><a href="design-forms">Form fields</a></li>
+        <li><a href="design-tooltips">Tool tips</a></li>
+        <li><a href="design-panels">Panels</a></li>
+        <li><a href="design-showhide">Show/Hide controllers</a></li>
+      </ol>
+    </div>
+
+
+    <div>
+      <h4 class="heading-small">Platform components</h4>
+
+      <ol style="font-size:0.9em;line-height: 1.5">
+        <li><a href="design-ticket">Trade ticket</a></li>
+        <li>Watch lists</li>
+        <li>Open orders</li>
+        <li>News headlines</li>
+        <li>News story</li>
+      </ol>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="column-two-thirds">
+
+  
+
+  <h2 class="heading-large" style="padding-top:0" id="elements">Forms</h2>
+
+  <p>Forms should be logically laid out and read from top to bottom.</p>
+
+  <p>Fields should clearly be defined with a 2 pixel border.</p>
+
+  <p>Fields should have a label, positioned above the field.</p>
+
+  <p>Examples of what kind of input is required can go below the field, or use this to replay calculations to the user.</p>
+
+  <div class="example" id="example-form">
+
+    <label class="form-label" for="price-order">
+    Price to buy at
+    </label>
+
+    <input class="form-control" type="text" id="price-order" autocomplete="off" size="9" >
+
+    <p class="example-text">Current price: 1695.4</p>
+
+
+    <label class="form-label" for="quantity">
+    How many
+    </label>
+
+    <input class="form-control" type="text" id="quantity" autocomplete="off"  size="9" >
+
+    <p class="example-text">Min 1, max 100</p>
+
+    <br clear="all">
+
+  </div>
+
+  <p>Form fields that can use a numeric input should have the HTML setting to use a number pad on mobile. Use <code>type="number"</code> as an attribute of the <code>input</code> element to show the appropriate keypad for data entry on mobile devices.</p>
+
+  <img src="/public/images/numeric-mobile.png" width="300" style="border:1px #ccc solid;padding:0;margin:1em 0">
+
+  <p>Some form fields not editable, but might become editable if some state changes (eg. price moves into range, or funds are provided).</p>
+
+  <p>It is useful to display these in a state that communicates this 'input field, but not yet' potential, and also to reserve the appropriate space in the layout.</p>
+
+  <div class="example" id="example-form">
+
+    <label class="form-label" for="price-order">
+    Price
+    </label>
+
+    <input class="form-display" type="text" id="price-order" autocomplete="off" size="9" value="12642.95" readonly="readonly" disabled="disabled">
+
+    <p class="example-text">Market opens in 12 minutes</p>
+
+  </div>
+
+  <p>Use the <code>disabled="disabled"</code> attribute on the <code>input</code> element to stop it being selected or tabbable.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  </p>
+  </div>
+
+  <!--<div class="column-third" style="background-color: #f0f0dc">
+
+  <h2 class="heading-medium" style="margin:2.1em 0 2.4em 0" id="newpages">New pages</h2>
+
+  <p style="font-size:0.9em"><a href="screen1">Prototype screen 1</a><br>
+  Quick parts using the gov.uk styles</p>
+
+  <p style="font-size:0.9em"><a href="screen3">Prototype screen / grid 3</a><br>
+  Quick layout using gridster, draggable resizable components</p>
+
+  <p style="font-size:0.9em"><a href="screen4">Prototype screen / grid 4</a><br>
+  Layout using gridstack, like gridster + responsive</p>
+
+  <p style="font-size:0.9em"><a href="chart-test">Quick test, chart launching</a><br>
+  Technical test for ways that HTMl/JS can control the opening of links - into new windows, into tabs within the same window, etc</p>
+
+  <p style="font-size:0.9em;text-decoration: line-through"><a href="chat">Prototype screen / Chat UI</a><br>
+  Quick sketch of a conversation UI / text based UI (broken?)</p>
+
+  <p style="font-size:0.9em"><a href="chat2">Prototype screen / Chat UI</a><br>
+  Quick sketch of a conversation UI / text based UI</p>
+
+  </div>-->
+</div>
+
+
+
+
+
+
+
+</main>
+
+{{/content}}
+
+{{/layout}}

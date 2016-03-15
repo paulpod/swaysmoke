@@ -543,14 +543,16 @@ font-family: "Open Sans",Arial,sans-serif;
 line-height: 2;
 padding: 3px;
 margin:5px 0;
-min-width: 150px;
-max-width: 360px;
+//min-width: 150px;
+//max-width: 360px;
 position: relative;
 font-size: 1.1em;
+font-weight: 600;
 padding-top: 2px;
-background: #f0f0f0;
-border: 2px #aaa solid;
+background: #fcfcfc;
+border: 2px #333 solid;
 float:left;
+border-radius: 1px;
 }
 
 .input-short {
@@ -1215,3 +1217,52 @@ span.market-arrow a {
 
 
 
+/* FOR STYLE GUIDE PAGES */
+.note {
+background-color: #ffc;
+padding: 6px 8px 6px 8px;
+color: #333;
+text-indent: 0;
+font-size: 0.8em;
+}
+.example {
+border-left:0.66em #ccc solid;
+padding-left:1.5em;
+margin-bottom: 2em;
+font-size:80%;
+}
+#watch-list-menu {
+  min-width:3em;
+  width:3em;
+}
+
+/* ACTUAL ITEM STYLES FROM GUIDE PAGES */
+
+.form-label {
+//font-size:120%;
+padding-top:0.75em;
+font-weight:600;
+}
+.form-control {
+border:#333 solid 3px;
+font-size:120%;
+width:120px;
+border-radius:3px;
+line-height:1.6;
+}
+.form-display {
+border-bottom:#666 solid 3px;
+border-top:#eee solid 3px;
+border-left:#eee solid 3px;
+border-right:#eee solid 3px;
+background-color: #eee;
+font-size:120%;
+width:120px;
+border-radius:3px;
+line-height:1.6;
+color: #666;
+}
+.example-text {
+//font-size: 0.9em;
+padding-top:0.33em;
+}
