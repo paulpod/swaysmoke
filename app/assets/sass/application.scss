@@ -552,7 +552,7 @@ padding-top: 2px;
 background: #fcfcfc;
 border: 2px #333 solid;
 float:left;
-border-radius: 1px;
+border-radius: 0px;
 }
 
 .input-short {
@@ -1234,6 +1234,16 @@ font-size:80%;
 #watch-list-menu {
   min-width:3em;
   width:3em;
+}
+#layout-list-menu {
+  min-width:3em;
+  width:3em;
+  border: none;
+  -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+    margin-top: 2px;
 }
 
 /* ACTUAL ITEM STYLES FROM GUIDE PAGES */

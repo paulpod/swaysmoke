@@ -99,41 +99,74 @@
   <p>Menus should not be hidden without explanation. Menus implemented as drop-down lists (aka select boxes) are generally <a href="https://designpatterns.hackpad.com/Select-boxes-KzQ1IRd07HL">poor choices</a> for accessibility for <a href="https://designpatterns.hackpad.com/Select-boxes-KzQ1IRd07HL#:h=Guidance">lots of reasons</a>.</p>
 
 
-   <div class="example" id="example-menu-select">
-
-   <code style="margin-top:0em">Implemented using just HTML + CSS</code>
-
-   <br clear="all">
-
-    <div style="float:left">
-      <label class="form-label" for="watch-list-menu">
-      Watch lists:
-      </label>
-    </div>
-
-
-    <div style="float:left;margin:6px 0 0 12px">
-      <select class="input-select" name="watch-list-menu" id="watch-list-menu">
-        <option value="value1" selected="">&#9776;</option> 
-        <option value="value2">Popular Forex</option>
-        <option value="value3">Popular Stocks</option>
-        <option value="value4">Popular Commodities</option>
-        <option value="value5">My CFDs</option>
-        <option value="value5">+ new watchlist...</option>
-
-      </select>
-    </div>
+    
+    <div class="example" id="example-menu-select">
 
     <br clear="all">
 
+    <div id="drop1">
+      <div style="float:left">
+        <label class="form-label" for="watch-list-menu">
+        Watch lists
+        </label>
+      </div>
+
+
+      <div style="float:left;margin:6px 0 0 12px">
+        <select class="input-select" name="watch-list-menu" id="watch-list-menu">
+          <option value="value1" selected="">&#9776;</option> 
+          <option value="value2">Popular Forex</option>
+          <option value="value3">Popular Stocks</option>
+          <option value="value4">Popular Commodities</option>
+          <option value="value5">My CFDs</option>
+          <option value="value5">+ new watchlist...</option>
+
+        </select>
+      </div>
+      <br clear="all">
+
+      <p class="example-text" style="padding-bottom: 1em">Obvious and accessible</p>
+
+    </div>
+
     
+    <br clear="all">
+
+
+    <div id="drop2">
+      <div style="float:left">
+        <label class="form-label" for="layout-list-menu">
+        Workspace layouts
+        </label>
+      </div>
+
+
+      <div style="float:left;margin:6px 0 0 12px">
+        <select class="input-select" name="layout-list-menu" id="layout-list-menu">
+          <option value="value1" selected="">&#9776;</option> 
+          <option value="value2">1 Quicktrader</option>
+          <option value="value3">2 Advantage Web</option>
+          <option value="value4">3 Classic</option>
+          <option value="value5">4 News and charts</option>
+          <option value="value5">+ new layout...</option>
+
+        </select>
+      </div>
+      <br clear="all">
+
+      <p class="example-text" style="padding-bottom: 0">Non-obvious with poor discoverability</p>
+
+
+    </div>
+
+    <br clear="all">
 
   </div>
 
 
 
  
- 
+
 
 
 

@@ -98,7 +98,23 @@
 
   <p>Form fields that can use a numeric input should have the HTML setting to use a number pad on mobile. Use <code>type="number"</code> as an attribute of the <code>input</code> element to show the appropriate keypad for data entry on mobile devices.</p>
 
-  <img src="/public/images/numeric-mobile.png" width="300" style="border:1px #ccc solid;padding:0;margin:1em 0">
+
+  <div class="example" id="example-form">
+
+    <label class="form-label" for="date-order">
+    Date
+    </label>
+
+    <input class="form-display" type="date" id="date-order" autocomplete="off" size="9" value="13 March 2016">
+
+    <p class="example-text">Tap to change date</p>
+
+  </div>
+
+
+
+
+  <!--<img src="/public/images/numeric-mobile.png" width="300" style="border:1px #ccc solid;padding:0;margin:1em 0">-->
 
   <p>Some form fields not editable, but might become editable if some state changes (eg. price moves into range, or funds are provided).</p>
 
