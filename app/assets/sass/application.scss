@@ -1018,40 +1018,68 @@ padding: 27px 0 4px 0;
 }
 .stock-table table th, .stock-table table td {
   font-size: 0.9em;
+  -webkit-font-feature-settings: 'tnum';
+-moz-font-feature-settings: 'tnum';
+-ms-font-feature-settings: 'tnum';
 }
 
 .stock-table table thead {
-border-bottom: 1px black solid;
+//border-bottom: 1px black solid;
 }
 .stock-table table th {
-//background-color: #eee;
+background-color: #ddd;
+border-left: 1px #eee solid;
 line-height: 1.3;
 font-size: 0.75em;
 font-weight: 700;
-  text-transform: uppercase;
+//text-transform: uppercase;
 }
 .stock-table th, .stock-table td {
   text-align: right;
-  padding-right:1.6em;
-  line-height: 2.35;
+  padding-right:0.2em;
+  padding-left:0.4em;
+  line-height: 1.6;
 }
 .stock-table th:first-child, .stock-table td:first-child {
   text-align: left;
+  padding-left: 0.75em;
 }
 .stock-table th:last-child, .stock-table td:last-child {
-  padding-right:0;
+  padding-right:0.75em;
 }
 .stock-table .toprow td {
   padding-top:4px;
 }
 
 .stock-table th {
+  text-align: left;
   margin-top: -2px;
 }
 .stock-table table {
   width: initial;
   margin-top:8px;
 }
+tr:nth-child(even) {
+  background-color: #eee;
+}
+
+
+tr:nth-child(odd) {
+  background-color: white;
+}
+
+.stock-sell span {
+  border-radius: 3px;
+  border: 1px #888 solid;
+  //background-color: white;
+  padding: 3px 6px;
+  margin: 0;
+}
+
+
+
+
+
 
 
 /* Deal ticket */
@@ -1252,6 +1280,25 @@ font-size:80%;
     text-overflow: '';
     margin-top: 2px;
 }
+#watchlist-table-menu {
+  background-color: #fefefe;
+  color: #333;
+  border: 2px #111 solid;
+  border-radius: 3px;
+  text-align: center;
+  //min-width:3em;
+  width:1.77em;
+  height: 1.73em;
+  font-size: 0.83em;
+  line-height: 1.1;
+  text-indent: 2px;
+  //top:1px;
+  -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+    margin-top: 2px;
+}
 
 /* ACTUAL ITEM STYLES FROM GUIDE PAGES */
 
@@ -1372,6 +1419,31 @@ padding-top:0.33em;
   padding: 0;
   margin: 0;
 }
+
+.text-button-solid {
+  background-color: #333;
+  color: white;
+  border: 2px #333 solid;
+  border-bottom: 2px #111 solid;
+  border-radius: 3px;
+  font-size: 0.8em;
+  font-weight: 600;
+  padding: 0.25em 0.4em;
+  margin: 0;
+}
+
+.text-button-outline {
+  background-color: #fefefe;
+  color: #333;
+  //border: none;
+  border: 2px #111 solid;
+  border-radius: 3px;
+  font-size: 0.8em;
+  font-weight: 600;
+  padding: 0.25em 0.4em;
+  margin: 0;
+}
+
 
 .highlighted {
   background-color: #fbee48;

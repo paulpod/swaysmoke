@@ -1,0 +1,294 @@
+{{<layout}}
+
+{{$pageTitle}}
+  GAIN CAPITAL Design Kit
+{{/pageTitle}}
+
+
+{{$content}}
+  <link href="/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
+
+  <link href="/public/stylesheets/glyphicons.css" media="screen" rel="stylesheet" type="text/css" />
+
+
+<main id="content" role="main" style="font-family: 'Open Sans', Arial, sans-serif;">
+
+
+
+
+<div class="grid-row">
+
+  <div class="column-two-thirds">
+ 
+
+  <h2 class="heading-large" style="padding-top:0" id="elements">Tables</h2>
+
+  <p>Tables contain tabular figures (numbers) in columns and rows.</p>
+
+
+  <div id="example-simple-table" class="stock-table">
+
+  <table class="">
+    <thead>
+      <th>Market</th>
+      <th>Price</th>
+      <th>Change</th>
+      <th>% Chg</th>
+      <th>High</th>
+      <th>Low</th>
+    </thead>
+
+    <tbody>
+      <tr>
+      <td>Wall Street DFT</td><td>16321.7</td><td>-108.3</td><td>-0.65%</td><td>16456.5</td><td>16306.6</td></tr>
+      <tr>
+      <td>EUR/USD</td><td>1.09783</td><td>-0.00405</td><td>-0.36%</td><td>1.10271</td><td>1.09767</td></tr>
+      <tr>
+      <td>US Tech 100 CFD</td><td>4366.6</td><td>0.9</td><td>-0.02%</td><td>4410.2</td><td>4389.4</td></tr>
+      <tr>
+      <td>US SP 500 CFD</td><td>2016.1</td><td>0.3</td><td>-0.01%</td><td>2026.5</td><td>2010.1</td></tr>
+      <tr>
+      <td>France 40 CFD</td><td>4469.5</td><td>-5.9</td><td>-0.13%</td><td>4513.2</td><td>4432.5</td></tr>
+    </tbody>
+  </table>
+
+  </div>
+
+  <p>Tabular numbers should be aligned right, and where possible displayed using a monospace variant of the font. Many modern browsers can force this using CSS:<br>
+  <code>-webkit-font-feature-settings: 'tnum';</code>
+  </p>
+
+  <p>Table headings should be smaller and remain aligned left. Stripes on tables help with readabity, especially long, wide rows. Stripes remove the need for lines, which reduces overall visual noise.</p>
+
+  </div>
+
+  <div class="column-third">
+
+  <div style="background-color:#ff9;padding:1em 1em;margin-bottom:1em;font-size:90%">
+    <h3 class="heading-medium" style="margin-top:0">GAIN CAPITAL Design patterns <span style="color:orange">BETA</span></h3>
+
+  
+    <div style="float:left">
+      <h4 class="heading-small">Fundamental elements</h4>
+
+      <ol style="font-size:0.9em;line-height:1.5;">
+        <li><a href="design-text">Text</a></li>
+        <li><a href="design-colour">Colours</a></li>
+        <li><a href="design-prices">Prices</a></li>
+        <li><a href="design-tables">Tables</a></li>
+        <li><a href="design-buttons">Buttons</a></li>
+        <li><a href="design-checkboxes">Checkboxes</a></li>
+      </ol>
+
+      <ol style="font-size:0.9em;line-height:1.5;">
+        <li><a href="design-menus">Menus</a></li>
+        <li><a href="design-icons">Icons</a></li>
+        <li><a href="design-forms">Form fields</a></li>
+        <li><a href="design-tooltips">Tool tips</a></li>
+        <li><a href="design-panels">Panels</a></li>
+        <li><a href="design-showhide">Show/Hide controllers</a></li>
+      </ol>
+    </div>
+  
+
+
+
+  <div style="float:left">
+    <h4 class="heading-small">Platform components</h4>
+
+    <ol style="font-size:0.9em;line-height: 1.5">
+      <li><a href="design-ticket">Trade ticket</a></li>
+      <li>Watch lists</li>
+      <li>Open orders</li>
+      <li>News headlines</li>
+      <li>News story</li>
+    </ol>
+  </div>
+
+  <br clear="all">
+
+  </div><!-- end gain cap design guide index box -->
+
+  </div><!-- end grid column -->
+</div><!-- end grid row -->
+
+
+
+
+<div><!-- non gridded new row -->
+
+<h2 class="heading-medium">Tables with tools and buttons</h2>
+
+<p>We use tables as one of the main user interface components, and include a large degree of functionality in them.</p>
+
+<div id="example-complex-table" class="stock-table">
+
+  <table class="" style="width: 100%">
+    <caption style="background-color:yellow;">
+
+    <div style="float:left;margin:7px 10px 10px 0.66em;font-size: 0.9em">Popular markets</div>
+
+    <!-- - hide the caption windowing/tab management tools for now 
+    <div style="float:left;margin:3px 0 0 12px">
+        <select class="input-select" name="watchlist-table-menu" id="watchlist-table-menu">
+          <option value="value1" selected="">&#9660;</option> 
+          <option value="value2">Popular Forex</option>
+          <option value="value3">Popular Stocks</option>
+          <option value="value4">Popular Commodities</option>
+          <option value="value5">My CFDs</option>
+          <option value="value5">+ new watchlist...</option>
+        </select>
+      </div>
+
+    <div style="float:left;margin:0px 0 0 12px">
+      <button class="control-button-outline" style=""><span class="glyphicons glyphicons-mid glyphicons-remove"></span></button>
+    </div> - - - - -->
+
+    </caption>
+
+    <thead>
+      <th>Market</th>
+      <th style="text-align: center;">&#9733;</th>
+      <th style="text-align: center;">&#9776;</th>
+      <th>Sell</th>
+      <th>Spread</th>
+      <th>Buy</th>
+      <th>Order</th>
+      <th>Change</th>
+      <th>% Chg</th>
+      <th>High</th>
+      <th>Low</th>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td class="stock-name">Wall Street CFD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell">16190.8</td>
+        <td class="stock-spread">4.0</td>
+        <td class="stock-buy">16194.8</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">-108.3</td>
+        <td class="stock-change">5</td>
+        <td class="stock-high">16194.8</td>
+        <td class="stock-low">16188.3</td>
+      </tr>
+      <tr>
+        <td class="stock-name">EUR/USD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell"><span>1.08583</span></td>
+        <td class="stock-spread">0.012</td>
+        <td class="stock-buy">1.09783</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">-0.00405</td>
+        <td class="stock-change">-0.36%</td>
+        <td class="stock-high">1.10271</td>
+        <td class="stock-low">1.09767</td>
+      </tr>
+      <tr>
+        <td class="stock-name">US Tech 100 CFD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell">4366.6</td>
+        <td class="stock-spread">4.1</td>
+        <td class="stock-buy">4370.7</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">0.9</td>
+        <td class="stock-change">-0.02%</td>
+        <td class="stock-high">4410.2</td>
+        <td class="stock-low">4389.4</td>
+      </tr>
+      <tr>
+        <td class="stock-name">US SP 500 CFD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell">2012.1</td>
+        <td class="stock-spread">4.0</td>
+        <td class="stock-buy">2016.1</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">0.3</td>
+        <td class="stock-change">-0.01%</td>
+        <td class="stock-high">2026.5</td>
+        <td class="stock-low">2010.1</td>
+      </tr>
+      <tr>
+        <td class="stock-name">France 40 CFD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell">4468.0</td>
+        <td class="stock-spread">1.5</td>
+        <td class="stock-buy">4469.5</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">-5.9</td>
+        <td class="stock-change">-0.13%</td>
+        <td class="stock-high">4513.2</td>
+        <td>4432.5</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><img src="/public/images/menu-icon.png" width="11px" height="9px"></p>
+
+  </div>
+
+
+</div>
+
+
+
+
+
+</main>
+
+{{/content}}
+
+{{/layout}}
