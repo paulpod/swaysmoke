@@ -7,11 +7,11 @@
 
 {{$content}}
   <link href="/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/public/stylesheets/glyphicons.css" media="screen" rel="stylesheet" type="text/css" />
+
 
 <main id="content" role="main" style="font-family: 'Open Sans', Arial, sans-serif;">
-  <form action="examples/elements/start" method="get" class="get-started" style="margin-top:1.5em">
-  <!--<input type="hidden" name="nextlink" value="start">
-  <input type="hidden" name="nextbacklink" value="start">-->
+
 
 
 <div class="grid-row">
@@ -25,6 +25,8 @@
 
   <p>Menus should not be a dumping ground for random functions, but should be a coherent selection of similar or related options.</p>
 
+  <p>Generally avoid using hidden menus, rethink the needs and approach the problem using visible options first.</p>
+
   <div class="example" id="example-menu-select">
 
     <div style="float:left">
@@ -35,8 +37,8 @@
 
 
     <div style="float:left;margin:6px 0 0 12px">
-      <select class="input-select" name="select" id="terminate-order">
-        <option value="value1">Cancelled</option> 
+      <select class="input-select" name="select" id="terminate-order-menu">
+        <option value="value2">Cancelled &#9660;</option> 
         <option value="value2">End of day</option>
         <option value="value3">End of week</option>
       </select>
@@ -58,69 +60,103 @@
     
     <div class="example" id="example-menu-select">
 
-    <br clear="all">
+      <br clear="all">
 
-    <div id="drop1">
-      <div style="float:left">
-        <label class="form-label" for="watch-list-menu">
-        Watch lists
-        </label>
-      </div>
+      <div id="drop1">
+        <div style="float:left">
+          <label class="form-label" for="watch-list-menu">
+          Watch lists
+          </label>
+        </div>
 
 
-      <div style="float:left;margin:6px 0 0 12px">
-        <select class="input-select" name="watch-list-menu" id="watch-list-menu">
-          <option value="value1" selected="">&#9776;</option> 
-          <option value="value2">Popular Forex</option>
-          <option value="value3">Popular Stocks</option>
-          <option value="value4">Popular Commodities</option>
-          <option value="value5">My CFDs</option>
-          <option value="value5">+ new watchlist...</option>
+        <div style="float:left;margin:6px 0 0 12px">
+          <select class="input-select" name="watch-list-menu" id="watch-list-menu">
+            <option value="value1" selected="">&#9776;</option> 
+            <option value="value2">Popular Forex</option>
+            <option value="value3">Popular Stocks</option>
+            <option value="value4">Popular Commodities</option>
+            <option value="value5">My CFDs</option>
+            <option value="value5">+ new watchlist...</option>
 
-        </select>
-      </div>
+          </select>
+        </div>
+      </div><!-- end drop 1 -->
+
       <br clear="all">
 
       <p class="example-text" style="padding-bottom: 1em;width:66%">Obvious and accessible, but on-release an action should happen as menu label cannot be displayed</p>
 
-    </div>
 
-    
-    <br clear="all">
-
-
-    <div id="drop2">
-      <div style="float:left">
-        <label class="form-label" for="layout-list-menu">
-        Workspace layouts
-        </label>
-      </div>
-
-
-      <div style="float:left;margin:6px 0 0 12px">
-        <select class="input-select" name="layout-list-menu" id="layout-list-menu">
-          <option value="value1" selected="">&#9776;</option> 
-          <option value="value2">1 Quicktrader</option>
-          <option value="value3">2 Advantage Web</option>
-          <option value="value4">3 Classic</option>
-          <option value="value5">4 News and charts</option>
-          <option value="value5">+ new layout...</option>
-
-        </select>
-      </div>
       <br clear="all">
 
-      <p class="example-text" style="padding-bottom: 0">Non-obvious with poor discoverability</p>
+
+      <div id="drop2">
+        <div style="float:left">
+          <label class="form-label" for="layout-list-menu">
+          Workspace layouts
+          </label>
+        </div>
+
+        <div style="float:left;margin:6px 0 0 12px">
+          <select class="input-select" name="layout-list-menu" id="layout-list-menu">
+            <option value="value1" selected="">&#9776;</option> 
+            <option value="value2">1 Quicktrader</option>
+            <option value="value3">2 Advantage Web</option>
+            <option value="value4">3 Classic</option>
+            <option value="value5">4 News and charts</option>
+            <option value="value5">+ new layout...</option>
+
+          </select>
+        </div>
+
+        <br clear="all">
+
+        <p class="example-text" style="padding-bottom: 0">Non-obvious with poor discoverability</p>
+
+      </div><!-- end drop 2 -->
+
+    </div><!-- end example -->
 
 
+    <p>Using select/option drop downs are sometimes painful for users and the behaviour may not match the actions desired, especially on mobile platforms. </p>
+
+    <div class="dropdown">
+      <button onclick="myFunction()" class="dropbtn text-button-outline">Dropdown</button>
+      <div id="myDropdown" class="dropdown-content">
+        <a href="#"><span class="glyphicons glyphicons-mini glyphicons-charts" style="width:2.5em"></span>&nbsp;Link 1</a>
+        <a href="#"><span class="glyphicons glyphicons-mini glyphicons-pie-chart" style="width:2.5em"></span>&nbsp;Link 2</a>
+        <a href="#"><span class="glyphicons glyphicons-mini glyphicons-cogwheels" style="width:2.5em"></span>&nbsp;Link 3</a>
+      </div>
     </div>
 
-    <br clear="all">
+    <p style="margin-top:1em">An alternative is using javascript to show/hide a menu, this has the benefit of allowing a tighter degree of control over the elements used and how they are dislayed, eg. including and icon in the list of items, and specific effects for hover/activation and touch controls.</p>
 
-  </div>
+    <script type="text/javascript">
+      /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+    </script>
 
 
-  </div>
+
+  </div><!-- end column two thirds -->
 
   <div class="column-third">
 

@@ -119,9 +119,9 @@
 
 <h2 class="heading-medium">Tables with tools and buttons</h2>
 
-<p>We use tables as one of the main user interface components, and include a large degree of functionality in them.</p>
+<p style="max-width:640px">We use tables as one of the main user interface components, and include a large degree of functionality in them.</p>
 
-<div id="example-complex-table" class="stock-table">
+<div id="example-complex-table1" class="stock-table">
 
   <table class="" style="width: 100%">
     <caption style="background-color:yellow;">
@@ -276,12 +276,360 @@
 
 
 
-  <p><img src="/public/images/menu-icon.png" width="11px" height="9px"></p>
+  <!--<p><img src="/public/images/menu-icon.png" width="11px" height="9px"></p>-->
 
-  </div>
+  </div><!-- end example table -->
+
+  <div id="example-complex-table2" class="stock-table">
+
+  <table class="" style="width: 100%;margin-top:2em">
+    
+
+    <thead>
+      <th>Market</th>
+      <th style="text-align: center;">&#9733;</th>
+      <th style="text-align: center;">&#9776;</th>
+      <th>Sell</th>
+      <th>Spread</th>
+      <th>Buy</th>
+      <th>Order</th>
+      <th>Change</th>
+      <th>% Chg</th>
+      <th>High</th>
+      <th>Low</th>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td class="stock-name">Wall Street CFD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell">16190.8</td>
+        <td class="stock-spread">4.0</td>
+        <td class="stock-buy">16194.8</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">-108.3</td>
+        <td class="stock-change">5</td>
+        <td class="stock-high">16194.8</td>
+        <td class="stock-low">16188.3</td>
+      </tr>
+      <tr>
+        <td class="stock-name">EUR/USD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu  menu-selected" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell"><span>1.08583</span></td>
+        <td class="stock-spread">0.012</td>
+        <td class="stock-buy">1.09783</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">-0.00405</td>
+        <td class="stock-change">-0.36%</td>
+        <td class="stock-high">1.10271</td>
+        <td class="stock-low">1.09767</td>
+      </tr>
+
+      <!-- Trying a thing: this row shows all the hidden tools that would normally be in a popup menu -->
+
+      <tr>
+        <td colspan="11" class="menu-row">
+          
+          <ul class="table-menu-h">
+            <li><a href="#"><span class="glyphicons glyphicons-info-sign"></span>Market info</a></li>
+            <li><a href="#"><span class="glyphicons glyphicons-stats"></span>Open chart</a></li>
+            <li><a href="#"><span class="glyphicons glyphicons-newspaper"></span>News</a></li>
+            <li><a href="#"><span class="glyphicons glyphicons-bell"></span>Alerts</a></li>
+            <li><a href="#"><span class="glyphicons glyphicons-pie-chart"></span>Technical analysis</a></li>
+            <li><a href="#"><span class="glyphicons glyphicons-turtle"></span>Fundamental research</a></li>
+          </ul>
+
+        </td>
+      </tr>
+
+      <tr>
+        <td class="stock-name">US Tech 100 CFD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell">4366.6</td>
+        <td class="stock-spread">4.1</td>
+        <td class="stock-buy">4370.7</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">0.9</td>
+        <td class="stock-change">-0.02%</td>
+        <td class="stock-high">4410.2</td>
+        <td class="stock-low">4389.4</td>
+      </tr>
+      <tr>
+        <td class="stock-name">US SP 500 CFD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell">2012.1</td>
+        <td class="stock-spread">4.0</td>
+        <td class="stock-buy">2016.1</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">0.3</td>
+        <td class="stock-change">-0.01%</td>
+        <td class="stock-high">2026.5</td>
+        <td class="stock-low">2010.1</td>
+      </tr>
+      <tr>
+        <td class="stock-name">France 40 CFD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell">4468.0</td>
+        <td class="stock-spread">1.5</td>
+        <td class="stock-buy">4469.5</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">-5.9</td>
+        <td class="stock-change">-0.13%</td>
+        <td class="stock-high">4513.2</td>
+        <td>4432.5</td>
+      </tr>
+    </tbody>
+  </table>
+
+  </div><!-- end example table 2 -->
 
 
-</div>
+
+
+
+  <div id="example-complex-table3" class="stock-table">
+
+  <table class="" style="width: 100%;margin-top:2em">
+    
+
+    <thead>
+      <th>Market</th>
+      <th style="text-align: center;">&#9733;</th>
+      <th style="text-align: center;">&#9776;</th>
+      <th>Sell</th>
+      <th>Spread</th>
+      <th>Buy</th>
+      <th>Quantity</th>
+      <th>Order</th>
+      <th>Change</th>
+      <th>% Chg</th>
+      <th>High</th>
+      <th>Low</th>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td class="stock-name">Wall Street CFD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell">16190.8</td>
+        <td class="stock-spread">4.0</td>
+        <td class="stock-buy">16194.8</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">-108.3</td>
+        <td class="stock-change">5</td>
+        <td class="stock-high">16194.8</td>
+        <td class="stock-low">16188.3</td>
+      </tr>
+      <tr>
+        <td class="stock-name">EUR/USD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <!--<button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>-->
+
+           <button onclick="myFunction()" class="text-button-outline" style="height: 2em"><span class="dropbtn glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top:-3px;margin-bottom:-11px;margin-left:-9px;margin-right:-9px;padding: 0 0 -2px 0;line-height: 0.8"></span></button>
+
+           <div id="myDropdown" class="dropdown-content">
+            <ul class="table-menu-v">
+              <li><a href="#"><span class="glyphicons glyphicons-info-sign"></span>Market info</a></li>
+              <li><a href="#"><span class="glyphicons glyphicons-stats"></span>Open chart</a></li>
+              <li><a href="#"><span class="glyphicons glyphicons-newspaper"></span>News</a></li>
+              <li><a href="#"><span class="glyphicons glyphicons-bell"></span>Alerts</a></li>
+              <li><a href="#"><span class="glyphicons glyphicons-pie-chart"></span>Technical analysis</a></li>
+              <li><a href="#"><span class="glyphicons glyphicons-turtle"></span>Fundamental research</a></li>
+            </ul>
+          </div>
+                  
+                  
+
+        </td>
+        <td class="stock-sell"><span>1.08583</span></td>
+        <td class="stock-spread">0.012</td>
+        <td class="stock-buy">1.09783</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">-0.00405</td>
+        <td class="stock-change">-0.36%</td>
+        <td class="stock-high">1.10271</td>
+        <td class="stock-low">1.09767</td>
+      </tr>
+
+      
+
+      <tr>
+        <td class="stock-name">US Tech 100 CFD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell">4366.6</td>
+        <td class="stock-spread">4.1</td>
+        <td class="stock-buy">4370.7</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">0.9</td>
+        <td class="stock-change">-0.02%</td>
+        <td class="stock-high">4410.2</td>
+        <td class="stock-low">4389.4</td>
+      </tr>
+      <tr>
+        <td class="stock-name">US SP 500 CFD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell">2012.1</td>
+        <td class="stock-spread">4.0</td>
+        <td class="stock-buy">2016.1</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">0.3</td>
+        <td class="stock-change">-0.01%</td>
+        <td class="stock-high">2026.5</td>
+        <td class="stock-low">2010.1</td>
+      </tr>
+      <tr>
+        <td class="stock-name">France 40 CFD</td>
+        <td class="stock-star" style="text-align: center;">
+          <button class="text-button-outline highlighted" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-star" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-menu" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-sell">4468.0</td>
+        <td class="stock-spread">1.5</td>
+        <td class="stock-buy">4469.5</td>
+        <td class="stock-order" style="text-align: center;">
+          <button class="text-button-outline" style="padding-bottom:0"><span class="glyphicons glyphicons-mini glyphicons-arrow-right" style="margin-top: -5px;margin-left:-9px;margin-right: -9px"></span></button>
+
+        </td>
+        <td class="stock-change">-5.9</td>
+        <td class="stock-change">-0.13%</td>
+        <td class="stock-high">4513.2</td>
+        <td>4432.5</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+  <!-- Trying a thing: div + JS powered popup menu -->
+
+  
+
+        </td>
+      </tr>
+
+      <script type="text/javascript">
+      /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+    </script>
+
+
+
+
+
+
+  </div><!-- end example table 3 -->
+
+
+
+</div><!-- end nongridded row -->
 
 
 

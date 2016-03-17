@@ -1075,7 +1075,65 @@ tr:nth-child(odd) {
   padding: 3px 6px;
   margin: 0;
 }
+#example-complex-table1 {
+  font-size: 0.9em;
+}
+#example-complex-table2 {
+  font-size: 0.9em;
+}
+.menu-selected {
+  background: url('/public/images/table-menu-triangle.png') 13px bottom no-repeat;
 
+}
+.menu-row {
+background-color: #666;
+-webkit-box-shadow: inset 0px 2px 8px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: inset 0px 2px 8px 0px rgba(0,0,0,0.75);
+box-shadow: inset 0px 2px 8px 0px rgba(0,0,0,0.75);
+}
+ul.table-menu-h {
+  list-style-type: none;
+  list-style-image: none;
+}
+ul.table-menu-h li {
+  font-size: 0.9em;
+  font-weight: 600;
+  text-shadow: 0px 1px 2px rgba(33, 33, 33, 1);
+  display: inline-block;
+  margin-right: 1.75em;
+}
+ul.table-menu-h li a {
+  color: yellow;
+  text-decoration: none;
+}
+ul.table-menu-h li a:hover {
+  color: #ffffcc;
+  text-decoration: none;
+}
+
+
+
+ul.table-menu-v {
+  list-style-type: none;
+  list-style-image: none;
+}
+ul.table-menu-v li {
+  font-size: 1em;
+  font-weight: 400;
+  //text-shadow: 0px 1px 2px rgba(33, 33, 33, 1);
+  //display: inline-block;
+  //margin-right: 1.75em;
+}
+ul.table-menu-v li a {
+  //link blue
+  color: #005ea5;
+  text-decoration: underline;
+  padding-right: 1.5em;
+}
+ul.table-menu-v li a:hover {
+  //color: #ffffcc;
+  text-decoration: none;
+}
 
 
 
@@ -1266,38 +1324,55 @@ padding-left:1.5em;
 margin-bottom: 2em;
 font-size:80%;
 }
+#terminate-order-menu {
+-webkit-appearance: none;
+-moz-appearance: none;
+text-indent: 1px;
+text-overflow: '';
+border-radius: 3px;
+line-height: 1;
+height: 1.8em;
+}
+
+
 #watch-list-menu {
-  min-width:3em;
-  width:3em;
+-webkit-appearance: none;
+-moz-appearance: none;
+text-indent: 1px;
+text-overflow: '';
+line-height: 1;
+height: 1.8em;
+width:1.7em;
+border-radius: 3px;
 }
 #layout-list-menu {
-  min-width:3em;
-  width:3em;
-  border: none;
-  -webkit-appearance: none;
-    -moz-appearance: none;
-    text-indent: 1px;
-    text-overflow: '';
-    margin-top: 2px;
+min-width:3em;
+width:3em;
+border: none;
+-webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+  margin-top: 2px;
 }
 #watchlist-table-menu {
-  background-color: #fefefe;
-  color: #333;
-  border: 2px #111 solid;
-  border-radius: 3px;
-  text-align: center;
-  //min-width:3em;
-  width:1.77em;
-  height: 1.73em;
-  font-size: 0.83em;
-  line-height: 1.1;
-  text-indent: 2px;
-  //top:1px;
-  -webkit-appearance: none;
-    -moz-appearance: none;
-    text-indent: 1px;
-    text-overflow: '';
-    margin-top: 2px;
+background-color: #fefefe;
+color: #333;
+border: 2px #111 solid;
+border-radius: 3px;
+text-align: center;
+//min-width:3em;
+width:1.77em;
+height: 1.73em;
+font-size: 0.83em;
+line-height: 1.1;
+text-indent: 2px;
+//top:1px;
+-webkit-appearance: none;
+-moz-appearance: none;
+text-indent: 1px;
+text-overflow: '';
+margin-top: 2px;
 }
 
 /* ACTUAL ITEM STYLES FROM GUIDE PAGES */
@@ -1462,4 +1537,90 @@ padding-top:0.33em;
 //margin: -0.2em -0.3em -0.3em -0.3em;
   padding: 0;
   font-size: 166%;
+}
+
+.zeropad {
+  padding:0 !important;
+}
+
+
+
+/* Dropdown Button */
+.dropbtn {
+  cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+  //background-color: #ffff99;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 110px;
+  text-align: left;
+  //box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    background: #ccc url('/public/images/table-menu-triangle-left.png') -6px 0 no-repeat;
+overflow: auto;
+  margin-top: -48px;
+  margin-left: 42px;
+  border-radius: 3px;
+  border:3px #333 solid;
+  padding: 0.1em 0 0.66em 0;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  font-size: 0.8em;
+  font-weight: 600;
+  line-height: 1.75;
+  padding: 6px 10px 0px 8px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+background-color: #ffcc00;
+color:#000066;
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content2 {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 140px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  margin-top: 3px;
+  border-radius: 3px;
+  border:2px #333 solid;
+}
+
+/* Links inside the dropdown */
+.dropdown-content2 a {
+  font-size: 0.8em;
+  font-weight: 600;
+  padding: 10px 10px 10px 8px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content2 a:hover {
+background-color: #ffcc00;
+color:#000066;
 }
