@@ -1075,13 +1075,41 @@ font-weight: 700;
   border-bottom: dotted 1px #ccc;
 }
 
-.stock-sell span {
+.stock-sell i {
   border-radius: 3px;
   border: 1px #888 solid;
   //background-color: white;
   padding: 3px 6px;
   margin: 0;
+  display: inline-block;;
+  width: 80%;
+  font-style: normal;
 }
+
+.stock-buy i {
+  border-radius: 3px;
+  border: 1px #888 solid;
+  //background-color: white;
+  padding: 3px 6px;
+  margin: 0;
+  display: inline-block;;
+  width: 80%;
+  font-style: normal;
+}
+
+.stock-quantity i {
+  border-radius: 3px;
+  border: 1px #888 solid;
+  //background-color: white;
+  padding: 3px 6px;
+  margin: 0;
+  display: inline-block;
+  width: 80%;
+  font-style: normal;
+}
+
+
+
 #example-complex-table1 {
   font-size: 0.9em;
 }
@@ -1605,8 +1633,10 @@ padding-top:0.33em;
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
-background-color: #ffcc00;
+background-color: #ffb;
 color:#000066;
+  text-decoration: none;
+
 }
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
@@ -1636,6 +1666,8 @@ color:#000066;
 
 /* Change color of dropdown links on hover */
 .dropdown-content2 a:hover {
-background-color: #ffcc00;
+background-color: #ffb;
 color:#000066;
+  text-decoration: none;
+
 }
