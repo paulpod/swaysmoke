@@ -39,16 +39,15 @@ module.exports = {
     /* Chooser for Basic Branching control   */
 
 
-    app.get('/examples/elements/basic-branch', function (req, res) {
+    app.get('/basic-branch', function (req, res) {
 
     var next = req.query.nextlink;
-    var v11 = req.query.v11;
     /* this line pulls out the filename of the next page, sent with the weblink */
 
     var branch = req.query.branch;
     /* this line pulls out the name of the branch from the input buttons */
 
-    res.render('examples/elements/' + next + '-' + branch, {'v11' : v11});
+    res.render(next + '-' + branch);
     /* this line renders a new page based on the HTML of the filename + branchname  */
     
  

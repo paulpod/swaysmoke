@@ -35,7 +35,7 @@ font-family: "Open Sans", Arial, sans-serif !important;
 font-weight: 300 !important;
 }
 footer {
-  display: none;
+  display: none !important;
 }
 
 
@@ -56,7 +56,7 @@ width: 2.25em;
 background: url("/public/images/icon-caret-left.png") left 0.2em no-repeat;
 padding-left: 0.75em;
 text-align: right;
-margin: 2em 0 0 0;
+margin: 0;
 overflow: hidden
 }
 
