@@ -190,11 +190,13 @@
 
   <p><strong>Github</strong> is also essential to get and share  code. Create a free account at <a href="http://github.com" rel="external">http://github.com</a> and get started by cloning this project, see below.
 
+  <p><strong>Finally...</strong></p>
+
   <p>If you are new to using a command line, <strong>FISH</strong> is a really nice improvement on the standard terminal that comes with your Mac. <a href="http://fishshell.com">Download it here</a> and <a href="http://fishshell.com/docs/current/faq.html#faq-default">replace the default</a>, or just type <code style="overflow:visible;white-space:nowrap">chsh -s /usr/local/bin/fish</code> after installing to do it.</p>
 
   <p><i>You may need to open System Preferences > Security &amp; Privacy and allow the installer to run.</i></p>
 
-  <p>Or in a terminal use <code>git clone https://github.com/paulpod/fin.git</code></p>
+  
 
 
 
@@ -207,7 +209,9 @@
 
   <p>After cloning, move to the new directory "gain" with <code  style="overflow:visible;white-space:nowrap">cd gain</code> and run <code style="overflow:visible;white-space:nowrap">npm install</code> which will get all the additional parts fresh from the internet.</p>
 
-  <p><strong>Node-SASS</strong> should get installed with that, but on our box-fresh macs we had to add it manually using <code style="overflow:visible;white-space:nowrap">npm install node-sass</code> to get things working.</p>
+  <p><strong>Node-SASS</strong> should get installed with that, but on our box-fresh macs we had to add the latest version manually using <code style="overflow:visible;white-space:nowrap">npm install node-sass@latest --save</code></p>
+
+  <p>...followed by the latest version of Grunt too using <code style="overflow:visible;white-space:nowrap">npm install grunt-sass@latest --save</code> to get things working.</p>
 
   <p>Use <code style="overflow:visible;white-space:nowrap">node start.js</code> to start your local private webserver - note the address at the end messages. Now visit <a href="http://localhost:3001">http://localhost:3001</a> in your browser and you should see this page, but running locally from your machine.</p>
 
