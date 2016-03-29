@@ -29,7 +29,7 @@ Copyright 2014-2015-2016 ChartIQ LLC
 		console.log("Mismatched kernel version stxChart:" + STXChart.version[0] + " stxKernel:" + version[0]);
 	}
 
-	var domains=["127.0.0.1","localhost","loginandtrade.com","cityindextest9.co.uk","cityindex.com","globallogic.com.ar","cityindexpd.ektron9.dev.cityindex.co.uk","cityindexpd.ektron9.qa.cityindex.co.uk","cityindexpd.ektron9.stg.cityindex.co.uk","cityindex.co.uk","trade.getuptick.com","trade.loginandtrade.com"];
+	var domains=["127.0.0.1","localhost","gain-ux.herokuapp.com","cityindextest9.co.uk","cityindex.com","globallogic.com.ar","cityindexpd.ektron9.dev.cityindex.co.uk","cityindexpd.ektron9.qa.cityindex.co.uk","cityindexpd.ektron9.stg.cityindex.co.uk","cityindex.co.uk","trade.getuptick.com","trade.loginandtrade.com"];
 	if(domains.length){
 		var href=document.location.href;
 		var foundOne=false;
