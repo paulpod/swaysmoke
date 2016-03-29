@@ -1,0 +1,189 @@
+<div id="stwits" class="stx-panel-side stx-stocktwits-panel closed">      
+  <div class="stx-wrapper">
+    <div class="container stwits-stream empty">
+      <div id="panel-tabs">
+        <div class="streams" onClick="enableSTTab('stream')"> Streams </div>
+        <div class="current" onClick="enableSTTab('current');"> Chart </div>
+        <div class="search" onClick="enableSTTab('search')"> Search </div>
+        <div class="news" onClick="enableSTTab('news');" style="display:none"> News </div>
+        <div class="closeST" style="display:none">
+          <div class="closeSidePanel" onClick="slideSTStream();">Close Panel</div>
+        </div>
+      </div>
+      <div class="controls">
+        <div id="control-stream"> <a id="pause" href="#" onClick="return pauseSTStream()">Pause</a> <a id="play" href="#" onClick="return playSTStream()" style="display:none">play</a> </div>
+        <h4 id="viewing">Title</h4>
+        <h4 id="viewing-current">Current Chart</h4>
+        <h4 id="viewing-stream-null">Streams</h4>
+        <h4 id="viewing-news"><span id="news-sym">*SYM*</span> News</h4>
+        <div class="stream-container">
+          <h4 id="viewing-stream" class="select-stream" onClick="if(toggleMenu) toggleMenu('Stream')">&nbsp;</h4>
+          <div class="stream-options" id="menuStream">
+            <ul>
+              <li class="label authenticated">Following</li>
+              <li onClick="setStream('friends')" id="people-stream">People</li>
+              <li onClick="setStream('home')" id="people-stocks-stream">People &amp; Stocks</li>
+            </ul>
+          </div>
+        </div>
+        <div class="stSearch">
+          <input id="searchStwits" autocapitalize="off" autocorrect="off" spellcheck="off" placeholder="symbol or user">
+          <span class="stx-btn clear" style="display:none"><span id="dvClearStSymbol" class="clear" style="display:none" onClick="clearStSymbol()">Close</span></span></div>
+        <a href="#" onClick="return stFollowUnfollow()" class="follow">Follow</a>
+        <!-- Showing/populate for chart/current view -->
+        <div id="control-user">
+          <div class="user"> <a id="user" class="authenticated">&nbsp;</a> <a href="#" id="stlogin" class="unauthenticated" onClick="return stConnect()">Login</a>
+            <ul>
+              <li id="profile-view" onClick="stLoadProfile()">My Profile</li>
+              <li id="profile-settings" onClick="stLoadSettings()">Settings</li>
+              <li id="profile-signout" notouch="true" onClick="stLogout()">Sign Out</li>
+            </ul>
+          </div>
+          <div class="post"><a class="btnPost" href="#" notouch="true" onClick="return toggleSTPost()">Post</a></div>
+        </div>
+      </div>
+      <div id="post-new">
+        <div class="content authenticated"> <span class="stx-btn stx-ico stx-ico-close"><span class="stx-ico-close" notouch="true" onClick="toggleSTPost()">Close</span></span>
+          <h5>Share an Idea</h5>
+          <div class="post-wrapper">
+            <textarea id="post-new-field" onKeyUp="stChangeText(this)" onBlur="stChangeText(this);STX.fixScreen();" onInput="stChangeText(this)" name="stockTweet" cols="30" rows="5" autocapitalize="off" autocorrect="off" autocomplete="off" placeholder="(use $ before ticker: e.g. $SYMBL)"></textarea>
+            <ul class="sentiment">
+              <li class="bear" onClick="selectSentiment(this, 'bear')">Bear</li>
+              <li class="bull" onClick="selectSentiment(this, 'bull')">Bull</li>
+            </ul>
+            <span id="stCharacterCount">140</span>
+            <div class="attach-chart"><a href="#" notouch="true" onClick="return stAttachChart(this)" class="stx-ico attach">Chart</a></div>
+            <span class="btnShare" onClick="stPost(this)">Post</span> </div>
+          <span class="sending">Sending Message...</span> </div>
+        <div class="content unauthenticated"> <span class="stx-btn stx-ico"><span class="stx-ico-close" notouch="true" onClick="toggleSTPost()">Close</span></span>
+          <p>Please connect a StockTwits account by <a href="#" onClick="return stConnect()">logging in</a> or <a href="#" onClick="return stConnect()">signing up</a> to post content.</p>
+        </div>
+      </div>
+      <div id="stLookupDiv" style="display:none;">
+        <div id="stSymLookup">
+          <p class="label">Stocks</p>
+          <div class="search-section">
+            <p class="no-results">No Results Found</p>
+            <div id="stLookupSymbolScrollWrapper" style="height:200px">
+              <div id="stwitsSymbolLookupResults" class=""></div>
+            </div>
+          </div>
+        </div>
+        <!--div id="stLookupDivider"><hr></div-->
+        <div id="stUserLookup">
+          <p class="label">Users</p>
+          <div class="search-section">
+            <p class="no-results">No Results Found</p>
+            <div id="stLookupUserScrollWrapper" style="height:200px">
+              <div id="stwitsUserLookupResults" class=""></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stream-info">
+        <p class="content">Please connect a StockTwits account by <a href="#" onClick="return stConnect()">logging in</a> or <a href="#" onClick="return stConnect()">signing up</a> to view streams.</p>
+      </div>
+      <div class="current-info">
+        <p class="content">Load any symbol to view the synchronized stream.</p>
+        <ul class="help">
+          <li class="m help"><a href="http://www.youtube.com/watch?v=Pmrd0r9OUhs" target="_blank">Watch the Stocktwits Tutorial</a></li>
+        </ul>
+      </div>
+      <div class="symbol-info">
+        <h3 id="sym-symbol" style="display:none;">GOOG</h3>
+        <h4 id="sym-name">Google Inc.</h4>
+        <a href="#" id="followStock" onClick="return stFollowUnfollow()" class="follow authenticated">Follow</a> </div>
+      <div class="user-info">
+        <div class="avatar"><a href="#"><img src=""></a></div>
+        <h4 id="user-name">UserName</h4>
+        <br>
+        <h5 id="user-full-name">Users Full Name</h5>
+        <a href="#" id="followUser" onClick="return stFollowUnfollow()" class="follow authenticated">Follow</a> </div>
+      <div class="streamScrolled">
+        <div class="fold">
+          <div class="new-posts" onClick="stScrollToTop()"><span class="total">10</span> <span class="posts">New Posts</span></div>
+        </div>
+      </div>
+      <div class="loading-stream">&nbsp;</div>
+      <div id="stStreamWrapper" class="search">
+        <ol id="updates" class="stream-list">
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<li class="message default" style="display:none" id="newsMessageTemplate">
+  <div class="message-content">
+    <div class="message-body"><a class="title" href="/symbol/AAPL" onClick="" target="_blank">$AAPL</a></div>
+    <div class="link-description">Lorem ipsum dolor</div>
+    <div class="detail clearfix">
+      <div class="meta">
+        <div class="message-date">Sep. 20 at 12:32 PM</div>
+        <div class="message-source">&nbsp;via <span>Twitter</span></div>
+        <div class="description-source">&nbsp;via <span>Twitter</span></div>
+      </div>
+    </div>
+  </div>
+</li>
+<li class="message default" style="display:none" id="stMessageTemplate">
+  <div class="post-response">
+    <div class="content authenticated"> <span class="stx-btn stx-ico stx-ico-close"><span class="stx-ico-close">Close</span></span>
+      <h5><span id="replyOrRetweet">Reply to</span> @<span id="replyTo">StockTwits</span></h5>
+      <div class="post-wrapper">
+        <textarea id="post-response-field" onKeyUp="stChangeText(this)" onBlur="stChangeText(this);STX.fixScreen();" onInput="stChangeText(this)" name="stockTweet" cols="30" rows="5">@Stocktwits</textarea>
+        <ul class="sentiment">
+          <!--li class="tag">Tag:</li-->
+          <li class="bear"  onClick="selectSentiment(this, 'bear')">Bear</li>
+          <li class="bull" onClick="selectSentiment(this, 'bull')">Bull</li>
+        </ul>
+        <span id="stCharacterCount">140</span>
+        <div class="attach-chart"><a href="#" notouch="true" onClick="return stAttachChart(this)" class="stx-ico attach">Chart</a></div>
+        <span class="btnShare" onClick="stPost(this)">Post</span> </div>
+      <span class="sending">Sending Message...</span> </div>
+    <div class="content unauthenticated"> <span class="stx-btn stx-ico"><span class="stx-ico-close">Close</span></span>
+      <p>Please connect a StockTwits account by <a href="#" onClick="return stConnect()">logging in</a> or <a href="#" onClick="return stConnect()">signing up</a> to post content.</p>
+    </div>
+    <div class="arrow-bottom"><span></span></div>
+  </div>
+  <div class="avatar"><a href="#"><img src=""></a></div>
+  <div class="message-content">
+    <div class="message-time">3m</div>
+    <div class="username"><a href="#">StockTwits</a></div>
+    <div class="message-body">Lorem ipsum dolor <a class="ticker" href="/symbol/AAPL" onClick="">$AAPL</a> sit amet, vitae sodales, sit ut purus metus velit mi nulla. <a rel="nofollow" onClick="" target="_blank" href="http://t.co/jw9jVVmR">http://t.co/jw9jVVmR</a></div>
+    <div class="detail">
+      <div class="meta">
+        <div class="message-date">Sep. 20 at 12:32 PM</div>
+        <div class="message-source">&nbsp;via <span>Twitter</span></div>
+      </div>
+      <ul class="actions">
+        <li class="stx-ico"><a class="reply">Reply</a></li>
+        <li class="stx-ico like"><a class="like">Like</a></li>
+        <!--li class="stx-ico"><a class="flag">Flag</a></li-->
+        <li class="more"><a class="more">More</a>
+          <ul>
+            <li class="retweet">Retweet</li>
+            <li class="follow">Follow</li>
+            <li style="display:none" class="unfollow">Unfollow</li>
+            <li class="block">Block</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</li>
+<li id="stLoadMoreTemplate" style="display:none">
+  <p>Loading Messages</p>
+</li>
+<div class="result" style="display:none" id="stLookupSymbolTemplate"> <span id="stlsSymbol">IBM</span> <span id="stlsTitle">International Business</span> </div>
+<div class="result" style="display:none" id="stLookupUserTemplate"> <img id="stluAvatar" width="35" height="35"></img>
+  <h4 id="stluUsername">hlindzon</h4>
+  <h5 id="stluName">hlindzon</h5>
+</div>
+<!-- Stocktwits Login -->
+<div id="oauthContainer" style="display:none" class="stx-dialog">
+  <div id="oauthIframeHere"></div>
+  <span class="click" onClick="closeOauthContainer()">Done</span>
+  </div>
+</div>

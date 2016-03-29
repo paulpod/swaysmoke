@@ -1,0 +1,1292 @@
+
+
+#panel-tabs div.streams, #panel-tabs div.current, #panel-tabs div.search, #panel-tabs div.news,
+.controls #control-stream a,
+#stwits .controls h4#viewing-stream,
+#control-user a#user,
+.controls #control-user .btnPost,
+#stwits .stwits-unauthenticated #control-user a#stlogin,
+ul.sentiment li.bull, ul.sentiment li.bear,
+#post-new .attach-chart a, .post-response .attach-chart a,
+ol ul.actions li.stx-ico a,
+ol ul.actions li.more a,
+#stwits ul.help li a
+{
+	background-image:url(ciq-sprite.png?32);
+	background-repeat:no-repeat;
+}
+
+
+#stwits {width: 286px;}
+#stwits .stx-wrapper {width: 287px}
+#stwits.closed .stx-wrapper {width: 0}
+#stwits .container {
+	overflow: hidden;
+	color: #666;
+}
+
+/* Panel Tabs/Selectors */
+#panel-tabs {
+	text-align:center;
+	height: 40px;
+	background-color: #efefef;
+	box-shadow: inset 0 -1px 3px rgba(0,0,0,.1)
+	}
+#panel-tabs div.streams, #panel-tabs div.current, #panel-tabs div.search, #panel-tabs div.news, #panel-tabs div.closeST {
+	position: relative;
+	display: inline-block;
+	height: 40px;
+	margin: 0;
+	width: 54px;
+	overflow: hidden;
+	text-indent: 1000px;
+	cursor: pointer
+}
+.stwits-stream #panel-tabs div.streams {background-position: -14px -564px}
+.stwits-news #panel-tabs div.news {background-position: -178px -564px}
+.stwits-current #panel-tabs div.current {background-position: -68px -564px}
+.stwits-search #panel-tabs div.search {background-position: -123px -564px}
+
+#panel-tabs div.streams {background-position: -14px -510px}
+#panel-tabs div.news {background-position: -178px -510px}
+#panel-tabs div.current {background-position: -68px -510px}
+#panel-tabs div.search {background-position: -123px -510px}
+#panel-tabs div.news {width: 87px}
+#panel-tabs div.closeST {
+	width: 36px;
+	cursor: default;
+	text-indent: 0;
+	position: relative
+}
+
+.stwits-current #panel-tabs div.current, 
+.stwits-search #panel-tabs div.search, 
+.stwits-news #panel-tabs div.news, 
+.stwits-stream #panel-tabs div.streams {
+	background-color: #fff;
+}
+
+#btnToggleStocktwits {
+	background:url(ST_32x32.png) 0px 0px no-repeat;
+	width:32px;
+	height:32px;
+	padding:0px;
+}
+
+
+
+
+
+
+/* Stream Controls */
+#stwits .controls {
+	height: 45px;
+	border-bottom: #e6e6e6 solid 1px
+}
+#stwits .controls #control-stream {
+	float: left;
+	display: inline-block;
+	height: 27px;
+	overflow: hidden;
+	margin: 10px 0 0 5px
+}
+.controls #control-stream a {
+	display: inline-block;
+	width: 27px;
+	padding: 27px 0 0 0;
+	cursor: pointer
+}
+.controls #control-stream a#pause {background-position: -270px -513px}
+.controls #control-stream a#pause:active {background-position: -270px -540px}
+.controls #control-stream a#play {background-position: -297px -513px}
+.controls #control-stream a#play:active {background-position: -297px -540px}
+
+/* Stream Title */
+#stwits .controls h4#viewing, #stwits .controls h4#viewing-stream, #stwits .controls h4#viewing-stream-null, #stwits .controls h4#viewing-current, #stwits .controls h4#viewing-news {
+	display: inline-block;
+	position: absolute;
+	padding: 0;
+	font-size: 16px;
+	color: #666;
+	font-weight: normal;
+	margin: 15px 0 0 0;
+	opacity: 1;
+	transition: all .2s ease
+}
+#stwits .controls h4#viewing-stream-null, #stwits .stwits-search.stwits-unauthenticated .controls h4#viewing-stream, #stwits .stwits-current.stwits-unauthenticated .controls h4#viewing-stream, #stwits .stwits-stream.stwits-unauthenticated .controls h4#viewing-stream, #stwits .stwits-stream.empty .controls h4#viewing-stream {opacity: 0}
+#stwits .stwits-stream.stwits-unauthenticated .controls h4#viewing-stream-null {opacity: 1}
+#stwits .loading .controls h4#viewing, #stwits .loading .controls h4#viewing-stream, #stwits .loading .controls h4#viewing-stream-null, #stwits .loading .controls h4#viewing-current {opacity: 0}
+#stwits .stwits-stream .controls h4#viewing, #stwits .stwits-search .controls h4#viewing, #stwits .stwits-current .controls h4#viewing, #stwits .stwits-news .controls h4#viewing {opacity: 0}
+#stwits .stwits-current .controls h4#viewing-stream, #stwits .stwits-search .controls h4#viewing-stream, #stwits .stwits-news .controls h4#viewing-stream {opacity: 0}
+#stwits .stwits-stream .controls h4#viewing-current, #stwits .stwits-search .controls h4#viewing-current, #stwits .stwits-news .controls h4#viewing-current {opacity: 0}
+#stwits .stwits-stream .controls h4#viewing-news, #stwits .stwits-search .controls h4#viewing-news, #stwits .stwits-current .controls h4#viewing-news {opacity: 0}
+#stwits .controls h4#viewing-stream {
+	background-position:right -594px;
+	padding: 0 10px 0 0;
+	cursor: pointer;
+	width: auto
+}
+
+/* Stream Selection */
+#stwits .stream-container {display: none}
+#stwits .stwits-stream .stream-container {
+	display: inline-block;
+	position: absolute
+}
+.stream-options {
+	position: absolute;
+	left: -32px;
+	top: 45px;
+	display: none;
+	z-index: 200
+}
+.stwits-stream div.stream-container:active .stream-options {display: inline-block}
+.stream-options ul {
+	clear: both;
+	display: inline-block;
+	text-align: left;
+	background: url(ciq-bg-swatch-light.jpg);
+	width: 286px;
+	height: 700px;
+	padding: 0;
+	margin:0;
+	cursor: default;
+	border-top: solid 1px #e6e6e6
+}
+.stream-options ul li {
+	background: #fff;
+	padding: 10px 15px;
+	border-bottom: solid 1px #e6e6e6;
+	cursor: pointer;
+	color: #666
+}
+.stream-options ul li:active {color: #333}
+.stream-options ul li.label {
+	background: #fff;
+	opacity: 0.5;
+	text-transform: uppercase;
+	font-size: 10px;
+	cursor: default
+}
+#stwits .stwits-unauthenticated .controls h4#viewing-stream {
+	background: none;
+	cursor: default
+}
+#stwits .stwits-unauthenticated .stwits-stream div.stream-container:active .stream-options {display: none}
+#stwits .stwits-unauthenticated .stream-options ul {display: none}
+
+/* Search Options */
+.stSearch {display: none}
+.stwits-search .stSearch {
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
+	margin: 10px 0 0 0;
+	width: 196px
+}
+.stwits-search input#searchStwits {
+	display: inline-block;
+	font-family: Arial, Helvetica, sans-serif;
+	background: rgba(125,130,132,.1);
+	border-radius: 1em;
+	border-width: 0;
+	font-size: 13px;
+	outline: none;
+	padding: 0 8px 0 8px;
+	height: 27px;
+	width: 180px;
+	text-transform: uppercase;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2), 0 1px 2px rgba(255,255,255,.8)
+}
+.stwits-search .stSearch .stx-btn.clear, #stwits .stwits-unauthenticated .stwits-search .stSearch .stx-btn.clear {
+	height: 27px;
+	width: 27px;
+	border-radius: 9px;
+	top: 0;
+	right: 0;
+	left: auto
+}
+.stSearch .stx-btn.clear span.clear {border: 1px #ccc solid}
+#stLookupDiv {
+	position: absolute;
+	display: block;
+	background: url(ciq-bg-swatch-light.jpg);
+	height: 100%;
+	width: 286px;
+	z-index: 200
+}
+#stLookupDiv p.label {
+	padding: 10px 15px;
+	margin: 0;
+	background: #fff;
+	text-transform: uppercase;
+	font-size: 10px;
+	cursor: default;
+	border-bottom: solid 1px #e6e6e6;
+	color: #666
+}
+#stLookupDiv .search-section {
+	min-height: 33px;
+	position: relative
+}
+#stLookupSymbolScrollWrapper, #stLookupUserScrollWrapper {
+	position: relative;
+	top: -34px;
+	margin-bottom: -34px;
+	box-shadow: inset -3px -2px 5px rgba(0, 0, 0, .2);
+	background: #fff;
+	width: 296px
+}
+.result {
+	font-size: 12px;
+	padding: 10px 15px;
+	border-bottom: solid 1px #efefef;
+	cursor: pointer;
+	color: #666
+}
+.no-results {
+	height: 23px;
+	font-size: 12px;
+	padding: 10px 15px 0 15px;
+	border-bottom: solid 1px #efefef;
+	color: #999;
+	margin: 0;
+	background: rgba(255,255,255,.5);
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1)
+}
+#stlsSymbol {
+	color: #333;
+	font-weight: bold;
+	display: inline-block;
+	max-width: 50px;
+	min-width: 40px
+}
+#stlsTitle {
+	display: inline-block;
+	max-width: 200px
+}
+#stluAvatar {
+	float: left;
+	margin: 0 10px 0 0;
+	width: 35px;
+	height: 35px
+}
+#stLookupUserTemplate {
+	clear: both;
+	min-height: 35px
+}
+#stLookupUserTemplate h4 {
+	display: inline-block;
+	padding: 0;
+	font-size: 14px;
+	color: #333;
+	font-weight: normal;
+	margin: 2px 0 0 0;
+	width: 205px
+}
+#stLookupUserTemplate h5 {
+	display: inline-block;
+	font-size: 11px;
+	font-weight: normal;
+	margin: 0;
+	width: 205px
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) {
+#stLookupDiv #stSymLookup, #stLookupDiv #stUserLookup {
+	width: 140px;
+	float: left;
+	overflow: hidden
+}
+#stLookupDiv #stUserLookup {border-left: 3px solid #efefef}
+#stLookupDiv p.label {
+	padding: 5px 10px;
+	margin: 0;
+	background: #fff;
+	opacity: 0.7;
+	text-transform: uppercase;
+	font-size: 10px;
+	cursor: default;
+	border-bottom: solid 1px #efefef;
+	color: #666
+}
+#stLookupSymbolScrollWrapper, #stLookupUserScrollWrapper {
+	width: 150px;
+	top: -27px;
+	margin-bottom: -27px;
+	height: 200px
+}
+#stlsTitle {
+	display: inline;
+	max-width: none;
+	font-size: 11px
+}
+#stluAvatar {margin: 0 5px 0 0}
+#stLookupUserTemplate h4 {
+	font-size: 12px;
+	width: 90px;
+	overflow: hidden
+}
+#stLookupUserTemplate h5 {width: 90px}
+.result {padding: 8px 10px 8px 10px}
+#stLookupSymScrollWrapper .result {line-height: 12px}
+#stLookupUserScrollWrapper .result {padding: 5px 5px 5px 5px}
+.no-results {
+	height: 20px;
+	padding: 5px 10px 0 10px
+}
+}
+
+/* User Controls */
+#stwits #control-user {
+	display: inline-block;
+	float: right;
+	width: 150px;
+	margin: 5px 10px 0 0;
+	text-align: right;
+	position: relative;
+	z-index: 110;
+	background: #333
+}
+#stwits .stwits-search #control-user, #stwits .stwits-current #control-user {width: 30px}
+#stwits .stwits-news #control-user {display: none}
+#control-user a#user {
+	position: absolute;
+	right: 35px;
+	display: inline-block;
+	text-transform: uppercase;
+	color: #999;
+	font-size: 9px;
+	margin: 10px 0 0 0;
+	padding: 4px 11px 15px 5px;
+	background-position:right -596px;
+	cursor: pointer
+}
+.no-touch #control-user div.user:hover a#user {color: #666}
+#stwits .stwits-search #control-user a#user, #stwits .stwits-current #control-user a#user {display: none}
+div.user ul {
+	text-align: left;
+	position: absolute;
+	right: 20px;
+	top: 28px;
+	width: 90px;
+	padding: 5px 0 0 0;
+	display: none;
+	z-index: 90;
+	cursor: default;
+	border-radius: 0 0 5px 5px;
+	box-shadow: 0 1px 2px rgba(0,0,0,.3);
+	overflow: hidden;
+	background: url(ciq-bg-swatch-light.jpg);
+	z-index: 200
+}
+div.user:hover ul, div.user:active ul {display: inline-block}
+div.user ul li {
+	padding: 5px 15px;
+	border-bottom: solid 1px #efefef;
+	cursor: pointer;
+	font-size: 12px
+}
+body.android div.user ul li {padding: 8px 15px}
+div.user ul li:last-child {
+	padding: 5px 15px 15px 15px;
+	border-radius: 0 0 5px 5px
+}
+div.user ul li:active {color: #333}
+#control-user .post {
+	position: absolute;
+	right: -2px;
+	display: inline-block;
+	width: 29px;
+	height: 27px;
+	overflow: hidden;
+	margin-top: 5px;
+	border: solid 1px #fff;
+	border-radius: 3px
+}
+.controls #control-user .btnPost {
+	display: inline-block;
+	width: 27px;
+	height: 25px;
+	text-indent: 200px;
+	background-position: -459px -514px;
+	border: solid 1px #ccc;
+	border-radius: 3px;
+	cursor: pointer
+}
+.controls #control-user .btnPost:active {
+	background-color: #fff;
+	border: solid 1px #bbb;
+	box-shadow: inset 0 0 1px rgba(0,0,0,.2)
+}
+
+/* Unkown User */
+#stwits .unauthenticated, #stwits .stwits-unauthenticated .authenticated, #stwits .stwits-unauthenticated #control-user .authenticated {display: none}
+#stwits .stwits-unauthenticated .unauthenticated, #stwits .stwits-unauthenticated #control-user .unauthenticated {display: inline-block}
+#stwits .stwits-unauthenticated #control-user a#stlogin {
+	position: absolute;
+	right: 35px;
+	display: inline-block;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: #999;
+	font-size: 9px;
+	margin: 0 0 0 0;
+	padding: 14px 0 15px 10px;
+	background-position: -511px -534px;
+	cursor: pointer
+}
+.no-touch #stwits .stwits-unauthenticated #control-user a#stlogin:hover {color: #666}
+#stwits .stwits-unauthenticated.stwits-search #control-user a#stlogin, #stwits .stwits-unauthenticated.stwits-current #control-user a#stlogin {display: none}
+.stwits-unauthenticated div.user:hover ul, .stwits-unauthenticated div.user:active ul {display: none}
+
+/* Symbol Details */
+#stwits .symbol-info, #stwits .user-info {
+	padding: 8px 10px;
+	background: #fff;
+	display: none;
+	border-bottom: solid #efefef 1px;
+	opacity: 1;
+	transition: all .2s ease
+}
+#stwits .user-info {min-height: 50px}
+#stwits .stwits-current .user-info, #stwits .stwits-current.empty .symbol-info, #stwits .stwits-stream.stwits-unauthenticated .symbol-info, #stwits .stwits-stream.stwits-unauthenticated .user-info, #stwits .stwits-stream .user-info, #stwits .loading .symbol-info, #stwits .loading .user-info {opacity: 0}
+.symbol-info h4, .user-info h4 {
+	display: inline-block;
+	padding: 0;
+	font-size: 16px;
+	color: #333;
+	font-weight: normal;
+	margin: 0
+}
+.symbol-info h4 {width: 205px}
+.user-info h4 {
+	margin: 8px 0 3px 0;
+	width: 205px
+}
+.user-info h5 {
+	display: inline-block;
+	font-size: 13px;
+	font-weight: normal;
+	margin: 0
+}
+.symbol-info h4, .user-info h4, .user-info h5 {
+	opacity: 1;
+	transition: all .2s ease
+}
+.loading .symbol-info h4, .loading .user-info h4, .loading .user-info h5 {opacity: 0}
+#stwits .stwits-stream .symbol-info, #stwits .stwits-stream .user-info {
+	border-bottom: none;
+	padding: 0;
+	min-height: 0
+}
+#stwits .stwits-stream .symbol-info h4, #stwits .stwits-stream .user-info h4, #stwits .stwits-stream .user-info h5 {display: none}
+a.follow {
+	float: right;
+	color: #999;
+	font-size: 11px;
+	padding: 3px 6px;
+	margin: 0;
+	text-decoration: none;
+	border: solid 1px #ddd;
+	border-radius: 3px;
+	cursor: pointer
+}
+a.follow:active {
+	background: #dbdfe1;
+	box-shadow: inset 0 1px 3px rgba(0,0,0,.2)
+}
+.stwits-stream a.follow, .empty a.follow, .controls a.follow {display: none}
+#stwits .stwits-unauthenticated a.follow.authenticated {
+	display: inline-block;
+	cursor: default;
+	opacity: 0.5
+}
+#stwits .stwits-unauthenticated a.follow.authenticated:active {
+	background: none;
+	box-shadow: none
+}
+body.android a.follow {
+	border: solid 1px #ccc;
+	color: #666;
+	padding: 5px 6px;
+	margin: -3px 0 0 0
+}
+/* Stream Scrolled */
+.streamScrolled {display: none}
+.streamScrolled.true {
+	display: block;
+	position: relative;
+	height: 25px;
+	width: 290px;
+	overflow: hidden;
+	margin-bottom: -25px;
+	text-align: center;
+	z-index: 100
+}
+.streamScrolled.true .fold {
+	height: 30px;
+	width: 310px;
+	margin-left: -10px;
+	box-shadow: inset 0 2px 4px rgba(0,0,0,.3)
+}
+.streamScrolled.true .new-posts {display: none}
+.streamScrolled.true .new-posts.true {
+	padding: 0 15px;
+	display: inline-block;
+	margin: 0 auto;
+	background: #fff;
+	font-size: 9px;
+	text-transform: uppercase;
+	border-radius: 0 0 8px 8px;
+	box-shadow: 0 1px 3px rgba(0,0,0,.3);
+	cursor: pointer
+}
+.streamScrolled.true .new-posts.true:active {background: url(ciq-bg-swatch-light.jpg)}
+.streamScrolled.true .new-posts.true span {
+	display: inline-block;
+	padding: 5px 0 6px 0
+}
+.streamScrolled.true .new-posts.true span.total {
+	font-weight: bold;
+	color: #333
+}
+
+/* Posting */
+#post-new {
+	position: relative;
+	height: 0;
+	overflow: hidden;
+	background: #fff;
+	margin: 0;
+	transition: height .5s ease
+}
+#post-new.show {
+	height: 180px;
+	border-bottom: solid #efefef 1px
+}
+#stwits .stwits-unauthenticated #post-new.show {height: 70px}
+#post-new .content {
+	padding: 15px;
+	opacity: 0;
+	transition: all .5s ease
+}
+#stwits .stwits-unauthenticated .content.unauthenticated {
+	padding: 20px 20px 0 20px;
+	text-align: center;
+	color: #999;
+	text-align: center
+}
+#post-new.show .content {opacity: 1}
+.post-response {
+	height: 0;
+	overflow: hidden;
+	position: relative;
+	padding: 0;
+	margin: -10px -10px 10px -15px
+}
+.message.show .post-response {
+	margin: -10px -10px 10px -15px;
+	height: 183px
+}
+#stwits .stwits-unauthenticated .post-response {transition: height .25s ease}
+#stwits .stwits-unauthenticated .message.show .post-response {height: 78px}
+.post-response .content {
+	padding: 15px 15px 0 20px;
+	background: #fff;
+	margin: 0;
+	overflow: hidden;
+	box-shadow: 1px 2px 2px rgba(0,0,0,.2);
+	height: 160px
+}
+#stwits .stwits-unauthenticated .post-response .content {
+	padding: 20px 20px 0 20px;
+	text-align: center;
+	height: 50px
+}
+#stwits .stwits-unauthenticated .post-response .content p, #stwits .stwits-unauthenticated #post-new .content p {
+	margin: 0;
+	color: #999;
+	font-size: 12px
+}
+.post-response .content * {opacity: 0}
+#stwits .stwits-unauthenticated .post-response .content * {transition: opacity .25s ease}
+.message.show .post-response .content * {opacity: 1}
+.post-response .arrow-bottom {
+	position: absolute;
+	left: 30px;
+	bottom: -0px;
+	width: 25px;
+	height: 11px;
+	overflow: hidden;
+	opacity: 0
+}
+.message.show .post-response .arrow-bottom {opacity: 1}
+.post-response .arrow-bottom span {
+	display: block;
+	width: 12px;
+	height: 12px;
+	background: #fff;
+	position: absolute;
+	bottom: 0;
+	margin: 0 0 2px 4px;
+	box-shadow: 1px 1px 2px rgba(0,0,0,.3);
+	-webkit-transform: rotate(45deg) skew(-10deg, -10deg);  /* Saf3.1+, Chrome */
+	-moz-transform: rotate(45deg) skew(-10deg, -10deg);  /* FF3.5+ */
+	-ms-transform: rotate(45deg) skew(-10deg, -10deg);  /* IE9 */
+	-o-transform: rotate(45deg) skew(-10deg, -10deg);  /* Opera 10.5 */
+	transform: rotate(45deg) skew(-10deg, -10deg);
+filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.7071067811865476, M12=-0.7071067811865475, M21=0.7071067811865475, M22=0.7071067811865476, sizingMethod='auto expand'); /* IE6–IE9 */
+	zoom: 1
+}
+#post-new h5, .post-response h5 {
+	font-size: 14px;
+	color: #666;
+	font-weight: normal;
+	margin: 0 0 5px 0
+}
+.post-response h5 {font-size: 12px}
+body.android #post-new h5, body.android .post-response h5 {margin: 5px 0 10px 0}
+#post-new textarea, .post-response textarea {
+	font-size: 13px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #666;
+	border: #FFF solid 1px;
+	background: #efefef;
+	border-radius: 5px;
+	box-shadow: inset 0 1px 3px rgba(0,0,0,.2);
+	margin: 0;
+	padding: 5px 10px;
+	width: 233px;
+	height: 80px;
+	line-height: 18px
+}
+#post-new textarea:focus, .post-response textarea:focus {
+	outline: none;
+	border: #CCC solid 1px;
+	box-shadow: inset 0 1px 5px rgba(0,0,0,.3)
+}
+body.android #post-new textarea, body.android .post-response textarea {height: 70px}
+#post-new .stx-btn, .post-response .stx-btn {
+	position: absolute;
+	right: 3px;
+	top: 3px
+}
+#post-new .stx-btn span, .post-response .stx-btn span {border-color: transparent}
+body.android #post-new .stx-btn, body.android .post-response .stx-btn {right: 6px}
+body.android #post-new .stx-btn span, body.android .post-response .stx-btn span {margin: 6px}
+#post-new .btnShare, .post-response .btnShare {
+	margin-top: 7px;
+	padding: 5px 10px;
+	float: right;
+	font-size: 11px;
+	border-radius: 3px;
+	border: solid 1px #797f80;
+	color: #fff;
+	background: #c71f09;
+	background: -webkit-gradient(linear, left top, left bottom, from(#b6bbbd), to(#797f80));
+	background: -moz-linear-gradient(top, #b6bbbd, #797f80);
+	background: -o-linear-gradient(top, #b6bbbd, #797f80);
+	cursor: pointer;
+}
+#post-new #stCharacterCount, .post-response #stCharacterCount {
+	font-size: 11px;
+	display: inline-block;
+	padding: 5px 0;
+	width: 25px;
+	margin: 8px 0 0 0;
+	float: left
+}
+.dg ul.sentiment, ul.sentiment {
+	display: inline-block;
+	margin: 8px 5px 8px 0;
+	float: left;
+	border: none;
+	border-radius: 0;
+	box-shadow: none
+}
+ul.sentiment li {
+	display: inline-block;
+	float: left;
+	margin-right: 5px
+}
+ul.sentiment li.tag {padding: 5px 0 0 0}
+ul.sentiment li.bull, ul.sentiment li.bear {
+	padding: 5px 6px 5px 18px;
+	font-size: 9px;
+	text-transform: uppercase;
+	cursor: pointer;
+	border: solid 1px #dbdfe1;
+	border-radius: 3px;
+	background-position: -324px -513px;
+	color: #666
+}
+body.android ul.sentiment li.bull, body.android ul.sentiment li.bear {padding: 5px 10px 5px 18px}
+ul.sentiment li.true {	/*background:#848b8d; */
+	border: solid 1px #b0babb;
+	background-color: #dee2e2;
+	color: #333;
+	background-position: -324px -540px;
+	opacity: 1;
+	box-shadow: inset 0 1px 2px rgba(0,0,0,.2)
+}
+#post-new .attach-chart, .post-response .attach-chart {
+	position: absolute;
+	top: 94px;
+	right: 20px;
+	display: block;
+	cursor: pointer;
+	height: 27px;
+	overflow: hidden;
+	margin: 3px 0 0 0
+}
+.post-response .attach-chart {top: 92px}
+#post-new .attach-chart a, .post-response .attach-chart a {
+	display: block;
+	width: 27px;
+	padding-top: 27px;
+	background-position: -351px -621px;
+}
+#post-new .attach-chart a.true, .post-response .attach-chart a.true {
+	background-position: -351px -648px;
+	width: 96px;
+	opacity: 1
+}
+
+/* Post Feedbback */
+#post-new .post-wrapper, .post-response .post-wrapper {
+	display: inline;
+	margin: 0;
+	padding: 0;
+	z-index: 100
+}
+#post-new.sending .post-wrapper *, .post-response.sending .post-wrapper * {opacity: .5}
+#post-new span.sending, .message.show .post-response span.sending {
+	opacity: 0;
+	display: none;
+	position: absolute;
+	text-align: center;
+	font-size: 11px;
+	background-image: url(ciq-ico-loading-sm.gif);
+	background-size: 16px 16px;
+	background-position: 65px 6px;
+	background-repeat: no-repeat;
+	border-radius: 6px;
+	box-shadow: 0 0 2px rgba(0,0,0,.3);
+	transition: all .2s ease
+}
+#post-new span.sending {
+	width: 206px;
+	padding: 6px 20px 6px 30px;
+	left: 16px;
+	top: 136px
+}
+.message.show .post-response span.sending {
+	width: 206px;
+	padding: 6px 20px 6px 30px;
+	left: 21px;
+	top: 134px
+}
+#post-new.sending span.sending, .message.show .post-response.sending span.sending {
+	display: block;
+	opacity: 1;
+	z-index: 200;
+	color: #666;
+	background-color: #efefef
+}
+#post-new.success span.sending, .message.show .post-response.success span.sending {
+	display: block;
+	padding: 6px 20px 6px 20px;
+	width: 216px;
+	color: #666;
+	background-color: #fff;
+	background-image: none;
+	opacity: 1;
+	z-index: 200
+}
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) {
+#post-new span.sending {top: 140px}
+.message.show .post-response span.sending {top: 138px}
+}
+
+/* Member Posts */
+.loading .loading-stream {
+	position: absolute;
+	top: 185px;
+	left: 125px;
+	display: block;
+	height: 32px;
+	width: 32px;
+	background-image: url(ciq-ico-loading-sm.gif);
+	background-size: 32px 32px;
+	background-position: center;
+	background-repeat: no-repeat;
+	opacity: .7
+}
+.loading-stream, .stwits-stream.stwits-unauthenticated .loading-stream {display: none}
+#stStreamWrapper {
+	overflow: hidden;
+	display: block;
+	opacity: 1;
+	transition: opacity .2s ease
+}
+.loading #stStreamWrapper {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	opacity: 0
+}
+ol {
+	margin: 0;
+	padding: 0;
+	list-style: none
+}
+ol li.message {
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #e6e6e6;
+	padding: 10px;
+	font-size: 12px;
+	color: #666;
+	position: relative
+}
+ol > li:last-child {margin-bottom: 50px; 	/* Extra padding for iscroll */}
+.no-touch ol li.message:hover {
+	color: #333;
+}
+ol li.message.true, ol li.message.show {
+	color: #333;
+	background: #efefef;
+	box-shadow: inset 0 1px 4px rgba(0,0,0,.1)
+}
+.no-touch ol li.message:hover,
+ol li.message.true {
+	border-top: none;
+	padding: 11px 10px 10px 10px
+}
+ol li.message.show, .no-touch ol li.message.show:hover {
+	border-top: 1px solid #fff;
+	padding: 10px
+}
+div.avatar {
+	width: 50px;
+	height: 50px;
+	display: block;
+	float: left;
+	margin: 0 8px 0 0;
+	padding: 0;
+	outline: solid 1px #ddd;
+	overflow: hidden
+}
+div.avatar img {border: none}
+ol.search-users div.avatar {display: none}
+ol div.message-time {
+	position: absolute;
+	right: 10px;
+	display: inline-block;
+	float: right;
+	color: #999;
+	font-size: 10px;
+	text-transform: lowercase;
+	margin: -6px -2px 0 0
+}
+ol div.username {
+	width: 205px;
+	display: block;
+	color: #333;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 11px;
+	margin: -2px 0 2px 58px
+}
+body.android ol div.username {
+	padding: 4px 0 4px 0;
+	margin: -6px 0 2px 58px;
+	font-size: 12px
+}
+ol div.username a {
+	color: #333;
+	text-decoration: none
+	}
+ol li.message.true div.username a {color: #000}
+ol.search-users div.username {display: none}
+ol .message-body {
+	display: inline-block;
+	width: 205px;
+	min-height: 38px;
+	line-height: 15px
+}
+ol.search-users .message-body, ol #newsMessageTemplate .message-body {
+	display: block;
+	width: 245px;
+	min-height: 0
+}
+ol #newsMessageTemplate .message-body {width: 260px}
+body.android ol .message-body {
+	font-size: 13px;
+	line-height: 18px;
+	min-height: 30px
+}
+body.android ol.search-users .message-body {min-height: 0}
+.message-body a.URL {
+	color: #666;
+	text-decoration: none;
+	border-bottom: dotted 1px #666;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-style: italic;
+	font-size: 11px
+}
+.message-body a.URL:active {
+	color: #000;
+	border-bottom: dotted 1px #666
+}
+.message-body a.ticker, .message-body a.user {
+	font-family: Arial, Helvetica, sans-serif;
+	font-style: normal;
+	color: #333;
+	text-decoration: none;
+	font-weight: bold
+}
+.message-body a.user {
+	font-weight: normal;
+	border-bottom: dotted 1px #666
+}
+.message-body a.ticker {
+	display: inline-block;
+	border-bottom: none;
+	padding: 0 3px;
+	margin: 0 -2px;
+	background: inherit;
+	border-radius: 3px;
+	transition: all .2s
+}
+.message-body a.user:active {color: #000}
+.message.true .message-body a.ticker:active, .message.true .message-body a.active {
+	color: #fff;
+	background: #333;
+	border-bottom: none
+}
+.message.true a.ticker, .message.true a.user, .message.true div.username a {color: #000}
+body.android .message-body a {text-decoration: none}
+body.android .message-body a.user {font-size: 12px}
+body.android .message-body a.ticker, body.android .message.true .message-body a.ticker {
+	font-family: Arial, Helvetica, sans-serif;
+	line-height: 15px;
+	font-style: normal;
+	font-size: 13px;
+	color: #333;
+	font-weight: bold;
+	font-size: 13px;
+	padding: 0 5px;
+	margin: 0;
+	border: solid 1px #ccc;
+	background: #efefef
+}
+body.android .message.true .message-body a.ticker {
+	color: #000;
+	background: #fff
+}
+body.android .message.true .message-body a.ticker.active {
+	color: #fff;
+	background: #333
+}
+body.android .message-body a.URL {
+	font-size: 12px;
+	line-height: 15px;
+	padding: 1px 3px
+}
+.message-body span.tag {
+	color: #666;
+	font-size: 10px;
+	padding: 1px 3px;
+	background: #fff;
+	border: solid 1px #ddd;
+	border-radius: 3px
+}
+
+/* Expanded */
+li.message .detail {display: none}
+li.message.show .detail, li.message.true .detail, .stwits-news li.message .detail {
+	display: block;
+	height: 30px;
+	overflow: visible;
+	margin-top: 5px;
+	margin-bottom: -10px
+}
+.detail .meta {
+	width: 170px;
+	overflow: hidden;
+	margin-top: 5px;
+	color: #666;
+	font-size: 10px;
+	float: left
+}
+.detail .message-date, .detail .message-source {
+	display: inline-block
+}
+ol ul.actions {
+	display: inline-block;
+	float: right;
+	padding: 0;
+	margin: 0
+}
+ol ul.actions li.stx-ico {
+	display: inline-block;
+	width: 27px;
+	height: 27px;
+	overflow: hidden;
+	padding: 0;
+	margin: 0;
+	float: left
+}
+
+/* News Posts */
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0
+}
+.clearfix {display: inline-block}
+html[xmlns] .clearfix {display: block}
+* html .clearfix {height: 1%}
+
+#newsMessageTemplate .message-body a {
+	text-decoration: none;
+	color: #000;
+	display: inline-block;
+	font-size: 14px;
+	font-weight: normal
+}
+li#newsMessageTemplate.message .detail {/*border-top:dashed #ddd 1px; */
+	min-height: 25px;
+	height: auto
+}
+li#newsMessageTemplate.message .detail .meta {
+	width: 260px;
+	margin-bottom: 5px;
+	margin-top: 0
+}
+#newsMessageTemplate .link-description p {margin: 0}
+#newsMessageTemplate .link-description br {display: none}
+#newsMessageTemplate .link-description {margin: 5px 0 8px 0}
+#newsMessageTemplate .link-description:empty {display: none}
+#newsMessageTemplate .link-description a {
+	display: inline-block;
+	float: right;
+	max-width: 120px;
+	overflow: hidden;
+	margin: 5px 0 10px 10px;
+	border: solid 1px #ccc
+}
+#newsMessageTemplate .link-description a img {border: none}
+#newsMessageTemplate .detail .description-source {display: inline}
+body.android .detail .meta {width: 160px}
+body.android ol ul.actions li.stx-ico {
+	width: 27px;
+	height: 27px;
+	margin: 0 5px 0 0
+}
+ol ul.actions li.stx-ico a {
+	display: inline-block;
+	width: 27px;
+	height: 27px;
+	padding-top: 27px;
+	cursor: pointer
+}
+ol ul.actions li.stx-ico a.reply {background-position: -351px -459px}
+ol ul.actions li.stx-ico a.like {background-position: -378px -459px;}
+#stwits .stwits-unauthenticated ol ul.actions li.stx-ico a.like {
+	cursor: default;
+	background-position: -378px -459px;
+	opacity: .5
+}
+ol ul.actions li.like.true a.like {
+	background-position: -378px -486px;
+	opacity: 1
+}
+ol ul.actions li.more {
+	position: relative;
+	float: left;
+	display: inline-block;
+	height: 30px
+}
+ol ul.actions li.more a {
+	display: inline-block;
+	background-position:right -590px;
+	font-size: 10px;
+	padding: 7px 10px 8px 5px;
+	cursor: pointer;
+	color: #666
+}
+#stwits .stwits-unauthenticated ol ul.actions li.more a, .no-touch #stwits .stwits-unauthenticated ol ul.actions li.more:hover a {
+	color: #999;
+	cursor: default
+}
+.no-touch ol ul.actions li.more:hover a {color: #333}
+ol ul.actions li.more ul {
+	text-align: left;
+	position: absolute;
+	right: -10px;
+	top: 30px;
+	padding: 5px 0 0 0;
+	display: none;
+	z-index: 200;
+	cursor: default;
+	border-radius: 0 0 5px 5px;
+	box-shadow: 0 1px 2px rgba(0,0,0,.3);
+	overflow: hidden;
+	background: #fff
+}
+ol ul.actions li.more:hover ul, ol ul.actions li.more:active ul, ol ul.actions li.active ul {display: inline-block}
+#stwits .stwits-unauthenticated ol ul.actions li.more:hover ul, #stwits .stwits-unauthenticated ol ul.actions li.more:active ul, #stwits .stwits-unauthenticated ol ul.actions li.active ul {display: none}
+ol ul.actions ul li {
+	padding: 5px 15px;
+	border-bottom: solid 1px #efefef;
+	cursor: pointer;
+	font-size: 11px
+}
+ol ul.actions ul li:last-child {
+	padding: 5px 15px 15px 15px;
+	border-radius: 0 0 5px 5px
+}
+ol ul.actions ul li:active {color: #333}
+body.android ol ul.actions ul li {padding: 8px 15px}
+#stLoadMoreTemplate {
+	display: block;
+	text-align: center
+}
+#stLoadMoreTemplate p {
+	display: inline-block;
+	font-size: 12px;
+	background: url(ciq-ico-loading-sm.gif) no-repeat left;
+	padding: 10px 0 10px 40px;
+	margin: 10px 0;
+	color: #666
+}
+
+/* Stream Init Content */
+#stwits .stream-info {display: none}
+#stwits .stwits-stream.stwits-unauthenticated .stream-info, #stwits .stwits-current.empty .current-info {
+	display: block;
+	background: #fff;
+	margin: 0;
+	text-align: center;
+	box-shadow: 1px 2px 2px rgba(0,0,0,.2)
+}
+#stwits .stwits-stream.stwits-unauthenticated .stream-info p, #stwits .stwits-news.empty .current-info p, #stwits .stwits-current.empty .current-info p {
+	color: #999;
+	font-size: 12px;
+	padding: 20px;
+	margin: 0
+}
+/* Chart Init Content */
+#stwits .stwits-stream .current-info, #stwits .stwits-news .current-info, #stwits .stwits-current .current-info, #stwits .stwits-search .current-info, #stwits .stwits-current.empty .controls h4#viewing {display: none}
+#stwits .stwits-news .symbol-info, #stwits .stwits-news .user-info {display: none}
+#stwits .stwits-stream.stwits-unauthenticated .controls #control-stream a, #stwits .empty .controls #control-stream a {
+	opacity: .5;
+	cursor: default
+}
+#stwits .stwits-current .current-info p, #stwits .stwits-news .current-info p {
+	font-size: 12px;
+	padding: 20px 30px;
+	margin: 0
+}
+
+/* ST Help Styles */
+#stwits ul.help {
+	display: block;
+	box-shadow: none
+}
+#stwits ul.help li {
+	display: block;
+	background: #efefef;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#EFEFEF));
+	background: -moz-linear-gradient(top, #fff, #EFEFEF);
+	background: -o-linear-gradient(top, #fff, #EFEFEF);
+	border: none;
+	border-top: #ddd solid 1px;
+	border-radius: 0 0 0 0;
+	padding: 0;
+	box-shadow: none
+}
+#stwits ul.help li a {
+	padding: 0px 12px 0px 28px;
+	text-decoration: none;
+	font-size: 11px;
+	display: block;
+	background-position: -216px -406px; 
+	color: #666
+}
+#stwits ul.help li a:active {
+	color: #333
+}
+
+#stCharacterCount {
+	color: #666;
+	font-size: 12px;
+	font-weight: bold;
+	display: inline-block;
+	width: 30px;
+	padding: 5px 0;
+	background: #efefef;
+	text-align: center;
+	border-radius: 3px;
+	float: left;
+	margin: 15px 10px 0 45px;
+}
+#stCharacterCount.charLimit {
+	background: #eb3f2d;
+	color: #FFF;
+	}
+#shareWizard ul.sentiment {margin-top: 15px;}
+#cutStockTwits {
+	cursor: pointer;
+	color: #999;
+	border-bottom: dashed 1px;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-style: italic;
+	font-size: 12px;
+	display: inline-block;
+	padding: 5px 0 0 0;
+}
+#cutStockTwits:active {color: #333;}
+#divIOSStocktwits p.post {
+	text-align: left;
+	padding: 5px;
+	margin: 10px 5px 0 0;
+}
+#divIOSStocktwits p.post .btnShare {
+	float: right;
+}
+#oauthContainer {
+/*	position: absolute;
+	margin: auto;*/
+	width: 550px;
+	height: 580px;
+/*	overflow: hidden;
+	text-align: center;
+	border-radius: 8px;
+	z-index: 1001;
+	background: url(ciq-ico-loading-sm.gif) no-repeat center #fff;*/
+}
+#oauthIframeHere {
+	width: 520px;
+	height: 550px;
+	display: block;
+	margin: 15px 0 0 15px;
+	outline: none;
+	border: none;
+	overflow: hidden;
+}
+#oauthIframeHere iframe {
+	outline: none;
+	border: none;
+	border-radius: 6px;
+}
+#oauthContainer .click {
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+}

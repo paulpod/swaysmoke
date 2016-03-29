@@ -10182,7 +10182,7 @@ STX.Market.Iterator._Clock.prototype.find_prev=null;
 		STX.YEAR=365*STX.DAY;
 		STX.DECADE=10*STX.YEAR;
 		
-		STXChart.version=[/****VERSION****/];
+		STXChart.version=["Version 2015-12-08.5"];
 
 		STXChart.drawingLine=false; // Toggles to true when a drawing is initiated
 		STXChart.resizingPanel=null; // Toggles to true when a panel is being resized

@@ -78,14 +78,14 @@ html,body{
 	transform: scale(1.2, 1.2);
 }
 .stx-btn-panel span {/* Button Icons */
-	background-image:url(../img/stx-sprite-panels.svg);
+	background-image:url(/public/images/stx-sprite-panels.svg);
 	opacity:.6;
    -webkit-transition: opacity .2s;
    -moz-transition: opacity .2s;
    transition: opacity .2s; 
 }
 .no-svg .stx-btn-panel span {/* Button Icons for non SVG browsers */
-	background-image:url(../img/stx-sprite-panels.png);
+	background-image:url(/public/images/stx-sprite-panels.png);
 }
 .stx-btn-panel > span.stx-ico-up {background-position: -150px -25px;}
 .stx-btn-panel > span.stx-ico-down {background-position: -200px -25px;} 
@@ -139,7 +139,7 @@ html,body{
 	background:rgba(0,0,0,.2);
 }
 #chartSize span {/* Chart size (+) and (-) buttons */
-	background-image:url(../img/stx-sprite-panels.svg);
+	background-image:url(/public/images/stx-sprite-panels.svg);
 	width: 35px;
 	cursor: pointer;
 	transition: opacity .25s, transform .2s;
@@ -147,7 +147,7 @@ html,body{
 	opacity: .6;
 }
 .no-svg #chartSize span {/*Chart size (+) and (-) buttons for non SVG browsers */
-	background-image:url(../img/stx-sprite-panels.png);
+	background-image:url(/public/images/stx-sprite-panels.png);
 }
 #chartSize .stx-zoom-out {/* Zoom out */
 	background-position: -45px -25px;
@@ -198,7 +198,7 @@ html,body{
 }
 
 .stx_jump_today span {	
-	background-image:url(../img/stx-sprite-panels.svg);
+	background-image:url(/public/images/stx-sprite-panels.svg);
 	background-repeat: no-repeat;
 	display: inline-block;
 	line-height: 25px;
@@ -211,7 +211,7 @@ html,body{
 	opacity: .6;
 }
 .no-svg .stx_jump_today span {/* Button Icons for non SVG browsers */
-	background-image:url(../img/stx-sprite-panels.png);
+	background-image:url(/public/images/stx-sprite-panels.png);
 }
 .stx_jump_today:hover span {	
 	opacity: 1;
@@ -339,11 +339,11 @@ html,body{
 	text-indent: 100px;
 	background: #efefef;
 	border: solid #ddd 1px;
-	background-image:url(../img/stx-sprite-panels.svg);
+	background-image:url(/public/images/stx-sprite-panels.svg);
 	background-position: -401px -26px;
 }
 .no-svg #overlayTrashCan.stx-btn span, .no-svg #vectorTrashCan.stx-btn span {/* Button Icons for non SVG browsers */
-	background-image:url(../img/stx-sprite-panels.png);
+	background-image:url(/public/images/stx-sprite-panels.png);
 }
 
 #mouseDeleteInstructions {
@@ -514,18 +514,24 @@ html,body{
 
 .stx_candle_shadow, .stx_bar_even {/* Candle wick color */
 	color:#2e383b;
-	}
-/*
-Optionally use .stx_candle_shadow_up and .stx_candle_shadow_down to change shadow/wick color for up/down candles
- */
+}
+/******* Optionally use .stx_candle_shadow_up and .stx_candle_shadow_down to change shadow/wick color for up/down candles
+ .stx_candle_shadow_up {
+	color:#8cc176;
+}
+.stx_candle_shadow_down {
+	color:#b82c0c;
+}
+********/
+ 
 .stx_candle_down, .stx_line_down { /* Down Candle color */
 	color: #b82c0c;
 	border-left-color: #000000;
-	}
+}
 .stx_candle_up, .stx_line_up {/* Up Candle color */
 	color: #8cc176;
 	border-left-color: #000000;
-	}
+}
 	
 .stx_hollow_candle_down{color:#b82c0c;}
 .stx_hollow_candle_up{color:#8cc176;}
