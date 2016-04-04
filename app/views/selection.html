@@ -1,0 +1,190 @@
+{{<layout}}
+
+{{$pageTitle}} Medical condition selection {{/pageTitle}}
+
+{{$head}}
+	{{>includes/head}}
+	{{>includes/scripts}}
+<script src="/public/javascripts/f2d/jquery-1.11.1.min.js"></script>
+<script src="/public/javascripts/f2d/jquery-ui.min.js"></script>
+<script src="/public/javascripts/f2d/jquery.select-to-autocomplete.js"></script>
+<script>
+	(function($){
+		$(function(){
+			$('select').selectToAutocomplete( {
+                'relevancy-sorting': true,
+                'sort': true
+            });
+			//$('input').autocomplete ({sortResults:false})
+		});
+	})(jQuery);
+    
+    // Make sure the last condition that has been selected was removed
+    removeCondition();
+</script>
+{{/head}}
+
+{{$content}}
+{{>includes/buttons/standard-back-phase-banner}}
+<main id="content" role="main" tabindex="-1">
+	<div class="grid-row">
+		<div class="column-full">
+			<div class="column-two-thirds">
+				<div class="form-group">
+					<h1 class="heading-large">Market search</h1>
+					<span class="form-hint condition">Enter market name, symbol or </span>
+
+<form method="get" class="form" onsubmit="return process();">
+			
+	<div id="condition-question">
+		<legend>
+			<span class="error-message" style="display: none;">Enter a market name, symbol</span>
+		</legend>
+
+		<select name="Condition" placeholder="" id="condition-selector" autofocus autocorrect="off" autocomplete="off" copy-attributes-to-text-field="false" style="min-width: 320px;">
+			<optgroup style="font-size:18px;">
+                <option value="" selected="selected">Your condition</option>
+                
+
+<option code="us-ind-1" data-relevancy-booster="80" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+asia
+aisa
+index
+indexes"
+value="Indices Asia"><strong>Indices Asia</strong></option>
+
+<option code="us-ind-1" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+asia
+hong kong
+hongkong
+hk"
+value="Hong Kong 50 CFD">Hong Kong 50 CFD</option>
+
+<option code="us-ind-1" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+asia
+sino"
+value="Japan 225 CFD">Japan 225 CFD</option>
+
+<option code="us-ind-1" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+asia
+singpore"
+value="Singapore Index (per 0.1) CFD">Singapore Index (per 0.1) CFD</option>
+
+<option code="us-ind-1" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+asia"
+value="Japan 225 Jun 16 CFD">Japan 225 Jun 16 CFD</option>
+
+<option code="us-ind-1" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+asia"
+value="Singapore Index (per 0.1) Mar 16 CFD">Singapore Index (per 0.1) Mar 16 CFD</option>
+
+<option code="us-ind-1" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+asia"
+value="China A50 Mar 16 CFD">China A50 Mar 16 CFD</option>
+
+<option code="us-ind-1" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+asia"
+value="Hong Kong 50 Mar 16 CFD">Hong Kong 50 Mar 16 CFD</option>
+
+<option code="us-ind-1" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+asia"
+value="India 50 Mar 16 CFD">India 50 Mar 16 CFD</option>
+
+<option code="us-ind-1" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+asia"
+value="China A50 CFD">China A50 CFD</option>
+
+
+<option code="us-ind-1" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+standard and poor 500
+June 2016"
+value="US SP 500 Jun 16 CFD">US SP 500 Jun 16 CFD</option>
+
+<option code="us-ind-2" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+smallcap2000
+June 2016"
+value="US Small Cap 2000 Jun 16 CFD">US Small Cap 2000 Jun 16 CFD</option>
+
+<option code="us-ind-3" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+vix
+april 2016"
+value="Volatility Index Apr 16 CFD">Volatility Index Apr 16 CFD</option>
+
+<option code="us-ind-4" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+vix
+may 2016"
+value="Volatility Index May 16 CFD">Volatility Index May 16 CFD</option>
+
+<option code="us-ind-5" start-url="diabetes/diabetes-with-insulin" data-alternative-spellings="
+ws
+september 2016"
+value="Wall Street Sep 16 CFD">Wall Street Sep 16 CFD</option>
+
+<option code="us-ind-6" start-url="diabetes/diabetes-with-insulin" data-relevancy-booster="20" data-alternative-spellings="
+standard and poor
+s&amp;p"
+value="US SP 500 Sep 16 CFD">US SP 500 Sep 16 CFD</option>
+
+<option code="us-ind-7" start-url="diabetes/diabetes-with-insulin" data-relevancy-booster="20" data-alternative-spellings="
+technology 100
+tech september 2016"
+value="US Tech 100 Sep 16 CFD">US Tech 100 Sep 16 CFD</option>
+
+
+
+
+
+			</optgroup>
+		</select>
+	</div>
+
+	<p></p>
+
+	<button style="margin-top: .5em;" class="button" type="button" onclick="process();">Continue</button> 
+</form>
+
+
+				</div>
+				<!-- end form-group -->
+			</div>
+			<!-- end column-two-thirds -->
+		</div>
+		<!-- end column-full -->
+	</div>
+	<!-- end grid-row -->
+</main>
+
+<script type="text/javascript">
+	function process() {
+		var selectedCondition = $('#condition-selector').find(':selected');
+		if (selectedCondition.attr('value') == '') {
+			$('#condition-question').addClass('error');
+			$('.error-message').show();
+		} else {
+			if (selectedCondition.attr('start-url')) {
+                // Add the condition to conditions array/object
+                var conditionID = selectedCondition.attr('code');
+                var conditionName = selectedCondition.val();
+                addCondition(conditionID, conditionName);
+                
+                // Set the condition type if it exists
+                var conditionType = selectedCondition.attr('subtype');
+                setCurrentConditionType(conditionType);
+                
+				go(selectedCondition.attr('start-url'));
+			} else {
+                var condition = encodeURIComponent(selectedCondition.val());
+				var infoURL = encodeURIComponent(selectedCondition.attr('info-url'));
+				window.location.href = "/common/exit/unsupported-condition?c=" + condition + "&u=" + infoURL;
+			}
+		}
+		return false;
+	}
+
+	$(document).ready(function() {
+		$('.ui-autocomplete-input').focus();
+	});
+</script>
+{{/content}}
+
+{{/layout}}

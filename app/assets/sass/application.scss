@@ -1726,3 +1726,62 @@ color:#000066;
     right: 0px; 
     background-color: #333333; 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------------------------------- */
+/*   STYLING FOR condition-selection   */
+.ui-autocomplete {
+  padding: 0;
+  list-style: none;
+  background-color: #fff;
+  width: 15em;
+  border-left: 1px solid #BFC1C3;
+  border-right: 1px solid #BFC1C3;
+  max-height: 190px;
+  overflow-x: hidden;
+}
+
+.ui-autocomplete-input {
+  padding: .5em;
+}
+
+.ui-autocomplete .ui-menu-item {
+  display: block;
+  font-size: 1.2em;
+  padding: .5em;
+  color: #353D44;
+  cursor: pointer;
+}
+
+.ui-autocomplete .ui-menu-item:first-child {
+  border-top: none;
+}
+
+.ui-autocomplete .ui-menu-item.ui-state-focus {
+  color: #fff;
+  background-color: #0097cf;
+}
+
+.ui-helper-hidden-accessible {
+  display: none;
+}
+
+.ui-autocomplete {
+  position: absolute;
+  border-bottom: 1px solid #BFC1C3;
+}
+
+.condition-selection-panel {
+  padding-top: 0.1em !important;
+  padding-bottom: 0.8em !important;
+}

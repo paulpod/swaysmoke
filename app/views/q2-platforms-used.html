@@ -16,7 +16,7 @@
 
 
   <link href="/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
-<body style="background-image: url('/public/images/big-advantageweb-screen.png')">
+<body style="background-image: url('/public/images/big-advantageweb-screen.pnga')">
 <main id="content" role="main" style="background-color: rgba(255, 255, 255, 0.85);padding: 1em">
  
 
@@ -24,20 +24,20 @@
 <div class="grid-row">
   <div class="column-two-thirds" style="margin:1em;padding:1em;">
 
-  <div>
+  <!--<div>
     <a class="back-to-previous" href="javascript:history.back()" style="float:left;margin-top:0.2em;margin-right:1em">Back 
     <span class="visuallyhidden"> to the previous question</span></a>
 
     <span style="font-size:0.8em;padding-top:0;margin-right:1em">2 of 3</span>
   </div>
 
-  <br clear="all">
+  <br clear="all">-->
 
-  <p>If you have used trading platforms before we can show you the differences and similarities between our platform and one you already know.</p>
+  <!--<p>If you have used trading platforms before we can show you the differences and similarities between our platform and one you already know.</p>-->
 
 
 
-  <h2 class="heading-large" style="font-size: 1.66em" id="elements">Which of these platforms have you used?</h2>
+  <h2 class="heading-large" style="font-size: 1.66em;margin-top:0" id="elements">Which of these platforms have you used?</h2>
 
   <form action="basic-branch" method="get" class="form">
     <input type="hidden" name="nextlink" value="q3-whichplatform">
@@ -46,28 +46,22 @@
 
     <div class="form-group form-group-compound">
 
-    <label for="radio-inline-1a" class="block-label" style="border-radius: 3px;border-bottom:3px #ccc solid">
-    <input id="radio-inline-1a" type="radio" name="user-exp" value="ig">
-    I've used IG before
+    <label for="radio-inline-1c" class="block-label" style="border-radius: 3px;border-bottom:3px #666 solid">
+    <input id="radio-inline-1c" type="radio" name="branch" value="otherweb">
+    I've used another web browser based platform
     </label>
 
-    <label for="radio-inline-1b" class="block-label" style="border-radius: 3px;border-bottom:3px #ccc solid">
-    <input id="radio-inline-1b" type="radio" name="user-exp" value="cmc">
-    I've used CMC before
+    <label for="radio-inline-1d" class="block-label" style="border-radius: 3px;border-bottom:3px #666 solid">
+    <input id="radio-inline-1d" type="radio" name="branch" value="othertype">
+    I've used a different type of platform
     </label>
 
-    <label for="radio-inline-1c" class="block-label" style="border-radius: 3px;border-bottom:3px #ccc solid">
-    <input id="radio-inline-1c" type="radio" name="user-exp" value="otherweb">
-    I've used another web-based platform
-    </label>
+    <br clear="all">
 
-    <label for="radio-inline-1d" class="block-label" style="border-radius: 3px;border-bottom:3px #ccc solid">
-    <input id="radio-inline-1d" type="radio" name="user-exp" value="othertype">
-    I've used a different type of platform eg. Terminal
-    </label>
+    <p>eg. Terminal, downloaded app</p>
 
-    <label for="radio-inline-1e" class="block-label" style="border-radius: 3px;border-bottom:3px #ccc solid">
-    <input id="radio-inline-1e" type="radio" name="user-exp" value="none">
+    <label for="radio-inline-1e" class="block-label" style="border-radius: 3px;border-bottom:3px #666 solid">
+    <input id="radio-inline-1e" type="radio" name="branch" value="none">
     None of these
     </label>
 

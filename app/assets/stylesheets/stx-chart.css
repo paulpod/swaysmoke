@@ -8,7 +8,7 @@ html,body{
 
 .chartContainer, #chartContainer { /* DIV that the canvas expands to. Use any ID you wish. #chartContainer is only for backward compatibility with older libraries. */
 	display: block;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Open Sans', Helvetica, sans-serif;
 	font-size: 12px;
 	position:relative; /* chart container must be relative for internal DOM elements to be correct */
 }
@@ -17,42 +17,7 @@ html,body{
 
 /* Basic Buttons */
 
-.stx-btn { /* Inactive Button */
-	display:inline-block;
-	cursor: pointer;
-	padding: 0px 8px;
-	border: solid 1px #ddd;
-	font-weight: bold;
-	line-height: 27px;
-	color: #7e7e7e;
-	text-align: center;
-	overflow: visible;
-	background-repeat: no-repeat;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	-webkit-transition: color .25s, border .25s, box-shadow .25s;
-	-moz-transition: color .25s, border .25s, box-shadow .25s;
-	transition: color .25s, border .25s, box-shadow .25s;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-.stx-btn:hover { /* Button Hover State */
-	color: #444444;
-	border: solid 1px #c5c5c5;
-	-webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, .1), inset 0px -8px 6px rgba(100, 100, 100, .03);
-	-moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, .1), inset 0px -8px 6px rgba(100, 100, 100, .03);
-	box-shadow: 0px 1px 1px rgba(0, 0, 0, .1), inset 0px -8px 6px rgba(100, 100, 100, .03);
-}
-.stx-btn:active { /* Button Active State */
-	color: #333;
-	-webkit-box-shadow: inset 0px 8px 6px rgba(100, 100, 100, .03);
-	-moz-box-shadow: inset 0px 8px 6px rgba(100, 100, 100, .03);
-	box-shadow: inset 0px 8px 6px rgba(100, 100, 100, .03);
-}
-
+//
 
 /* Panel Buttons */
 
@@ -366,6 +331,7 @@ html,body{
 	width: 40px;
 	height: 40px;
 	z-index:50;
+	display: none
 }
 
 /* --------------------------------------------------------- CHART ELEMENT STYLES --------------------------------------------------------- */
@@ -385,7 +351,7 @@ html,body{
 
 .stx_xaxis {/* x-axis date styles */
 	font-size: 12px;
-	font-family: Helvetica;
+	font-family: 'Open Sans', Helvetica;
 	color: #666;
 	}
 .stx_xaxis_dark {/* x-axis date divider styles */
@@ -402,7 +368,7 @@ html,body{
 .stx-float-date {/* Crosshair Floating x-axis date label*/
 	position: absolute;
 	font-size: 10px;
-	font-family: Helvetica;
+	font-family: 'Open Sans', Helvetica;
 	z-index: 30;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -446,7 +412,7 @@ html,body{
 /* -------- Chart and Study Panel Styling -------- */
 
 .stx_panels {/* Panel Title text */
-	font-family: Helvetica;
+	font-family: 'Open Sans', Helvetica;
 	font-size: 10px;
 	color: white;
 }
@@ -615,7 +581,7 @@ html,body{
 
 .stx_annotation {/* Annotation styles */
 	font-size: 13px;
-	font-family: Helvetica;
+	font-family: 'Open Sans', Helvetica;
 	background: transparent;
 	border: none;
 	box-shadow: none;
@@ -651,12 +617,12 @@ html,body{
 }
 .stx_watermark {/* Optional watermark style */
 	font-size: 16px;
-	font-family: Helvetica;
+	font-family: 'Open Sans', Helvetica;
 	color: rgba(0,0,0,0.5);
 }
 .stx_fib_levels {/* Text for fibonacci values */
 	font-size: 12px;
-	font-family: Helvetica;
+	font-family: 'Open Sans', Helvetica;
 	color: transparent;
 }
 
@@ -670,7 +636,7 @@ html,body{
 }
 .stx_share_symbol {
 	font-size: 14px;
-	font-family: Arial;
+	font-family: 'Open Sans', Arial;
 	font-weight: bold;
 }
 

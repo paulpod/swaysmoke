@@ -15,14 +15,14 @@ module.exports = {
     /* Pass nextpage for Basic Flow control  */
 
 
-    app.get('/examples/elements/basic-flow', function (req, res) {
+    app.get('/basic-flow', function (req, res) {
     /* line above starts a new JS function, receives the form action event from the webpage */
 
     var next = req.query.nextlink;
-    var v11 = req.query.v11;
+    //var v11 = req.query.v11;
     /* this line pulls out the name of the next page that was sent with the weblink */
 
-    res.render('examples/elements/' + next, {'v11' : v11, 'v5c' : v5c});
+    res.render(next);
     /* this line renders a new page based on the HTML of the file sent as the next page */
     
  

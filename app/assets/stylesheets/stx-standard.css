@@ -26,7 +26,7 @@ a {cursor:pointer}
 
 .stx-input-field, .stx-textarea, .stx-input-check, .stx-dialog-container [type=text], .stx-dialog-container [type=number] {
 	background: #f6f6f6;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Open Sans', Helvetica, sans-serif;
 	font-size: 12px;
 	border: #CCC solid 1px;
 	-webkit-border-radius: 3px;
@@ -254,7 +254,7 @@ a {cursor:pointer}
 	margin: 0 auto;
 	text-align: left;
 	position: relative;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Open Sans', Helvetica, sans-serif;
 	font-size: 12px;
 }
 .stx-nav { /* Navigation Bar */
@@ -1416,7 +1416,7 @@ ul.hu li { /* Data Sets */
 
 /* --- OVERLAY CLOSE --- */
 .stx-close-overlay {
-	font-family: "Helvetica";
+	font-family: 'Open Sans';
 	font-size: 10px;
 	position: absolute;
 	z-index: 4;
