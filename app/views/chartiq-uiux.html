@@ -14,7 +14,6 @@
 
 <script type="text/javascript" src="/public/javascripts/common.js"></script>
 
-<link rel="stylesheet" href="/public/stylesheets/framework7.ios.css">
 
 <link href="/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
 
@@ -23,6 +22,10 @@
 
 <body>
 <main id="content" role="main">
+
+<div class="grid-row">
+
+  <div class="column-two-thirds">
  
 
 <h3>Search to be clearer as market search</h3>
@@ -34,7 +37,9 @@
 <br clear="all">
 
 
-<h3>Duration menu, as native picker on mobiles</h3>
+<h3 class="heading-medium">Time menu</h3>
+
+<p>Rather than use a popup menu as default chartIQ page, use a native picker on mobiles with <code style="overflow:visible;white-space:nowrap">&lt;select&gt;</code> and <code style="overflow:visible;white-space:nowrap">&lt;option&gt;</code> inputs.</p>
 
 <div>
   <form>
@@ -55,184 +60,39 @@
 
 
 
-<h3>Chart menu</h3>
+<h3 class="heading-medium">Chart menu</h3>
 
-<div style="width:320px;height:568px;border:black 2px solid;font-family: -apple-system !important">
+<div>
 
-<img src="/public/images/ios-statusbar.png" width="320px">
+  <p>On mobile devices, this popup menu is too long to display well. Suggest using a new page, or full page overlay in the style of a standard list to pick from the long list.</p>
 
-<div data-page="form" class="navbar-inner navbar-on-center">
-  <div class="left sliding" style="transform: translate3d(0px, 0px, 0px);"><a href="#" class="back link"> <i class="icon icon-back" style="transform: translate3d(0px, 0px, 0px);"></i><span>Back</span></a></div>
-  <div class="center sliding" style="left: -579px; transform: translate3d(0px, 0px, 0px);">Form</div>
-</div>
+  <p><a href="chartiq-ios1">Example menu page</a>, as HTML+CSS closely following iOS styles.</p>
 
-<ul id="chart-display" class="chart-display menuSelect menuOutline" style="display:none">
-  <li class="stx-heading">Chart Style</li>
-  <li stxToggle="stxx.setChartType('candle')">Candle</li>
-  <li stxToggle="stxx.setChartType('bar')">Bar</li>
-  <li stxToggle="stxx.setChartType('colored_bar')">Colored Bar</li>
-  <li stxToggle="stxx.setChartType('line')">Line</li>
-  <li stxToggle="stxx.setChartType('hollow_candle')">Hollow Candle</li>
-  <li stxToggle="stxx.setChartType('volume_candle')">Volume Candle</li>
-  <li stxToggle="stxx.setChartType('mountain')">Mountain</li>
-  <li stxToggle="stxx.setChartType('colored_line')">Colored Line</li>
-  <li stxToggle="stxx.setChartType('baseline_delta')">Baseline Delta</li>
-  <li class="stx-menu-divider"></li>
-  <li class="stx-heading">Chart Type</li>
-  <li class="stx-option" stxToggle="toggleChartType('heikinashi')">Heikin-Ashi<span class="stxHeikinashi stx-checkbox"></span></li>
-  <li class="stx-option" stxToggle="toggleChartType('kagi')">Kagi<span class="stxKagi stx-checkbox"></span></li>
-  <li class="stx-option" stxToggle="toggleChartType('linebreak')">Line Break<span class="stxLinebreak stx-checkbox"></span></li>
-  <li class="stx-option" stxToggle="toggleChartType('pandf')">Point & Figure<span class="stxPandf stx-checkbox"></span></li>
-  <li class="stx-option" stxToggle="toggleChartType('rangebars')">Range Bars<span class="stxRangebars stx-checkbox"></span></li>
-  <li class="stx-option" stxToggle="toggleChartType('renko')">Renko<span class="stxRenko stx-checkbox"></span></li>
-  <li class="stx-menu-divider"></li>
-  <li class="stx-heading">Chart Scale</li>
-  <li class="stx-option" stxToggle="toggleLog()">Log Scale<span class="stxLog stx-checkbox"></span></li>
-</ul>
-
-<div class="list-block">
-  <ul>
-    <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Candle">
-        <div class="item-inner">
-          <div class="item-title">Candle</div>
-        </div>
-      </label>
-    </li>
-    <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Bar">
-        <div class="item-inner">
-          <div class="item-title">Bar</div>
-        </div>
-      </label>
-    </li>
-    <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Colored Bar">
-        <div class="item-inner">
-          <div class="item-title">Colored Bar</div>
-        </div>
-      </label>
-    </li>
-    <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Line">
-        <div class="item-inner">
-          <div class="item-title">Line</div>
-        </div>
-      </label>
-    </li>
-    <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Hollow Candle">
-        <div class="item-inner">
-          <div class="item-title">Hollow Candle</div>
-        </div>
-      </label>
-    </li>
-    <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Volume Candle">
-        <div class="item-inner">
-          <div class="item-title">Volume Candle</div>
-        </div>
-      </label>
-    </li>
-    <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Mountain">
-        <div class="item-inner">
-          <div class="item-title">Mountain</div>
-        </div>
-      </label>
-    </li>
-    <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Colored Line">
-        <div class="item-inner">
-          <div class="item-title">Colored Line</div>
-        </div>
-      </label>
-    </li>
-    <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Baseline Delta">
-        <div class="item-inner">
-          <div class="item-title">Baseline Delta</div>
-        </div>
-      </label>
-    </li>
-     <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Baseline Delta">
-        <div class="item-inner">
-          <div class="item-title">Heikin-Ashi</div>
-        </div>
-      </label>
-    </li>
-     <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Baseline Delta">
-        <div class="item-inner">
-          <div class="item-title">Kagi</div>
-        </div>
-      </label>
-    </li>
-     <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Baseline Delta">
-        <div class="item-inner">
-          <div class="item-title">Line Break</div>
-        </div>
-      </label>
-    </li>
-     <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Baseline Delta">
-        <div class="item-inner">
-          <div class="item-title">Point &amp; Figure</div>
-        </div>
-      </label>
-    </li>
-     <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Baseline Delta">
-        <div class="item-inner">
-          <div class="item-title">Range Bars</div>
-        </div>
-      </label>
-    </li>
-     <li>
-      <label class="label-radio item-content">
-        <input type="radio" name="ks-radio" value="Baseline Delta">
-        <div class="item-inner">
-          <div class="item-title">Renko</div>
-        </div>
-      </label>
-    </li>
-  </ul>
-</div>
+  <img src="/public/images/ios-menulist.png" width="320px" style="border:#999 2px solid">
 
 </div>
 
 <br clear="all">
 
 
-<h3>Native font on iOS</h3>
+<h3 class="heading-medium">Native font on iOS</h3>
 
 <div>
 
-  <p>The quick brown fox jumps over the lazy dog</p>
+  <p style="font-size:1.4em">The quick brown fox jumps over the lazy dog.<br>
+  <span style="background-color: #ffffdd;font-size: 0.5em;padding:0.2em 0.7em;border:1px solid #ee9">Should render as Open Sans on all platforms</span>
+  </p>
 
-  <p style="font-family: -apple-system,'Open Sans',Arial,sans !important">The quick brown fox jumps over the lazy dog</p>
+  <p style="font-size:1.4em;font-family: -apple-system,'Open Sans',Arial,sans !important">The quick brown fox jumps over the lazy dog.<br>
+  <span style="background-color: #ffffdd;font-size: 0.5em;padding:0.2em 0.7em;border:1px solid #ee9">Should render as San Francisco only on iOS</span>
+  </p>
 
 </div>
 
 
 
-
+</div>
+</div>
 
 
 </main>
