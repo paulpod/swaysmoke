@@ -1,0 +1,194 @@
+{{<layout}}
+
+{{$pageTitle}}
+  GAIN CAPITAL Design Kit
+{{/pageTitle}}
+
+
+{{$content}}
+<script type="text/javascript" src="/public/javascripts/jquery-1.11.0.min.js"></script>
+
+<script type="text/javascript" src="/public/javascripts/application.js"></script>
+
+<script type="text/javascript" src="/public/javascripts/selection-buttons.js"></script>
+
+<script type="text/javascript" src="/public/javascripts/common.js"></script>
+
+<link rel="stylesheet" href="/public/stylesheets/framework7.ios.css">
+
+<link href="/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
+
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300' rel='stylesheet' type='text/css'>
+
+
+<body>
+<main id="content" role="main">
+ 
+
+<h3>Search to be clearer as market search</h3>
+
+<div class="stx-search">
+  <input type="text" id="symbol" name="symbol" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="off" class="stx-input-field">
+</div>
+
+<br clear="all">
+
+
+<h3>Duration menu, as native picker on mobiles</h3>
+
+<div>
+  <form>
+    <select>
+      <option value="1d" stxToggle="changePeriodicity(1,'day')">1 Day</option>
+      <option value="1w" stxToggle="changePeriodicity(1,'week')">>1 Week</option>
+      <option value="1m" stxToggle="changePeriodicity(1,'month')">1 Month</option>
+      <option value="1min" stxToggle="changePeriodicity(1,1)">1 Min</option>
+      <option value="5min" stxToggle="changePeriodicity(1,5)">5 Min</option>
+      <option value="15min" stxToggle="changePeriodicity(1,15)">15 Min</option>
+    </select>
+  </form>
+<div>
+
+<br clear="all">
+
+
+
+
+
+<h3>Chart menu</h3>
+
+<div style="width:320px;height:568px;border:black 2px solid;font-family: -apple-system !important">
+
+<img src="/public/images/ios-statusbar.png" width="320px">
+
+<div data-page="form" class="navbar-inner navbar-on-center">
+  <div class="left sliding" style="transform: translate3d(0px, 0px, 0px);"><a href="#" class="back link"> <i class="icon icon-back" style="transform: translate3d(0px, 0px, 0px);"></i><span>Back</span></a></div>
+  <div class="center sliding" style="left: -579px; transform: translate3d(0px, 0px, 0px);">Form</div>
+</div>
+
+<ul id="chart-display" class="chart-display menuSelect menuOutline" style="display:none">
+  <li class="stx-heading">Chart Style</li>
+  <li stxToggle="stxx.setChartType('candle')">Candle</li>
+  <li stxToggle="stxx.setChartType('bar')">Bar</li>
+  <li stxToggle="stxx.setChartType('colored_bar')">Colored Bar</li>
+  <li stxToggle="stxx.setChartType('line')">Line</li>
+  <li stxToggle="stxx.setChartType('hollow_candle')">Hollow Candle</li>
+  <li stxToggle="stxx.setChartType('volume_candle')">Volume Candle</li>
+  <li stxToggle="stxx.setChartType('mountain')">Mountain</li>
+  <li stxToggle="stxx.setChartType('colored_line')">Colored Line</li>
+  <li stxToggle="stxx.setChartType('baseline_delta')">Baseline Delta</li>
+  <li class="stx-menu-divider"></li>
+  <li class="stx-heading">Chart Type</li>
+  <li class="stx-option" stxToggle="toggleChartType('heikinashi')">Heikin-Ashi<span class="stxHeikinashi stx-checkbox"></span></li>
+  <li class="stx-option" stxToggle="toggleChartType('kagi')">Kagi<span class="stxKagi stx-checkbox"></span></li>
+  <li class="stx-option" stxToggle="toggleChartType('linebreak')">Line Break<span class="stxLinebreak stx-checkbox"></span></li>
+  <li class="stx-option" stxToggle="toggleChartType('pandf')">Point & Figure<span class="stxPandf stx-checkbox"></span></li>
+  <li class="stx-option" stxToggle="toggleChartType('rangebars')">Range Bars<span class="stxRangebars stx-checkbox"></span></li>
+  <li class="stx-option" stxToggle="toggleChartType('renko')">Renko<span class="stxRenko stx-checkbox"></span></li>
+  <li class="stx-menu-divider"></li>
+  <li class="stx-heading">Chart Scale</li>
+  <li class="stx-option" stxToggle="toggleLog()">Log Scale<span class="stxLog stx-checkbox"></span></li>
+</ul>
+
+<div class="list-block">
+  <ul>
+    <li>
+      <label class="label-radio item-content">
+        <input type="radio" name="ks-radio" value="Books" checked="">
+        <div class="item-inner">
+          <div class="item-title">Candle</div>
+        </div>
+      </label>
+    </li>
+    <li>
+      <label class="label-radio item-content">
+        <input type="radio" name="ks-radio" value="Movies">
+        <div class="item-inner">
+          <div class="item-title">Bar</div>
+        </div>
+      </label>
+    </li>
+    <li>
+      <label class="label-radio item-content">
+        <input type="radio" name="ks-radio" value="Food">
+        <div class="item-inner">
+          <div class="item-title">Colored Bar</div>
+        </div>
+      </label>
+    </li>
+    <li>
+      <label class="label-radio item-content">
+        <input type="radio" name="ks-radio" value="Drinks">
+        <div class="item-inner">
+          <div class="item-title">Line</div>
+        </div>
+      </label>
+    </li>
+    <li>
+      <label class="label-radio item-content">
+        <input type="radio" name="ks-radio" value="Drinks">
+        <div class="item-inner">
+          <div class="item-title">Hollow Candle</div>
+        </div>
+      </label>
+    </li>
+    <li>
+      <label class="label-radio item-content">
+        <input type="radio" name="ks-radio" value="Volume Candle">
+        <div class="item-inner">
+          <div class="item-title">Volume Candle</div>
+        </div>
+      </label>
+    </li>
+    <li>
+      <label class="label-radio item-content">
+        <input type="radio" name="ks-radio" value="Mountain">
+        <div class="item-inner">
+          <div class="item-title">Mountain</div>
+        </div>
+      </label>
+    </li>
+    <li>
+      <label class="label-radio item-content">
+        <input type="radio" name="ks-radio" value="Colored Line">
+        <div class="item-inner">
+          <div class="item-title">Colored Line</div>
+        </div>
+      </label>
+    </li>
+    <li>
+      <label class="label-radio item-content">
+        <input type="radio" name="ks-radio" value="Baseline Delta">
+        <div class="item-inner">
+          <div class="item-title">Baseline Delta</div>
+        </div>
+      </label>
+    </li>
+  </ul>
+</div>
+
+</div>
+
+<br clear="all">
+
+
+<h3>Native font on iOS</h3>
+
+<div>
+
+  <p>The quick brown fox jumps over the lazy dog</p>
+
+  <p style="font-family: -apple-system,'Open Sans',Arial,sans !important">The quick brown fox jumps over the lazy dog</p>
+
+</div>
+
+
+
+
+
+
+</main>
+
+{{/content}}
+
+{{/layout}}
