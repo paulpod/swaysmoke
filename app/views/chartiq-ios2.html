@@ -70,6 +70,40 @@
             <a href="#back-to-chart" class="create link"><span style="font-weight: 600">Create</span></a>
             </div>
           </div>
+
+          <!-- Navbar inner for movingaverage-fieldmenu page-->
+          <div data-page="movingaverage-fieldmenu" class="navbar-inner cached">
+            <div class="left sliding"><a href="#" class="back link"> <i class="icon icon-back"></i><span>Moving average</span></a></div>
+            <div class="center sliding">Field</div>
+            
+          </div>
+          <!-- Navbar inner for movingaverage-typemenu page-->
+          <div data-page="movingaverage-typemenu" class="navbar-inner cached">
+            <div class="left sliding"><a href="#" class="back link"> <i class="icon icon-back"></i><span>Moving average</span></a></div>
+            <div class="center sliding">Type</div>
+            
+          </div>
+
+          <!-- Navbar inner for bollingerbands-fieldmenu page-->
+          <div data-page="bollingerbands-fieldmenu" class="navbar-inner cached">
+            <div class="left sliding"><a href="#" class="back link"> <i class="icon icon-back"></i><span>Bollinger bands</span></a></div>
+            <div class="center sliding">Field</div>
+            
+          </div>
+
+          <!-- Navbar inner for bollingerbands-movingaveragetypemenu page-->
+          <div data-page="bollingerbands-movingaveragetypemenu" class="navbar-inner cached">
+            <div class="left sliding"><a href="#" class="back link"> <i class="icon icon-back"></i><span>Bollinger bands</span></a></div>
+            <div class="center sliding">MA type</div>
+            
+          </div>
+
+          <!-- Navbar inner for rsi-fieldmenu page-->
+          <div data-page="rsi-fieldmenu" class="navbar-inner cached">
+            <div class="left sliding"><a href="#" class="back link"> <i class="icon icon-back"></i><span>RSI</span></a></div>
+            <div class="center sliding">Field</div>
+            
+          </div>
         </div>
 
 
@@ -109,15 +143,100 @@
              
             </div>
           </div>
+
+
+
           <!-- Moving average settings Page-->
           <div data-page="movingaverage" class="page cached">
             <div class="page-content">
-              <div class="content-block">
-                <p>You may go <a href="#" class="back">back</a> or load <a href="#services">Services</a> page.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel commodo massa, eu adipiscing mi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus ultricies dictum neque, non varius tortor fermentum at. Curabitur auctor cursus imperdiet. Nam molestie nisi nec est lacinia volutpat in a purus. Maecenas consectetur condimentum viverra. Donec ultricies nec sem vel condimentum. Phasellus eu tincidunt enim, sit amet convallis orci. Vestibulum quis fringilla dolor.    </p>
-                <p>Mauris commodo lacus at nisl lacinia, nec facilisis erat rhoncus. Sed eget pharetra nunc. Aenean vitae vehicula massa, sed sagittis ante. Quisque luctus nec velit dictum convallis. Nulla facilisi. Ut sed erat nisi. Donec non dolor massa. Mauris malesuada dolor velit, in suscipit leo consectetur vitae. Duis tempus ligula non eros pretium condimentum. Cras sed dolor odio.</p>
-                <p>Suspendisse commodo adipiscing urna, a aliquet sem egestas in. Sed tincidunt dui a magna facilisis bibendum. Nunc euismod consectetur lorem vitae molestie. Proin mattis tellus libero, non hendrerit neque eleifend ac. Pellentesque interdum velit at lacus consectetur scelerisque et id dui. Praesent non fringilla dui, a elementum purus. Proin vitae lacus libero. Nunc eget lectus non mi iaculis interdum vel a velit. Nullam tincidunt purus id lacus ornare, at elementum turpis euismod. Cras mauris enim, congue eu nisl sit amet, pulvinar semper erat. Suspendisse sed mauris diam.</p>
-                <p>Nam eu mauris leo. Pellentesque aliquam vehicula est, sed lobortis tellus malesuada facilisis. Fusce at hendrerit ligula. Donec eu nibh convallis, pulvinar enim quis, lacinia diam. Ut semper ac magna nec ornare. Integer placerat justo sed nunc suscipit facilisis. Vestibulum ac tincidunt augue. Duis eu aliquet mauris, vel luctus mauris. Nulla non augue nec diam pharetra posuere at in mauris.</p>
+              <div class="content-block-title">Settings</div>
+
+              <div class="list-block">
+                <ul>
+                  <li>
+                    <div class="item-content">
+                      <div class="item-inner">
+                        <div class="item-title label">Period</div>
+
+                        <div class="item-input" style="width:28% !important">
+                          <input id="sliderInput1" type="number" placeholder="50" value="50">
+                        </div>
+
+                        <div class="item-input">
+                          <div class="range-slider">
+                            <input type="range" min="0" max="100" value="50" step="0.1" data-options="display_selector: #sliderInput1;">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <a href="#movingaverage-fieldmenu" class="item-link item-content">
+                      <div class="item-inner">
+                        <div class="item-title">Field</div>
+                        <div class="item-after">Close</div>
+                      </div>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="#movingaverage-typemenu" class="item-link item-content">
+                      <div class="item-inner">
+                        <div class="item-title">Type</div>
+                        <div class="item-after">Simple</div>
+                      </div>
+                    </a>
+                  </li>
+
+                  <li>
+                    <div class="item-content">
+                      <div class="item-inner">
+                        <div class="item-title label">Offset</div>
+
+                        <div class="item-input" style="width:28% !important">
+                          <input id="sliderInput2" type="number" placeholder="0" value="0">
+                        </div>
+
+                        <div class="item-input">
+                          <div class="range-slider">
+                            <input type="range" min="0" max="100" value="0" step="0.1" data-options="display_selector: #sliderInput2;">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="item-content">
+                      <div class="item-inner"> 
+                        <div class="item-title label">Underlay</div>
+                        <div class="item-input">
+                          <label class="label-switch">
+                            <input type="checkbox">
+                            <div class="checkbox"></div>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="item-content">
+                      <div class="item-inner"> 
+                        <div class="item-title label">Colour</div>
+                        <div class="item-input">
+
+                          <div style="border-radius: 16px;background-color: #fb3;height: 32px;width:52px;">
+                          <div style="color:#960;display: block;text-transform: uppercase;font-size: 0.85em;font-weight: 700;padding: 6px 0 0 8px">#fb3</div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                </ul>
               </div>
             </div>
           </div>
@@ -135,19 +254,36 @@
               <div class="list-block">
                 <ul>
 
+                  <li>
+                    <a href="#bollingerbands-fieldmenu" class="item-link item-content">
+                      <div class="item-inner">
+                        <div class="item-title">Field</div>
+                        <div class="item-after">Close</div>
+                      </div>
+                    </a>
+                  </li>
+
                   
                   <li>
                     <div class="item-content">
                       <div class="item-inner">
                         <div class="item-title label">Period</div>
 
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="item-content">
+                      <div class="item-inner">
+
                         <div class="item-input" style="width:28% !important">
-                          <input id="sliderInput1" type="number" pattern="[0-9]{3}" placeholder="20" value="20" maxlength="4" min="0" max="9999" inputmode=numeric>
+                          <input id="sliderInput1" type="number" pattern="[0-9]{3}" placeholder="20" value="20"maxlength="4" min="0" max="9999" size="4" inputmode=numeric>
                         </div>
 
                         <div class="item-input">
                           <div class="range-slider">
-                            <input type="range" min="0" max="100" value="20" step="0.1" data-options="display_selector: #sliderInput1;">
+                            <input type="range" min="0" max="100" value="20" step="0.1" for="display_selector: #sliderInput1;">
                           </div>
                         </div>
                       </div>
@@ -180,25 +316,20 @@
                     </div>
                   </li>
 
-                   <li>
-                    <div class="item-content">
-                      <div class="item-inner"> 
-                        <div class="item-title label">Colour</div>
-                        <div class="item-input">
 
-                          <div style="border-radius: 16px;background-color: #fb3;height: 32px;width:52px;">
-                          <div style="color:#960;display: block;text-transform: uppercase;font-size: 0.85em;font-weight: 700;padding: 6px 0 0 8px">#fb3</div>
-                          </div>
-
-                        </div>
+                  <li>
+                    <a href="#bollingerbands-movingaveragetypemenu" class="item-link item-content">
+                      <div class="item-inner">
+                        <div class="item-title">Moving average type</div>
+                        <div class="item-after">Simple</div>
                       </div>
-                    </div>
+                    </a>
                   </li>
 
-                   <li>
+                  <li>
                     <div class="item-content">
                       <div class="item-inner"> 
-                        <div class="item-title label">Show zones</div>
+                        <div class="item-title label">Channel fill</div>
                         <div class="item-input">
                           <label class="label-switch">
                             <input type="checkbox" checked="checked">
@@ -212,17 +343,14 @@
 
                   <li>
                     <div class="item-content">
-                      <div class="item-inner">
-                        <div class="item-title label">OverBought</div>
-
-                        <div class="item-input" style="width:28% !important">
-                          <input id="sliderOutput1" type="number" placeholder="80" value="80">
-                        </div>
-
+                      <div class="item-inner"> 
+                        <div class="item-title label">Bollinger Bands top</div>
                         <div class="item-input">
-                          <div class="range-slider">
-                            <input type="range" min="0" max="100" value="80" step="0.1" data-options="display_selector: #sliderOutput1;">
+
+                          <div style="border-radius: 16px;background-color: #fc6;height: 32px;width:52px;">
+                          <div style="color:#960;display: block;text-transform: uppercase;font-size: 0.85em;font-weight: 700;padding: 6px 0 0 8px">#fc6</div>
                           </div>
+
                         </div>
                       </div>
                     </div>
@@ -231,31 +359,13 @@
                   <li>
                     <div class="item-content">
                       <div class="item-inner"> 
-                        <div class="item-title label">Colour</div>
+                        <div class="item-title label">Bollinger Bands median</div>
                         <div class="item-input">
 
-                          <div style="border-radius: 16px;background-color: #fc6;height: 32px;width:52px;">
-                          <div style="color:#960;display: block;text-transform: uppercase;font-size: 0.85em;font-weight: 700;padding: 6px 0 0 8px">#fc6</div>
+                          <div style="border-radius: 16px;background-color: #fb3;height: 32px;width:52px;">
+                          <div style="color:#960;display: block;text-transform: uppercase;font-size: 0.85em;font-weight: 700;padding: 6px 0 0 8px">#fb3</div>
                           </div>
-                          
-                        </div>
-                      </div>
-                    </div>
-                  </li>
 
-                  <li>
-                    <div class="item-content">
-                      <div class="item-inner">
-                        <div class="item-title label">OverSold</div>
-
-                        <div id="sliderOutput2" class="item-input" style="width:28% !important">
-                          <input type="number" placeholder="20" value="20">
-                        </div>
-
-                        <div class="item-input">
-                          <div class="range-slider">
-                            <input type="range" min="0" max="100" value="20" step="0.1" data-options="display_selector: #sliderOutput2;">
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -264,28 +374,21 @@
                   <li>
                     <div class="item-content">
                       <div class="item-inner"> 
-                        <div class="item-title label">Colour</div>
+                        <div class="item-title label">Bollinger Bands bottom</div>
                         <div class="item-input">
 
                           <div style="border-radius: 16px;background-color: #fc6;height: 32px;width:52px;">
                           <div style="color:#960;display: block;text-transform: uppercase;font-size: 0.85em;font-weight: 700;padding: 6px 0 0 8px">#fc6</div>
                           </div>
-                          
+
                         </div>
                       </div>
                     </div>
                   </li>
-
                 </ul>
               </div>
-              
-
             </div>
           </div>
-
-
-
-
 
 
 
@@ -293,88 +396,39 @@
           <div data-page="rsi" class="page cached">
             <div class="page-content">
               <div class="content-block-title">Settings</div>
+
               <div class="list-block">
                 <ul>
-
-
-              
                   <li>
                     <div class="item-content">
                       <div class="item-inner">
-                        <div class="item-title label">Period</div>
+                        <div class="item-title label" style="overflow: visible;">Period</div>
+
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="item-content">
+                      <div class="item-inner">
 
                         <div class="item-input" style="width:28% !important">
-                          <input id="sliderInput1" type="number" placeholder="50" value="50">
+                          <input id="sliderInput2" type="number" pattern="[0-9]{3}" placeholder="14" value="14" maxlength="3" min="0" max="100" size="4" inputmode=numeric>
                         </div>
 
                         <div class="item-input">
                           <div class="range-slider">
-                            <input type="range" min="0" max="100" value="50" step="0.1" data-options="display_selector: #sliderInput1;">
+                            <input type="range" min="0" max="100" value="14" step="0.1" for="display_selector: #sliderInput2;">
                           </div>
                         </div>
                       </div>
                     </div>
                   </li>
 
-                  <li>
+                 <li>
                     <div class="item-content">
                       <div class="item-inner"> 
-                        <div class="item-title label">Field</div>
-                        <div class="item-input">
-
-                          <a href="#rsi" class="item-link">
-                            <div class="item-content"> 
-                              <div class="item-inner">
-                                <div class="item-title" style="color:#c7c7cc">Close</div>
-                              </div>
-                            </div>
-                          </a>
-
-                          <!--
-
-            <li>
-              <a href="#rsi" class="item-link">
-                <div class="item-content"> 
-                  <div class="item-inner">
-                    <div class="item-title">RSI</div>
-                  </div>
-                </div>
-              </a>
-            </li> 
-
-            <div class="right">
-            <a href="#back-to-chart" class="create link"><span style="font-weight: 600">Create</span></a>
-            </div>
-                          -->
-
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-
-                  <li>
-                    <div class="item-content">
-                      <div class="item-inner"> 
-                        <div class="item-title label">Type</div>
-                        <div class="item-input">
-
-                          <a href="#rsi" class="item-link">
-                            <div class="item-content"> 
-                              <div class="item-inner">
-                                <div class="item-title">Simple</div>
-                              </div>
-                            </div>
-                          </a>
-
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-
-                   <li>
-                    <div class="item-content">
-                      <div class="item-inner"> 
-                        <div class="item-title label">Colour</div>
+                        <div class="item-title label">RSI Colour</div>
                         <div class="item-input">
 
                           <div style="border-radius: 16px;background-color: #fb3;height: 32px;width:52px;">
@@ -386,7 +440,7 @@
                     </div>
                   </li>
 
-                   <li>
+                 <li>
                     <div class="item-content">
                       <div class="item-inner"> 
                         <div class="item-title label">Show zones</div>
@@ -404,15 +458,23 @@
                   <li>
                     <div class="item-content">
                       <div class="item-inner">
-                        <div class="item-title label">OverBought</div>
+                        <div class="item-title label" style="overflow: visible;">OverBought</div>
+
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="item-content">
+                      <div class="item-inner">
 
                         <div class="item-input" style="width:28% !important">
-                          <input id="sliderOutput1" type="number" placeholder="80" value="80">
+                          <input id="sliderInput2" type="number" pattern="[0-9]{3}" placeholder="80" value="80" maxlength="3" min="0" max="100" size="4" inputmode=numeric>
                         </div>
 
                         <div class="item-input">
                           <div class="range-slider">
-                            <input type="range" min="0" max="100" value="80" step="0.1" data-options="display_selector: #sliderOutput1;">
+                            <input type="range" min="0" max="100" value="80" step="0.1" for="display_selector: #sliderInput2;">
                           </div>
                         </div>
                       </div>
@@ -437,15 +499,23 @@
                   <li>
                     <div class="item-content">
                       <div class="item-inner">
-                        <div class="item-title label">OverSold</div>
+                        <div class="item-title label" style="overflow: visible;">OverSold</div>
 
-                        <div id="sliderOutput2" class="item-input" style="width:28% !important">
-                          <input type="number" placeholder="20" value="20">
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="item-content">
+                      <div class="item-inner">
+
+                        <div class="item-input" style="width:28% !important">
+                          <input id="sliderInput2" type="number" pattern="[0-9]{3}" placeholder="20" value="20" maxlength="3" min="0" max="100" size="4" inputmode=numeric>
                         </div>
 
                         <div class="item-input">
                           <div class="range-slider">
-                            <input type="range" min="0" max="100" value="20" step="0.1" data-options="display_selector: #sliderOutput2;">
+                            <input type="range" min="0" max="100" value="20" step="0.1" for="display_selector: #sliderInput2;">
                           </div>
                         </div>
                       </div>
@@ -471,28 +541,231 @@
               </div>
             </div>
           </div>
-        </div>
 
 
 
 
 
-        <!-- Moving average settings Page-->
-          <div data-page="rsi-fieldmenu" class="page cached">
+          <!-- movingaverage-fieldmenu Page -->
+          <div data-page="movingaverage-fieldmenu" class="page cached">
             <div class="page-content">
-              <div class="content-block">
-                <p>You may go <a href="#" class="back">back</a> or load <a href="#services">Services</a> page.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel commodo massa, eu adipiscing mi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus ultricies dictum neque, non varius tortor fermentum at. Curabitur auctor cursus imperdiet. Nam molestie nisi nec est lacinia volutpat in a purus. Maecenas consectetur condimentum viverra. Donec ultricies nec sem vel condimentum. Phasellus eu tincidunt enim, sit amet convallis orci. Vestibulum quis fringilla dolor.    </p>
-                <p>Mauris commodo lacus at nisl lacinia, nec facilisis erat rhoncus. Sed eget pharetra nunc. Aenean vitae vehicula massa, sed sagittis ante. Quisque luctus nec velit dictum convallis. Nulla facilisi. Ut sed erat nisi. Donec non dolor massa. Mauris malesuada dolor velit, in suscipit leo consectetur vitae. Duis tempus ligula non eros pretium condimentum. Cras sed dolor odio.</p>
-                <p>Suspendisse commodo adipiscing urna, a aliquet sem egestas in. Sed tincidunt dui a magna facilisis bibendum. Nunc euismod consectetur lorem vitae molestie. Proin mattis tellus libero, non hendrerit neque eleifend ac. Pellentesque interdum velit at lacus consectetur scelerisque et id dui. Praesent non fringilla dui, a elementum purus. Proin vitae lacus libero. Nunc eget lectus non mi iaculis interdum vel a velit. Nullam tincidunt purus id lacus ornare, at elementum turpis euismod. Cras mauris enim, congue eu nisl sit amet, pulvinar semper erat. Suspendisse sed mauris diam.</p>
-                <p>Nam eu mauris leo. Pellentesque aliquam vehicula est, sed lobortis tellus malesuada facilisis. Fusce at hendrerit ligula. Donec eu nibh convallis, pulvinar enim quis, lacinia diam. Ut semper ac magna nec ornare. Integer placerat justo sed nunc suscipit facilisis. Vestibulum ac tincidunt augue. Duis eu aliquet mauris, vel luctus mauris. Nulla non augue nec diam pharetra posuere at in mauris.</p>
+              <div class="content-block-title">Field type</div>
+
+              <div class="list-block">
+
+                <ul>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio1" value="Close" checked="checked">
+                      <div class="item-inner">
+                        <div class="item-title">Close</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio1" value="Open">
+                      <div class="item-inner">
+                        <div class="item-title">Open</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio1" value="High">
+                      <div class="item-inner">
+                        <div class="item-title">High</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio1" value="Low">
+                      <div class="item-inner">
+                        <div class="item-title">Low</div>
+                      </div>
+                    </label>
+                  </li>
+                  
+                </ul>
               </div>
             </div>
           </div>
-       
 
+
+
+
+          <!-- movingaverage-typemenu Page -->
+          <div data-page="movingaverage-typemenu" class="page cached">
+            <div class="page-content">
+              <div class="content-block-title">Field type</div>
+
+              <div class="list-block">
+
+                <ul>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio2" value="Simple" checked="checked">
+                      <div class="item-inner">
+                        <div class="item-title">Simple</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio2" value="Exponential">
+                      <div class="item-inner">
+                        <div class="item-title">Exponential</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio2" value="Time series">
+                      <div class="item-inner">
+                        <div class="item-title">Time series</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio2" value="Triangular">
+                      <div class="item-inner">
+                        <div class="item-title">Triangular</div>
+                      </div>
+                    </label>
+                  </li>
+
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio2" value="Variable">
+                      <div class="item-inner">
+                        <div class="item-title">Variable</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio2" value="VIDYA">
+                      <div class="item-inner">
+                        <div class="item-title">VIDYA</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio2" value="Weighted">
+                      <div class="item-inner">
+                        <div class="item-title">Weighted</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio2" value="Welles Wilder">
+                      <div class="item-inner">
+                        <div class="item-title">Welles Wilder</div>
+                      </div>
+                    </label>
+                  </li>
+                  
+                </ul>
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- bollingerbands-movingaveragetypemenu -->
+          <div data-page="bollingerbands-movingaveragetypemenu" class="page cached">
+            <div class="page-content">
+              <div class="content-block-title">Field type</div>
+
+              <div class="list-block">
+
+                <ul>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio3" value="Simple" checked="checked">
+                      <div class="item-inner">
+                        <div class="item-title">Simple</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio3" value="Exponential">
+                      <div class="item-inner">
+                        <div class="item-title">Exponential</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio3" value="Time series">
+                      <div class="item-inner">
+                        <div class="item-title">Time series</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio3" value="Triangular">
+                      <div class="item-inner">
+                        <div class="item-title">Triangular</div>
+                      </div>
+                    </label>
+                  </li>
+
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio3" value="Variable">
+                      <div class="item-inner">
+                        <div class="item-title">Variable</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio3" value="VIDYA">
+                      <div class="item-inner">
+                        <div class="item-title">VIDYA</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio3" value="Weighted">
+                      <div class="item-inner">
+                        <div class="item-title">Weighted</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="label-radio item-content">
+                      <input type="radio" name="ks-radio3" value="Welles Wilder">
+                      <div class="item-inner">
+                        <div class="item-title">Welles Wilder</div>
+                      </div>
+                    </label>
+                  </li>
+                  
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+       
       </div>
     </div>
+
+
+
+
+
+
+
     <!-- Path to Framework7 Library JS-->
     <script type="text/javascript" src="/public/javascripts/framework7.min.js"></script>
     <!-- Path to your app js-->
