@@ -8,9 +8,13 @@
 {{$content}}
   <link href="/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/public/stylesheets/framework7-edit.ios.css">
+  <link href="/public/stylesheets/glyphicons.css" media="screen" rel="stylesheet" type="text/css" />
+
+
 
 <main id="content" role="main" style="font-family: 'Open Sans', Arial, sans-serif;">
-  <form action="examples/elements/start" method="get" class="get-started" style="margin-top:1.5em">
+  <!--<form action="examples/elements/start" method="get" class="get-started" style="margin-top:1.5em">-->
   <!--<input type="hidden" name="nextlink" value="start">
   <input type="hidden" name="nextbacklink" value="start">-->
 
@@ -21,7 +25,7 @@
 
     <h2 class="heading-large" style="padding-top:0" id="trade-ticket">Trade Ticket</h2>
 
-    <p>Breakdown and analysis of parts from the one of our most valuble tools on the platform.</p>
+    <!--<p>Breakdown and analysis of parts from the one of our most valuble tools on the platform.</p>
 
     <p>What layers is it made up of?
       <ul>
@@ -97,7 +101,94 @@
         <li>+ Location - where am I? </li>
         <li>+ Actions- what should I do?</li>
       </ul>
-    </p>
+    </p>-->
+
+
+
+    
+
+    <div id="ticket-name">
+      <!--<h2>Bolsas y Maercadod Espanoles SA Jun 16 Spread</h2>-->
+      <h2>EUR/USD (per 0.0001) CFD</h2>
+    </div>
+
+    <div id="buysell-pair">
+
+      <button class="secondary-button sell" style="margin-right:0.66em">
+        <p>Sell</p>
+        <span class="upward">6,659.2</span>
+      </button>
+
+      <button class="secondary-button buy">
+        <p>Buy</p>
+        <span class="downward">6,659.32</span>
+      </button>
+
+    </div>
+
+    <div id="quantity">
+
+      <h2 style="margin:5px 0 10px 0">Quantity</h2>
+
+
+      
+
+      <div id="pips-switch" style="padding-top: 0.332em;float: left;margin-right: 0.9em;display: block">
+
+        <div style="float: left;margin:5px 11px 0 0;font-size: 0.9em">
+        GBP
+        </div>
+
+        <div class="item-input" style="float: left">
+          <label class="label-switch">
+            <input type="checkbox" checked="checked">
+            <div class="checkbox"></div>
+          </label>
+        </div>
+
+        <div style="float: left;margin:5px 0 0 11px;font-size: 0.9em">
+        PIPS
+        </div>
+
+        <br clear="all">
+
+      </div>
+
+
+
+      <div id="pips-field" style="font-size: 0.8em;float:left;margin:0;display: block">
+
+        <input class="form-control" type="text" id="quantity" autocomplete="off" size="7" value="10" style="width:153px">
+
+      </div>
+
+      <div id="pips-fave-menu" style="margin:5px 0 0 10px">
+
+        <button onclick="myPopupMenu()" class="text-button-outline" style="height: 2em;float:left;display: block;margin: 8px 0 0 -2.2em;border:none">
+        <span class="dropbtn glyphicons glyphicons-mini glyphicons-menu-hamburger" style="margin-top:-3px;margin-bottom:-11px;margin-left:-9px;margin-right:-9px;padding: 0 0 -2px 0;line-height: 0.8"></span>
+        </button>
+
+
+          <div id="myDropdown" class="dropdown-content" style="float:left">
+            <div class="dropmenu">
+              <ul class="table-menu-v">
+                <li>Favourite quantities</li>
+                <li><a href="#">5,000</a></li>
+                <li><a href="#">10,000</a></li>
+                <li><a href="#">50,000</a></li>
+                <li><a href="#">100,000</a></li>
+              </ul>
+            </div>
+          </div>
+
+      </div>
+
+      <br clear="all">
+
+    </div>
+
+
+
 
   </div>
 
@@ -161,6 +252,48 @@
 
 
 </main>
+
+<script type="text/javascript">
+      /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+function myPopupMenu() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+function myPopupTicket() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+    </script>
 
 {{/content}}
 
