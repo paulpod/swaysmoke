@@ -1785,3 +1785,41 @@ color:#000066;
   padding-top: 0.1em !important;
   padding-bottom: 0.8em !important;
 }
+
+
+
+/* - - - Styling for research pages */
+
+.researchquote {
+  border-left:solid #999 4px;
+  font-size: 1.2em;
+  font-weight: 600;
+  padding: 0 4em 0 1.4em;
+  text-indent: -0.5em;
+
+}
+#researchtable thead {
+  border-bottom:2px solid black;
+}
+#researchtable tr {
+  border-bottom:1px solid #ccc;
+}
+#researchtable td:first-child {
+  padding-right: 2em;
+}
+#researchtable tbody {
+  border-bottom:4px solid #ccc;
+}
+.inline-bullet li{
+  list-style:disc;
+  margin-bottom:0.5em;
+  font-size: 1.05em;
+  color: black;
+  padding-left: 0.5em;
+  padding-right: 2em;
+  margin-left:-0.5em;
+}
+.inline-bullet {
+  margin-bottom:1em;
+}
+
