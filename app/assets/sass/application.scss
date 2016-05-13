@@ -1795,9 +1795,13 @@ color:#000066;
   font-size: 1.2em;
   font-weight: 600;
   padding: 0 4em 0 1.4em;
-  text-indent: -0.5em;
 
 }
+
+#researchtable td,#researchtable th {
+  padding:0.75em 0.33em;
+}
+
 #researchtable thead {
   border-bottom:2px solid black;
 }
@@ -1819,7 +1823,39 @@ color:#000066;
   padding-right: 2em;
   margin-left:-0.5em;
 }
+.inline-tablebullet {
+  margin-bottom:1em;
+}
+
+.inline-tablebullet li{
+  list-style:square;
+  margin-bottom:0.5em;
+  color: black;
+  padding-right: 2em;
+  margin-left:-0.5em;
+}
 .inline-bullet {
   margin-bottom:1em;
 }
 
+.inline li{
+  margin-bottom:0.5em;
+  font-size: 1.05em;
+  color: black;
+  padding-left: 0.5em;
+  padding-right: 2em;
+  margin-left:-0.5em;
+}
+.inline {
+  margin-bottom:1em;
+}
+
+.boxout {
+  padding: 1em 0 0.2em 1em;
+  background-color: #ffcc99;
+}
+.table-subhead {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.2em
+}
