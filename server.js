@@ -7,7 +7,7 @@ var path = require('path'),
 // Grab environment variables specified in Procfile or as Heroku config vars
     username = process.env.USERNAME,
     password = process.env.PASSWORD,
-    env = process.env.NODE_ENV || 'development';
+    env = process.env.NODE_ENV || 'production';
 
     // Moment to grab the date and do that in places
     var moment = require("moment");
@@ -17,13 +17,13 @@ var path = require('path'),
 
 // Authenticate against the environment-provided credentials, if running
 // the app in production (Heroku, effectively)
-//if (env === 'production') {
-//  if (!username || !password) {
-//    console.log('Username or password is not set, exiting.');
-//    process.exit(1);
-//  }
-//  app.use(express.basicAuth(username, password));
-//}
+if (env === 'production') {
+  if (!username || !password) {
+    console.log('Username or password is not set, exiting.');
+    process.exit(1);
+  }
+  app.use(express.basicAuth(username, password));
+}
 
 // Application settings
 app.engine('html', require(__dirname + '/lib/template-engine.js').__express);
