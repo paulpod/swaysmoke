@@ -7,6 +7,7 @@
     "node": "0.10.x"
   },
   "dependencies": {
+    "basic-auth": "^1.0.4",
     "consolidate": "0.x",
     "express": "3.4.7",
     "express-writer": "0.0.4",

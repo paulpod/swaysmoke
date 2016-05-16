@@ -2,7 +2,7 @@ var path = require('path'),
     express = require('express'),
     routes = require(__dirname + '/app/routes.js'),
     app = express(),
-    port = (process.env.PORT || 3001),
+    port = (process.env.PORT || 3001)
 
 // Grab environment variables specified in Procfile or as Heroku config vars
     username = process.env.USERNAME,
