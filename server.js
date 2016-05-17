@@ -7,7 +7,7 @@ var path = require('path'),
 // Grab environment variables specified in Procfile or as Heroku config vars
     username = process.env.USERNAME,
     password = process.env.PASSWORD,
-    env = process.env.NODE_ENV || 'production';
+    env = process.env.NODE_ENV || 'dev';
 
     // Moment to grab the date and do that in places
     var moment = require("moment");
