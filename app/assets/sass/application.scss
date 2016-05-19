@@ -1876,3 +1876,18 @@ color:#000066;
   font-weight: 600;
   font-size: 1.2em
 }
+
+.personatable {
+  background-color: #f5df95;
+  color: white;
+
+}
+.personatable th,.personatable td {
+  padding: 0.66em 0.1em 0 1em;
+}
+.personabox {
+  font-size:0.75em;
+  padding:1em 0.5em 0.5em 1em;
+  margin:2em 0;
+  border-radius: 0.5em;
+}
