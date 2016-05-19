@@ -1854,6 +1854,23 @@ color:#000066;
   padding: 1em 0 0.2em 1em;
   background-color: #ffcc99;
 }
+.takeaway {
+  border-radius:1em 0  0 1em;
+  background-color:#dc8207;
+  padding:1em;
+  vertical-align:top;
+  color:white;
+  font-weight: 700;
+}
+.tookaway {
+  border-radius:0 1em 1em 0;
+  background-color:#ddd;
+  padding:1em;
+  font-size:0.75em
+}
+.tookaway li {
+  padding-bottom:1em;
+}
 .table-subhead {
   text-align: center;
   font-weight: 600;
