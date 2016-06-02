@@ -1,0 +1,194 @@
+<!doctype html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mercury 1 - tables, svg, etc</title>
+
+
+  <script type="text/javascript" src="/public/javascripts/jquery-1.11.0.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/jquery.peity.js"></script>
+  <!-- mini charts from http://benpickles.github.io/peity/ -->
+
+
+
+  <link href="/public/stylesheets/concept1.css" media="screen" rel="stylesheet" type="text/css" />
+  <!-- optional <link rel="stylesheet" href="http://basehold.it/10"> -->
+
+
+  <!-- SVG ... should link this or include somehow later? -->
+  <svg style="display:none">
+    <defs>
+
+      <g id="trade-direction-short">
+        <polygon points="11.001,0 11,9.586 1.419,0.006 0.005,1.42 9.586,11 0,11.001 0.001,13 13,13 13.001,0 " class="short" />
+      </g>
+
+      <g id="trade-direction-long">
+        <polygon points="0,1.999 9.586,2 0.005,11.581 1.419,12.995 11,3.415 11,13.001 13,12.999 13,0 0,0 " class="long" />
+      </g>
+
+      <g id="price-direction-short">
+        <polygon points="11.001,0 11,9.586 1.419,0.006 0.005,1.42 9.586,11 0,11.001 0.001,13 13,13 13.001,0 " class="fill-white" />
+      </g>
+
+      <g id="price-direction-long">
+        <polygon points="0,1.999 9.586,2 0.005,11.581 1.419,12.995 11,3.415 11,13.001 13,12.999 13,0 0,0 " class="fill-white" />
+      </g>
+
+      <g id="edit-icon">
+        <path fill="#231F20" d="M10.181,0L0.133,10.049L0,13.01l2.961-0.133l10.05-10.05L10.181,0z M1.677,11.739l-1.042-1.042l9.604-9.604
+  l1.042,1.041L1.677,11.739z"/>
+        <circle fill="#231F20" cx="5.999" cy="13" r="1"/>
+        <circle fill="#231F20" cx="9.499" cy="13" r="1"/>
+        <circle fill="#231F20" cx="12.999" cy="13" r="1"/>
+      </g>
+
+      <g id="down-menu">
+        <polygon fill="#000000" points="16.971,0 9.192,7.777 1.414,0 0,1.414 9.192,10.605 18.385,1.414 "/>
+      </g>
+
+      <g id="close-x">
+        <polygon fill="#000000" points="13,1.411 11.588,0 6.5,5.089 1.411,0 0,1.412 5.088,6.5 0,11.589 1.411,13 6.5,7.911 11.589,13 13,11.589 7.911,6.5 "/>
+      </g>
+
+      <g id="clock">
+        <path fill="#808080" d="M6.5,0C2.91,0,0,2.91,0,6.5S2.91,13,6.5,13c3.59,0,6.5-2.91,6.5-6.5S10.09,0,6.5,0z M9.876,7.945H6.479
+  c-0.552,0-1-0.448-1-1V1.562c0-0.552,0.448-1,1-1s1,0.448,1,1v4.384h2.396c0.553,0,1,0.448,1,1S10.429,7.945,9.876,7.945z"/>
+      </g>
+
+    </defs>
+  </svg>
+  <!-- end the SVG icons and symbols ... style them later with css? -->
+
+
+</head>
+
+<body class="with-vgrid" lang="en">
+
+
+
+ <!--<header class="news-nav" style="margin-top:-1px;">
+      
+    <span class="component-menu" id="newsnav-menu">
+    <a href="#menu" class="component-menu-icon">
+    &#9776;
+    <span style="display:none">Menu</span>
+    </a></span>
+
+    <ul class="hoznav" id="news-cats">
+      <li class="active">Markets</li>
+      <li><a href="#">US Markets</a></li>
+      <li><a href="#">Market Data</a></li>
+      <li><a href="#">European Markets</a></li>
+      <li><a href="#">Asian Markets</a></li>
+      <li><a href="#">Stocks</a></li>
+
+      <li><a href="#menu">&#9776; News Settings</a></span></li>
+    </ul>
+
+  </header> -->
+
+
+
+
+  <div class="news" id="news-headline-list" style="margin-top:6px;float:left">
+
+    <ol class="news-list">
+      <li class="lead-story">
+      <h2>New U.S. home sales drop on sharp decline in the West</h2>
+
+
+      <div class="newsthumb">
+        <img src="/public/images/newsthumb-1.jpg">
+      </div>
+
+
+      <p>WASHINGTON New U.S. single-family home sales unexpect&shy;edly fell in March, but the decline was concentrated in the West region, suggesting that the housing market continued to strengthen.</p>
+      </li>
+
+      <li>
+      <span class="news-timecode">10:25am EDT</span>
+      <h3>Wall St. opens lower as earnings continue to underwhelm</h3>
+      <p>U.S. stocks opened lower on Monday as corporate earnings continued to underwhelm and investors stayed away from risky assets a day before the start of the Federal Reserve's two-day policy meeting.</p>
+      </li>
+
+      <li>
+      <span class="news-timecode">10:05am EDT</span>
+      <h3>El-Erian says this week's Fed meeting to set stage for June hike</h3>
+      <p>NEW YORK Mohamed El-Erian, the chief economic adviser at Allianz SE , said on Monday he expects this week's Federal Reserve policy-setting meeting to set the stage for a June interest rate hike.</p>
+      </li>
+
+      <li>
+      <span class="news-timecode">10:20am EDT</span>
+      <h3>Saudi prince unveils sweeping plans to end 'addiction' to oil</h3>
+      <p>RIYADH The powerful young prince overseeing Saudi Arabia's economy unveiled ambitious plans on Monday aimed at ending the kingdom's "addiction" to oil and transforming it into a global investment power.</p>
+      </li>
+
+      <li>
+      <span class="news-timecode">10:23am EDT</span>
+      <h3>Global stocks, dollar stumble ahead of Fed, BOJ meetings</h3>
+      <p>LONDON World stocks, the dollar and oil all fell modestly on Monday as investors locked in recent gains before central bank meetings in the United States and Japan this week.</p>
+      </li>
+
+      <li>
+      <span class="news-timecode">7:22am EDT</span>
+      <h3>Oil resumes rise after brief pause</h3>
+      <p>LONDON Oil prices rose on Monday, extending recent gains, building on three weeks of higher prices and reversing earlier losses from traders taking profits.</p>
+      </li>
+
+    </ol>
+  </div>
+
+
+  <div id="news-story" style="margin-top:8px;float:left">
+    <div>
+
+      <span class="news-timecode">April 25, 2016 2:19pm EDT</span>
+
+      <h1 class="news-headline">Saudi Arabia targets $2tn Aramco IPO as it outlines economic view</h1>
+
+      <span class="news-byline">Anjli Raval in London and Simeon Kerr in Riyadh</span>
+
+      <p>Saudi Arabia’s cabinet has approved the long-awaited plan for a big transformation of the oil-dependent economy, promising to list less than 5 per cent of the state oil company, Saudi Aramco, which will value it at more than $2tn.</p>
+
+      <p>The so-called “Vision 2030”, brainchild of Prince Mohammed bin Salman, the deputy crown prince and most powerful man in the kingdom, has been in the works for months.</p>
+
+      <p>Monday morning’s announcement of a cabinet approval was followed by an interview by the prince on the Saudi owned al-Arabiya channel, in which he optimistically asserted that the kingdom could end its reliance on oil within four years. Saudi Arabia derives more than 90 per cent of its budget revenues from hydrocarbons.</p>
+
+      <p>“We have an addiction to oil ... this is dangerous,” he said. “It has delayed development of other sectors.”</p>
+
+      <p>He added that he wants to convert Saudi Aramco into a holding company and that all financial information related to the company will be disclosed. Subsidiaries of the entity will also be listed and its board will be elected.</p>
+
+      <p>“The vision is a road map of our development and economic goals,” he said. “A part of that is related to Aramco and this is a very small aspect.”</p>
+
+      <p>The prince, who is also defence minister and oversees economic ministries, has emerged as the key decision maker in the country since his father, King Salman bin Abdulaziz, assumed the throne. He has since worked with a group of technocrats to slash expenditures, reform energy subsidies and lay out a vision for a post-oil economy.</p>
+
+      <p>The collapse in oil prices, precipitated by Saudi Arabia’s decision to protect its market share rather than the oil price, has forced a re-evaluation of economic priorities in Riyadh, prompting the prince to press for the development of non-oil sectors. The prince cited mineral mining and a domestic military industry as priorities for development.</p>
+
+      <p>As the nation awaits further details of the economic vision later on Monday, the prince said the plan envisaged boosting housing and jobs for an overwhelmingly young population.</p>
+
+    </div>
+  </div>
+
+<br clear="all">
+
+
+
+
+
+<script type="text/javascript">
+$(".sparkline").peity("line", {
+  width: 100,
+  height: 40,
+  fill: "#cbe0ed",
+  stroke: "#0378ba",
+  strokeWidth: 1.2
+})
+</script>
+
+</body>
+</html>
+

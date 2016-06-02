@@ -66,11 +66,11 @@
 
 </head>
 
-<body class="with-vgrid">
+<body class="xwith-vgrid" lang="en">
 
 
 
-
+<div id="leftcol" style="display:inline-block;float:left">
 
 
 <div id="open-positions-list" style="display:inline-block;">
@@ -258,10 +258,230 @@
       </tbody>
     </table>
   </div>
-</div><!-- Closing the Open Positions List block -->
+</div><!-- Ends the Open Positions List block -->
 
 
 <br clear="all">
+
+
+<div id="active-orders-list" style="display:inline-block;margin-top:24px;">
+
+  <header class="table-head">
+    <h4 class="uppercase">Active orders</h4>
+
+    <span class="component-menu" id="openpositions-menu">
+    <a href="#menu" class="component-menu-icon">
+    &#9776;
+    <span style="display:none">Menu</span>
+    </a></span>
+
+  </header> 
+
+  <div class="stock-table orders-table">
+    <table style="">
+      <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th style="text-align:left;">Market</th>
+          <th id="edit-title"><span style="margin-left:18px">Edit</span></th>
+          <th style="text-align:left;">Quantity<span style="display:none">uantity</span></th>
+          <th style="text-align:left;">Trade @ Price</th>
+          <th style="text-align:left;">Distance</th>
+          <th style="text-align:left;">Current</th>
+          <!--<th style="text-align:left;">Type</th>-->
+          <th id="delete-title" style="text-align:right;"><span style="display:none">Delete</span></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr class="toprow">
+          <td class="stock-reveal">
+            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+              <use xlink:href="#down-menu"></use>
+            </svg>
+          </td>
+          <td class="stock-ordername">Wall Street CFD</td>
+
+          <td class="stock-edit">
+            <svg class="icon edit-icon" viewBox="0 0 14 14">
+              <use xlink:href="#edit-icon"></use>
+            </svg>
+          </td>
+
+          <td class="stock-quantity">
+            <div class="numberbox">
+              <span class="number">50.0</span>
+            </div>
+          </td>
+
+          <td class="stock-order">
+            <div class="pricebox pricebox-long ">
+
+              <svg class="icon trade-icon" viewBox="0 0 13 13">
+                <use xlink:href="#trade-direction-long"></use>
+              </svg>
+
+              <span class="price">17550.0</span>
+
+            </div>
+          </td>
+
+          <td class="stock-distance">
+            <div class="numberbox">
+              <span class="number">218.9</span>
+            </div>
+          </td>
+
+          <td class="stock-current">
+            <div class="pricebox pricebox-long lastmoveup">
+
+              <svg class="icon price-icon" viewBox="0 0 13 13">
+                <use xlink:href="#price-direction-long"></use>
+              </svg>
+
+              <span class="price">17768.9</span>
+
+            </div>
+          </td>
+
+          <!--<td class="stock-type"><span>GTC</span></td>-->
+
+          <td class="stock-delete">
+            <svg class="icon delete-icon" viewBox="0 0 14 14">
+              <use xlink:href="#close-x"></use>
+            </svg>
+          </td>
+        </tr>
+
+        <tr class="toprow">
+          <td class="stock-reveal">
+            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+              <use xlink:href="#down-menu"></use>
+            </svg>
+          </td>
+          <td class="stock-ordername">Wall Street CFD</td>
+
+          <td class="stock-edit">
+            <svg class="icon edit-icon" viewBox="0 0 14 14">
+              <use xlink:href="#edit-icon"></use>
+            </svg>
+          </td>
+
+          <td class="stock-quantity">
+            <div class="numberbox">
+              <span class="number">50.0</span>
+            </div>
+          </td>
+
+          <td class="stock-order">
+            <div class="pricebox pricebox-long ">
+
+              <svg class="icon trade-icon" viewBox="0 0 13 13">
+                <use xlink:href="#trade-direction-long"></use>
+              </svg>
+
+              <span class="price">17650.0</span>
+
+            </div>
+          </td>
+
+          <td class="stock-distance">
+            <div class="numberbox">
+              <span class="number">118.9</span>
+            </div>
+          </td>
+
+          <td class="stock-current">
+            <div class="pricebox pricebox-long lastmoveup">
+
+              <svg class="icon price-icon" viewBox="0 0 13 13">
+                <use xlink:href="#price-direction-long"></use>
+              </svg>
+
+              <span class="price">17768.9</span>
+
+            </div>
+          </td>
+
+          <!--<td class="stock-type"><span>GTC</span></td>-->
+
+          <td class="stock-delete">
+            <svg class="icon delete-icon" viewBox="0 0 14 14">
+              <use xlink:href="#close-x"></use>
+            </svg>
+          </td>
+        </tr>
+
+        <tr class="toprow">
+          <td class="stock-reveal">
+            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+              <use xlink:href="#down-menu"></use>
+            </svg>
+          </td>
+          <td class="stock-ordername">Wall Street CFD</td>
+
+          <td class="stock-edit">
+            <svg class="icon edit-icon" viewBox="0 0 14 14">
+              <use xlink:href="#edit-icon"></use>
+            </svg>
+          </td>
+
+          <td class="stock-quantity">
+            <div class="numberbox">
+              <span class="number">50.0</span>
+            </div>
+          </td>
+
+          <td class="stock-order">
+            <div class="pricebox pricebox-long ">
+
+              <svg class="icon trade-icon" viewBox="0 0 13 13">
+                <use xlink:href="#trade-direction-long"></use>
+              </svg>
+
+              <span class="price">17400.0</span>
+
+            </div>
+          </td>
+
+          <td class="stock-distance">
+            <div class="numberbox">
+              <span class="number">368.9</span>
+            </div>
+          </td>
+
+          <td class="stock-current">
+            <div class="pricebox pricebox-long lastmoveup">
+
+              <svg class="icon price-icon" viewBox="0 0 13 13">
+                <use xlink:href="#price-direction-long"></use>
+              </svg>
+
+              <span class="price">17768.9</span>
+
+            </div>
+          </td>
+
+          <!--<td class="stock-type"><span>GTC</span></td>-->
+
+          <td class="stock-delete">
+            <svg class="icon delete-icon" viewBox="0 0 14 14">
+              <use xlink:href="#close-x"></use>
+            </svg>
+          </td>
+        </tr>
+
+        
+
+      </tbody>
+    </table>
+  </div>
+</div><!-- Ends the Open Positions List block -->
+
+
+<br clear="all">
+
+
 
 
 <div id="watchlist-block" style="display:inline-block;margin-top:24px">
@@ -287,7 +507,7 @@
           <th>Long</th>
           <th>1 day</th>
           <th>
-            <svg class="icon clock-icon" viewBox="0 0 13 13">
+            <svg class="icon clock-icon" viewBox="0 0 14 14">
               <use xlink:href="#clock"></use>
             </svg>
           </th>
@@ -638,216 +858,99 @@
   </div>
 </div>
 
+</div><!-- end left col -->
 
 
 
+<div style="margin-left:60px;float:left;">
 
-
-
-
-
-
-
-  <div id="news-headline-list">
-
-    <header class="component-label">
-      News headlines
-    </header>
-
+<div class="news" id="news-headline-list" style="margin-top:6px;float:left">
 
     <ol class="news-list">
-      <li style="border-top:none;margin-top:13px"><span class="news-timecode">14:33</span>
-      US Stocks Snapshot - Wall St opens little changed as oil edges up</li>
+      <li class="lead-story">
+      <h2>New U.S. home sales drop on sharp decline in the West</h2>
 
-      <li><span class="news-timecode">14:30</span>
-      Swiss Basilea says profits still 2-3 years away</li>
 
-      <li><span class="news-timecode">14:30</span>
-      UPDATE 1 - Standard &amp; Poor&apos;s affirms BHP Billiton&apos;s credit rating</li>
+      <div class="newsthumb">
+        <img src="/public/images/newsthumb-1.jpg">
+      </div>
 
-      <li><span class="news-timecode">14:30</span>
-      Ex-divs to take 13.2 points off FTSE 100 on Mar.3</li>
 
-      <li><span class="news-timecode">14:28</span>
-      UK&apos;s Avonmouth LNG storage site to stop operations on April 30</li>
+      <p>WASHINGTON New U.S. single-family home sales unexpect&shy;edly fell in March, but the decline was concentrated in the West region, suggesting that the housing market continued to strengthen.</p>
+      </li>
 
-      <li><span class="news-timecode">14:23</span>
-      UPDATE 2 - Kenya&apos;s inflation falls, may pave way for easing of rates</li>
+      <li>
+      <span class="news-timecode">10:25am EDT</span>
+      <h3>Wall St. opens lower as earnings continue to underwhelm</h3>
+      <p>U.S. stocks opened lower on Monday as corporate earnings continued to underwhelm and investors stayed away from risky assets a day before the start of the Federal Reserve's two-day policy meeting.</p>
+      </li>
 
-      <li><span class="news-timecode">14:23</span>
-      UPDATE 1 - Russia to cut high-grade diesel exports from Primorsk in March - traders</li>
+      <li>
+      <span class="news-timecode">10:05am EDT</span>
+      <h3>El-Erian says this week's Fed meeting to set stage for June hike</h3>
+      <p>NEW YORK Mohamed El-Erian, the chief economic adviser at Allianz SE , said on Monday he expects this week's Federal Reserve policy-setting meeting to set the stage for a June interest rate hike.</p>
+      </li>
 
-      <li><span class="news-timecode">14:23</span>
-      Belgian Q4 GDP confirmed at 0.3 pct qtr/qtr</li>
+      <li>
+      <span class="news-timecode">10:20am EDT</span>
+      <h3>Saudi prince unveils sweeping plans to end 'addiction' to oil</h3>
+      <p>RIYADH The powerful young prince overseeing Saudi Arabia's economy unveiled ambitious plans on Monday aimed at ending the kingdom's "addiction" to oil and transforming it into a global investment power.</p>
+      </li>
 
-      <li><span class="news-timecode">14:23</span>
-      Japan sells negative yield 10-year bonds</li>
+      <li>
+      <span class="news-timecode">10:23am EDT</span>
+      <h3>Global stocks, dollar stumble ahead of Fed, BOJ meetings</h3>
+      <p>LONDON World stocks, the dollar and oil all fell modestly on Monday as investors locked in recent gains before central bank meetings in the United States and Japan this week.</p>
+      </li>
 
-      <li><span class="news-timecode">14:23</span>
-      IEX changes proposal in exchange bid</li>
+      <li>
+      <span class="news-timecode">7:22am EDT</span>
+      <h3>Oil resumes rise after brief pause</h3>
+      <p>LONDON Oil prices rose on Monday, extending recent gains, building on three weeks of higher prices and reversing earlier losses from traders taking profits.</p>
+      </li>
 
     </ol>
   </div>
 
 
+  <div id="news-story" style="margin-top:8px;float:left">
+    <div>
 
-  <div id="news-story">
+      <span class="news-timecode">April 25, 2016 2:19pm EDT</span>
 
-    <header class="component-label">
-      News story
-    </header>
+      <h1 class="news-headline">Saudi Arabia targets $2tn Aramco IPO as it outlines economic view</h1>
 
-    <h1 class="news-headline" style="margin:18px 0 -1px 0">London Stock Exchange rally helps European shares hit 1-month high
-    </h1>
+      <span class="news-byline">Anjli Raval in London and Simeon Kerr in Riyadh</span>
 
-    <h3 class="news-dateline">Markets | Tue Mar 1, 2016 3:30am EST<br>
-    Related: <a href="#">STOCKS</a>, <a href="#">EUROPEAN MARKETS</a>, <a href="#">MARKETS</a>, <a href="#">FINANCIALS</a></h3>
+      <p>Saudi Arabia’s cabinet has approved the long-awaited plan for a big transformation of the oil-dependent economy, promising to list less than 5 per cent of the state oil company, Saudi Aramco, which will value it at more than $2tn.</p>
 
-    <p>European shares extended the previous session's gains to set a one-month high on Tuesday, with London Stock Exchange leading the market higher after Intercontinental Exchange confirmed a possible counter bid for LSE.</p>
+      <p>The so-called “Vision 2030”, brainchild of Prince Mohammed bin Salman, the deputy crown prince and most powerful man in the kingdom, has been in the works for months.</p>
 
-    <p>Some investors also expected that downbeat data showing activity in China's manufacturing sector shrank more sharply than expected in February would prompt the authorities to announce further stimulus measures.</p>
+      <p>Monday morning’s announcement of a cabinet approval was followed by an interview by the prince on the Saudi owned al-Arabiya channel, in which he optimistically asserted that the kingdom could end its reliance on oil within four years. Saudi Arabia derives more than 90 per cent of its budget revenues from hydrocarbons.</p>
 
-    <p>Shares in London Stock Exchange Group surged 7.5 percent, leading the pan-European <a href="#">FTSEurofirst 300 index</a>, which rose 0.3 percent to its highest level in nearly one month after gaining 0.7 percent in the previous session.</p>
+      <p>“We have an addiction to oil ... this is dangerous,” he said. “It has delayed development of other sectors.”</p>
 
-    <p>However, Barclays fell 7.3 percent after the bank reported a 2 percent fall in full-year adjusted pre-tax profit and unveiled plans to simplify its UK and international operations. (Reporting by Atul Prakash; Editing by Sudip Kar-Gupta)</p>
+      <p>He added that he wants to convert Saudi Aramco into a holding company and that all financial information related to the company will be disclosed. Subsidiaries of the entity will also be listed and its board will be elected.</p>
+
+      <p>“The vision is a road map of our development and economic goals,” he said. “A part of that is related to Aramco and this is a very small aspect.”</p>
+
+      <p>The prince, who is also defence minister and oversees economic ministries, has emerged as the key decision maker in the country since his father, King Salman bin Abdulaziz, assumed the throne. He has since worked with a group of technocrats to slash expenditures, reform energy subsidies and lay out a vision for a post-oil economy.</p>
+
+      <p>The collapse in oil prices, precipitated by Saudi Arabia’s decision to protect its market share rather than the oil price, has forced a re-evaluation of economic priorities in Riyadh, prompting the prince to press for the development of non-oil sectors. The prince cited mineral mining and a domestic military industry as priorities for development.</p>
+
+      <p>As the nation awaits further details of the economic vision later on Monday, the prince said the plan envisaged boosting housing and jobs for an overwhelmingly young population.</p>
+
+    </div>
   </div>
 
+<br clear="all">
+
+
+</div>
 
 
 
-
-  <div id="watch-list">
-
-    <header class="component-label">
-      Watch lists &gt; Popular markets
-
-
-      <span class="heatmap-box-menu" id="heatmap-1-menu">
-      <a href="#menu" style="text-decoration: none;color:#0066cc">
-      &#9776;
-      <span style="display:none">Menu</span>
-      </a></span>
-    
-    </header>
-
-    <table style="width:100%">
-      <thead>
-        <tr>
-          <th>Market</th>
-          <th>Spread</th>
-          <th>Sell</th>
-          <th>Buy</th>
-          <th>Change</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr class="toprow">
-          <td class="stock-name">Wall Street CFD</td>
-          <td class="stock-spread">4.0</td>
-          <td class="stock-sell">16190.8</td>
-          <td class="stock-buy">16194.8</td>
-          <td class="stock-change">224.8</td>
-        </tr>
-
-        <tr>
-          <td class="stock-name">UK100 CFD</td>
-          <td class="stock-spread">1.0</td>
-          <td class="stock-sell">5831.3</td>
-          <td class="stock-buy">5832.3</td>
-          <td class="stock-change">102.5</td>
-        </tr>
-
-        <tr>
-          <td class="stock-name">Germany 30 CFD</td>
-          <td class="stock-spread">1.0</td>
-          <td class="stock-sell">9231.5</td>
-          <td class="stock-buy">9232.5</td>
-          <td class="stock-change">243.7</td>
-        </tr>
-
-        <tr>
-          <td class="stock-name">Gold (per 0.1) CFD</td>
-          <td class="stock-spread">0.4</td>
-          <td class="stock-sell">1209.4</td>
-          <td class="stock-buy">1209.8</td>
-          <td class="stock-change">-28.8</td>
-        </tr>
-
-        <tr>
-          <td class="stock-name">EUR/USD (per 0.0001) CFD</td>
-          <td class="stock-spread">1.0</td>
-          <td class="stock-sell">1.11891</td>
-          <td class="stock-buy">1.11901</td>
-          <td class="stock-change">-0.00470</td>
-        </tr>
-
-        <tr>
-          <td class="stock-name">GBP/USD (per 0.0001) CFD</td>
-          <td class="stock-spread">1.5</td>
-          <td class="stock-sell">1.44692</td>
-          <td class="stock-buy">1.44707</td>
-          <td class="stock-change">-0.00280</td>
-        </tr>
-
-        <tr>
-          <td class="stock-name">Japan 225 CFD</td>
-          <td class="stock-spread">10</td>
-          <td class="stock-sell">15894</td>
-          <td class="stock-buy">15904</td>
-          <td class="stock-change">40</td>
-        </tr>
-
-        <tr>
-          <td class="stock-name">UK 100 DFT</td>
-          <td class="stock-spread">1.0</td>
-          <td class="stock-sell">5831.3</td>
-          <td class="stock-buy">5832.3</td>
-          <td class="stock-change">102.5</td>
-        </tr>
-
-        <tr>
-          <td class="stock-name">Wall Street DFT</td>
-          <td class="stock-spread">4.0</td>
-          <td class="stock-sell">16190.8</td>
-          <td class="stock-buy">16194.8</td>
-          <td class="stock-change">224.8</td>
-        </tr>
-
-        <tr>
-          <td class="stock-name">Germany 30 DFT</td>
-          <td class="stock-spread">1.0</td>
-          <td class="stock-sell">9231.5</td>
-          <td class="stock-buy">9232.5</td>
-          <td class="stock-change">243.7</td>
-        </tr>
-
-        <tr>
-          <td class="stock-name">EUR/USD DFT</td>
-          <td class="stock-spread">1.0</td>
-          <td class="stock-sell">1.11891</td>
-          <td class="stock-buy">1.11901</td>
-          <td class="stock-change">-0.00470</td>
-        </tr>
-
-        <tr>
-          <td class="stock-name">GBP/USD DFT</td>
-          <td class="stock-spread">1.5</td>
-          <td class="stock-sell">1.44692</td>
-          <td class="stock-buy">1.44707</td>
-          <td class="stock-change">-0.00280</td>
-        </tr>
-
-        <tr>
-          <td class="stock-name">Japan 225 DFT</td>
-          <td class="stock-spread">10</td>
-          <td class="stock-sell">15894</td>
-          <td class="stock-buy">15904</td>
-          <td class="stock-change">40</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<br clear="all">
 
 
 
