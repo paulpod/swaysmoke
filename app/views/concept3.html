@@ -11,7 +11,7 @@
   <script type="text/javascript" src="/public/javascripts/jquery-1.11.0.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/jquery.peity.js"></script>
   <!-- mini charts from http://benpickles.github.io/peity/ -->
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:700,600,400,300,200,100' rel='stylesheet' type='text/css'>
 
 
   <link href="/public/stylesheets/concept1.css" media="screen" rel="stylesheet" type="text/css" />
@@ -67,7 +67,7 @@
       </g>
 
       <g id="open-chart">
-        <polygon fill="#AAAAAA" points="2,11 2,0 0,0 0,11 0,13 2,13 13,13 13,11 "/>
+        <polygon fill="#AAAAAA" points="1,12 1,0 0,0 0,13 13,13 13,12 "/>
         <polygon fill="#000000" points="13,0 7.937,5.063 4.937,3.063 2,6 2,7.812 5.063,4.749 8.063,6.749 13,1.812 "/>
         <polygon fill="#000000" points="13,5.895 7.099,8.85 5.063,6.814 2,8.857 2,10.63 4.937,8.644 6.901,10.608 13,7.559 "/>
       </g>
@@ -79,10 +79,13 @@
 
 </head>
 
-<body class="with-vgrid" lang="en">
+<body class="with-vgrid" lang="en" >
+
+<main>
 
 
   <div class="ticket" id="trade-max" style="margin-top:0px;float:left">
+
     
     <div id="ticket-topbar">
 
@@ -93,18 +96,15 @@
         </svg>
       </div>
 
-      <div style="float:left">
 
-        <svg class="icon chart-icon" viewBox="0 0 14 14">
-          <use xlink:href="#open-chart"></use>
-        </svg>
+
+      <div id="ticket-name" style="float:left;margin-top:2px">
+        <span style="border-bottom:2px solid #333;margin-left:35px">Trade</span>
+        <a href="#" style="margin:0 15px">Order</a>
+        <a href="#">Alert</a>
       </div>
 
-      <div id="ticket-name" style="float:left">
-        Place trade
-      </div>
-
-      <svg class="icon close-icon" viewBox="0 0 14 14" style="float:left;padding-top:5px">
+      <svg class="icon close-icon" viewBox="0 0 14 14" style="float:right;padding-top:5px">
         <use xlink:href="#close-x"></use>
       </svg>
 
@@ -112,61 +112,226 @@
 
     <br clear="all">
 
-    <div id="market-name">
+
+
+
+
+    <div id="market-name" style="margin-top:12px">
       <!--<h2>Bolsas y Maercadod Espanoles SA Jun 16 Spread</h2>-->
-      <h2>EUR/USD (per 0.0001) CFD</h2>
+      <h2 style="float:left;font-weight:300">EUR/USD Eurodollar</h2>
+
+
+
+        <svg class="icon chart-icon" viewBox="0 0 14 14" style="float:right;padding-top:6px">
+          <use xlink:href="#open-chart"></use>
+        </svg>
+
     </div>
 
-    <div id="buysell-pair">
+    <br clear="all">
+
+
+
+
+
+    <div id="buysell-pair" style="margin-top:4px">
 
       <button class="secondary-button sell" style="margin-right:15px">
         <p>Sell</p>
-        <span class="upward">6,659.2</span>
+        <span class="upward">1.13<span>48</span>8</span>
       </button>
 
       <button class="secondary-button buy">
         <p>Buy</p>
-        <span class="downward">6,659.32</span>
+        <span class="downward">1.13<span>50</span>0</span>
       </button>
 
     </div>
 
-    <div id="ticket-quantity">
 
-    <p>Quantity</p>
 
-    <p>Amount / Risk / Margin thing</p>
+
+    <div id="ticket-quantity" style="margin-top:7px">
+
+      <div id="pound-point" style="float:left;">
+
+      <label class="form-label" for="quantity">&pound; / Point  </label>
+
+      <input class="form-control qty" type="number" id="quantity" name="quantity" autocomplete="off" size="6" value="10" style="width:140px;margin-top:-2px">
+
+      </div>
+
+     
+
+      <div id="pound-arrows" style="float:left;margin:43px 0 0 10px;width:20px">
+
+      <input type="image" value='+' class="arrow-button qtyplus" field='quantity' src="/public/images/number-arrow-up.png">
+      <input type="image" value='-' class="arrow-button qtyminus" field='quantity' src="/public/images/number-arrow-down.png">
+
+      </div>
+
+     
+
+
+
+      <div id="pound-value" style="float:right">
+
+      <label class="form-label" for="value">&pound; Value</label>
+
+      <input class="form-control" type="" id="value" name="value" autocomplete="off" size="6" value="£113,487" style="width:140px;color:#666;border-color:#808080;margin-top:-2px">
+
+      </div>
+
+
+      <br clear="all">
 
     </div>
 
-    <div id="ticket-stops">
-
-    <p><strong>Stop loss</strong></p>
-
-    <p><span style="border-bottom:double 3px #333">standard</span> <span style="color:#eee">//</span> <a href="#">trailing</a> <span style="color:#eee">//</span> <a href="#">guaranteed</a></p>
-
-    <p><strong>6659.11  <span style="color:#de4559">-&pound;120.00</span></strong>
-    <br>
-    <span style="color:#999;font-size:0.8em">Price  x  Amount</span></p>
-
-    <p><strong>Take profit</strong></p>
-
-    <p><strong>6359.11  <span style="color:#1ba12d">&pound;120.00</span></strong>
-    <br>
-    <span style="color:#999;font-size:0.8em">Price  x  Amount</span></p>
 
 
+
+
+<!-- - - - - - STOPS - - - - - - -->
+<!-- This is an open/close block -->
+<div id="ticket-stops" style="margin-top:15px">
+  <details style="" >
+    <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="true" style="">
+      <span class="">Set stop loss</span><!-- this is the clickable open/close part -->
+    </summary>
+
+    <div class="js-hidden" id="details-content-0" aria-hidden="false" style="display:block;">
+
+      <!-- hidden by default details here -->
+      <div><!-- choose type of stop loss - standard, trailing or guaranteed - to use tabs selector -->
+      <span style="border-bottom:solid 2px #333">standard</span> <span style="color:#eee">/</span> <a href="#+">+</a> <span style="color:#eee">/</span> <a href="#">trailing</a> <span style="color:#eee">/</span> <a href="#">guaranteed</a>
+      </div>
+
+
+      <!-- set the points away or specific price here, default is points -->
+      <div id="stop-price" style="float:left;">
+
+        <label class="form-label" for="stopprice"><span>Points</span> <span style="color:#eee">/</span> <a href="#">Price</a></label>
+
+        <input class="form-control" type="number" id="stopprice" name="stopprice" autocomplete="off" size="6" value="10" style="width:140px;">
+
+      </div>
+
+     
+
+      <!-- the use arrows to change quantity x total risk amount -->
+      <div id="stop-arrows" style="float:left;margin:43px 0 0 10px;width:20px">
+
+        <input type="image" value='+' class="arrow-button stopqtyplus" field='stopprice' src="/public/images/number-arrow-up.png">
+        <input type="image" value='-' class="arrow-button stopqtyminus" field='stopprice' src="/public/images/number-arrow-down.png">
+
+      </div>
+
+
+
+      <!-- the total *large* value of the position is calcualted here based on price * pips * multi -->
+      <div id="stop-value" style="float:right;margin-bottom:10px;">
+
+        <label class="form-label" for="stopvalue">&pound; Loss</label>
+
+        <input class="form-control" type="" id="stopvalue" name="stopvalue" autocomplete="off" size="6" value="" style="width:140px;color:#de4559;border-color:#808080">
+
+      </div>
 
     </div>
 
+    <br clear="all" style="">
+
+  </details>
+
+</div>
+<!-- end the open/close block -->
 
 
+
+
+<!-- - - - - - LIMIT - - - - - - -->
+<!-- This is an open/close block -->
+<div id="ticket-stops" style="margin-top:10px">
+  <details style="" >
+    <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="true" style="">
+      <span class="">Set limit</span><!-- this is the clickable open/close part -->
+    </summary>
+
+    <div class="js-hidden" id="details-content-0" aria-hidden="false" style="display:block;margin-top:-14px">
+
+      <!-- hidden by default details here -->
+     
+      <!-- set the points away or specific price target here, default is points -->
+      <div id="limit-price" style="float:left;">
+
+        <label class="form-label" for="limitprice"><span>Points</span> <span style="color:#eee">/</span> <a href="#">Price</a></label>
+
+        <input class="form-control" type="number" id="limitprice" name="limitprice" autocomplete="off" size="6" value="15" style="margin-top:-2px;width:140px;">
+
+      </div>
+
+     
+
+      <!-- the use arrows to change price x profit target amount -->
+      <div id="limit-arrows" style="float:left;margin:43px 0 0 10px;width:20px">
+
+        <input type="image" value='+' class="arrow-button limitqtyplus" field='limitprice' src="/public/images/number-arrow-up.png">
+        <input type="image" value='-' class="arrow-button limitqtyminus" field='limitprice' src="/public/images/number-arrow-down.png">
+
+      </div>
+
+
+
+      <!-- the potential profit to take is here... price * pips * multi -->
+      <div id="stop-value" style="float:right">
+
+        <label class="form-label" for="limitvalue">&pound; Profit</label>
+
+        <input class="form-control" type="" id="limitvalue" name="limitvalue" autocomplete="off" size="6" value="" style="margin-top:-2px;width:140px;color:#1ba12d;border-color:#3E8853">
+
+      </div>
+
+    </div>
+
+    <br clear="all">
+
+  </details>
+</div>
+<!-- end the open/close block -->
+
+
+   
+
+
+    </div>
 
   </div>
+
+</main>
 
 
 
 <script type="text/javascript">
+
+
+
+$(document).ready(function(){
+  $("#quantity").change(function(){
+    var v_pound = $(this).val();
+    var price = 1.13488;
+    v_pound = (v_pound * price * 10000).toFixed(2);
+    v_pound = numberWithCommas(v_pound);
+
+    $("#value").val('£' + v_pound);
+  });
+});
+
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
+}
+
+
 $(".sparkline").peity("line", {
   width: 100,
   height: 40,
@@ -174,6 +339,219 @@ $(".sparkline").peity("line", {
   stroke: "#0378ba",
   strokeWidth: 1.2
 })
+
+
+
+// QUANTITY buttons + calculator
+
+$(document).ready(function(){
+    // This button will increment the TRANSACTION value
+    $('.qtyplus').click(function(e){
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        fieldName = $(this).attr('field');
+        // Get its current value
+        var currentVal = parseInt($('input[name='+fieldName+']').val());
+        // If is not undefined
+        if (!isNaN(currentVal)) {
+            // Increment
+            $('input[name='+fieldName+']').val(currentVal + 1);
+            var newquant = currentVal + 1;
+            //do the number wang too
+            var v_pound = $("#quantity").val();
+            var price = 1.13488;
+            v_pound = (v_pound * price * 10000).toFixed(0);
+            v_pound = numberWithCommas(v_pound);
+
+            $("#value").val('£' + v_pound);
+
+            // Do the numberwang for STOPS
+            var newquant = $("#quantity").val();
+            var v_pound = $("#stopprice").val();
+            v_pound = (v_pound * price * newquant).toFixed(0);
+            v_stoppound = numberWithCommas(v_pound);
+
+            $("#stopvalue").val('-£' + v_stoppound);
+
+            // Do the numberwang for LIMITS
+            var v_pound = $("#limitprice").val();
+            v_pound = (v_pound * price * newquant).toFixed(0);
+            v_limitpound = numberWithCommas(v_pound);
+
+
+            $("#limitvalue").val('£' + v_limitpound);
+        } else {
+            // Otherwise put a 0 there
+            $('input[name='+fieldName+']').val(0);
+
+
+        }
+    });
+    // This button will decrement the TRANSACTION value till 0
+    $(".qtyminus").click(function(e) {
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        fieldName = $(this).attr('field');
+        // Get its current value
+        var currentVal = parseInt($('input[name='+fieldName+']').val());
+        // If it isn't undefined or its greater than 0
+        if (!isNaN(currentVal) && currentVal > 0) {
+            // Decrement one
+            $('input[name='+fieldName+']').val(currentVal - 1);
+            //do the number wang too
+            var v_pound = $("#quantity").val();
+            var price = 1.13488;
+            v_pound = (v_pound * price * 10000).toFixed(0);
+            v_pound = numberWithCommas(v_pound);
+
+            $("#value").val('£' + v_pound);
+
+            // Do the numberwang for STOPS
+            var newquant = $("#quantity").val();
+            var v_pound = $("#stopprice").val();
+            v_pound = (v_pound * price * newquant).toFixed(0);
+            v_stoppound = numberWithCommas(v_pound);
+
+            $("#stopvalue").val('-£' + v_stoppound);
+
+            // Do the numberwang for LIMITS
+            var v_pound = $("#limitprice").val();
+            v_pound = (v_pound * price * newquant).toFixed(0);
+            v_limitpound = numberWithCommas(v_pound);
+
+
+            $("#limitvalue").val('£' + v_limitpound);
+        } else {
+            // Otherwise put a 0 there
+            $('input[name='+fieldName+']').val(0);
+        }
+    });
+});
+
+
+
+// STOPS buttons + calculator
+
+$(document).ready(function(){
+    // This button will increment the STOP value
+    $('.stopqtyplus').click(function(e){
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        fieldName = $(this).attr('field');
+        // Get its current value
+        var currentVal = parseInt($('input[name='+fieldName+']').val());
+        // If is not undefined
+        if (!isNaN(currentVal)) {
+            // Increment
+            $('input[name='+fieldName+']').val(currentVal + 1);
+            //do the number wang too
+            var newquant = $("#quantity").val();
+            var v_pound = $("#stopprice").val();
+            var price = 1.13488;
+            v_pound = (v_pound * price * newquant).toFixed(0);
+            v_stoppound = numberWithCommas(v_pound);
+
+
+            $("#stopvalue").val('-£' + v_stoppound);
+        } else {
+            // Otherwise put a 0 there
+            $('input[name='+fieldName+']').val(0);
+
+
+        }
+    });
+    // This button will decrement the STOP value till 0
+    $(".stopqtyminus").click(function(e) {
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        fieldName = $(this).attr('field');
+        // Get its current value
+        var currentVal = parseInt($('input[name='+fieldName+']').val());
+        // If it isn't undefined or its greater than 0
+        if (!isNaN(currentVal) && currentVal > 0) {
+            // Decrement one
+            $('input[name='+fieldName+']').val(currentVal - 1);
+            //do the number wang too
+            var newquant = $("#quantity").val();
+            var v_pound = $("#stopprice").val();
+            var price = 1.13488;
+            v_pound = (v_pound * price * newquant).toFixed(0);
+            v_stoppound = numberWithCommas(v_pound);
+
+            $("#stopvalue").val('-£' + v_stoppound);
+        } else {
+            // Otherwise put a 0 there
+            $('input[name='+fieldName+']').val(0);
+        }
+    });
+});
+
+
+
+
+// LIMITS buttons + calculator
+
+$(document).ready(function(){
+    // This button will increment the LIMIT value
+    $('.limitqtyplus').click(function(e){
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        fieldName = $(this).attr('field');
+        // Get its current value
+        var currentVal = parseInt($('input[name='+fieldName+']').val());
+        // If is not undefined
+        if (!isNaN(currentVal)) {
+            // Increment
+            $('input[name='+fieldName+']').val(currentVal + 1);
+            //do the number wang too
+            var newquant = $("#quantity").val();
+            var v_pound = $("#limitprice").val();
+            var price = 1.13488;
+            v_pound = (v_pound * price * newquant).toFixed(0);
+            v_limitpound = numberWithCommas(v_pound);
+
+
+            $("#limitvalue").val('£' + v_limitpound);
+        } else {
+            // Otherwise put a 0 there
+            $('input[name='+fieldName+']').val(0);
+
+
+        }
+    });
+    // This button will decrement the LIMIT value till 0
+    $(".limitqtyminus").click(function(e) {
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        fieldName = $(this).attr('field');
+        // Get its current value
+        var currentVal = parseInt($('input[name='+fieldName+']').val());
+        // If it isn't undefined or its greater than 0
+        if (!isNaN(currentVal) && currentVal > 0) {
+            // Decrement one
+            $('input[name='+fieldName+']').val(currentVal - 1);
+            //do the number wang too
+            var newquant = $("#quantity").val();
+            var v_pound = $("#limitprice").val();
+            var price = 1.13488;
+            v_pound = (v_pound * price * newquant).toFixed(0);
+            v_limitpound = numberWithCommas(v_pound);
+
+            $("#limitvalue").val('£' + v_limitpound);
+        } else {
+            // Otherwise put a 0 there
+            $('input[name='+fieldName+']').val(0);
+        }
+    });
+});
+
+
 </script>
 
 </body>

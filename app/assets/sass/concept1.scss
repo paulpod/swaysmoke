@@ -15,7 +15,9 @@ body {
   font-family: 'Open Sans', Arial, sans-serif;
   margin: 0 0 0 40px;
   background-color: #eee;
-
+}
+div,span,p,h1,h2,h3,h4,h5,h6,input {
+  font-family: 'Open Sans', Arial, sans-serif;
 }
 
 strong {font-weight:700;}
@@ -24,7 +26,7 @@ strong {font-weight:700;}
 
 
 html {
-  zoom: 0.75;
+  //zoom: 0.75;
 }
 
 
@@ -542,9 +544,9 @@ z-index: 1
 .chart-icon {
   position: relative;
   top: 0px;
-  left:2px;
-  width: 16px;
-  height: 16px;
+  left:3px;
+  width: 18px;
+  height: 18px;
 }
 
 
@@ -628,19 +630,20 @@ font-size: 0.6em;
 box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.25);
 }
 #ticket-name {
-  color:#999;
+  color:#333;
   line-height: 1;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 14px;
   text-align: center;
   width: 232px;
   margin-right: 36px;
   padding-top: 6px;
+  font-weight: 700;
 }
 .ticket #market-name {
-font-weight: 300;
-font-size: 1.1em;
-padding: 0px 0 9px 0;
+//font-weight: 300;
+font-size: 1.2em;
+padding: 0px 0 14px 0;
 }
 
 /* ACTUAL ITEM STYLES FROM GUIDE PAGES */
@@ -652,10 +655,11 @@ font-weight:600;
 font-family: "Open Sans", Arial, sans-serif !important;
 }
 .form-control {
+font-family: "Open Sans", Arial, sans-serif !important;
 border:#333 solid 3px;
 font-size:120%;
 width:120px;
-border-radius:3px;
+border-radius:4px;
 line-height:1.6;
 }
 .form-display {
@@ -674,6 +678,11 @@ color: #444;
 //font-size: 0.9em;
 padding-top:0.33em;
 }
+
+
+
+
+
 
 
 .primary-button {
@@ -697,27 +706,38 @@ padding-top:0.33em;
 
 .secondary-button {
   font-family: "Open Sans", Arial, sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   font-size:1em;
   color: white;
   border: none;
   border-bottom: 2px #444 solid;
   border-radius: 3px;
   width: 160px;
-  padding-bottom: 14px;
+  padding-bottom: 12px;
 }
 .secondary-button p {
   font-size: 0.8em;
-  font-weight: 300;
-  padding: 5px 0 2px 0;
-  margin: 0;
+  font-weight: 600;
+  padding: 0 0 3px 0;
+  margin: 0 0 0 0;
 }
+
+.arrow-button {
+  background-color: white;
+  border:none;
+  font-size: 20px;
+  padding: 6px 10px
+}
+
+
 .sell {
-  background-color: #e54e59;
+  font-size:1.1em;
+  background-color: rgba(229, 78, 89, 1);
   border-bottom-color: #b33941;
 }
 .buy {
-  background-color: #157db1;
+  font-size:1.1em;
+  background-color: rgba(21, 125, 177, 1);
   border-bottom-color: #1f5a78;
 }
 .sell .upward:before {
@@ -741,7 +761,9 @@ padding-top:0.33em;
   margin-right:-0.25em;
 }
 
-
+.form-control {
+  line-height: 1.65;
+}
 
 .control-button-solid {
   background-color: #333;
