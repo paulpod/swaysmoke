@@ -15,6 +15,7 @@ body {
   font-family: 'Open Sans', Arial, sans-serif;
   margin: 0 0 0 40px;
   background-color: #eee;
+
 }
 div,span,p,h1,h2,h3,h4,h5,h6,input {
   font-family: 'Open Sans', Arial, sans-serif;
@@ -729,11 +730,36 @@ padding-top:0.33em;
   padding: 6px 10px
 }
 
+.price-field {
+  color: white;
+  border:none;
+  background: none;
+  font-weight: 700;
+}
+.sell .price-field {
+  padding-left:10px;
+}
+.sell input.upward {
+  background:url('/public/images/triangle-up.svg') no-repeat 25px 10px;
+}
+.sell input.downward {
+  background:url('/public/images/triangle-down.svg') no-repeat 25px 10px;
+}
+.buy .price-field {
+  padding-right:10px;
+}
+.buy input.upward {
+  background:url('/public/images/triangle-up.svg') no-repeat right 23px top 8px;
+}
+.buy input.downward {
+  background:url('/public/images/triangle-down.svg') no-repeat right 23px top 8px;
+}
 
 .sell {
   font-size:1.1em;
   background-color: rgba(229, 78, 89, 1);
   border-bottom-color: #b33941;
+
 }
 .buy {
   font-size:1.1em;
