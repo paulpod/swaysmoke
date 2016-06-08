@@ -87,6 +87,7 @@
 <!-- use these to change the values of the ticket -->
   <input type="hidden" id="price" name="price" value="1.13703">
   <input type="hidden" id="spread" name="spread" value="1.2">
+  <input type="hidden" id="margin" name="margin" value="200">
 <!-- - - - - - - - - - - - - - - - - - - - - - - -->
 
 
@@ -278,7 +279,7 @@
 
 <!-- - - - - - LIMIT - - - - - - -->
 <!-- This is an open/close block -->
-<div id="ticket-stops" style="margin-top:10px">
+<div id="ticket-stops" style="margin-top:9px">
   <details style="" >
     <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="true" style="">
       <span class="">Set limit</span><!-- this is the clickable open/close part -->
@@ -328,31 +329,45 @@
 
 
 
+<!-- - - - - - MARGIN - - - - - - -->
+<!-- This is an open/close block -->
+<div id="margin" style="margin-top:10px">
+  <details style="" >
+    <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="true" style="">
+      <span class="">Margin requirements</span><!-- this is the clickable open/close part -->
+    </summary>
+
+    <div class="js-hidden" id="details-content-0" aria-hidden="false" style="display:block;margin-top:-14px">
+
+      <!-- hidden by default details here -->
+     
+
+      <div id="margin-available" class="data-attributes" style="float:left;margin:7px 10px 0 0">
+
+      <input id="marginreq" class="form-control" name="marginreq" value="0" style="margin-top:5px;border:none;background:none" /><br>
 
 
-<div id="margin-req">
-
-  <label class="form-label" for="marginreq">Margin required</label>
-
-  <input id="marginreq" class="form-control" name="marginreq" value="78" style="border-color:#ccc" />
+        <span id="margindonut" data-peity='{ "fill": ["green", "#eeeeee"],  "innerRadius": 24, "radius": 35 }'>603/1234</span>
+      </div>
 
 
-  <label class="form-label" for="marginav">Margin available</label>
+      <div style="float:left">
+        <p style="margin-top:24px;margin-bottom:10px;padding-bottom:0">Margin available:</p>
 
-  <input id="marginav" class="form-control" name="marginav" value="44222" style="border-color:#ccc" />
+        <p style="margin-top:15px;margin-bottom:5px;padding-bottom:0"><strong style="width:6em;display:inline-block;">Pre-trade:</strong> <span id="marginall">1000</span></p>
 
+        <p><strong style="width:6em;display:inline-block;">Post-trade:</strong> <span id="marginav">1234</span></p>
+      </div>
+
+      <br clear="all">
+
+  </details>
 </div>
-
-<div id="margin-available" class="data-attributes">
-
- <span data-peity='{ "fill": ["green", "#eeeeee"],  "innerRadius": 18, "radius": 28 }'>8/10</span>
-
-</div>
-
-   
+<!-- end the open/close block -->
 
 
-    </div>
+
+
 
   </div>
 
@@ -367,6 +382,7 @@ function refreshNumbers() {
   // Get its current value
   var currentMid = parseFloat($('input[name='+"price"+']').val());
   var currentSpread = parseFloat($('input[name='+"spread"+']').val());
+  var currentMargin = parseFloat($('input[name='+"margin"+']').val());
   // If is not undefined
   if (!isNaN(currentMid)) {
     var number = (currentMid + Math.floor(Math.random() * 1000) / 1700077);
@@ -402,7 +418,7 @@ function refreshNumbers() {
 
     $("#limitvalue").val('£' + v_limitpound);
 
-    // Do the numberwang for MARGIN
+    // Do the numberwang for MARGIN REQUIRED
 
     // Margin required is Value (Quantity x Price) * Margin rate (0.5% or similar) ...
     // then * any currency conversions to base (eg. to USD, yesterday's close + 0.0125) 
@@ -410,9 +426,22 @@ function refreshNumbers() {
     var marginrate = 0.0005;
     
     v_pound = (value * marginrate / exchangerate).toFixed(2);
+    marginreqraw = v_pound;
     v_marginpound = numberWithCommas(v_pound);
 
     $("#marginreq").val('£' + v_marginpound);
+
+    // Do the numberwang for MARGIN AVAILABLE
+    marginav = (parseFloat(currentMargin) - parseFloat(v_marginpound)).toFixed(0);
+
+    margindonut = (marginreqraw + ',' + marginav);
+    $("#margindonut").text(margindonut);
+    $(".data-attributes span").peity("donut")
+
+    marginav = numberWithCommas(marginav);
+    $("#marginall").text('£' + currentMargin);
+    $("#marginav").text('£' + marginav);
+
 
   }
 }
@@ -674,8 +703,14 @@ $(document).ready(function(){
     });
 });
 
-$(".data-attributes span").peity("donut")
 
+
+$(".data-attributes span").peity("donut", {
+  fill: function(_, i, all) {
+    var g = parseInt((i / all.length) * 255)
+    return "rgb( " + g + "," + (g * 5) + "," + g + ")"
+  }
+})
 
 </script>
 
