@@ -27,10 +27,15 @@ strong {font-weight:700;}
 
 
 html {
-  //zoom: 0.75;
+  zoom: 0.75;
 }
 
+button.show  {
 
+  background-color: none;
+  border:none;
+  font-size-adjust: none;
+}
 
 
 /* IFE html prototype styles start here */
@@ -626,9 +631,9 @@ font-size: 0.6em;
   border-radius: 8px;
   //border: 3px solid #999;
   padding: 10px 20px;
-  -webkit-box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.25);
--moz-box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.25);
-box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.25);
+  -webkit-box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.75);
+box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.75);
 }
 #ticket-name {
   color:#333;
@@ -650,7 +655,7 @@ padding: 0px 0 14px 0;
 /* ACTUAL ITEM STYLES FROM GUIDE PAGES */
 
 .form-label {
-//font-size:120%;
+font-size:1em;
 padding-top:0.75em;
 font-weight:600;
 font-family: "Open Sans", Arial, sans-serif !important;
@@ -786,6 +791,23 @@ padding-top:0.33em;
   padding-left:0.33em;
   margin-right:-0.25em;
 }
+
+/* Little thing to hide labels until hover state, used on + for stops/loss limits */
+.addlimit a {
+  display: inline-block;
+  width: 100px;
+}
+.addlimit:hover {
+  display: none;
+}
+.addlimit:hover a:before{
+font-weight: 600;
+font-size: 0.9em;
+content: 'add ';
+}
+
+
+
 
 .form-control {
   line-height: 1.65;

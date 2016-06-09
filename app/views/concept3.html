@@ -83,6 +83,11 @@
 
 <main>
 
+<p>
+    <button class="hide">Hide</button>
+    <button class="show">Show</button>
+</p>
+
 
 <!-- use these to change the values of the ticket -->
   <input type="hidden" id="price" name="price" value="1.13703">
@@ -90,8 +95,9 @@
   <input type="hidden" id="margin" name="margin" value="200">
 <!-- - - - - - - - - - - - - - - - - - - - - - - -->
 
-
-  <div class="ticket" id="trade-max" style="margin-top:0px;float:left">
+<!-- Start the TICKET -->
+<!-- - - - - - - - -  -->
+  <div class="ticket toggle" id="trade-max" style="margin-top:0px;float:left;display:none">
 
     
     <div id="ticket-topbar">
@@ -181,9 +187,9 @@
 
     <div id="ticket-quantity" style="margin-top:7px">
 
-      <div id="pound-point" style="float:left;">
+      <div id="pound-point" style="float:left;width:180px">
 
-      <label class="form-label" for="quantity">&pound; / Point  </label>
+      <label class="form-label" for="quantity">&pound; Point <span style="color:#eee">/</span> <a href="#">Quantity</a> </label>
 
       <input class="form-control qty" type="number" id="quantity" name="quantity" autocomplete="off" size="6" value="0" style="width:140px;margin-top:-2px">
 
@@ -191,7 +197,7 @@
 
      
 
-      <div id="pound-arrows" style="float:left;margin:43px 0 0 10px;width:20px">
+      <div id="pound-arrows" style="float:left;margin:43px 0 0 -30px;width:20px">
 
       <input type="image" value='+' class="arrow-button qtyplus" field='quantity' src="/public/images/number-arrow-up.png">
       <input type="image" value='-' class="arrow-button qtyminus" field='quantity' src="/public/images/number-arrow-down.png">
@@ -224,14 +230,16 @@
 <div id="ticket-stops" style="margin-top:15px">
   <details style="" >
     <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="true" style="">
-      <span class="">Set stop loss</span><!-- this is the clickable open/close part -->
+      <span class="" style="display:inline-block;width:170px;">Set stop loss</span><!-- this is the clickable open/close part -->
+
+      <span class="addlimit" style="color:#eee;display:inline-block;width:140px;text-align:right"> <a href="#addstop">+</a></span>
     </summary>
 
     <div class="js-hidden" id="details-content-0" aria-hidden="false" style="display:block;">
 
       <!-- hidden by default details here -->
       <div><!-- choose type of stop loss - standard, trailing or guaranteed - to use tabs selector -->
-      <span style="border-bottom:solid 2px #333">standard</span> <span style="color:#eee">/</span> <a href="#+">+</a> <span style="color:#eee">/</span> <a href="#">trailing</a> <span style="color:#eee">/</span> <a href="#">guaranteed</a>
+      <span style="border-bottom:solid 2px #333">standard</span> <span style="color:#eee">/</span> <a href="#">trailing</a> <span style="color:#eee">/</span> <a href="#">guaranteed</a>
       </div>
 
 
@@ -282,7 +290,9 @@
 <div id="ticket-stops" style="margin-top:9px">
   <details style="" >
     <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="true" style="">
-      <span class="">Set limit</span><!-- this is the clickable open/close part -->
+      <span class="" style="display:inline-block;width:170px;">Set limit</span><!-- this is the clickable open/close part -->
+
+      <span class="addlimit" style="color:#eee;display:inline-block;width:140px;text-align:right"> <a href="#addlimit">+</a></span>
     </summary>
 
     <div class="js-hidden" id="details-content-0" aria-hidden="false" style="display:block;margin-top:-14px">
@@ -366,16 +376,37 @@
 <!-- end the open/close block -->
 
 
+<button class="primary-button" style="width:100%">Place trade</button>
 
 
-
-  </div>
+</div>
+<!-- end the TICKET  -->
+<!-- - - - - - - - - -->
 
 </main>
 
 
 
 <script type="text/javascript">
+
+
+
+$(function() {
+    $('.hide').click(function(){
+        $('.toggle').hide();
+        setDisplayValue();
+    });
+    $('.show').click(function(){
+        $('.toggle').show();
+        setDisplayValue();
+    });
+});
+
+function setDisplayValue() {
+    var display = $('.toggle')[0].style.display;
+    $('.displayvalue').text(display);
+}
+
 
 
 function refreshNumbers() {
