@@ -1,0 +1,63 @@
+{{<gain_template}}
+
+{{$head}}
+
+  {{>includes/gain-head}}
+
+  {{>includes/gain-svg}}
+
+
+{{/head}}
+
+
+
+
+{{$content}}
+
+
+  <main>
+
+  {{>includes/gain-header}}
+
+
+  <div id="leftcol" style="display:inline-block;float:left">
+
+  {{>includes/open-positions}}
+
+  {{>includes/active-orders}}
+
+  {{>includes/watchlist}}
+
+  </div>
+
+
+
+  <div style="margin-left:60px;float:left;">
+
+  {{>includes/news-stories}}
+
+  {{>includes/news-story}}
+
+  </div>
+
+
+  <!-- use these to change the values of the ticket -->
+    <input type="hidden" id="price" name="price" value="1.13703">
+    <input type="hidden" id="spread" name="spread" value="1.2">
+    <input type="hidden" id="margin" name="margin" value="200">
+  <!-- - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+  {{>includes/ticket}}
+
+
+
+  </main>
+
+{{/content}}
+
+{{$bodyEnd}}
+  {{>includes/gain-scripts}}
+{{/bodyEnd}}
+
+{{/gain_template}}

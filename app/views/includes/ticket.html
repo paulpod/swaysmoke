@@ -1,0 +1,274 @@
+<!-- Start the TICKET -->
+<!-- - - - - - - - -  -->
+  <div class="ticket toggle" id="trade-max" style="margin-top:0px;float:left;display:block;z-index:10;position:absolute;top:100px;left:300px;">
+
+    
+    <div id="ticket-topbar">
+
+      <div style="float:left;margin-right:20px">
+
+        <svg class="icon foldup-icon" viewBox="0 0 14 14">
+          <use xlink:href="#fold-up"></use>
+        </svg>
+      </div>
+
+
+
+      <div id="ticket-name" style="float:left;margin-top:2px">
+        <span style="border-bottom:2px solid #333;margin-left:35px">Trade</span>
+        <a href="#" style="margin:0 15px">Order</a>
+        <a href="#">Alert</a>
+      </div>
+
+      <button class="hide" style="background:none;border:0;padding:0;margin:0;float:right;">
+      <svg class="icon close-icon" viewBox="0 0 14 14" style="padding-top:5px">
+        <use xlink:href="#close-x"></use>
+      </svg>
+      </button>
+
+    </div>
+
+    <br clear="all">
+
+
+
+
+
+    <div id="market-name" style="margin-top:12px">
+      <!--<h2>Bolsas y Maercadod Espanoles SA Jun 16 Spread</h2>-->
+      <h2 style="float:left;font-weight:300">EUR/USD Forex Spreadbet</h2>
+
+
+
+        <svg class="icon chart-icon" viewBox="0 0 14 14" style="float:right;padding-top:6px">
+          <use xlink:href="#open-chart"></use>
+        </svg>
+
+    </div>
+
+    <br clear="all">
+
+
+
+
+    <div id="buysell-pair" style="margin-top:4px">
+
+      <button class="secondary-button sell" style="margin-right:15px">
+        <p>Sell</p>
+       
+
+       <input class="price-field upward" type="number" id="sellprice" name="sellprice" autocomplete="off" size="6" value="1.3544" style="text-align:center;width:140px;margin-top:-2px">
+
+      </button>
+
+      <button class="secondary-button buy">
+        <p>Buy</p>
+
+
+        <input class="price-field downward" type="number" id="buyprice" name="buyprice" autocomplete="off" size="6" value="1.3544" style="text-align:center;width:140px;margin-top:-2px">
+
+      </button>
+
+    </div>
+
+
+
+
+
+    <div id="ticket-quantity" style="margin-top:7px">
+
+      <div id="pound-point" style="float:left;width:180px">
+
+      <label class="form-label" for="quantity">&pound; Point <span style="color:#eee">/</span> <a href="#">Quantity</a> </label>
+
+      <input class="form-control qty" type="number" id="quantity" name="quantity" autocomplete="off" size="6" value="0" style="width:140px;margin-top:-2px">
+
+      </div>
+
+     
+
+      <div id="pound-arrows" style="float:left;margin:43px 0 0 -30px;width:20px">
+
+      <input type="image" value='+' class="arrow-button qtyplus" field='quantity' src="/public/images/number-arrow-up.png">
+      <input type="image" value='-' class="arrow-button qtyminus" field='quantity' src="/public/images/number-arrow-down.png">
+
+      </div>
+
+     
+
+
+
+      <div id="pound-value" style="float:right">
+
+      <label class="form-label" for="value">&pound; Value</label>
+
+      <input class="form-control" type="" id="value" name="value" autocomplete="off" size="6" value="£0" style="width:140px;color:#666;border-color:#808080;margin-top:-2px">
+
+      </div>
+
+
+      <br clear="all">
+
+    </div>
+
+
+
+
+
+<!-- - - - - - STOPS - - - - - - -->
+<!-- This is an open/close block -->
+<div id="ticket-stops" style="margin-top:15px">
+  <details style="" >
+    <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="true" style="">
+      <span class="" style="display:inline-block;width:170px;">Set stop loss</span><!-- this is the clickable open/close part -->
+
+      <span class="addlimit" style="color:#eee;display:inline-block;width:140px;text-align:right"> <a href="#addstop">+</a></span>
+    </summary>
+
+    <div class="js-hidden" id="details-content-0" aria-hidden="false" style="display:block;">
+
+      <!-- hidden by default details here -->
+      <div><!-- choose type of stop loss - standard, trailing or guaranteed - to use tabs selector -->
+      <span style="border-bottom:solid 2px #333">standard</span> <span style="color:#eee">/</span> <a href="#">trailing</a> <span style="color:#eee">/</span> <a href="#">guaranteed</a>
+      </div>
+
+
+      <!-- set the points away or specific price here, default is points -->
+      <div id="stop-price" style="float:left;">
+
+        <label class="form-label" for="stopprice"><span>Points</span> <span style="color:#eee">/</span> <a href="#">Price</a></label>
+
+        <input class="form-control" type="number" id="stopprice" name="stopprice" autocomplete="off" size="6" value="10" style="width:140px;">
+
+      </div>
+
+     
+
+      <!-- the use arrows to change quantity x total risk amount -->
+      <div id="stop-arrows" style="float:left;margin:43px 0 0 10px;width:20px">
+
+        <input type="image" value='+' class="arrow-button stopqtyplus" field='stopprice' src="/public/images/number-arrow-up.png">
+        <input type="image" value='-' class="arrow-button stopqtyminus" field='stopprice' src="/public/images/number-arrow-down.png">
+
+      </div>
+
+
+
+      <!-- the total *large* value of the position is calcualted here based on price * pips * multi -->
+      <div id="stop-value" style="float:right;margin-bottom:10px;">
+
+        <label class="form-label" for="stopvalue">&pound; Loss</label>
+
+        <input class="form-control" type="" id="stopvalue" name="stopvalue" autocomplete="off" size="6" value="" style="width:140px;color:#de4559;border-color:#808080">
+
+      </div>
+
+    </div>
+
+    <br clear="all" style="">
+
+  </details>
+
+</div>
+<!-- end the open/close block -->
+
+
+
+
+<!-- - - - - - LIMIT - - - - - - -->
+<!-- This is an open/close block -->
+<div id="ticket-stops" style="margin-top:9px">
+  <details style="" >
+    <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="true" style="">
+      <span class="" style="display:inline-block;width:170px;">Set limit</span><!-- this is the clickable open/close part -->
+
+      <span class="addlimit" style="color:#eee;display:inline-block;width:140px;text-align:right"> <a href="#addlimit">+</a></span>
+    </summary>
+
+    <div class="js-hidden" id="details-content-0" aria-hidden="false" style="display:block;margin-top:-14px">
+
+      <!-- hidden by default details here -->
+     
+      <!-- set the points away or specific price target here, default is points -->
+      <div id="limit-price" style="float:left;">
+
+        <label class="form-label" for="limitprice"><span>Points</span> <span style="color:#eee">/</span> <a href="#">Price</a></label>
+
+        <input class="form-control" type="number" id="limitprice" name="limitprice" autocomplete="off" size="6" value="15" style="margin-top:-2px;width:140px;">
+
+      </div>
+
+     
+
+      <!-- the use arrows to change price x profit target amount -->
+      <div id="limit-arrows" style="float:left;margin:43px 0 0 10px;width:20px">
+
+        <input type="image" value='+' class="arrow-button limitqtyplus" field='limitprice' src="/public/images/number-arrow-up.png">
+        <input type="image" value='-' class="arrow-button limitqtyminus" field='limitprice' src="/public/images/number-arrow-down.png">
+
+      </div>
+
+
+
+      <!-- the potential profit to take is here... price * pips * multi -->
+      <div id="stop-value" style="float:right">
+
+        <label class="form-label" for="limitvalue">&pound; Profit</label>
+
+        <input class="form-control" type="" id="limitvalue" name="limitvalue" autocomplete="off" size="6" value="" style="margin-top:-2px;width:140px;color:#1ba12d;border-color:#3E8853">
+
+      </div>
+
+    </div>
+
+    <br clear="all">
+
+  </details>
+</div>
+<!-- end the open/close block -->
+
+
+
+<!-- - - - - - MARGIN - - - - - - -->
+<!-- This is an open/close block -->
+<div id="margin" style="margin-top:10px">
+  <details style="" >
+    <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="true" style="">
+      <span class="">Margin requirements</span><!-- this is the clickable open/close part -->
+    </summary>
+
+    <div class="js-hidden" id="details-content-0" aria-hidden="false" style="display:block;margin-top:-14px">
+
+      <!-- hidden by default details here -->
+     
+
+      <div id="margin-available" class="data-attributes" style="float:left;margin:7px 10px 0 0">
+
+      <input id="marginreq" class="form-control" name="marginreq" value="0" style="margin-top:5px;border:none;background:none" /><br>
+
+
+        <span id="margindonut" data-peity='{ "fill": ["green", "#eeeeee"],  "innerRadius": 24, "radius": 35 }'>603/1234</span>
+      </div>
+
+
+      <div style="float:left">
+        <p style="margin-top:24px;margin-bottom:10px;padding-bottom:0">Margin available:</p>
+
+        <p style="margin-top:15px;margin-bottom:5px;padding-bottom:0"><strong style="width:6em;display:inline-block;">Pre-trade:</strong> <span id="marginall">1000</span></p>
+
+        <p><strong style="width:6em;display:inline-block;">Post-trade:</strong> <span id="marginav">1234</span></p>
+      </div>
+
+      <br clear="all">
+
+  </details>
+</div>
+<!-- end the open/close block -->
+
+
+<button class="primary-button" style="width:100%">Place trade</button>
+
+
+</div>
+<!-- end the TICKET  -->
+<!-- - - - - - - - - -->
