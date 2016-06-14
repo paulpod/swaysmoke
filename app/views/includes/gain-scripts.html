@@ -1,6 +1,13 @@
 <script type="text/javascript">
 
+// THIS IS FOR THE TABS from http://alistapart.com/article/radio-controlled-web-design 
 
+$('.tab').on('click', function (e) {
+    e.preventDefault();
+    $('.tab, .panel').removeClass('active');
+    $(this).add('#' + $(this).attr('id').replace(/\s*tab\s*/, 'panel')).addClass('active');
+    $(this).focus();
+});
 
 $(function() {
     $('.hide').click(function(){
@@ -66,6 +73,7 @@ function refreshNumbers() {
     // then * any currency conversions to base (eg. to USD, yesterday's close + 0.0125) 
     var exchangerate = 1.4453 + 0.0125;
     var marginrate = 0.0005;
+    var acc_marginav = 200;//account margin (trading resources)
     
     v_pound = (value * marginrate / exchangerate).toFixed(2);
     marginreqraw = v_pound;
@@ -84,13 +92,11 @@ function refreshNumbers() {
     $("#marginall").text('£' + currentMargin);
     $("#marginav").text('£' + marginav);
 
-    $(".data-attributes span").peity("donut", {
-  fill: function(_, i, all) {
-    var g = parseInt((i / all.length) * 255)
-    return "rgb( " + g + "," + (g * 5) + "," + g + ")"
-  }
-})
-
+    
+    //available quantity = ((marginav / marginrate) × exchangerate) / price
+    var quantav = ((((acc_marginav / marginrate) * exchangerate) / price) / 10000).toFixed(0);
+    $("#quantav_f").val(quantav);
+    $("#quantav").text(quantav);
 
   }
 }
@@ -130,7 +136,7 @@ $(".sparkline").peity("line", {
 
 
 
-// QUANTITY buttons + calculator
+// £POINT quantity buttons + calculator
 
 $(document).ready(function(){
     // This button will increment the TRANSACTION value
@@ -141,11 +147,18 @@ $(document).ready(function(){
         fieldName = $(this).attr('field');
         // Get its current value
         var currentVal = parseInt($('input[name='+fieldName+']').val());
+        var quantav = parseInt($('input[name='+'quantav_f'+']').val());
+
         // If is not undefined
         if (!isNaN(currentVal)) {
             // Increment
-            $('input[name='+fieldName+']').val(currentVal + 1);
-            var newquant = currentVal + 1;
+
+
+            if (currentVal < quantav) {
+                $('input[name='+fieldName+']').val(currentVal + 1);
+                var newquant = currentVal + 1;
+            }
+
             //do the number wang too
             var v_pound = $("#quantity").val();
             var price = 1.13488;

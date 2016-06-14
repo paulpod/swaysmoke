@@ -15,7 +15,6 @@ body {
   font-family: 'Open Sans', Arial, sans-serif;
   margin: 0 0 0 40px;
   background-color: #eee;
-
 }
 div,span,p,h1,h2,h3,h4,h5,h6,input {
   font-family: 'Open Sans', Arial, sans-serif;
@@ -29,6 +28,12 @@ strong {font-weight:700;}
 html {
   zoom: 0.75;
 }
+.with-vgrid {
+  background: url(/public/images/vgrid-10-10-col.png) 0 0;
+  background-repeat: repeat;
+
+}
+
 
 button.show  {
 
@@ -185,12 +190,6 @@ fill: #de4559;
 
 
 
-
-.with-vgrid {
-  background: url(/public/images/vgrid-10-10.png) -40px 0;
-  background-repeat: repeat;
-
-}
 
 
 /* News headlines and story */
@@ -471,6 +470,7 @@ background: #303030; /* Old browsers */
 background: linear-gradient(#303030, #505050);
 height: 90px;
 margin-left: -40px;
+overflow: hidden;
 }
 .service-logo {
   display: inline-block;
@@ -732,6 +732,7 @@ box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.75);
   padding-top: 6px;
   font-weight: 700;
 }
+
 .ticket #market-name {
 //font-weight: 300;
 font-size: 1.2em;
@@ -818,7 +819,14 @@ padding-top:0.33em;
   background-color: white;
   border:none;
   font-size: 20px;
-  padding: 6px 10px
+  padding: 6px 10px;
+  outline: none;
+}
+.arrow-button:hover {
+  background-color: #ffdd66;
+}
+.arrow-button:active {
+  background-color: white;
 }
 
 .price-field {
@@ -856,6 +864,10 @@ padding-top:0.33em;
   font-size:1.1em;
   background-color: rgba(21, 125, 177, 1);
   border-bottom-color: #1f5a78;
+}
+.buysell-inactive {
+  background-color: rgba(168, 168, 168, 1);
+  border-bottom-color: #606060;
 }
 .sell .upward:before {
   content: '\25B2';
@@ -1028,3 +1040,57 @@ color:#000066;
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {display:block;}
 
+
+/* TABS from http://alistapart.com/article/radio-controlled-web-design */
+
+/* Android 2.3 :checked fix 
+@keyframes fake {
+    from {
+        opacity: 1;
+    }
+    to {
+        opactity: 1
+    }
+}
+body {        
+    animation: fake 1s infinite;
+}*/
+
+
+
+
+.js-tabs .tab {
+  display: inline-block;
+  vertical-align: top;
+  cursor: hand;
+  cursor: pointer;
+  text-decoration: none;
+  color: #333;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #0066cc;
+  font-size: 0.8em;
+  padding: 0 0.33em;
+}
+.js-tabs .tab:focus {
+    box-shadow: 0 0 3px 3px rgba(0,127,255,.5);
+}
+.js-tabs .tab:hover {
+    background-color: #fff;
+}
+.js-tabs .tab.active {
+    border-bottom: .3em solid #fff;
+    cursor: default;
+    color: black;
+}
+
+.js-tabs .panels {
+    background-color: #fff;
+}
+
+.js-tabs .panel {
+    display: none;
+}
+.js-tabs .panel.active {
+    display: block;
+}
