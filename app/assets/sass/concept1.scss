@@ -188,6 +188,50 @@ fill: #de4559;
 
 
 
+.reveal-num {
+  display: inline-block;
+  
+
+  color: #999;
+  font-weight: 700;
+  font-size:0.8em;
+  text-align: center;
+  
+
+  margin-left: 15px;
+  margin-top: 7px;
+}
+.positions-detail-table table {
+}
+.positions-detail-table {
+  margin-top:-40px;
+  
+}
+.positions-detail-table td {
+  height: 40px;
+}
+.detail-blank {
+  width:180px;
+}
+.detail-open {
+  width: 100px;
+}
+.detail-trade {
+  text-align: center;
+  width:100px;
+}
+.detail-quantity {
+  width:60px;
+  text-align: right;
+}
+.detail-price {
+width: 100px;
+text-align: right;
+}
+.detail-pnl {
+  width: 100px;
+  text-align: right;
+}
 
 
 

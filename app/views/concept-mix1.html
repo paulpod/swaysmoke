@@ -11,7 +11,6 @@
 
 
 
-
 {{$content}}
 
 
@@ -19,27 +18,21 @@
 
   {{>includes/gain-header}}
 
-
+<div id="cols" style="overflow:visible">
   <div id="leftcol" style="display:inline-block;float:left">
 
-  {{>includes/open-positions}}
+  {{>includes/open-positions-reveals}}
 
-  {{>includes/active-orders}}
+  
 
-  {{>includes/watchlist}}
 
   </div>
 
 
 
-  <div style="margin-left:60px;float:left;">
+ 
 
-  {{>includes/news-stories}}
-
-  {{>includes/news-story}}
-
-  </div>
-
+</div>
 
   <!-- use these to change the values of the ticket -->
     <input type="hidden" id="price" name="price" value="1.13703">
@@ -48,7 +41,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - -->
 
 
-  {{>includes/ticket}}
+  {{>includes/tabbed-ticketz}}
 
 
 
