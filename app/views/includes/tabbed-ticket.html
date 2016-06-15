@@ -22,7 +22,6 @@
       </div>
 
 
-    <div class="panels">
 
       <div class="panels">
         <ul id="trade-panel" class="panel active" role="tabpanel" aria-labelledby="trade-tab">
@@ -533,9 +532,94 @@
 
           <button class="primary-button" style="width:100%">Place order</button>
         </ul>
+
+
+
+
+
         <ul id="alert-panel" class="panel" role="tabpanel" aria-labelledby="alert-tab">
             
-            <P>ALERT UI HERE</P>
+            <div id="market-name" style="margin-top:12px">
+
+          <h2 style="float:left;font-weight:300">EUR/USD (per 0.0001) CFD</h2>
+
+          <svg class="icon chart-icon" viewBox="0 0 14 14" style="float:right;padding-top:6px">
+            <use xlink:href="#open-chart"></use>
+          </svg>
+
+          </div>
+
+          <br clear="all">
+
+          <!-- - - - - - MAIN SELL / BUY .... red / blue price buttons -->
+          <div id="buysell-pair" style="margin-top:4px">
+
+            <button class="secondary-button sell buysell-inactive" style="margin-right:15px">
+              <p>Sell</p>
+             
+
+             <input class="price-field upward" type="number" id="sellprice" name="sellprice" autocomplete="off" size="6" value="1.3544" style="text-align:center;width:140px;margin-top:-2px">
+
+            </button>
+
+            <button class="secondary-button buy">
+              <p>Buy</p>
+
+
+              <input class="price-field downward" type="number" id="buyprice" name="buyprice" autocomplete="off" size="6" value="1.3544" style="text-align:center;width:140px;margin-top:-2px">
+
+            </button>
+          </div>
+
+
+          <!-- - - - - - ALERT box, defaults to current buy/sell price -->
+          <div id="alert-price" style="margin-top:7px">
+
+            <div id="" style="float:left;width:180px">
+
+            <label class="form-label" for="alert_price">Price to send alert</label>
+
+            <input class="form-control qty" type="number" id="alert_price" name="alert_price" autocomplete="off" size="6" value="1.3544" style="width:140px;margin-top:-2px">            
+
+            </div>
+
+           
+
+            <div id="alert-arrows" style="float:left;margin:43px 0 0 -30px;width:20px">
+
+            <input type="image" value='+' class="arrow-button alertqtyplus" field='alert_price' src="/public/images/number-arrow-up.png">
+            <input type="image" value='-' class="arrow-button alertqtyminus" field='alert_price' src="/public/images/number-arrow-down.png">
+
+            </div>
+
+
+
+           
+
+
+
+            
+            <!--<div id="pound-value" style="float:right">
+
+            <label class="form-label" for="value">&pound; Value</label>
+
+            <input class="form-control" type="" id="value" name="value" autocomplete="off" size="6" value="£0" style="width:140px;color:#666;border-color:#808080;margin-top:-2px">
+
+            </div>-->
+
+
+            <br clear="all">
+
+          </div><!-- end Quantity field / bttons -->
+
+
+          <p>Alert good til <a href="#">cancelled</a></p>
+
+          <p>Send as <a href="#">email</a>, <a href="#">tweet</a> or <a href="#">sms</a></p>
+
+          <button class="primary-button" style="width:100%">Set alert</button>
+
+
 
         </ul>
     </div>
