@@ -1,4 +1,4 @@
-<div id="open-positions-list" style="display:inline-block;">
+<div id="open-positions-list" style="display:inline-block;margin-top:-4px">
 
   <header class="table-head">
     <h4 class="uppercase">Open positions</h4>
@@ -11,9 +11,9 @@
 
   </header> 
 
-  <div class="stock-table positions-table">
+  <div class="stock-table positions-table" >
     <table style="">
-      <thead>
+      <thead >
         <tr>
           <th>&nbsp;</th>
           <th style="text-align:left;">Market</th>
@@ -33,9 +33,11 @@
       <tbody>
         <tr class="toprow">
           <td class="stock-reveal">
+            <a href="javascript:toggleDiv('positions-info-row1');">
             <svg class="icon reveal-icon" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
           <td class="stock-name">Wall Street CFD</td>
           <td class="stock-direction">
@@ -55,6 +57,39 @@
             </svg>
           </td>
         </tr>
+
+        <!-- The hidden row contains all the details of the open position -->
+        <tr style="display:none" id="positions-info-row1">
+        <td colspan="7" style="">
+
+        <table class="position-detail-table">
+          <thead>
+            <th class="detail-blank">&nbsp;</th>
+            <th class="detail-open">Open price</th>
+            <th class="detail-quantity">&#8470;</th>
+            <th class="detail-price">Current</th>
+            <th class="detail-price">Stop</th>
+            <th class="detail-price">Limit</th>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td class="detail-blank">&nbsp;</td>
+              <td class="detail-open">1.12265</td>
+              <td class="detail-quantity">33</td>
+              <td class="detail-price">1.12300</td>
+              <td class="detail-price">1.12120</td>
+              <td class="detail-price">1.12900</td>
+              <td class="detail-pnl pnl-detail-profit">+115.50</td>
+              <td class="stock-close" style="text-align:right;">
+                <svg class="icon close-icon" viewBox="0 0 14 14">
+                  <use xlink:href="#close-x"></use>
+                </svg>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
 
         <tr>
           <td class="stock-reveal">
@@ -168,8 +203,10 @@
             <th class="detail-blank">&nbsp;</th>
             <th class="detail-open">Open price</th>
             <th class="detail-trade">Trade</th>
-            <th class="detail-quantity">Quantity</th>
-            <th class="detail-price">Price</th>
+            <th class="detail-quantity">&#8470;</th>
+            <th class="detail-price">Current</th>
+            <th class="detail-price">Stop</th>
+            <th class="detail-price">Limit</th>
             <th class="detail-pnl pnl-detail-profit">P &amp; L</th>
             <th id="close-title" style="text-align:right;">Close</th>
           </thead>
@@ -185,6 +222,8 @@
               </td>
               <td class="detail-quantity">33</td>
               <td class="detail-price">1.12300</td>
+              <td class="detail-price">1.12120</td>
+              <td class="detail-price">1.12900</td>
               <td class="detail-pnl pnl-detail-profit">+115.50</td>
               <td class="stock-close" style="text-align:right;">
                 <svg class="icon close-icon" viewBox="0 0 14 14">
@@ -203,6 +242,8 @@
               </td>
               <td class="detail-quantity">50</td>
               <td class="detail-price">1.12300</td>
+              <td class="detail-price">1.12120</td>
+              <td class="detail-price">1.12900</td>
               <td class="detail-pnl pnl-detail-profit">+165.50</td>
               <td class="stock-close" style="text-align:right;">
                 <svg class="icon close-icon" viewBox="0 0 14 14">
@@ -221,6 +262,8 @@
               </td>
               <td class="detail-quantity">33</td>
               <td class="detail-price">1.12300</td>
+              <td class="detail-price">1.12120</td>
+              <td class="detail-price">1.12900</td>
               <td class="detail-pnl pnl-detail-profit">+95.70</td>
               <td class="stock-close" style="text-align:right;">
                 <svg class="icon close-icon" viewBox="0 0 14 14">
