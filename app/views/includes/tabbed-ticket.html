@@ -399,7 +399,7 @@
 
 
                 <!-- set the points away or specific price here, default is points -->
-                <div id="stop-price" style="float:left;">
+                <div id="order-stop-price" style="float:left;">
 
                   <label class="form-label" for="order_stopprice"><span>Points</span> <span style="color:#eee">/</span> <a href="#">Price</a></label>
 
@@ -412,19 +412,19 @@
                 <!-- the use arrows to change quantity x total risk amount -->
                 <div id="stop-arrows" style="float:left;margin:43px 0 0 10px;width:20px">
 
-                  <input type="image" value='+' class="arrow-button stopqtyplus" field='stopprice' src="/public/images/number-arrow-up.png">
-                  <input type="image" value='-' class="arrow-button stopqtyminus" field='stopprice' src="/public/images/number-arrow-down.png">
+                  <input type="image" value='+' class="arrow-button stopqtyplus" field='order_stopprice' src="/public/images/number-arrow-up.png">
+                  <input type="image" value='-' class="arrow-button stopqtyminus" field='order_stopprice' src="/public/images/number-arrow-down.png">
 
                 </div>
 
 
 
-                <!-- the total *large* value of the position is calcualted here based on price * pips * multi -->
-                <div id="stop-value" style="float:right;margin-bottom:10px;">
+                <!-- the total value of the loss is calcualted here based on price * neg-pips * quantity -->
+                <div id="order-stop-value" style="float:right;margin-bottom:10px;">
 
-                  <label class="form-label" for="stopvalue">&pound; Loss</label>
+                  <label class="form-label" for="order_stopvalue">&pound; Loss</label>
 
-                  <input class="form-control" type="" id="stopvalue" name="stopvalue" autocomplete="off" size="6" value="" style="width:140px;color:#de4559;border-color:#808080">
+                  <input class="form-control" type="" id="order_stopvalue" name="order_stopvalue" autocomplete="off" size="6" value="" style="width:140px;color:#de4559;border-color:#808080">
 
                 </div>
 
@@ -442,7 +442,7 @@
 
           <!-- - - - - - LIMIT - - - - - - -->
           <!-- This is an open/close block -->
-          <div id="ticket-stops" style="margin-top:9px">
+          <div id="order-limit" style="margin-top:9px">
             <details style="" >
               <summary role="button" aria-controls="details-content-0" tabindex="0" aria-expanded="true" style="">
                 <span class="" style="display:inline-block;width:170px;">Set limit</span><!-- this is the clickable open/close part -->
@@ -455,11 +455,11 @@
                 <!-- hidden by default details here -->
                
                 <!-- set the points away or specific price target here, default is points -->
-                <div id="limit-price" style="float:left;">
+                <div id="order-limit-price" style="float:left;">
 
-                  <label class="form-label" for="limitprice"><span>Points</span> <span style="color:#eee">/</span> <a href="#">Price</a></label>
+                  <label class="form-label" for="order_limitprice"><span>Points</span> <span style="color:#eee">/</span> <a href="#">Price</a></label>
 
-                  <input class="form-control" type="number" id="limitprice" name="limitprice" autocomplete="off" size="6" value="15" style="margin-top:-2px;width:140px;">
+                  <input class="form-control" type="number" id="order_limitprice" name="order_limitprice" autocomplete="off" size="6" value="15" style="margin-top:-2px;width:140px;">
 
                 </div>
 
@@ -468,19 +468,19 @@
                 <!-- the use arrows to change price x profit target amount -->
                 <div id="limit-arrows" style="float:left;margin:43px 0 0 10px;width:20px">
 
-                  <input type="image" value='+' class="arrow-button limitqtyplus" field='limitprice' src="/public/images/number-arrow-up.png">
-                  <input type="image" value='-' class="arrow-button limitqtyminus" field='limitprice' src="/public/images/number-arrow-down.png">
+                  <input type="image" value='+' class="arrow-button limitqtyplus" field='order_limitprice' src="/public/images/number-arrow-up.png">
+                  <input type="image" value='-' class="arrow-button limitqtyminus" field='order_limitprice' src="/public/images/number-arrow-down.png">
 
                 </div>
 
 
 
                 <!-- the potential profit to take is here... price * pips * multi -->
-                <div id="stop-value" style="float:right">
+                <div id="order-limit-value" style="float:right">
 
-                  <label class="form-label" for="limitvalue">&pound; Profit</label>
+                  <label class="form-label" for="order_limitvalue">&pound; Profit</label>
 
-                  <input class="form-control" type="" id="limitvalue" name="limitvalue" autocomplete="off" size="6" value="" style="margin-top:-2px;width:140px;color:#1ba12d;border-color:#3E8853">
+                  <input class="form-control" type="" id="order_limitvalue" name="order_limitvalue" autocomplete="off" size="6" value="" style="margin-top:-2px;width:140px;color:#1ba12d;border-color:#3E8853">
 
                 </div>
 

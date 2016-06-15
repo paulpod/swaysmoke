@@ -121,12 +121,13 @@ function refreshNumbers() {
     $("#order_value").val('£' + ov_pound);
 
     // Do the numberwang for Order STOPS
+    var order_price = $("#order_price").val();
     var ordernewquant = $("#order_quantity").val();
-    var ov_pound = $("#stopprice").val();
-    ov_pound = (ov_pound * stopprice * ordernewquant).toFixed(0);
-    v_stoppound = numberWithCommas(v_pound);
+    var order_stopprice = $("#order_stopprice").val();
+    var ov_stoppound = (order_price * order_stopprice * ordernewquant).toFixed(0);
+    ov_stoppound = numberWithCommas(ov_stoppound);
 
-    $("#stopvalue").val('-£' + v_stoppound);
+    $("#order_stopvalue").val('-£' + ov_stoppound);
 
 
 
