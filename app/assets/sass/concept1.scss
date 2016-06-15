@@ -190,16 +190,18 @@ fill: #de4559;
 
 .reveal-num {
   display: inline-block;
-  
-
-  color: #999;
+  overflow: visible;
+  width: 15px;
+  height:15px;
+  background: url(/public/images/white-circle.svg) no-repeat ;
+  background-size: 15px 15px;
+  color: #666;
+  line-height: 1.1;
   font-weight: 700;
-  font-size:0.8em;
+  font-size:0.7em;
   text-align: center;
-  
-
-  margin-left: 15px;
-  margin-top: 7px;
+  margin-left: 12px;
+  margin-top: 10px;
 }
 /* for the regular detail row in Open Positions table */
 .position-detail-table {
