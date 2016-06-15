@@ -98,6 +98,38 @@ function refreshNumbers() {
     $("#quantav_f").val(quantav);
     $("#quantav").text(quantav);
 
+    // Do the numberwang for the ORDER price field
+    var orderprice_spread = 0.00014
+    var currentOrderprice = parseFloat($('input[name='+"order_price"+']').val());
+    //var order_price = currentOrderprice;
+    //$("#order_price").val(order_price);
+    pricediff = (currentOrderprice - currentMid).toFixed(4);
+    $("#pricediff").val(pricediff + '%');
+
+    // Do the numberwang for the ORDER price hints
+    var order_lower = currentMid - orderprice_spread;
+    var order_higher = currentMid + orderprice_spread;
+    $("#order_lower").text(order_lower);
+    $("#order_higher").text(order_higher);
+
+    // Do the numberwang for the ORDER price x quantity = value indicator
+    var ov_pound = $("#order_quantity").val();
+    var orderprice = $("#order_price").val();
+    var order_value = (ov_pound * orderprice * 10000).toFixed(0);
+    ov_pound = numberWithCommas(order_value);
+
+    $("#order_value").val('£' + ov_pound);
+
+    // Do the numberwang for Order STOPS
+    var ordernewquant = $("#order_quantity").val();
+    var ov_pound = $("#stopprice").val();
+    ov_pound = (ov_pound * stopprice * ordernewquant).toFixed(0);
+    v_stoppound = numberWithCommas(v_pound);
+
+    $("#stopvalue").val('-£' + v_stoppound);
+
+
+
   }
 }
 
@@ -371,6 +403,175 @@ $(document).ready(function(){
         }
     });
 });
+
+
+// ORDER - Price buttons + calculator
+
+$(document).ready(function(){
+    // This button will increment the ORDER PRICE value
+    $('.orderpriceplus').click(function(e){
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        fieldName = $(this).attr('field');
+        // Get its current value
+        var currentVal = parseFloat($('input[name='+"order_price"+']').val());
+        // If is not undefined
+        if (!isNaN(currentVal)) {
+            // Increment
+            newOrderprice = (currentVal + 0.0001).toFixed(4);
+            $('input[name='+fieldName+']').val(newOrderprice);
+            //do the number wang too
+            
+
+            $("#order_price").val();
+        } else {
+            // Otherwise put a 0 there
+            $('input[name='+fieldName+']').val(0);
+
+
+        }
+    });
+    // This button will decrement the LIMIT value till 0
+    $(".orderpriceminus").click(function(e) {
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        fieldName = $(this).attr('field');
+        // Get its current value
+        var currentVal = parseFloat($('input[name='+"order_price"+']').val());
+        // If it isn't undefined or its greater than 0
+        if (!isNaN(currentVal) && currentVal > 0) {
+            // Decrement one
+            newOrderprice = (currentVal - 0.0001).toFixed(4);
+            $('input[name='+fieldName+']').val(newOrderprice);
+            //do the number wang too
+           
+            $("#order_price").val();
+        } else {
+            // Otherwise put a 0 there
+            $('input[name='+fieldName+']').val(0);
+        }
+    });
+});
+
+
+
+// £POINT quantity buttons + calculator
+
+$(document).ready(function(){
+    // This button will increment the TRANSACTION value
+    $('.orderqtyplus').click(function(e){
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        fieldName = $(this).attr('field');
+        // Get its current value
+        var currentVal = parseInt($('input[name='+fieldName+']').val());
+        var quantav = parseInt($('input[name='+'quantav_f'+']').val());
+
+        // If is not undefined
+        if (!isNaN(currentVal)) {
+            // Increment
+
+
+            if (currentVal < quantav) {
+                $('input[name='+fieldName+']').val(currentVal + 1);
+                var newquant = currentVal + 1;
+            }
+
+            //do the number wang too
+            var ov_pound = $("#order_quantity").val();
+            var order_price = $("#order_price").val();
+            var order_value = (ov_pound * order_price * 10000).toFixed(0);
+            ov_pound = numberWithCommas(order_value);
+
+            $("#order_value").val('£' + ov_pound);
+
+            // Do the numberwang for STOPS
+            var newquant = $("#quantity").val();
+            var v_pound = $("#stopprice").val();
+            v_pound = (v_pound * price * newquant).toFixed(0);
+            v_stoppound = numberWithCommas(v_pound);
+
+            $("#stopvalue").val('-£' + v_stoppound);
+
+            // Do the numberwang for LIMITS
+
+            var v_pound = $("#limitprice").val();
+            v_pound = (v_pound * price * newquant).toFixed(0);
+            v_limitpound = numberWithCommas(v_pound);
+
+
+            $("#limitvalue").val('£' + v_limitpound);
+
+            // Do the numberwang for MARGIN
+
+            // Margin required is Value (Quantity x Price) * Margin rate (0.5% or similar) ...
+            // then * any currency conversions to base (eg. to USD, yesterday's close + 0.0125) 
+            var exchangerate = 1.4453 + 0.0125;
+            var marginrate = 0.0005;
+            
+            v_pound = (value * marginrate / exchangerate).toFixed(2);
+            v_marginpound = numberWithCommas(v_pound);
+
+            $("#marginreq").val('£' + v_marginpound);
+
+            $(".data-attributes span").peity("donut", {
+              fill: function(_, i, all) {
+                var g = parseInt((i / all.length) * 255)
+                return "rgb( " + g + "," + (g * 5) + "," + g + ")"
+              }
+            })
+        } else {
+            // Otherwise put a 0 there
+            $('input[name='+fieldName+']').val(0);
+
+
+        }
+    });
+    // This button will decrement the TRANSACTION value till 0
+    $(".orderqtyminus").click(function(e) {
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        fieldName = $(this).attr('field');
+        // Get its current value
+        var currentVal = parseInt($('input[name='+fieldName+']').val());
+        // If it isn't undefined or its greater than 0
+        if (!isNaN(currentVal) && currentVal > 0) {
+            // Decrement one
+            $('input[name='+fieldName+']').val(currentVal - 1);
+            //do the number wang too
+            var v_pound = $("#quantity").val();
+            var price = 1.13488;
+            v_pound = (v_pound * price * 10000).toFixed(0);
+            v_pound = numberWithCommas(v_pound);
+
+            $("#value").val('£' + v_pound);
+
+            // Do the numberwang for STOPS
+            var newquant = $("#quantity").val();
+            var v_pound = $("#stopprice").val();
+            v_pound = (v_pound * price * newquant).toFixed(0);
+            v_stoppound = numberWithCommas(v_pound);
+
+            $("#stopvalue").val('-£' + v_stoppound);
+
+            // Do the numberwang for LIMITS
+            var v_pound = $("#limitprice").val();
+            v_pound = (v_pound * price * newquant).toFixed(0);
+            v_limitpound = numberWithCommas(v_pound);
+
+
+            $("#limitvalue").val('£' + v_limitpound);
+        } else {
+            // Otherwise put a 0 there
+            $('input[name='+fieldName+']').val(0);
+        }
+    });
+});
+
 
 
 
