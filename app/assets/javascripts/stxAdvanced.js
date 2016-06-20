@@ -3,17 +3,17 @@
 (function(){
 
 	function _stxAdvanced_js(_exports) {
-		
+
 		var STX=_exports.STX;
 		var STXChart=_exports.STXChart;
 		var $$=_exports.$$;
 		var $$$=_exports.$$$;
-		
+
 		/**
 		 * Plugin that support chart comparison.
 		 */
 		STX.Comparison.startPlugin();
-		
+
 		/**
 		 * Default color selection for Comparison UI. This array will be traversed as the user adds comparison charts and then loop back at the end.
 		 * @type {Array}
@@ -21,7 +21,7 @@
 		 * @version ChartIQ Advanced Package
 		 */
 		STX.Comparison.colorOrder=["#b387d7","#ff9250","#e36460","#dcdf67","#b3d987","#ffcd2b","#66cac4","#97b8f7"];
-		
+
 		/**
 		 * The current location in the STX.Comparison.colorOrder array.
 		 * @type {Number}
@@ -29,24 +29,24 @@
 		 * @version ChartIQ Advanced Package
 		 */
 		STX.Comparison.colorPointer=0;
-		
+
 		/**
 		 * Comparisons can either be "compare", "overlay" or "absolute".
-		 *  
+		 *
 		 * The UI defaults to "compare" which produces a y-axis with relative percentage
 		 * changes.
-		 * 
+		 *
 		 * "overlay" overlays the series so that the axis is not shared.
-		 * 
-		 * "absolute" renders each series on the exact y-axis values (This is **not** recommended for series that do not share a similar y-axis price range). 
-		 * 
+		 *
+		 * "absolute" renders each series on the exact y-axis values (This is **not** recommended for series that do not share a similar y-axis price range).
+		 *
 		 * @since 03/17/2015 "absolute" puts all series on the same axis (developers should ensure that series are around the same price range)
 		 * @type {string}
 		 * @memberOf STX.Comparison
 		 * @version ChartIQ Advanced Package
 		 */
 		STX.Comparison.type="compare";
-		
+
 		/**
 		 * ID of the study panel to create for the correlation coefficient
 		 * @memberOf STX.Comparison
@@ -59,7 +59,7 @@
 		 * @version ChartIQ Advanced Package
 		 */
 		STX.Comparison.requestCorrelation=false;
-		
+
 		/**
 		 * Attaches a color picker to the comparison UI
 		 * @memberOf STX.Comparison
@@ -89,11 +89,12 @@
 			// Match up the comparison and store the data point
 			STX.addMemberToMasterdata(stx, symbol, comparison);
 		};
-		
+
 		/**
 		 * Adds a new comparison symbol. This method is driven from the UI but can also be called programatically if the comparison UI is at least
-		 * available in the page. Otherwise, if you are not using the sample GUI, you can override this method to exclude references to the UI or use stx.addSeries and add your code to manage the data feed.
-		 * By default, it uses the STX.QuoteFeed infrastructure to fetch data.
+		 * available in the page.
+		 * Otherwise, if you are not using the sample GUI, you can override this method to exclude references to the UI.
+		 * If available, it will use the STX.QuoteFeed infrastructure to fetch data. You can override the comparison data source in {@link STX.Comparison.fetch}
 		 * @param {object} stx           The chart object
 		 * @param {string/object} compareSymbol The symbol to compare. A symbol string or an object representing the symbol can be used. If using an object, you can send anything you want in it, but you must always include at least a 'symbol' element. This object will be passed on to {@link STX.Comparison.fetch} as `parameters.symbolObject`.  And if using the [fetch()]{@link STX.QuoteFeed#fetch} method for data loading, it will be present in the parameters list there as well.
 		 * @param {function} cb Callback function
@@ -103,24 +104,24 @@
 		 * @version ChartIQ Advanced Package
 		 * @example
 		 * STX.Comparison.add(stxx, 'GE',null,'General Motors');
-		 * @since 
+		 * @since
 		 * <br> 07/01/2015 added parameters argument.
 		 * <br> 2015-11-1 compareSymbol can now be a string or an object.
 		 */
 		STX.Comparison.add=function(stx, compareSymbol, cb, displaySymbol, parameters){
-			
+
 			if(!compareSymbol) compareSymbol=$$$("#compareSymbol").value.toUpperCase();
 			if(!compareSymbol) {
 				if(cb) cb();
 				return;
 			}
-			
+
 			if(!parameters) parameters={};
-			
+
 			if(typeof compareSymbol == 'object') {
 				parameters.symbolObject=compareSymbol;
 				compareSymbol = compareSymbol.symbol;
-	      	} 
+	      	}
 
 			if(compareSymbol==stx.chart.symbol && !parameters.force) {
 				if(cb) cb();
@@ -129,10 +130,11 @@
 			if(!displaySymbol) displaySymbol=compareSymbol;
 			$$$("#compareSymbol").blur();
 
-				
+
 			function processResponse(symbol){
 				return function(err){
 					if(err) {
+						delete stx.chart.series[symbol];  // clean up the series list so we don't continue to fetch this symbol
 						if(cb) cb();
 						return;
 					}
@@ -160,14 +162,14 @@
 					if(cb) cb();
 				};
 			}
-			
+
 			if(!stx.chart.legend){
 				stx.chart.legend={
 						x: 260,
 						y: 10
 				};
 			}
-			
+
 			var isComparison=(STX.Comparison.type=="compare");
 			var sharedAxis=isComparison || STX.Comparison.type=="absolute";
 			var requiredParams= {isComparison:isComparison, shareYAxis:sharedAxis};
@@ -180,10 +182,10 @@
 		};
 
 		/**
-		 * If you're not using a QuoteFeed, then override this with your version of fetch.
-	 	 * As outlined by the code, **do not** set parameters.data to {useDefaultQuoteFeed:true} when overriding and not using a quotefeed!
-		 * The data you fetch should be in the standard chart JSON format, or as outlined by {@link STXChart#addSeries}. Please review the [Data Format](index.html#data-format) section to properly format your OHLC quote objects. 
-		 * See example for suggested code.
+		 * If you're not using a QuoteFeed, then add here your version of fetch to retrieve the comparison data.
+		 * The data you fetch should be in the standard chart OHLC format, or as outlined by {@link STXChart#addSeries}.
+		 * Please review the [Data Format](index.html#data-format) section to properly format your OHLC quote objects.
+		 * Once the comparison data is available, assign it to `parameters.data` and call `addSeries()`. See example for suggested code.
 		 * @param {object} stx           The chart object
 		 * @param {string} comparisonSymbol The symbol to compare.
 		 * @param {function} cb Callback function
@@ -202,10 +204,10 @@
 					parameters.data = JSON.parse(response);
 					stx.addSeries(comparisonSymbol, parameters, cb);	// always include the callback (cb) function!
 				});
-			}; 
+			};
 		 */
 		STX.Comparison.fetch=function(stx, comparisonSymbol, parameters, cb){
-			// fetch comparison data here and set the parameters.data for the series as follows:
+			// if not using a quoteFeed, fetch comparison data here and set the parameters.data for the series as follows:
 			// parameters.data= { your data array here };
 			if(!parameters.data) parameters.data={useDefaultQuoteFeed:true};
 			stx.addSeries(comparisonSymbol, parameters, cb);
@@ -230,7 +232,7 @@
 		  });
 		};
 
-		
+
 		/**
 		 * Resets comparisons, removing all existing comparisons and resetting the UI. Call this when changing symbols or to "remove all" comparisons.
 		 * @param  {object} stx The chart object
@@ -254,7 +256,7 @@
 			}
 			$$$("#compareNone").style.display="";
 		};
-		
+
 		/**
 		 * Initializes the comparison UI to handle keystrokes and color picking and to associate it with a chart object
 		 * @param  {object} stx The chart object
@@ -274,7 +276,7 @@
 				});
 			}
 		};
-		
+
 		/**
 		 * The comparison plugin adds functionality to the built in "removeSeries" function. This updates the comparison UI if a user
 		 * removes a series by right clicking.
@@ -325,14 +327,14 @@
 				if(!params.stx.chart.series[field].parameters.isComparison && !params.stx.chart.series[field].parameters.quoteFeedCallbackRefresh) continue;
 				syms[field]=true;
 		    }
-		    
+
 		    // get the symbols used in the studies
 			for(var p in params.stx.panels){
 				if(params.stx.panels[p].studyQuotes){
 					for(var sq in params.stx.panels[p].studyQuotes) syms[sq]=true;
 				}
 			}
-			
+
 			var arr=[];
 			for(field in syms){
 				var seriesParam=STX.shallowClone(params.originalState);
@@ -340,12 +342,12 @@
 				if(seriesParam.update) {
 					seriesParam.startDate=getStartDate(field);
 				} else {
-					// since we support comparisons between instruments that may have different trading hours, 
-					// we can't depend on the params.ticks to keep them in sync. 
-					// Instead , when appending data, we must explicitly send exact ranges to load. 
+					// since we support comparisons between instruments that may have different trading hours,
+					// we can't depend on the params.ticks to keep them in sync.
+					// Instead , when appending data, we must explicitly send exact ranges to load.
 					// Using ticks may cause to load different ranges for instruments with different trading hours.
 					if (!seriesParam.startDate) seriesParam.startDate = params.stx.masterData[0].DT;
-					if (!seriesParam.endDate) seriesParam.endDate = params.stx.masterData[params.stx.masterData.length-1].DT;	
+					if (!seriesParam.endDate) seriesParam.endDate = params.stx.masterData[params.stx.masterData.length-1].DT;
 				}
 				arr.push(seriesParam);
 			}
@@ -361,47 +363,209 @@
 		 		}
 				params.stx.createDataSet();
 				params.stx.draw();
-			}); 
+			});
+		};
+
+		/**
+		 * Extracts symbols from an equation.  An equation can consist of symbols and the following operators: +-/*%()
+		 * PEMDAS order is followed.  Additionally, symbols can be enclosed in brackets [] to treat them as literal non-parseables.
+		 * @param {string} equation The equation to parse (e.g. IBM+GE)
+		 * @return  {object} Parsed equation, {equation: [formatted equation], symbols: [array of symbols found in the equation]}
+		 * @memberOf STX
+		 * @version ChartIQ Advanced Package
+		 */
+		STX.formatEquation=function(equation){
+			var eq="";
+			var syms=[];
+			var thisSym="";
+			var lockSymbol=false;
+			for(var j=1;j<equation.length;j++){
+				var c=equation[j].toUpperCase();
+				if(c=="[" && !lockSymbol) {
+					lockSymbol=true;
+				}else if(c=="]" && lockSymbol) {
+					lockSymbol=false;
+					if(thisSym!=="") {
+						syms.push(thisSym);
+						eq+="["+thisSym+"]";
+					}
+					thisSym="";
+				}else if(lockSymbol){
+					thisSym+=c;
+				}else if(c=='+' || c=='-' || c=='*' || c=='/' || c==':' || c=='%' || c=='(' || c==')'){
+					if(thisSym!=="" && isNaN(thisSym)) {
+						syms.push(thisSym);
+						eq+="["+thisSym+"]";
+					}else{
+						eq+=thisSym;
+					}
+					if(c==':') c="/";
+					eq+=c;
+					thisSym="";
+				}else if(c!=' '){
+					thisSym+=c;
+				}
+			}
+			if(thisSym!=="" && isNaN(thisSym)) {
+				syms.push(thisSym);
+				eq+="["+thisSym+"]";
+			}else{
+				eq+=thisSym;
+			}
+			return {equation:eq,symbols:syms};
 		};
 		
 		/**
-		 * Computes a ratio chart given an array of two data sets.
-		 * Current hard coded to just ratio charts!
-		 * @param {string} equation The equation to compute
+		 * Extracts symbols from an equation and fetches the quotes for them.
+		 * @param {object} params Parameters used for the fetch
+		 * @param  {function} cb Callback function once all quotes are fetched
+		 * @memberOf STX
+		 * @version ChartIQ Advanced Package
+		 */
+		STX.fetchEquationChart=function(params,cb){
+			var formEq=STX.formatEquation(params.symbol);
+			var syms=formEq.symbols;
+			var arr=[];
+			// jump through hoops with stx so that STX.clone doesn't choke on it
+			var stx=params.stx;
+			params.stx=null;
+			for(var i=0;i<syms.length;i++){
+			    var newParams=STX.shallowClone(params);
+			    newParams.stx=stx;
+			    newParams.symbol=syms[i];
+			    arr.push(newParams);
+			}
+			params.stx=stx;
+			// multi fetch the symbols we need
+			stx.quoteDriver.quoteFeed.multiFetch(arr, function(results){
+			    var map={};
+			    params.loadMoreReplace=true;
+			    // error on any symbol then error out. Otherwise construct map.
+			    for(var i=0;i<results.length;i++){
+			      var result=results[i];
+			      if(result.dataCallback.error){
+			        cb({error:result.dataCallback.error});
+			        return;
+			      }
+			      map[result.params.symbol]=result.dataCallback.quotes;
+			      params.loadMoreReplace=params.loadMoreReplace && result.params.loadMoreReplace;
+			      params.moreToLoad=params.moreToLoad || result.dataCallback.moreAvailable;
+			    }
+			    // compute the result and then pass to the response
+			    if(arr.length || !(params.loadMore || params.update)){
+			    	try{
+				    	var equQuotes=STX.computeEquationChart(formEq.equation, map);
+				    	cb({quotes:equQuotes, moreAvailable: params.moreToLoad});
+				    }catch(e){
+				    	var error={error:"Invalid equation: "+formEq.equation};
+				    	if(e.name && e.name=="NoException") error.suppressAlert=true;
+				    	cb(error);
+				    }
+			    }
+			});
+		};
+
+		/**
+		 * Computes an equation that may contain symbols and simple arithmetic operators.
+		 * Parentheses can be used to separate portions of the equation.
+		 * PEMDAS priority is observed.
+		 * Symbols can be optionally contained within brackets.
+		 * Valid examples: 3*IBM, 4+(IBM*2), (IBM-GM)/2
+		 * If the equation cannot be resolved an exception is thrown.
+		 * @param {string} equation The equation to compute.
 		 * @param  {Object} map An map of symbols to data
-		 * @return {Array}     A consolidated array of ratio chart data
+		 * @return {Array}     A consolidated array of equation results
 		 * @memberOf STX
 		 * @version ChartIQ Advanced Package
 		 */
 		STX.computeEquationChart=function(equation, map){
-			var newArray=[];
-			var mIterator=0,cIterator=0;
-			var symbols=equation.split("/");
-			var master=map[symbols[0]];
-			var comparison=map[symbols[1]];
-			var closeOnly=false;
-			if(!comparison){ //use the quote in master for the symbol
-				comparison=master;
-				closeOnly=true;
+			equation=equation.replace(/[:]/,"/").toUpperCase();
+			var count=0;
+			for(var sym in map){
+				var r=new RegExp("\\["+sym.replace("^","\\\^").replace(/[\+\-\*\/\%\(\)]/g,"\\$&")+"\\]","g");
+				equation=equation.replace(r,"symbol"+count);
+				count++;
 			}
-			while(mIterator<master.length && cIterator<comparison.length){
-				var m=master[mIterator];
-				var c=comparison[cIterator];
+			var expr=STX.EquationParser.parse(equation);
+			var newArray=[];
+			var iters={};
+			var numSyms=0,c;
+			var firstIter=null;
+			var priceRelative=false;
+			for(sym in map) {
+				iters[sym]={i:0,s:sym};
+				if(map[sym]){
+					numSyms++;
+					c=map[sym][0];
+				}else if(numSyms==1){
+					priceRelative=sym;
+				}
 				if(!c.DT) c.DT=STX.strToDateTime(c.Date);
-				if(!m.DT) m.DT=STX.strToDateTime(m.Date);
-				if(c.DT.getTime()==m.DT.getTime()){
-					if(closeOnly){
-						var close=m.Close/c[symbols[1]];
-						close=Math.round(close*10000)/10000;
-						if(!isNaN(close)) newArray.push({DT:m.DT, Close:close, Adj_Close:close});
+				iters[sym].d=c.DT;
+				if(!firstIter) firstIter=iters[sym];
+			}
+			var constant=(numSyms===0);
+			var computeHighLow=(numSyms==1 && equation.indexOf("%")==-1);
+			function incrementIterator(iterator){
+				iterator.i++;
+				if(map[iterator.s]){
+					if(iterator.i>=map[iterator.s].length) return 0;
+					c=map[iterator.s][iterator.i];
+				}
+				if(!c.DT) c.DT=STX.strToDateTime(c.Date);
+				iterator.d=c.DT;
+				return 1;
+			}
+			function isAllAligned(){
+				var laggard=null;
+				var temp=null;
+				for(var iter in iters){
+					if(!temp) temp=iters[iter];
+					else if(iters[iter].d.getTime()<temp.d.getTime()){
+						laggard=temp=iters[iter];
+					}else if(iters[iter].d.getTime()>temp.d.getTime()){
+						laggard=temp;
+					}
+				}
+				if(laggard){
+					if(!incrementIterator(laggard)) return 0;
+					return -1;
+				}
+				return 1;
+			}
+			whileLoop:
+			while(true){
+				var aligned=isAllAligned();
+				if(!aligned) break;
+				if(aligned==1){
+					var m;
+					if(priceRelative){
+						var close=expr.evaluate({symbol0:map[firstIter.s][firstIter.i].Close,symbol1:map[firstIter.s][firstIter.i][priceRelative]});
+						close=Number(close.toFixed(8));//Math.round(close*10000)/10000;
+						m={DT:firstIter.d, Close:close, Adj_Close:close};
+						m[firstIter.s]=map[firstIter.s][firstIter.i].Close;
+						if(!isNaN(close)) newArray.push(m);
+					}else if(constant){
+						var res=expr.evaluate({});
+						STX.alert(equation+"="+res);
+						throw({"name":"NoException","message":""});
 					}else{
+						count=0;
+						var evaluators={Adj_Close:{},Close:{},Open:{},High:{},Low:{},Volume:{}};
+						for(sym in map){
+							for(var e in evaluators){
+								evaluators[e]["symbol"+count]=map[sym][iters[sym].i][e];
+							}
+							count++;
+						}
+						m={ DT:firstIter.d };
 						/*
 						variation 1 (Stockcharts.com):
 						m.Close/=c.Close;
 						m.High/=c.Close;
 						m.Low/=c.Close;
 						m.Open/=c.Close;
-						
+
 						variation 2 (eSignal):
 						m.Close/=c.Close;
 						m.High/=c.High;
@@ -410,33 +574,48 @@
 						m.High=Math.max(m.High,Math.max(m.Open,m.Close));
 						m.Low=Math.min(m.Low,Math.min(m.Open,m.Close));
 						*/
-						
-						m.Close/=c.Close;
-						m.Open/=c.Open;
-						m.High=Math.max(m.Open,m.Close);
-						m.Low=Math.min(m.Open,m.Close);
 
-						m.Volume/=c.Volume;
+						m.Adj_Close=expr.evaluate(evaluators.Adj_Close);
+						m.Close=expr.evaluate(evaluators.Close);
+						m.Open=expr.evaluate(evaluators.Open);
+						m.Volume=expr.evaluate(evaluators.Volume);
+						if(isNaN(m.Volume)) m.Volume=0;
+
+						if(computeHighLow){
+							m.High=expr.evaluate(evaluators.High);
+							m.Low=expr.evaluate(evaluators.Low);
+						}else{
+							m.High=Math.max(m.Open,m.Close);
+							m.Low=Math.min(m.Open,m.Close);
+						}
 						if(!isNaN(m.Close)) newArray.push(m);
-			
-						m.High=Math.round(m.High*10000)/10000;
-						m.Low=Math.round(m.Low*10000)/10000;
-						m.Open=Math.round(m.Open*10000)/10000;
-						m.Close=Math.round(m.Close*10000)/10000;
-						m.Adj_Close=m.Close;
+
+						if(!isNaN(m.High)) m.High=Number(m.High.toFixed(8));//Math.round(m.High*10000)/10000;
+						if(!isNaN(m.Low)) m.Low=Number(m.Low.toFixed(8));//Math.round(m.Low*10000)/10000;
+						if(!isNaN(m.Open)) m.Open=Number(m.Open.toFixed(8));//Math.round(m.Open*10000)/10000;
+						if(!isNaN(m.Close)) m.Close=Number(m.Close.toFixed(8));//Math.round(m.Close*10000)/10000;
+						if(!isNaN(m.Adj_Close)) m.Adj_Close=Number(m.Adj_Close.toFixed(8));//Math.round(m.Adj_Close*10000)/10000;
+						else m.Adj_Close=m.Close;
+
+						count=0;
+						for(sym in map){
+							m[sym]=evaluators.Close["symbol"+count];
+							count++;
+						}
+
 					}
-					cIterator++;
-					mIterator++;
-					continue;
+					for(sym in map){
+						if(!incrementIterator(iters[sym])) break whileLoop;
+					}
 				}
-				if(c.DT<m.DT) cIterator++;
-				else mIterator++;
 			}
 			return newArray;
 		};
-		
+
 		/**
 		 * Calculates Heikin-Ashi values. Takes a dataSet and returns a replacement dataSet.
+		 * This method is used inside {@link STXChart#createDataSet} to determine the data aggregation logic and should not be called directly.
+		 * Use {@link STXChart#setAggregationType} instead.
 		 * @param {STXChart} stx   The chart object
 		 * @param {array} dataSet The dataSet to modify
 		 * @return {array}        The replacement dataSet
@@ -444,7 +623,7 @@
 		 * @since 04-2015-15
 		 * @version ChartIQ Advanced Package
 		 */
-		
+
 		STX.calculateHeikinAshi=function(stx, dataSet){
 			if(!dataSet.length) return dataSet;
 
@@ -459,6 +638,7 @@
 				var xClose=(q.Open+q.High+q.Low+q.Close)/4;
 				newDataSet.push({
 					DT: q.DT,
+					displayDate: q.displayDate,
 					Date: q.Date,
 					Open: xOpen,
 					Close: xClose,
@@ -470,9 +650,11 @@
 			}
 			return newDataSet;
 		};
-		
+
 		/**
 		 * Calculates Kagi chart values. Takes a dataSet and returns a replacement dataSet.
+		 * This method is used inside {@link STXChart#createDataSet} to determine the data aggregation logic and should not be called directly.
+		 * Use {@link STXChart#setAggregationType} instead.
 		 * @param {STXChart} stx   The chart object
 		 * @param {array} dataSet The dataSet to modify
 		 * @param {number} reversal The reversal percentage for the kagi lines. This is typically user configurable. Default is 4% for daily, .4% for intraday.
@@ -481,13 +663,13 @@
 		 * @since 04-2015-15
 		 * @version ChartIQ Advanced Package
 		 */
-		
+
 		STX.calculateKagi=function(stx, dataSet, reversal){
 			if(!dataSet.length) return dataSet;
 			if(!reversal){
 				if(stx.isDailyInterval(stx.layout.interval)) reversal=0.04;
 				else reversal=0.004;
-				if(STX.LegacyMarket.isForexSymbol(stx.chart.symbol)) reversal/=4;
+				if(STX.Market.Symbology.isForexSymbol(stx.chart.symbol)) reversal/=4;
 			}else{
 				if(reversal>=1) reversal/=100;	// it is a percentage, so if sent as a hole number, transform to percentage multiplier
 			}
@@ -506,7 +688,7 @@
 					}else{
 						if(q1.Close>q.Close) q1.Close=q.Close;
 						q1.Volume+=q.Volume;
-						if(i<dataSet.length-1) continue;						
+						if(i<dataSet.length-1) continue;
 					}
 				}else if(q1.Open<q1.Close){
 					if(q.Close<q1.Close*(1-reversal)){ //reversal down
@@ -514,7 +696,7 @@
 					}else{
 						if(q1.Close<q.Close) q1.Close=q.Close;
 						q1.Volume+=q.Volume;
-						if(i<dataSet.length-1) continue;						
+						if(i<dataSet.length-1) continue;
 					}
 				}else{
 					q1.Close=q.Close;
@@ -523,6 +705,7 @@
 				}
 				newDataSet.push({
 					DT: q1.DT,
+					displayDate: q1.displayDate,
 					Date: q1.Date,
 					Open: q1.Open,
 					Close: q1.Close,
@@ -535,9 +718,11 @@
 			}
 			return newDataSet;
 		};
-		
+
 		/**
 		 * Calculates Line Break chart values. Takes a dataSet and returns a replacement dataSet.
+		 * This method is used inside {@link STXChart#createDataSet} to determine the data aggregation logic and should not be called directly.
+		 * Use {@link STXChart#setAggregationType} instead.
 		 * @param {STXChart} stx   The chart object
 		 * @param {array} dataSet The dataSet to modify
 		 * @param {number} pricelines The number of lines to use for the line break count. This is typically user configurable. Default is 3.
@@ -546,7 +731,7 @@
 		 * @since 04-2015-15
 		 * @version ChartIQ Advanced Package
 		 */
-		
+
 		STX.calculateLineBreak=function(stx, dataSet, pricelines){
 			if(!dataSet.length) return dataSet;
 			if(!pricelines) pricelines=3;
@@ -561,6 +746,7 @@
 				if(!q1) q1={Open:q.Open,Close:q.Open};
 				var newLine={
 					DT: q.DT,
+					displayDate: q.displayDate,
 					Date: q.Date,
 					Close: q.Close,
 					High: Math.max(q.Close,Math.min(q1.Open,q1.Close)),
@@ -590,24 +776,26 @@
 			}
 			return newDataSet;
 		};
-		
+
 		/**
 		 * Calculates Renko bars. Takes a dataSet and returns a replacement dataSet.
+		 * This method is used inside {@link STXChart#createDataSet} to determine the data aggregation logic and should not be called directly.
+		 * Use {@link STXChart#setAggregationType} instead.
 		 * @param {STXChart} stx   The chart object
 		 * @param {array} dataSet The dataSet to modify
-		 * @param {number} range The price range for the renko bars. This is typically user configurable.
+		 * @param {number} range The price range for the renko bars. This is typically user configurable. Defaults to 300 bars; about a year for a daily chart, about 5 hours on a minute chart.
 		 * @return {array}        The replacement dataSet
 		 * @memberOf STX
 		 * @version ChartIQ Advanced Package
 		 */
-		
+
 		STX.calculateRenkoBars=function(stx, dataSet, range){
 			if(!dataSet.length) return dataSet;
 			// If range is not specified we'll come up with a reasonable default value
 			// caveman algorithm, finds a range so that ~300 bars worth of time are displayed
 			// i.e. about a year for a daily chart, about 5 hours on a minute chart
 			var l=Math.min(300, dataSet.length);
-			var minMax=stx.determineMinMax(dataSet.slice(dataSet.length-l), ["High","Low"]);
+			var minMax=stx.determineMinMax(dataSet.slice(dataSet.length-l), ["Close","High","Low"]);
 			var shadow=minMax[1]-minMax[0];
 			var height=stx.panels[stx.chart.name].height;
 			if(!range){
@@ -616,12 +804,13 @@
 				range=Math.max(range,shadow/height);
 			}
 			var newDataSet=[];
-		
+
 			var currentPrice=null, lowTarget=null, highTarget=null;
-		
+
 			function createBar(q, open, close){
 				newDataSet.push({
 					DT: q.DT,
+					displayDate: q.displayDate,
 					Date: q.Date,
 					Open: open,
 					Close: close,
@@ -636,7 +825,8 @@
 				var q=dataSet[i];
 				if(!q) continue;
 				if(currentPrice===null) {
-					currentPrice=q.Open;
+					var start=Math.floor(q.Open/range)*range;
+					currentPrice=(isNaN(start)?q.Open:start);  //align it
 					lowTarget=currentPrice-range;
 					highTarget=currentPrice+range;
 				}
@@ -665,21 +855,23 @@
 
 		/**
 		 * Calculates range bars. Takes a dataSet and returns a replacement dataSet.
+		 * This method is used inside {@link STXChart#createDataSet} to determine the data aggregation logic and should not be called directly.
+		 * Use {@link STXChart#setAggregationType} instead.
 		 * @param {STXChart} stx   The chart object
 		 * @param {array} dataSet The dataSet to modify
-		 * @param {number} range The price range for the range bars. This is typically user configurable.
+		 * @param {number} range The price range for the range bars. This is typically user configurable. Defaults to 300 bars; about a year for a daily chart, about 5 hours on a minute chart.
 		 * @return {array}        The replacement dataSet
 		 * @memberOf STX
 		 * @version ChartIQ Advanced Package
 		 */
-		
+
 		STX.calculateRangeBars=function(stx, dataSet, range){
 			if(!dataSet.length) return dataSet;
 			// If range is not specified we'll come up with a reasonable default value
 			// caveman algorithm, finds a range so that ~300 bars worth of time are displayed
 			// i.e. about a year for a daily chart, about 5 hours on a minute chart
 			var l=Math.min(300, dataSet.length);
-			var minMax=stx.determineMinMax(dataSet.slice(dataSet.length-l), ["High","Low"]);
+			var minMax=stx.determineMinMax(dataSet.slice(dataSet.length-l), ["Close","High","Low"]);
 			var shadow=minMax[1]-minMax[0];
 			var height=stx.panels[stx.chart.name].height;
 			if(!range){
@@ -688,12 +880,13 @@
 				range=Math.max(range,shadow/height);
 			}
 			var newDataSet=[];
-		
+
 			var currentPrice=null, targetPrice;
-		
+
 			function createBar(q, open, close){
 				newDataSet.push({
 					DT: q.DT,
+					displayDate: q.displayDate,
 					Date: q.Date,
 					Open: open,
 					Close: close,
@@ -720,30 +913,43 @@
 						}
 					}
 					createBar(q, currentPrice, targetPrice);
+					if(typeof(targetPrice)=="undefined" || typeof(currentPrice)=="undefined"){
+						console.log("Uh oh undefined in calculateRangeBars:processMove");
+						return;
+					}
 					currentPrice=targetPrice;
 				}
 			}
 			for(var i=0;i<dataSet.length;i++){
 				var q=dataSet[i];
-				if(currentPrice===null)  currentPrice=q.Open;
-				else processMove(dataSet[i-1], q.Open);
-		
+				if(!q) continue;
+				var C=q.Close, O=q.Open, H=q.High, L=q.Low;
+				if(!O) O=C;
+
+				if(currentPrice===null) {
+					var start=Math.floor(O/range)*range;
+					currentPrice=(isNaN(start)?O:start);  //align it
+				}
+				else processMove(dataSet[i-1], O);
+
 				// shortest distance between open and either high or low determines initial direction
-				if(q.High-q.Open<q.Open-q.Low){
-					processMove(q, q.High);
-					processMove(q, q.Low);
-					processMove(q, q.Close, i==dataSet.length-1);
+				if(H-O<O-L){
+					if(H) processMove(q, H);
+					if(L) processMove(q, L);
+					processMove(q, C, i==dataSet.length-1);
 				}else{
-					processMove(q, q.Low);
-					processMove(q, q.High);
-					processMove(q, q.Close, i==dataSet.length-1);
+					if(L) processMove(q, L);
+					if(H) processMove(q, H);
+					processMove(q, C, i==dataSet.length-1);
 				}
 			}
 			return newDataSet;
 		};
-		
+
 		/**
 		 * Calculates Point and Figure (P&F) chart values. Takes a dataSet and returns a replacement dataSet.
+		 * This method is used inside {@link STXChart#createDataSet} to determine the data aggregation logic and should not be called directly.
+		 * Use {@link STXChart#setAggregationType} instead.
 		 * @param {STXChart} stx   The chart object
 		 * @param {array} dataSet The dataSet to modify
 		 * @param {object} pandf The parameters for point and figure.
@@ -754,7 +960,7 @@
 		 * @since 04-2015-15
 		 * @version ChartIQ Advanced Package
 		 */
-		
+
 		STX.calculatePointFigure=function(stx, dataSet, pandf){
 			if(!dataSet.length) return dataSet;
 			if(!pandf) pandf={};
@@ -775,7 +981,7 @@
 					else box=500;
 				}
 				if(!stx.isDailyInterval(stx.layout.interval)) box/=10;
-				if(STX.LegacyMarket.isForexSymbol(stx.chart.symbol)) {
+				if(STX.Market.Symbology.isForexSymbol(stx.chart.symbol)) {
 					if(lastPrice){
 						if(lastPrice<1) box=0.001;
 						else if(lastPrice<2) box=0.002;
@@ -790,7 +996,7 @@
 			if(!reversal) reversal=3;
 			stx.chart.pandf={"box":box,"reversal":reversal};
 			reversal*=box;
-			
+
 			var newDataSet=[];
 			var volume=0;
 			for(var i=0;i<dataSet.length;i++){
@@ -800,6 +1006,7 @@
 				if(!newDataSet.length) {
 					newDataSet.push({
 						DT: q.DT,
+						displayDate: q.displayDate,
 						Date: q.Date,
 						Open: Math.floor(q.High/box)*box,
 						Close: Math.ceil(q.Low/box)*box,
@@ -863,7 +1070,7 @@
 			return newDataSet;
 		};
 
-	
+
 /*
 		STX.Markers.BubblePlacement=function(self, stx, panel, markerSet){
 			function overlap(aL, bR, aB, bB, aT, bT){
@@ -881,15 +1088,15 @@
 				var marker=markerSet[i];
 				var node=marker.node;
 				var stem=marker.stem;
-		
+
 				// Getting clientWidth and clientHeight is a very expensive operation
 				// so we'll cache the results. Don't use this function if your markers change
 				// shape or size dynamically!
 				if(!marker.clientWidth) marker.clientWidth=node.clientWidth;
 				if(!marker.clientHeight) marker.clientHeight=node.clientHeight;
 				var quotes=marker.tick<chart.dataSet.length?chart.dataSet[marker.tick]:chart.dataSet[chart.dataSet.length-1];
-		
-		
+
+
 				var middle=stx.pixelFromTick(marker.tick);
 				var nodeLeft=Math.round(middle-marker.clientWidth/2);
 				var bottom;
@@ -899,7 +1106,7 @@
 					bottom=panel.bottom-stx.pixelFromPriceTransform(quotes.High, panel);
 				}
 				var absoluteBottom=bottom;
-				
+
 				if(stem){
 					stem.style.left=Math.round(middle)+"px";
 					var stemBottom=absoluteBottom+"px";
@@ -926,7 +1133,7 @@
 				prevBottom=bottom;
 			}
 		};
-*/		
+*/
 
 		/**
 		 * Native implementation of watch lists. Uses a STX.StorageManager object for saving and loading lists
@@ -935,7 +1142,7 @@
 		 * @version ChartIQ Advanced Package
 		 */
 		STX.Watch=function(){};
-		
+
 		/**
 		 * The array of available lists. If you modify this directly then be sure to call STX.Watch.refreshDisplay
 		 * @type {Array}
@@ -943,7 +1150,7 @@
 		 * @version ChartIQ Advanced Package
 		 */
 		STX.Watch.lists=[];
-		
+
 		/**
 		 * The index into the STX.Watch.lists array of the currently selected list
 		 * @type {number}
@@ -951,7 +1158,7 @@
 		 * @version ChartIQ Advanced Package
 		 */
 		STX.Watch.currentList=null;
-		
+
 		/**
 		 * The index into the currently selected list of the currently selected symbol
 		 * @type {Number}
@@ -959,7 +1166,7 @@
 		 * @version ChartIQ Advanced Package
 		 */
 		STX.Watch.currentSymbol=0;
-		
+
 		/**
 		 * Opens the dialog to create a new list
 		 * @memberOf STX.Watch
@@ -970,7 +1177,7 @@
 			$$$("#stxWatchEditTA").value="";
 			STX.DialogManager.displayDialog("stxWatchEditDialog");
 		};
-		
+
 		/**
 		 * Opens the dialog to edit an existing list
 		 * @memberOf STX.Watch
@@ -993,7 +1200,7 @@
 			$$$("#stxWatchEditTA").value=str;
 			STX.DialogManager.displayDialog("stxWatchEditDialog");
 		};
-		
+
 		/**
 		 * Called from the new and edit list dialogs to save the updated list when the user hits the "save" button
 		 * @memberOf STX.Watch
@@ -1029,7 +1236,7 @@
 			STX.Watch.refreshDisplay();
 			STX.Watch.stxStorageManager.store("stx-watchLists", JSON.stringify(STX.Watch.lists));
 		};
-		
+
 		/**
 		 * Deletes the current list
 		 * @memberOf STX.Watch
@@ -1041,12 +1248,12 @@
 			if(STX.Watch.currentList<0) STX.Watch.currentList=0;
 			STX.Watch.enableList(STX.Watch.currentList);
 			if(!STX.Watch.lists.length){
-				STX.Watch.stxStorageManager.remove("stx-watchLists");		
+				STX.Watch.stxStorageManager.remove("stx-watchLists");
 			}else{
 				STX.Watch.stxStorageManager.store("stx-watchLists", JSON.stringify(STX.Watch.lists));
 			}
 		};
-		
+
 		/**
 		 * Enables the selected list
 		 * @param  {number} location The index into the list array to enable
@@ -1061,11 +1268,11 @@
 				STX.Watch.enableSymbol(-1);
 			}
 		};
-		
+
 		/**
-		 * Enables a symbol in the list
+		 * Enables a symbol in the list using the selectCallback function to activate a new symbol. See {@link STX.Watch.initialize} for instructions on how to assign a selectCallback function.
 		 * @param  {number} location        The index in the current list of the symbol to enable
-		 * @param  {boolean} dontChangeChart If true then the chart will not update, otherwise the chart is updated via the lookup widget
+		 * @param  {boolean} dontChangeChart If true then the chart will not update, otherwise the chart is updated via the lookup widget ( selectCallback )
 		 * @memberOf STX.Watch
 		 * @version ChartIQ Advanced Package
 		 */
@@ -1073,7 +1280,7 @@
 			var list=STX.Watch.lists[STX.Watch.currentList];
 			var symbols=list[STX.first(list)];
 			var symbol;
-			
+
 			var symbolNodes=document.querySelectorAll("#stxWatch-inner li");
 			for(var i=0;i<symbolNodes.length;i++){
 				var li=symbolNodes[i];
@@ -1091,13 +1298,13 @@
 				STX.unappendClassName($$$("#stxWatchPrev"),"false");
 				STX.unappendClassName($$$("#stxWatchUp"),"false");
 			}
-				
+
 			if(STX.Watch.currentSymbol==symbols.length-1){
 				STX.appendClassName($$$("#stxWatchNext"),"false");
 				STX.appendClassName($$$("#stxWatchDown"),"false");
 			}else{
 				STX.unappendClassName($$$("#stxWatchNext"),"false");
-				STX.unappendClassName($$$("#stxWatchDown"),"false");		
+				STX.unappendClassName($$$("#stxWatchDown"),"false");
 			}
 			if(symbol){
 				$$$("#stxWatchSymbol").innerHTML=symbol;
@@ -1106,7 +1313,7 @@
 				$$$("#stxWatchSymbol").innerHTML="&nbsp;";
 			}
 		};
-		
+
 		/**
 		 * Right clicks or left clicks can enable the symbol
 		 * @private
@@ -1116,7 +1323,7 @@
 		STX.Watch.rightClickSymbol=function(location, dontChangeChart){
 			return STX.Watch.enableSymbol(location, dontChangeChart);
 		};
-		
+
 		/**
 		 * Moves the symbol selector up or down by the suggested distance
 		 * @param  {number} distance Distance to move. Negative number to move up the list.
@@ -1134,7 +1341,7 @@
 			STX.Watch.symbolScroll.scrollToElement('#stxWatch-inner li:nth-child(' + (STX.Watch.currentSymbol) + ')', 250);
 			STX.Watch.symbolScroll.refresh();
 		};
-		
+
 		/**
 		 * Updates the HTML with the symbol or list name
 		 * @param  {object} listEntry DOM element to update
@@ -1145,7 +1352,7 @@
 		STX.Watch.createSymbolEntry=function(listEntry,text){
 			listEntry.innerHTML=text;
 		};
-		
+
 		/**
 		 * Updates the display of the watch lists. This is called whenever the screen is resized or the panel is opened or closed in order
 		 * that the iscroll can update itself.
@@ -1157,7 +1364,7 @@
 			STX.clearNode(listWrapper);
 			var symbolsWrapper=$$$("#stxWatch-inner");
 			STX.clearNode(symbolsWrapper);
-		
+
 			function leftSymbol(ii){
 				return function(e){STX.Watch.enableSymbol(ii);};
 			}
@@ -1173,10 +1380,10 @@
 				STX.newChild(li, "div", "save");
 				var edit=STX.newChild(li, "div", "edit");
 				edit.onclick=STX.Watch.openEditListDialog;
-				
+
 				var del=STX.newChild(li, "div", "delete");
 				del.onclick=STX.Watch.deleteCurrentList;
-				
+
 				var div=STX.newChild(li, "div", "list");
 				var listName=STX.first(list);
 				div.innerHTML=listName;
@@ -1214,15 +1421,39 @@
 			STX.Watch.listScroll.refresh();
 			//todo scroll list scroll if current list is off screen (such as when adding new list)
 		};
-		
+
 		/**
 		 * Initializes the watch list functionality. This requires an STX.StorageManager object to store changes and an STX.LookupWidget to enable
 		 * symbol changes when users select symbols from their watch list. Call this method when you initialize the UI. You may need to call refreshDisplay()
 		 * if HTML changes are made after STX.Watch is initialized.
-		 * @param  {object} stxStorageManager STX.StorageManager for getting and saving watch lists
-		 * @param  {object} stxLookupWidget   STX.LookupWidget for changing the chart
+		 * @param  {object} stxStorageManager {@link STX.StorageManager} for getting and saving watch lists
+		 * @param  {object} stxLookupWidget   {@link STX.LookupWidget} for changing the chart
 		 * @memberOf STX.Watch
 		 * @version ChartIQ Advanced Package
+		 * @example
+			function selectCallback(that, result, filter){
+
+				// This is where you would translate the symbol entered by the user
+				// if your externally displayed symbols are different than what the chart needs to request from your quotefeed.
+				// Remember to set `stxx.chart.symbolDisplay` as needed so the right description is displayed on the chart label.
+				// Set `symbol` as needed before calling `newChart()`
+
+				symbol = result.toUpperCase();
+				if(symbol) {
+					STXLoader(true);
+					stxx.newChart(symbol, null, null, finishedLoadingNewChart(stxx.chart.symbol, symbol)); // Send just a stock symbol to newChart
+				}
+			}
+
+			var config={
+				selectCallback: selectCallback,     // Function used to act on the symbol selected. Normally used to create a new chart with the new symbol.
+			    stx: stxx                           // the chart object -- needed for translations
+			};
+
+			var stxLookupWidget=new STX.LookupWidget(config);
+			stxLookupWidget.init();
+
+			STX.Watch.initialize(STX.StorageManager, stxLookupWidget);
 		 */
 		STX.Watch.initialize=function(stxStorageManager, stxLookupWidget){
 			STX.Watch.stxLookupWidget=stxLookupWidget;
@@ -1246,8 +1477,8 @@
 			STX.Watch.enableList(0);
 			window.addEventListener("resize", STX.Watch.refreshDisplay);
 		};
-		
-		
+
+
 		/**
 		 * Native implementation of multiple views. Views are accessible in the footer. Requires an STX.StorageManager for serializing views.
 		 * @constructor
@@ -1255,7 +1486,7 @@
 		 * @version ChartIQ Advanced Package
 		 */
 		STX.Views=function(){};
-		
+
 		/**
 		 * Contains the list of available views
 		 * @type {Array}
@@ -1263,7 +1494,7 @@
 		 * @version ChartIQ Advanced Package
 		 */
 		STX.Views.views=[];
-		
+
 		/**
 		 * Index into STX.Views.views of the current view. -1 if no current view is enabled.
 		 * @type {Number}
@@ -1271,7 +1502,7 @@
 		 * @version ChartIQ Advanced Package
 		 */
 		STX.Views.currentView=-1;
-		
+
 		/**
 		 * Saves the current layout as a new view. The name of the view is taken from the dialog.
 		 * @memberOf STX.Views
@@ -1300,7 +1531,7 @@
 			delete view[viewName].candleWidth;
 			STX.Views.stxStorageManager.store("stx-views", JSON.stringify(STX.Views.views));
 		};
-		
+
 		/**
 		 * Opens the save view dialog
 		 * @memberOf STX.Views
@@ -1308,9 +1539,9 @@
 		 */
 		STX.Views.openNewViewDialog=function(){
 			$$$("#stxViewEditName").value="";
-			STX.DialogManager.displayDialog("stxViewSaveDialog");	
+			STX.DialogManager.displayDialog("stxViewSaveDialog");
 		};
-		
+
 		/**
 		 * Enables the requested view
 		 * @param  {number} i Index into STX.Views.views of the requested view
@@ -1327,7 +1558,7 @@
 				STX.Views.stx.changeCallback(STX.Views.stx, "layout");
 			}
 		};
-		
+
 		/**
 		 * Deletes the selected view
 		 * @param  {number} i Index into STX.Views.views of the view to delete
@@ -1343,12 +1574,12 @@
 			}
 			STX.Views.refreshDisplay();
 			if(!STX.Views.views.length){
-				STX.Views.stxStorageManager.remove("stx-views");		
+				STX.Views.stxStorageManager.remove("stx-views");
 			}else{
-				STX.Views.stxStorageManager.store("stx-views", JSON.stringify(STX.Views.views));		
+				STX.Views.stxStorageManager.store("stx-views", JSON.stringify(STX.Views.views));
 			}
 		};
-		
+
 		/**
 		 * Refreshes the views display. This is called whenever the screensize changes so that iscrolls can refresh themselves. Call this
 		 * manually if HTML changes affect the size of the footer.
@@ -1379,7 +1610,7 @@
 			scroller.style.width=(panel.clientWidth-scroller.offsetLeft-rightMargin)+"px";
 			STX.Views.scroll.refresh();
 		};
-		
+
 		/**
 		 * Initializes the STX.Views object. Requires an STX.StorageManager for serializing views.
 		 * @param  {object} stx               The chart object
@@ -1403,7 +1634,7 @@
 			STX.Views.refreshDisplay();
 			window.addEventListener("resize", STX.Views.refreshDisplay);
 		};
-		
+
 		/**
 		 * Base class for Quotes infrastructure. Many of the built in UI capabilities such as comparison charts expect
 		 * to follow this infrastructure. You should define your own classes that follow this pattern (or derive a class from STX.Quotes)
@@ -1413,7 +1644,7 @@
 		 * @version ChartIQ Advanced Package
 		 */
 		STX.Quotes=function(){};
-		
+
 		/**
 		 * If you support multiple data sources then this can be used to cascade through them if data is not available.
 		 * @param  {object} params        Standard parameters
@@ -1425,8 +1656,8 @@
 		STX.Quotes.nextDataSource=function(params, currentSource){
 			return null;
 		};
-		
-		
+
+
 		/**
 		 * Fetch multiple quotes asynchronously, possibly from various data sources. This method can be used to update a chart with multiple symbols
 		 * such as a comparison chart.
@@ -1441,7 +1672,7 @@
 				finished: arr.length,
 				results: []
 			};
-		
+
 			function handleResponse(params, tracker, cb){
 				return function(err, data){
 					tracker.results.push({err:err, params: params, data:data});
@@ -1458,11 +1689,11 @@
 				STX.Quotes.fetch(params, handleResponse(params, tracker, cb));
 			}
 		};
-		
-		
+
+
 		/**
 		 * Fetch data. This will automatically fetch data from your data source, if you pass the approprite params.source string.
-		 * 
+		 *
 		 * @param  {object}   params Parameters required by your quote feed (such as start date, end date, number of bars, etc)
 		 * @param {object} params.stx The Chart object
 		 * @param {string} [source=Demo] The name of the requested data source
@@ -1477,7 +1708,7 @@
 			}
 			STX.Quotes[params.source].fetch(params, handleResponse);
 		};
-		
+
 		/**
 		 * Returns how many bars should be fetched. If we're fetching a series then it's simply the number
 		 * of bars already in the chart. Otherwise it's the number of bars to fetch to fill up the screen.
@@ -1489,25 +1720,25 @@
 		 */
 		STX.Quotes.barsToFetch=function(params){
 			if(params.isSeries) return params.stx.masterData.length;
-		
+
 			var p=params.stx.layout.periodicity;
 			// Rough calculation, this will account for 24x7 securities
 			if(params.stx.layout.interval=="month") p=30*p;
 			if(params.stx.layout.interval=="week") p=7*p;
-		
+
 			var bars=params.stx.chart.maxTicks*p;
 			return bars;
 		};
-		
+
 		/*
 		 * This is a demo version of fetch. You will need to create one for your own quote feed that behaves similarly.
 		 * At the very least it should support params.symbol and params.interval. You may optionally use barsToFetch if your server supports
 		 * specification of a maximum number of ticks. Depending on your implementation, you may also need to support
 		 * start and end dates (for instance to support loading more when the user scrolls back or refresh updates)
 		 */
-		
+
 		STX.Quotes.Demo=function(){};
-		
+
 		STX.Quotes.Demo.fetch=function(params, cb){
 			function setQuotes(response){
 				var varName=response.substr(0,response.indexOf("="));
@@ -1518,7 +1749,7 @@
 					return [];
 				}
 			}
-			
+
 			url="https://demoquotes.chartiq.com/" + params.symbol.toUpperCase();
 			// Theoretically append interval to url as well (although Demo has limited EOD)
 			var bars=STX.Quotes.barsToFetch(params);
@@ -1585,7 +1816,7 @@
 						sC2-=quotes[i-period]._.c2;
 						sBC-=quotes[i-period]._.bc;
 						quotes[i-period]._=null;
-						
+
 						var vb=sB2/period-Math.pow(sB/period,2);
 						var vc=sC2/period-Math.pow(sC/period,2);
 						var cv=sBC/period-sB*sC/Math.pow(period,2);
@@ -1601,7 +1832,9 @@
 
 		STX.Studies.calculateATRBands=function(stx, sd){
 			STX.Studies.calculateStudyATR(stx,sd);
-			STX.Studies.calculateGenericEnvelope(stx, sd, sd.inputs.Shift, sd.inputs.Field, "ATR " + sd.name);
+			var field=sd.inputs.Field;
+			if(!field || field=="field") field="Close";
+			STX.Studies.calculateGenericEnvelope(stx, sd, sd.inputs.Shift, field, "ATR " + sd.name);
 		};
 
 		STX.Studies.calculateSTARCBands=function(stx, sd){
@@ -1642,8 +1875,8 @@
 					quotes[i+1]["Buy Stops " + sd.name]=result;
 					delete quotes[i+1]["Sell Stops " + sd.name];
 				}else if(base>result){
-					quotes[i+1]["Sell Stops " + sd.name]=result;					
-					delete quotes[i+1]["Buy Stops " + sd.name];					
+					quotes[i+1]["Sell Stops " + sd.name]=result;
+					delete quotes[i+1]["Buy Stops " + sd.name];
 				}
 				quotes[i+1]["All Stops " + sd.name]=result;
 				sd.referenceOutput="All Stops";  //so PSAR2 can draw a square wave
@@ -1653,20 +1886,15 @@
 		STX.Studies.calculateAwesomeOscillator=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 
-			sd.mp=new STX.Studies.StudyDescriptor(sd.name, "med price", sd.panel);
-			sd.mp.chart=sd.chart;
-			sd.mp.outputs={"Med Price":null};
-			STX.Studies.calculateMedianPrice(stx,sd.mp);
-
-			STX.Studies.MA("simple", 5, "Med Price "+sd.name, 0, "MA5", stx, sd);
-			STX.Studies.MA("simple", 34, "Med Price "+sd.name, 0, "MA34", stx, sd);
+			STX.Studies.MA("simple", 5, "hl/2", 0, "MA5", stx, sd);
+			STX.Studies.MA("simple", 34, "hl/2", 0, "MA34", stx, sd);
 
 			for(var i=33;i<quotes.length;i++){
 				if(!quotes[i]) continue;
 				quotes[i][sd.name + "_hist"]=quotes[i]["MA5 " + sd.name] - quotes[i]["MA34 " + sd.name];
 			}
 		};
-		
+
 		STX.Studies.calculateRelativeVolatility=function(stx, sd){
 			var field=sd.inputs.Field;
 			if(!field || field=="field") field="Close";
@@ -1702,7 +1930,7 @@
 		STX.Studies.calculatePMO=function(stx, sd){
 			var field=sd.inputs.Field;
 			if(!field || field=="field") field="Close";
-			
+
 			var quotes=sd.chart.scrubbed;
 		    var i;
 		    for(i=0;i<quotes.length;i++){
@@ -1721,7 +1949,7 @@
 			var bull=sd.outputs.Bullish;
 			var bear=sd.outputs.Bearish;
 			var neutral=sd.outputs.Neutral;
-			
+
 			STX.Studies.MA("exponential", 13, "Close", 0, "MA", stx, sd);
 			sd.macd=new STX.Studies.StudyDescriptor(sd.name, "macd", sd.panel);
 			sd.macd.chart=sd.chart;
@@ -1746,9 +1974,9 @@
 			var period="day";
 			if(stx.layout.interval=="day") period="month";
 			else if(stx.isDailyInterval(stx.layout.interval)) period="year";
-			else if(stx.layout.interval=="second" || 
-					stx.layout.interval=="millisecond" || 
-					stx.layout.timeUnit=="second" || 
+			else if(stx.layout.interval=="second" ||
+					stx.layout.interval=="millisecond" ||
+					stx.layout.timeUnit=="second" ||
 					stx.layout.timeUnit=="millisecond") period="15min";
 			else{
 				var interval=stx.layout.periodicity;
@@ -1758,10 +1986,28 @@
 				if(interval>=30) period="week";
 			}
 
-			var isForex=STX.LegacyMarket.isForexSymbol(stx.chart.symbol);
-			var isMetal=STX.LegacyMarket.isForexMetal(stx.chart.symbol);
+			var isForex=STX.Market.Symbology.isForexSymbol(stx.chart.symbol);
+			var isMetal=STX.Market.Symbology.isForexMetal(stx.chart.symbol);
 			var marketOffset=null;
-			
+
+			function getMarketOffset(localQuoteDate){
+		    	var foreignExchange=stx.chart.symbol.indexOf(".")>-1 && stx.chart.symbol.split(".").pop();
+		    	var marketZone="America/New_York";
+		    	if(!isForex && foreignExchange){
+		    		if(stx.quoteDriver){
+		    			marketZone=stx.quoteDriver.quoteFeed.exchangeZones[foreignExchange];
+		    		}else if(CIQ && CIQ.realTimeDataSource){
+		    			marketZone=new STX.QuoteFeed[CIQ.realTimeDataSource]().exchangeZones[foreignExchange];
+		    		}else{
+		    			marketZone=STX.QuoteFeed.Xignite.Utility.timeZone[foreignExchange];
+		    		}
+		    	}
+		    	var dt=new Date(localQuoteDate.getTime() + localQuoteDate.getTimezoneOffset() * 60000);
+		    	if(!marketZone || marketZone.indexOf("UTC")==-1)
+		    		dt=STX.convertTimeZone(dt,"UTC",marketZone);
+
+				return new Date(dt.getFullYear(),dt.getMonth(),dt.getDate(),dt.getHours(),dt.getMinutes(),dt.getSeconds(),dt.getMilliseconds()).getTime()-localQuoteDate.getTime();
+		    }
 		    var pivotPoint=0;
 		    var high=0;
 		    var low=0;
@@ -1773,7 +2019,7 @@
 	    		prevHigh=high;
 	    		prevLow=low;
 	    		hlSpread=high-low;
-	    		high=low=0;		    	
+	    		high=low=0;
 		    }
 		    for(var i=1;i<quotes.length;i++){
 		    	if(!quotes[i-1]) continue;
@@ -1791,7 +2037,7 @@
 		    	}else if(period=="day"){
 		    		if(marketOffset===null){
 		    			//possible new daily period
-		    			marketOffset=STX.LegacyMarket.getMarketOffset(stx,quotes[i].DT);
+		    			marketOffset=getMarketOffset(quotes[i].DT);
 			    		if(isForex){
 			    			//Forex beginning of day is 17:00 NY Time, so add 7 hours of msecs (6 for metals) to make it fall on a date boundary
 			    			if(isMetal) marketOffset+=6*60*60*1000;
@@ -1805,7 +2051,7 @@
 			    		marketOffset=null;
 			    		resetPivots();
 			    	}
-		    	}else if(period=="15min" && 
+		    	}else if(period=="15min" &&
 		    			(quotes[i].DT.getHours()!=quotes[i-1].DT.getHours() || Math.floor(quotes[i].DT.getMinutes()/15)!=Math.floor(quotes[i-1].DT.getMinutes()/15))){
 		    		//new 15 minute period
 		    		resetPivots();
@@ -1817,7 +2063,7 @@
 		        	quotes[i]["Resistance 3 " + sd.name]=pivotPoint+hlSpread;
 		        	quotes[i]["Support 1 " + sd.name]=pivotPoint-0.382*hlSpread;
 		        	quotes[i]["Support 2 " + sd.name]=pivotPoint-0.618*hlSpread;
-		        	quotes[i]["Support 3 " + sd.name]=pivotPoint-hlSpread;	        		
+		        	quotes[i]["Support 3 " + sd.name]=pivotPoint-hlSpread;
 	        	}else{
 		        	quotes[i]["Resistance 1 " + sd.name]=2*pivotPoint-prevLow;
 		        	quotes[i]["Resistance 2 " + sd.name]=pivotPoint+hlSpread;
@@ -1828,7 +2074,7 @@
 	        	}
 		    }
 		};
-		
+
 		STX.Studies.calculateMFI=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 			var high=0;
@@ -1851,18 +2097,13 @@
 		    	quotes[i][sd.name + "_hist"]*=range;
 		    }
 		};
-		
+
 		STX.Studies.calculateAlligator=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 
-			sd.mp=new STX.Studies.StudyDescriptor(sd.name, "med price", sd.panel);
-			sd.mp.chart=sd.chart;
-			sd.mp.outputs={"Med Price":null};
-			STX.Studies.calculateMedianPrice(stx,sd.mp);
-			
-			STX.Studies.MA("welles wilder", Number(sd.inputs["Jaw Period"]), "Med Price "+sd.name, sd.inputs["Jaw Offset"], "Jaw", stx, sd);
-			STX.Studies.MA("welles wilder", Number(sd.inputs["Teeth Period"]), "Med Price "+sd.name, sd.inputs["Teeth Offset"], "Teeth", stx, sd);
-			STX.Studies.MA("welles wilder", Number(sd.inputs["Lips Period"]), "Med Price "+sd.name, sd.inputs["Lips Offset"], "Lips", stx, sd);
+			STX.Studies.MA("welles wilder", Number(sd.inputs["Jaw Period"]), "hl/2", sd.inputs["Jaw Offset"], "Jaw", stx, sd);
+			STX.Studies.MA("welles wilder", Number(sd.inputs["Teeth Period"]), "hl/2", sd.inputs["Teeth Offset"], "Teeth", stx, sd);
+			STX.Studies.MA("welles wilder", Number(sd.inputs["Lips Period"]), "hl/2", sd.inputs["Lips Offset"], "Lips", stx, sd);
 
 			for(var i=0;i<quotes.length;i++){
 				if(!quotes[i]) continue;
@@ -1887,7 +2128,7 @@
 			}
 
 		};
-		
+
 		STX.Studies.calculateRelativeVigor=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 			var i;
@@ -1896,10 +2137,10 @@
 				quotes[i]["Change " + sd.name]=quotes[i].Close-quotes[i].Open;
 				quotes[i]["Range " + sd.name]=quotes[i].High-quotes[i].Low;
 			}
-			
+
 			STX.Studies.MA("triangular", 4, "Change "+sd.name, 0, "Numer", stx, sd);
 			STX.Studies.MA("triangular", 4, "Range "+sd.name, 0, "Denom", stx, sd);
-			
+
 			var nums=[];
 			var dens=[];
 			for(i=0;i<quotes.length;i++){
@@ -1920,7 +2161,7 @@
 			}
 
 			STX.Studies.MA("triangular", 4, "Rel Vig "+sd.name, 0, "RelVigSignal", stx, sd);
-			
+
 			for(i=0;i<quotes.length;i++){
 				if(!quotes[i]) continue;
 				quotes[i][sd.name+"_hist"]=quotes[i]["Rel Vig "+sd.name]-quotes[i]["RelVigSignal "+sd.name];
@@ -1950,7 +2191,7 @@
 		    	quotes[i]["Result "+sd.name]=Math.sqrt(quotes[i]["MA "+sd.name]);
 		    }
 		};
-		
+
 		STX.Studies.calculateChoppiness=function(stx, sd){
 			STX.Studies.calculateStudyATR(stx,sd);
 
@@ -1968,7 +2209,11 @@
 		    for(var i=sd.days;i<quotes.length;i++){
 		    	if(!quotes[i]) continue;
 		    	var lh=getLLVHHV(sd.days,i);
-		    	quotes[i]["Result "+sd.name]=100*(Math.log(quotes[i]["Sum True Range "+sd.name]/(lh[1]-lh[0])))/Math.log(sd.days);
+		    	if(quotes[i]["Sum True Range "+sd.name]){
+		    		quotes[i]["Result "+sd.name]=100*(Math.log(quotes[i]["Sum True Range "+sd.name]/(Math.max(0.000001,lh[1]-lh[0]))))/Math.log(sd.days);
+		    	}else{
+		    		quotes[i]["Result "+sd.name]=0;
+		    	}
 		    }
 		};
 
@@ -1983,7 +2228,7 @@
 		    	quotes[i]["Result "+sd.name]=100*(quotes[i][field]/quotes[i]["MA "+sd.name]-1);
 		    }
 		};
-		
+
 		STX.Studies.calculateRainbow=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 			var field=sd.inputs.Field;
@@ -2004,7 +2249,7 @@
 				STX.Studies.MA("simple", sd.days, f, 0, "SMA"+j, stx, sd);
 				f="SMA"+j+" "+sd.name;
 			}
-		    
+
 		    for(var i=10;i<quotes.length;i++){
 		    	if(!quotes[i]) continue;
 		    	var accum=0,max=0,min=Number.MAX_VALUE;
@@ -2054,7 +2299,7 @@
 		    }
 			STX.Studies.MA("simple", sp, "KST "+sd.name, 0, "KSTSignal", stx, sd);
 		};
-		
+
 		STX.Studies.calculateSpecialK=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 			var field=sd.inputs.Field;
@@ -2064,7 +2309,7 @@
 			var roc={
 				daily: [10,15,20,30,50,65,75,100,195,265,390,530],
 				weekly: [4,5,6,8,10,13,15,20,39,52,78,104]
-			}; 
+			};
 			var map={
 				daily: [10,10,10,15,50,65,75,100,130,130,130,195],
 				weekly: [4,5,6,8,10,13,15,20,26,26,26,39]
@@ -2093,7 +2338,7 @@
 			var allTimeHigh=0;
 			var allTimeHighPeriods=parseInt(sd.inputs["All-Time High Lookback Period"],10);
 			if(sd.inputs["Volume Spike"]){
-				STX.Studies.MA("simple", allTimeHighPeriods, "Volume", 0, "ADV", stx, sd);				
+				STX.Studies.MA("simple", allTimeHighPeriods, "Volume", 0, "ADV", stx, sd);
 			}
 			var spikePercentage=parseFloat(sd.inputs["Volume % of Avg"])/100;
 			var boxState="none";
@@ -2106,9 +2351,9 @@
 			for(var i=0;i<quotes.length;i++){
 				var quote=quotes[i];
 				if(!quote) continue;
-				
+
 				if(parseFloat(sd.inputs["Price Minimum"])<=quotes[allTimeHigh].Close){
-				
+
 					if(ghost && (!ghost.End || i==ghost.End+1)){
 						if(quotes[i-1].Close>boxData.High){
 							boxData={State:1,High:2*boxData.High-boxData.Low,Low:boxData.High,Start:i,End:2*boxData.End-boxData.Start+1};
@@ -2131,16 +2376,16 @@
 							}
 						}
 					}
-					
+
 					quote["Profit "+sd.name]=buy;
 					quote["Loss "+sd.name]=sell;
 					if(quote.Close>=buy) buy=null;
 					else if(sd.inputs["Exit Field"]=="high/low" && quote.High>=buy) buy=null;
-					
+
 					if(boxState=="none"){
 						if(i==allTimeHigh+3) {
 							if(!quotes[allTimeHigh+2]["Darvas "+sd.name] &&
-							   !quotes[allTimeHigh+1]["Darvas "+sd.name] && 
+							   !quotes[allTimeHigh+1]["Darvas "+sd.name] &&
 							   !quotes[allTimeHigh]["Darvas "+sd.name] &&
 							   quotes[allTimeHigh].High>quote.High) {
 								boxState="high";
@@ -2243,7 +2488,7 @@
 						}
 					}
 				}
-				
+
 				if(sd.inputs["Volume Spike"] && i>allTimeHighPeriods && i==allTimeHigh){
 					if(quote["ADV "+sd.name]*spikePercentage < quote.Volume){
 						quote["Spike "+sd.name]=1;
@@ -2265,12 +2510,12 @@
 				var uptrend=median-factoredATR;
 				var downtrend=median+factoredATR;
 				if(i){
-					if(quotes[i-1] && quotes[i-1].Close && 
-						quotes[i-1].Close>quotes[i-1]["Uptrend "+sd.name] && 
+					if(quotes[i-1] && quotes[i-1].Close &&
+						quotes[i-1].Close>quotes[i-1]["Uptrend "+sd.name] &&
 						quotes[i-1]["Uptrend "+sd.name]>uptrend)
 						uptrend=quotes[i-1]["Uptrend "+sd.name];
-					if(quotes[i-1] && quotes[i-1].Close && 
-						quotes[i-1].Close<quotes[i-1]["Downtrend "+sd.name] && 
+					if(quotes[i-1] && quotes[i-1].Close &&
+						quotes[i-1].Close<quotes[i-1]["Downtrend "+sd.name] &&
 						quotes[i-1]["Downtrend "+sd.name]<downtrend)
 						downtrend=quotes[i-1]["Downtrend "+sd.name];
 				}
@@ -2288,11 +2533,8 @@
 
 		STX.Studies.calculatePriceRelative=function(stx, sd){
 			stx.panels[sd.panel].studyQuotes={};
-			if(stx.chart.symbol.indexOf(":")>-1) {
-				stx.panels[sd.panel].studyQuotes=null;
-				return;
-			}
-			var cSym=sd.inputs["Comparison Symbol"].split(":")[0]; //do not allow : in symbol
+
+			var cSym=sd.inputs["Comparison Symbol"].toUpperCase();
 			if(cSym==="" || cSym==stx.chart.symbol) {
 				stx.panels[sd.panel].studyQuotes=null;
 				return;
@@ -2301,12 +2543,14 @@
 
 			var quotes=sd.chart.scrubbed;
 			// only needed if not using the quotefeed.
-			if(sd.loadedInitialData){
-				var q=0;
-				for(;q<quotes.length;q++){
-					if(quotes[q] && (quotes[q][cSym] || quotes[q][cSym]===0)) break;
+			if(sd.loadedInitialData===true){
+				sd.loadedInitialData=null;
+				for(var q=0;q<quotes.length/4;q++){
+					if(quotes[q] && (quotes[q][cSym] || quotes[q][cSym]===0)) {
+						sd.loadedInitialData=true;
+						break;
+					}
 				}
-				if(q==quotes.length) sd.loadedInitialData=null;
 			}
 
 			if(!sd.loadedInitialData && sd.loadedInitialData!==false){  //check to see if we've loaded the initial data
@@ -2322,6 +2566,8 @@
 					startDate: quotes[0].DT,
 					endDate: quotes[quotes.length-1].DT,
 				    feed: "delayed",
+				    //noBats: true,
+				    //noUpdate: true,
 				    nocache: true
 	            };
 				if(!isNaN(params.interval)){	// normalize numeric intervals into "minute" form
@@ -2329,24 +2575,29 @@
 					params.interval="minute";
 				}
 
-				stx.startAsyncAction();
 				if(stx.quoteDriver){
-					stx.quoteDriver.quoteFeed.multiFetch([params], function(results){
-						for(var i=0;i<results.length;i++){
-							var result=results[i];
-							if(result.dataCallback.error){
-								sd.loadedInitialData=null;//allow a retry
-							}else{
-								STX.addMemberToMasterdata(params.stx, params.symbol, result.dataCallback.quotes);
-								params.stx.createDataSet();
-								params.stx.draw();  //need this due to async nature of this function
-								sd.loadedInitialData=true;
-							}
+					stx.startAsyncAction();
+					function handleResponse(dataCallback){
+						if(dataCallback.error){
+							sd.loadedInitialData=null;//allow a retry
+						}else{
+							STX.addMemberToMasterdata(stx, params.symbol, dataCallback.quotes);
+							stx.createDataSet();
+							stx.draw();  //need this due to async nature of this function
+							sd.loadedInitialData=true;
 						}
-						params.stx.completeAsyncAction();
-					});
+						stx.completeAsyncAction();
+					}
+					if(stx.isEquationChart(params.symbol)){  //equation chart
+						STX.fetchEquationChart(params, handleResponse);
+					}else{
+						stx.quoteDriver.quoteFeed.fetch(params, handleResponse);
+					}
 				}else{
 					//this will go away one day
+					if(cSym.indexOf(":")>-1 || stx.chart.symbol.indexOf(":")>-1) return;
+					if(cSym.indexOf("=")===0 || stx.chart.symbol.indexOf("=")===0) return;
+					stx.startAsyncAction();
 					STX.Quotes.fetch(params,function(error,data){
 						if(error){
 							sd.loadedInitialData=null;//allow a retry
@@ -2364,9 +2615,11 @@
 			quotes=stx.chart.dataSet; //operating on dataset is probably faster than recreating and scrubbing it
 
 			var map={};
-			map[stx.chart.symbol]=[].concat(quotes);
+			var mainSymbol=stx.chart.symbol.replace(/=/,"");
+			mainSymbol=mainSymbol.replace(/[\+\-\*\\\%]/g,"");
+			map[mainSymbol]=[].concat(quotes);
 			map[cSym]=null;
-			var results=STX.computeEquationChart(stx.chart.symbol+"/"+cSym, map);
+			var results=STX.computeEquationChart("["+mainSymbol+"]/["+cSym+"]", map);
 			var rIter=0;
 			for(var i=0;i<quotes.length && rIter<results.length;i++){
 				while(rIter<results.length && quotes[i].DT.getTime()>results[rIter].DT.getTime()) rIter++;
@@ -2377,7 +2630,7 @@
 			//stx.panels[sd.panel].roundit=100000;
 		};
 
-		//Copyright 2012 by ChartIQ LLC				
+		//Copyright 2012 by ChartIQ LLC
 		STX.Studies.calculateIchimoku=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 
@@ -2394,7 +2647,7 @@
 			var i,hl;
 			for(i=0;i<quotes.length;i++){
 				if(!quotes[i]) continue;
-				
+
 				hl=getLLVHHV(sd.inputs["Conversion Line Period"],i);
 				quotes[i]["Conversion Line " + sd.name]=(hl[1]+hl[0])/2;
 
@@ -2410,12 +2663,12 @@
 				hl=getLLVHHV(sd.inputs["Leading Span B Period"],i);
 				var blp=Number(sd.inputs["Base Line Period"]);
 				if(!quotes[i+blp]) {
-					sd.futureA.push((quotes[i]["Conversion Line " + sd.name]+quotes[i]["Base Line " + sd.name])/2);		
-					sd.futureB.push((hl[1]+hl[0])/2);	
+					sd.futureA.push((quotes[i]["Conversion Line " + sd.name]+quotes[i]["Base Line " + sd.name])/2);
+					sd.futureB.push((hl[1]+hl[0])/2);
 				}else{
 					quotes[i+blp]["Leading Span A " + sd.name]=(quotes[i]["Conversion Line " + sd.name]+quotes[i]["Base Line " + sd.name])/2;
 					quotes[i+blp]["Leading Span B " + sd.name]=(hl[1]+hl[0])/2;
-					
+
 				}
 			}
 		};
@@ -2437,7 +2690,7 @@
 			if(!darvasColor || darvasColor=="auto" || STX.isTransparent(darvasColor)) darvasColor=stx.defaultColor;
 			var ghostColor=sd.outputs.Ghost;
 			if(!ghostColor || ghostColor=="auto" || STX.isTransparent(ghostColor)) ghostColor=stx.defaultColor;
-			
+
 			var panel = stx.panels[sd.panel];
 			var i,q;
 			var slyh1, slyl1;
@@ -2523,10 +2776,10 @@
 							stx.chart.context.strokeRect(dx,dy,dw,dh);
 							stx.chart.context.globalAlpha=0.2;
 						}else{
-							stx.chart.context.globalAlpha=0.3;							
+							stx.chart.context.globalAlpha=0.3;
 						}
 						stx.chart.context.fillRect(dx,dy,dw,dh);
-						stx.chart.context.globalAlpha=1;						
+						stx.chart.context.globalAlpha=1;
 						inDarvas=false;
 					}
 				}
@@ -2587,7 +2840,7 @@
 				stx.chart.context.fillRect(gx,gy,gw,gh);
 				stx.chart.context.globalAlpha=1;
 			}
-			if(inDarvas || inGhost){					
+			if(inDarvas || inGhost){
 				if(sd.inputs["Stop Levels"]){
 					if(stx.chart.context.setLineDash){
 						stx.chart.context.setLineDash([2,2]);
@@ -2631,7 +2884,7 @@
 			if(sd.highlight) context.lineWidth=3;
 			stx.plotLineChart(panel, quotes, "Trend "+sd.name, params, colorFunction);
 			context.lineWidth=1;
-			
+
 			stx.startClip(sd.panel);
 			var signalWidth=stx.chart.context.measureText("\u25B2").width/2;
 			for(i=0;i<quotes.length;i++){
@@ -2657,7 +2910,7 @@
 				return;
 			}
 			for(var c=quotes.length-1;c>=0;c--){
-				if(quotes[c] && quotes[c][sd.inputs["Comparison Symbol"]]){
+				if(quotes[c] && quotes[c][sd.inputs["Comparison Symbol"].toUpperCase()]){
 					STX.Studies.displaySeriesAsLine(stx, sd, quotes);
 					return;
 				}
@@ -2665,7 +2918,7 @@
 		};
 
 		STX.Studies.displayMFI=function(stx, sd, quotes){
-			var panel = stx.panels[sd.panel];	
+			var panel = stx.panels[sd.panel];
 			panel.yAxis.min=0;
 			//STX.Studies.determineMinMax(stx, sd, quotes);
 			STX.Studies.displaySeriesAsLine(stx, sd, quotes);
@@ -2674,7 +2927,7 @@
 
 			var myWidth=stx.layout.candleWidth-2;
 			if(myWidth<2) myWidth=1;
-			
+
 			var green=sd.outputs.Green;
 			var fade=sd.outputs.Fade;
 			var fake=sd.outputs.Fake;
@@ -2697,7 +2950,7 @@
 				}
 				if(quote.candleWidth) myWidth=Math.floor(Math.max(1,quote.candleWidth-2));
 				stx.chart.context.fillRect(Math.floor(stx.pixelFromBar(i, panel.chart)-myWidth/2),
-						Math.floor(y), 
+						Math.floor(y),
 						Math.floor(myWidth),
 						Math.floor(stx.pixelFromPrice(quote[sd.name+"_hist"], panel)-y));
 			}
@@ -2715,7 +2968,7 @@
 
 			var myWidth=stx.layout.candleWidth-2;
 			if(myWidth<2) myWidth=1;
-			
+
 			var upColor=sd.outputs["Increasing Bar"];
 			var downColor=sd.outputs["Decreasing Bar"];
 			stx.canvasColor("stx_histogram");
@@ -2730,7 +2983,7 @@
 				else if(quotes[i-1][sd.name+"_hist"]>quote[sd.name+"_hist"]) stx.chart.context.fillStyle=downColor;
 				if(quote.candleWidth) myWidth=Math.floor(Math.max(1,quote.candleWidth-2));
 				stx.chart.context.fillRect(Math.floor(stx.pixelFromBar(i, panel.chart)-myWidth/2),
-						Math.floor(y), 
+						Math.floor(y),
 						Math.floor(myWidth),
 						Math.floor(stx.pixelFromPrice(quote[sd.name+"_hist"], panel)-y));
 			}
@@ -2748,7 +3001,7 @@
 
 			var myWidth=stx.layout.candleWidth-2;
 			if(myWidth<2) myWidth=1;
-			
+
 			var upColor=sd.outputs["Increasing Bar"];
 			var downColor=sd.outputs["Decreasing Bar"];
 			stx.canvasColor("stx_histogram");
@@ -2763,7 +3016,7 @@
 					else if(Math.abs(quotes[i-1][sd.name+"_hist"+j])>Math.abs(quote[sd.name+"_hist"+j])) stx.chart.context.fillStyle=downColor;
 					if(quote.candleWidth) myWidth=Math.floor(Math.max(1,quote.candleWidth-2));
 					stx.chart.context.fillRect(Math.floor(stx.pixelFromBar(i, panel.chart)-myWidth/2),
-							Math.floor(y), 
+							Math.floor(y),
 							Math.floor(myWidth),
 							Math.floor(stx.pixelFromPrice(quote[sd.name+"_hist"+j], panel)-y));
 				}
@@ -2866,7 +3119,7 @@
 
 			var myWidth=stx.layout.candleWidth-2;
 			if(myWidth<2) myWidth=1;
-			
+
 			stx.canvasColor("stx_histogram");
 		    stx.chart.context.globalAlpha=1;
 			stx.chart.context.fillStyle="#CCCCCC";
@@ -2877,7 +3130,7 @@
 				else if(quote[sd.name+"_hist"]<0) stx.chart.context.fillStyle=downColor;
 				if(quote.candleWidth) myWidth=Math.floor(Math.max(1,quote.candleWidth-2));
 				stx.chart.context.fillRect(Math.floor(stx.pixelFromBar(i, panel.chart)-myWidth/2),
-						Math.floor(y), 
+						Math.floor(y),
 						Math.floor(myWidth),
 						Math.floor(stx.pixelFromPrice(quote[sd.name+"_hist"], panel)-y));
 			}
@@ -2893,23 +3146,23 @@
 			if(!stx || !stx.chart.dataSet) return;
 
 			var chart = stx.chart;
-				  							
+
 			//decide how many bars
 			if(!sd.study.parameters.numberOfBars) sd.study.parameters.numberOfBars = 30;
 			var interval = (chart.highValue-chart.lowValue)/sd.study.parameters.numberOfBars;
 			if(interval===0) return;
-			var priceVolArry = [];	
-			
+			var priceVolArry = [];
+
 			// set the boundries for the bars -- add .1 to the loop to account for possible roundig errors.
 			for(var j=chart.lowValue;j<chart.highValue+0.1;j+=interval){
 				priceVolArry.push([j, 0]);
 			}
-			
+
 			if (priceVolArry.length <2) {	// need at least 2 price data points to draw boxes
 				stx.watermark("chart","center","top",stx.translateIf("Not enough data to render the Volume Profile"));
 				return;
 			}
-		
+
 			var volumeMax=0; 	// this is the maximum volume after we group them by the bars we will draw
 			for(var i=0;i<quotes.length;i++){
 				var prices=quotes[i];
@@ -2918,7 +3171,7 @@
 				var topRange = 0;
 				for(var x=1;x<priceVolArry.length;x++){
 					topRange= priceVolArry[x][0];
-					if( 
+					if(
 						(prices.Low >= bottomRange && prices.Low <= topRange) ||
 						(prices.Low < bottomRange && prices.High > topRange) ||
 						(prices.High >= bottomRange && prices.High <= topRange)
@@ -2933,8 +3186,8 @@
 				stx.watermark("chart","center","top",stx.translateIf("Not enough data to render the Volume Profile"));
 				return;
 			}
-			
-			
+
+
 			stx.setStyle("stx_volume_profile","color",sd.outputs["Bars Color"]);
 			var context=chart.context;
 			var fontstyle="stx-float-date";
@@ -2946,7 +3199,7 @@
 			var bartop=0; // x axis location for the top of the bar
 			var barMaxHeight=(chart.width)*sd.study.parameters.widthPercentage;  // pixels for highest bar
 			var borderColor=stx.canvasStyle("stx_volume_profile").borderColor;
-			var bordersOn=(!STX.isTransparent(stx.canvasStyle("stx_volume_profile").borderColor)) && sd.study.parameters.displayBorder; 
+			var bordersOn=(!STX.isTransparent(stx.canvasStyle("stx_volume_profile").borderColor)) && sd.study.parameters.displayBorder;
 
 			var self=stx;
 
@@ -2957,8 +3210,8 @@
 				context.beginPath();
 				var bottomRange = priceVolArry[0][0];
 				var prevTop=barBottom;
-				for(var i=1;i<priceVolArry.length;i++){	
-					if (priceVolArry[i][1]) {				
+				for(var i=1;i<priceVolArry.length;i++){
+					if (priceVolArry[i][1]) {
 						barTop =Math.round(barBottom-(priceVolArry[i][1]*barMaxHeight/volumeMax))-0.5;
 						bottomRangePixel=Math.round(self.pixelFromPrice(bottomRange, panel))+0.5;
 						topRangePixel = Math.round(self.pixelFromPrice(priceVolArry[i][0], panel))+0.5;
@@ -2968,7 +3221,7 @@
 							topRangePixel+=0.5;
 							barTop+=0.5;
 						}
-						
+
 						if ( bottomRangePixel > chartBottom ) bottomRangePixel=chartBottom;
 						if ( topRangePixel < chartBottom ) {
 							context.moveTo(barBottom, bottomRangePixel);
@@ -3008,7 +3261,7 @@
 				if(borders) context.stroke();
 				context.closePath();
 			}
-		    
+
 		    drawBars("stx_volume_profile", false);
 		    if(bordersOn){
 			    drawBars("stx_volume_profile", true);
@@ -3237,18 +3490,18 @@
 			    "outputs": {"Bars Color":"#b64a96"},
 				"customRemoval": true,
 			    "parameters": {
-			    	"displayBorder": true,  
-			    	"displayVolume" : false, 
+			    	"displayBorder": true,
+			    	"displayVolume" : false,
 			    	"numberOfBars" : 30,
 			    	"widthPercentage": 0.25
 				}
 			}
 		});
-		
-		
+
+
 		/**
 		 * Channel drawing tool. Creates a channel within 2 parallel line segments.
-		 * 
+		 *
 		 * It inherits its properties from {@link STX.Drawing.segment}.
 		 * @constructor
 		 * @name  STX.Drawing.channel
@@ -3259,9 +3512,9 @@
 			this.dragToDraw=false;
 			this.p2=null;
 		};
-		
+
 		STX.Drawing.channel.stxInheritsFrom(STX.Drawing.segment);
-		
+
 		STX.Drawing.channel.prototype.copyConfig=function(){
 			this.color=this.stx.currentVectorParameters.currentColor;
 			this.fillColor=this.stx.currentVectorParameters.fillColor;
@@ -3271,7 +3524,7 @@
 
 		STX.Drawing.channel.prototype.move=function(context, tick, value){
 			if(!this.penDown) return;
-			
+
 			this.copyConfig();
 			if(this.p2===null) this.p1=[tick,value];
 			else{
@@ -3303,9 +3556,9 @@
 			this.p2=[this.p1[0],this.p1[1]];
 			return false;
 		};
-		
+
 		STX.Drawing.channel.prototype.boxIntersection=function(tick, value){
-			if(!this.p0 || !this.p1 || !this.p2) return false;		
+			if(!this.p0 || !this.p1 || !this.p2) return false;
 			if(tick>Math.max(this.p0[0], this.p1[0]) || tick<Math.min(this.p0[0], this.p1[0])) return false;
 
 			// http://stackoverflow.com/questions/1560492/how-to-tell-whether-a-point-is-to-the-right-or-left-side-of-a-line
@@ -3366,7 +3619,7 @@
 			if(this.p2) {
 				y=this.stx.pixelFromValueAdjusted(panel, this.p2[0], this.p2[1]);
 			}
-		
+
 			var color=this.color;
 			if(color=="auto" || STX.isTransparent(color)) color=this.stx.defaultColor;
 			var width=this.lineWidth;
@@ -3394,7 +3647,7 @@
 			};
 			this.stx.plotLine(x0, x1, y0, y1, color, "segment", context, panel, parameters);
 			if(this.p2) this.stx.plotLine(x0, x1, y0+(y-y1), y, color, "segment", context, panel, parameters);
-		
+
 			if(this.highlighted){
 				var p0Fill=this.whichPoint=="p0"?true:false;
 				var p1Fill=this.whichPoint=="p1"?true:false;
@@ -3402,7 +3655,7 @@
 				this.littleCircle(context, x0, y0, p0Fill);
 				this.littleCircle(context, x1, y1, p1Fill);
 				this.littleCircle(context, x1, y, p2Fill);
-			}		
+			}
 		};
 
 		STX.Drawing.channel.prototype.reposition=function(context, repositioner, tick, value){
@@ -3426,7 +3679,7 @@
 		STX.Drawing.channel.prototype.adjust=function(){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
-			this.setPoint(0, this.d0, this.v0, panel.chart);		
+			this.setPoint(0, this.d0, this.v0, panel.chart);
 			this.setPoint(1, this.d1, this.v1, panel.chart);
 			this.setPoint(2, this.d1, this.v2, panel.chart);  //not an error, should be d1 here
 		};
@@ -3465,7 +3718,7 @@
 			this.v2=obj.v2;
 			this.adjust();
 		};
-		
+
 		STX.Drawing.channel.prototype.serialize=function(){
 			return {
 				name:this.name,
@@ -3486,7 +3739,7 @@
 
 		/**
 		 * Andrews' Pitchfork drawing tool. A Pitchfork is defined by three parallel rays.  The center ray is equidistant from the two outer rays.
-		 * 
+		 *
 		 * It inherits its properties from {@link STX.Drawing.channel}.
 		 * @constructor
 		 * @name  STX.Drawing.pitchfork
@@ -3497,12 +3750,12 @@
 			this.dragToDraw=false;
 			this.p2=null;
 		};
-		
+
 		STX.Drawing.pitchfork.stxInheritsFrom(STX.Drawing.channel);
-		
+
 		STX.Drawing.pitchfork.prototype.move=function(context, tick, value){
 			if(!this.penDown) return;
-			
+
 			this.copyConfig();
 			if(this.p2===null) this.p1=[tick,value];
 			else this.p2=[tick,value];
@@ -3517,7 +3770,7 @@
 				return STX.boxIntersects(box.x0, box.y0, box.x1, box.y1, this.p0[0], this.p0[1], (this.p1[0]+this.p2[0])/2, (this.p1[1]+this.p2[1])/2, type);
 			}
 		};
-		
+
 		STX.Drawing.pitchfork.prototype.intersected=function(tick, value, box){
 			this.whichPoint=null;
 			if(!this.p0 || !this.p1 || !this.p2) return null; // in case invalid drawing (such as from panel that no longer exists)
@@ -3571,14 +3824,14 @@
 			var y0=this.stx.pixelFromValueAdjusted(panel, this.p0[0], this.p0[1]);
 			var y1=this.stx.pixelFromValueAdjusted(panel, this.p1[0], this.p1[1]);
 			var y2=this.stx.pixelFromValueAdjusted(panel, p2[0], p2[1]);
-		
+
 			var color=this.color;
 			if(color=="auto" || STX.isTransparent(color)) color=this.stx.defaultColor;
 			var width=this.lineWidth;
 			if(this.highlighted){
 				color=this.stx.getCanvasColor("stx_highlight_vector");
 			}
-		
+
 			var parameters={
 					pattern: this.pattern,
 					lineWidth: width
@@ -3595,7 +3848,7 @@
 			this.stx.plotLine(x1, x1-z*x0, y1, y1-yp, color, "ray", context, panel, parameters);
 			this.stx.plotLine(x2, x2-z*x0, y2, y2-yp, color, "ray", context, panel, parameters);
 			}
-		
+
 			if(this.highlighted){
 				var p0Fill=this.whichPoint=="p0"?true:false;
 				var p1Fill=this.whichPoint=="p1"?true:false;
@@ -3604,17 +3857,17 @@
 				this.littleCircle(context, x1, y1, p1Fill);
 				this.littleCircle(context, x2, y2, p2Fill);
 			}
-		
+
 		};
 
 		STX.Drawing.pitchfork.prototype.adjust=function(){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
-			this.setPoint(0, this.d0, this.v0, panel.chart);		
+			this.setPoint(0, this.d0, this.v0, panel.chart);
 			this.setPoint(1, this.d1, this.v1, panel.chart);
 			this.setPoint(2, this.d2, this.v2, panel.chart);
 		};
-		
+
 		/**
 		 * Reconstruct a pitchfork
 		 * @memberOf  STX.Drawing.pitchfork
@@ -3651,7 +3904,7 @@
 			this.v2=obj.v2;
 			this.adjust();
 		};
-		
+
 		STX.Drawing.pitchfork.prototype.serialize=function(){
 			return {
 				name:this.name,
@@ -3671,11 +3924,11 @@
 			};
 		};
 
-		
+
 		/**
 		 * Gartley drawing tool. Creates a series of four connected line segments, each one completed with a user click.
 		 * Will adhere to Gartley requirements vis-a-vis fibonacci levels etc..
-		 * 
+		 *
 		 * It inherits its properties from {@link STX.Drawing.continuous}.
 		 * @constructor
 		 * @name  STX.Drawing.gartley
@@ -3689,7 +3942,7 @@
 			this.shape=null;
 			this.points=[];
 		};
-		
+
 		STX.Drawing.gartley.stxInheritsFrom(STX.Drawing.continuous);
 
 		STX.Drawing.gartley.prototype.check=function(first, second){
@@ -3715,7 +3968,7 @@
 			}
 			return true;
 		};
-		
+
 		STX.Drawing.gartley.prototype.click=function(context, tick, value){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -3737,7 +3990,7 @@
 				this.drawDropZones=true;
 				this.setPoint(1, tick, value, panel.chart);
 				this.segment++;
-				
+
 				if(this.segment>this.maxSegments) {
 					this.setPoint(0, this.points[0][0], this.points[0][1], panel.chart);
 					return true;
@@ -3773,14 +4026,14 @@
 			if(this.highlighted){
 				color=this.stx.getCanvasColor("stx_highlight_vector");
 			}
-		
+
 			var parameters={
 					pattern: this.pattern,
 					lineWidth: width
 			};
 			if(this.segment<=this.maxSegments)
 				this.stx.plotLine(x0, x1, y0, y1, color, this.name, context, panel, parameters);
-			
+
 			var fillColor=this.fillColor;
 			var coords=[];
 			if(this.points.length){
@@ -3795,7 +4048,7 @@
 					this.stx.plotLine(xx0, xx1, yy0, yy1, color, this.name, context, panel, parameters);
 				}
 				if(this.points.length==2 || this.points.length==4){
-					coords.push(x1,y1);					
+					coords.push(x1,y1);
 				}
 				if(this.points[2]){
 					coords.push(this.stx.pixelFromTick(this.points[2][0], panel.chart),
@@ -3820,7 +4073,7 @@
 				this.littleCircle(context, x0, y0, p0Fill);
 				this.littleCircle(context, x1, y1, p1Fill);
 			}*/
-		
+
 		};
 
 		STX.Drawing.gartley.prototype.lineIntersection=function(tick, value, box, type){
@@ -3836,7 +4089,7 @@
 		};
 
 		STX.Drawing.gartley.prototype.boxIntersection=function(tick, value){
-			if(!this.p0 || !this.p1) return false;			
+			if(!this.p0 || !this.p1) return false;
 			if(tick>Math.max(this.p0[0], this.p1[0]) || tick<Math.min(this.p0[0], this.p1[0])) return false;
 			var lowPoint=Math.min(this.p0[1],this.p1[1]);
 			var highPoint=Math.max(this.p0[1],this.p1[1]);
@@ -3892,7 +4145,7 @@
 			context.fillRect(x0, y0, x1, y1);
 			context.globalAlpha=1;
 		};
-		
+
 		STX.Drawing.gartley.prototype.adjust=function(){
 			// If the drawing's panel doesn't exist then we'll check to see
 			// whether the panel has been added. If not then there's no way to adjust
@@ -3906,7 +4159,7 @@
 			this.setPoint(1, this.d1, this.v1, panel.chart);
 			this.points.push(this.p1);
 		};
-		
+
 		STX.Drawing.gartley.prototype.reconstructPoints=function(){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -3952,7 +4205,7 @@
 			this.pts=obj.pts.split(",");
 			this.adjust();
 		};
-		
+
 		STX.Drawing.gartley.prototype.serialize=function(){
 			return {
 				name:this.name,
@@ -3974,7 +4227,7 @@
 		/**
 		 * Freeform drawing tool. Set splineTension to a value from 0 to 1 (default .3). This is a dragToDraw function
 		 * and automatically disables the crosshairs while enabled.
-		 * 
+		 *
 		 * It inherits its properties from {@link STX.Drawing.segment}.
 		 * @constructor
 		 * @name  STX.Drawing.freeform
@@ -3985,9 +4238,9 @@
 			this.splineTension=0.3;  //set to -1 to not use splines at all
 			this.dragToDraw=true;
 		};
-		
+
 		STX.Drawing.freeform.stxInheritsFrom(STX.Drawing.segment);
-		
+
 		STX.Drawing.freeform.prototype.measure=function(){};
 
 		STX.Drawing.freeform.prototype.intersected=function(tick, value, box){
@@ -3995,11 +4248,11 @@
 			if(value>this.hiY || value<this.lowY) return false;
 			return true;
 		};
-		
+
 		STX.Drawing.freeform.prototype.click=function(context, tick, value){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
-			
+
 			if(this.penDown===false){
 				this.copyConfig();
 				this.startX=Math.round(this.stx.resolveX(this.stx.pixelFromTick(tick, panel.chart)));
@@ -4028,36 +4281,36 @@
 				return true;
 			}
 		};
-		
+
 		STX.Drawing.freeform.prototype.move=function(context, tick, value){
 			if(!this.penDown) return;
-		
+
 			var panel=this.stx.panels[this.panelName];
 			var d1=this.stx.dateFromTick(tick, panel.chart, true);
 			this.d1=STX.yyyymmddhhmmssmmm(d1);
 			this.tzo1=d1.getTimezoneOffset();
 			this.v1=value;
 			this.p1=[STXChart.crosshairX-this.startX,STXChart.crosshairY-this.startY];
-		
+
 			if(this.pNodes.length>2){
 				if( this.p1[0]==this.pNodes[this.pNodes.length-2][0] &&
 					this.p1[0]==this.pNodes[this.pNodes.length-1][0]){
-					this.pNodes.length--;		
+					this.pNodes.length--;
 					this.nodes.length-=2;
 				}else if(this.p1[1]==this.pNodes[this.pNodes.length-2][1] &&
 						 this.p1[1]==this.pNodes[this.pNodes.length-1][1]){
-					this.pNodes.length--;		
+					this.pNodes.length--;
 					this.nodes.length-=2;
 				}
 			}
-			
+
 			this.nodes.push(this.p1[0],this.p1[1]);
 			this.pNodes.push(this.p1);
-		
+
 			this.render(context);
 			return false;
 		};
-		
+
 		//TODO: make more exact, and relocate this to somewhere useful
 		STX.Drawing.freeform.prototype.intervalRatio=function(oldInterval,newInterval,oldPeriodicity,newPeriodicity,startDate,symbol){
 			//approximating functions
@@ -4083,38 +4336,38 @@
 			returnValue*=oldPeriodicity/newPeriodicity;
 			return returnValue;
 		};
-		
+
 		STX.Drawing.freeform.prototype.render=function(context){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
-		
+
 			var intvl=this.intervalRatio(this.interval,this.stx.layout.interval,this.periodicity,this.stx.layout.periodicity,this.d0,panel.chart.symbol);
 			if(intvl===0) return;
-			
+
 			var cwr=this.stx.layout.candleWidth/this.candleWidth;
 			var mlt=panel.yAxis.multiplier/this.multiplier;
 			this.setPoint(0, this.d0, this.v0, panel.chart);
 			var spx=this.stx.pixelFromTick(this.p0[0], panel.chart);
 			var spy=this.stx.pixelFromValueAdjusted(panel, this.p0[0], this.p0[1]);
 			var arrPoints=[];
-				
+
 			var color=this.color;
 			var width=this.lineWidth;
 			if(this.highlighted){
 				color=this.stx.getCanvasColor("stx_highlight_vector");
 			}
-		
+
 			var parameters={
 				pattern: this.pattern,
 				lineWidth: width
 			};
-		
+
 			for(var n=0;n<this.pNodes.length;n++){
 				var x0=intvl*cwr*(this.pNodes[n][0])+spx;
 				var y0=mlt*(this.pNodes[n][1])+spy;
 				arrPoints.push(x0,y0);
 			}
-		
+
 			if(!arrPoints.length) return;
 			if(this.splineTension<0){
 				this.stx.connectTheDots(arrPoints, color, this.name, context, panel, parameters);
@@ -4122,20 +4375,20 @@
 				this.stx.plotSpline(arrPoints,this.splineTension,color,this.name,context,true,parameters);
 			}
 		};
-		
+
 		STX.Drawing.freeform.prototype.adjust=function(){
 			// If the drawing's panel doesn't exist then we'll check to see
 			// whether the panel has been added. If not then there's no way to adjust
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
-		
+
 			var p0=[this.nodes[0], this.nodes[1]];
 			this.pNodes=[p0];
 			this.lowX=this.nodes[0];
 			this.hiX=this.nodes[0];
 			this.lowY=this.nodes[1];
 			this.hiY=this.nodes[1];
-			
+
 			for(var n=2;n<this.nodes.length;n+=2){
 				var p1=[this.nodes[n], this.nodes[n+1]];
 				this.pNodes.push(p1);
@@ -4144,23 +4397,23 @@
 				this.lowY=Math.max(this.lowY,p1[1]);  //reversed because price axis goes bottom to top
 				this.hiY=Math.min(this.hiY,p1[1]);
 			}
-		
+
 			var intvl=this.intervalRatio(this.interval,this.stx.layout.interval,this.periodicity,this.stx.layout.periodicity,this.d0,panel.chart.symbol);
 			if(intvl===0) return;
-		
+
 			var cwr=this.stx.layout.candleWidth/this.candleWidth;
 			var mlt=panel.yAxis.multiplier/this.multiplier;
 			this.setPoint(0, this.d0, this.v0, panel.chart);
 			var spx=this.stx.pixelFromTick(this.p0[0], panel.chart);
 			var spy=this.stx.pixelFromValueAdjusted(panel, this.p0[0], this.p0[1]);
-		
+
 			this.lowX=this.stx.tickFromPixel(Math.floor(intvl*cwr*(this.lowX))+spx,panel.chart);
 			this.hiX=this.stx.tickFromPixel(Math.ceil(intvl*cwr*(this.hiX))+spx,panel.chart);
 			this.lowY=this.stx.valueFromPixel(Math.floor(mlt*(this.lowY))+spy,panel);
 			this.hiY=this.stx.valueFromPixel(Math.ceil(mlt*(this.hiY))+spy,panel);
-		
+
 		};
-		
+
 		STX.Drawing.freeform.prototype.serialize=function(){
 			return {
 				name:this.name,
@@ -4173,12 +4426,12 @@
 				d0:this.d0,
 				tzo0:this.tzo0,
 				v0:this.v0,
-				int:this.interval,
+				inter:this.interval,
 				pd:this.periodicity,
 				nodes:this.nodes
 			};
 		};
-		
+
 		/**
 		 * Reconstruct a freeform drawing. It is not recommended to do this programatically.
 		 * @param  {STXChart} stx The chart object
@@ -4208,13 +4461,13 @@
 			this.d0=obj.d0;
 			this.tzo0=obj.tzo0;
 			this.v0=obj.v0;
-			this.interval=obj.int;
+			this.interval=obj.inter;
 			this.periodicity=obj.pd;
 			this.nodes=obj.nodes;
 			this.adjust();
 		};
 
-		
+
 		/**
 		 * Callout drawing tool.  This is like an annotation except it draws a stem and offers a background color and line style.
 		 *
@@ -4249,15 +4502,15 @@
 			this.pattern=this.stx.currentVectorParameters.pattern;
 			this.font=STX.clone(this.stx.currentVectorParameters.annotation.font);
 		};
-		
+
 		STX.Drawing.callout.prototype.move=function(context, tick, value){
 			if(!this.penDown) return;
-			
+
 			this.copyConfig();
 			this.p0=[tick,value];
 			this.render(context);
 		};
-		
+
 		STX.Drawing.callout.prototype.onChange=function(e){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -4320,7 +4573,7 @@
 				if(sy0>=y+h) {sy1=y+h;state+="b";}	// bottom of text
 				else if(sy0>y-h && sy0<y+h) {sy1=y;state+="m";}	// middle of text
 				else if(sy0<=y-h) {sy1=y-h;state+="t";}	// top of text
-		
+
 				this.stemEntry=state;
 
 				if(sx1!=x || sy1!=y){  // make sure stem does not originate underneath the annotation
@@ -4408,7 +4661,7 @@
 				y+=this.fontSize;
 			}
 			context.textBaseline="alphabetic";
-			
+
 			if(this.highlighted){
 				var p0Fill=this.whichPoint=="p0"?true:false;
 				this.littleCircle(context, sx0, sy0, p0Fill);
@@ -4419,7 +4672,7 @@
 				context.globalAlpha=1;
 			}*/
 		};
-		
+
 		STX.Drawing.callout.prototype.click=function(context, tick, value){
 			var panel=this.stx.panels[this.panelName];
 			this.copyConfig();
@@ -4474,7 +4727,7 @@
 				return STX.boxIntersects(box.x0, box.y0, box.x1, box.y1, this.p0[0], this.p0[1], stemTick, this.stem.v, type);
 			}
 		};
-		
+
 		STX.Drawing.callout.prototype.intersected=function(tick, value, box){
 			var panel=this.stx.panels[this.panelName];
 			if(!this.p0) return null; // in case invalid drawing (such as from panel that no longer exists)
@@ -4521,7 +4774,7 @@
 
 		/**
 		 * Fibonacci Arc drawing tool.
-		 * 
+		 *
 		 * It inherits its properties from {@link STX.Drawing.fibonacci}
 		 * @constructor
 		 * @name  STX.Drawing.fibarc
@@ -4532,7 +4785,7 @@
 			this.name="fibarc";
 			//this.dragToDraw=true;
 		};
-		
+
 		STX.Drawing.fibarc.stxInheritsFrom(STX.Drawing.fibonacci);
 
 		STX.Drawing.fibarc.prototype.render=function(context){
@@ -4544,11 +4797,13 @@
 			var x1=this.stx.pixelFromTick(this.p1[0], panel.chart);
 			var y0=this.stx.pixelFromValueAdjusted(panel, this.p0[0], this.p0[1]);
 			var y1=this.stx.pixelFromValueAdjusted(panel, this.p1[0], this.p1[1]);
-			var top=Math.min(y1, y0);
-			var bottom=Math.max(y1, y0);
-			var height=bottom-top;
+			var scale=Math.sqrt(2);
+			var x0ext=x1-(x1-x0)*scale;
+			var y0ext=y1-(y1-y0)*scale;
 			var isUpTrend=y1<y0;
-		
+			var height=Math.abs(y0ext-y1);
+			var weight=(y0-y1)/3*scale;
+
 			var trendLineColor=this.parameters.trend.color;
 			if(trendLineColor=="auto" || STX.isTransparent(trendLineColor)) trendLineColor=this.stx.defaultColor;
 			if(this.highlighted){
@@ -4560,16 +4815,14 @@
 			var minX=Number.MAX_VALUE, minY=Number.MAX_VALUE, maxX=Number.MAX_VALUE*-1, maxY=Number.MAX_VALUE*-1;
 			var txtColor=this.color;
 			if(txtColor=="auto" || STX.isTransparent(txtColor)) txtColor=this.stx.defaultColor;
-			var length=Math.sqrt(Math.pow(y1-y0,2)+Math.pow(x1-x0,2));
 			for(var i=0;i<this.parameters.fibs.length;i++){
 				context.fillStyle=txtColor;
 				var fib=this.parameters.fibs[i];
 				if(fib.level<0) continue;
-				var y=length*fib.level;
+				var y=height*fib.level;
 				if(isUpTrend) y*=-1;
-				y=Math.round(y0+y);
+				y=y1-y;
 				var x=STX.xIntersection({x0:x0,x1:x1,y0:y0,y1:y1}, y);
-				var farX=x0;
 				if(this.parameters.printLevels){
 					context.textAlign="center";
 					var txt=Math.round(fib.level*1000)/10+"%";
@@ -4577,7 +4830,7 @@
 						context.fillStyle=txtColor; // the price labels screw up the color and font size...so  reset before rendering the text
 						this.stx.canvasFont("stx_yaxis", context); // use the same context as the y axis so they match.
 					}
-					context.fillText(txt, farX, y-5);
+					context.fillText(txt, x1, Math.round(y-5));
 				}
 				context.textAlign="left";
 				if(this.parameters.printValues){
@@ -4594,10 +4847,9 @@
 							price=this.stx.formatYAxisPrice(price, panel);
 						}
 						if(context==this.stx.chart.context) this.stx.endClip();
-						var ylabel=(y1-y0)*fib.level+y0;
-						this.stx.createYAxisLabel(panel, price, ylabel, txtColor, null, context);
-						if(context==this.stx.chart.context) this.stx.startClip(panel.name);	
-					}				
+						this.stx.createYAxisLabel(panel, price, y, txtColor, null, context);
+						if(context==this.stx.chart.context) this.stx.startClip(panel.name);
+					}
 				}
 				var fibColor=fib.color;
 				if(fibColor=="auto" || STX.isTransparent(fibColor)) fibColor=this.color;
@@ -4617,7 +4869,11 @@
 					context.lineDashOffset=0;  //start point in array
 				}
 				context.beginPath();
-				context.arc(x0,y0,Math.abs(fib.level)*length,0,Math.PI,isUpTrend);
+				var left=x1-(x1-x0ext)*fib.level;
+				var right=x1+(x1-x0ext)*fib.level;
+				var controlY=y1-(y1-y0ext-weight)*fib.level;
+				context.moveTo(left, y1);
+				context.bezierCurveTo(left, controlY, right, controlY, right, y1);
 				context.stroke();
 				if(context.setLineDash) context.setLineDash([]);
 				context.globalAlpha=0.05;
@@ -4634,8 +4890,8 @@
 			}
 			context.textAlign="left";
 			// ensure we at least draw trend line from zero to 100
-			for(var level in {0:0, 1:1}){
-				var yy=isUpTrend?bottom-height*level:top+height*level;
+			for(var level=0;level<2;level++){
+				var yy=isUpTrend?y0ext-height*level:y0ext+height*level;
 				yy=Math.round(yy);
 				if(yy<minY){
 					minX=STX.xIntersection({x0:x0,x1:x1,y0:y0,y1:y1}, yy);
@@ -4657,7 +4913,7 @@
 
 		/**
 		 * Fibonacci Fan drawing tool.
-		 * 
+		 *
 		 * It inherits its properties from {@link STX.Drawing.fibonacci}
 		 * @constructor
 		 * @name  STX.Drawing.fibfan
@@ -4668,9 +4924,9 @@
 			this.name="fibfan";
 			//this.dragToDraw=true;
 		};
-		
+
 		STX.Drawing.fibfan.stxInheritsFrom(STX.Drawing.fibonacci);
-		
+
 		STX.Drawing.fibfan.prototype.render=function(context){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -4684,7 +4940,7 @@
 			var bottom=Math.max(y1, y0);
 			var height=bottom-top;
 			var isUpTrend=(y1-y0)/(x1-x0)>0;
-		
+
 			var trendLineColor=this.parameters.trend.color;
 			if(trendLineColor=="auto" || STX.isTransparent(trendLineColor)) trendLineColor=this.stx.defaultColor;
 			if(this.highlighted){
@@ -4741,8 +4997,8 @@
 						}
 						if(context==this.stx.chart.context) this.stx.endClip();
 						this.stx.createYAxisLabel(panel, price, y, txtColor, null, context);
-						if(context==this.stx.chart.context) this.stx.startClip(panel.name);	
-					}				
+						if(context==this.stx.chart.context) this.stx.startClip(panel.name);
+					}
 				}
 				var fibColor=fib.color;
 				if(fibColor=="auto" || STX.isTransparent(fibColor)) fibColor=this.color;
@@ -4793,7 +5049,7 @@
 
 		/**
 		 * Fibonacci Time Zone drawing tool.
-		 * 
+		 *
 		 * It inherits its properties from {@link STX.Drawing.fibonacci}
 		 * @constructor
 		 * @name  STX.Drawing.fibtimezone
@@ -4804,9 +5060,9 @@
 			this.name="fibtimezone";
 			//this.dragToDraw=true;
 		};
-		
+
 		STX.Drawing.fibtimezone.stxInheritsFrom(STX.Drawing.fibonacci);
-		
+
 		STX.Drawing.fibtimezone.prototype.render=function(context){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -4816,7 +5072,7 @@
 			var y0=this.stx.pixelFromValueAdjusted(panel, this.p0[0], this.p0[1]);
 			var y1=this.stx.pixelFromValueAdjusted(panel, this.p1[0], this.p1[1]);
 			var fibs=[1,0];
-		
+
 			var trendLineColor=this.parameters.trend.color;
 			if(trendLineColor=="auto" || STX.isTransparent(trendLineColor)) trendLineColor=this.stx.defaultColor;
 			if(this.highlighted){
@@ -4893,9 +5149,9 @@
 			this.dimension=[0,0];
 			this.points=[];
 		};
-		
+
 		STX.Drawing.shape.stxInheritsFrom(STX.Drawing.BaseTwoPoint);
-		
+
 		STX.Drawing.shape.prototype.measure=function(){};
 
 		STX.Drawing.shape.prototype.render=function(context){
@@ -4947,12 +5203,12 @@
 			}
 			var fillColor=this.fillColor;
 			lineWidth/=(Math.abs((this.sx*this.sy))*2/(Math.abs(this.sx)+Math.abs(this.sy)));
-			
+
 			context.save();
 			context.translate(x0,y0);
 			context.rotate(this.radians);
 			context.scale(this.sx,this.sy);
-			
+
 			var subshape, point;
 			for(subshape=0;subshape<this.points.length;subshape++){
 				context.beginPath();
@@ -4983,7 +5239,7 @@
 					}
 				}
 				context.closePath();
-			
+
 				if(fillColor && !STX.isTransparent(fillColor) && fillColor!="auto"){
 					//context.globalAlpha=0.4;
 					context.fillStyle=fillColor;
@@ -5003,9 +5259,9 @@
 					context.stroke();
 				}
 			}
-			
+
 			//context.strokeRect(-(this.dimension[0]-1)/2,-(this.dimension[1]-1)/2,this.dimension[0]-1,this.dimension[1]-1);
-			
+
 			context.restore();
 			context.save();
 			context.translate(x0,y0);
@@ -5037,7 +5293,7 @@
 			}
 			context.restore();
 		};
-		
+
 		STX.Drawing.shape.prototype.reposition=function(context, repositioner, tick, value){
 			var panel=this.stx.panels[this.panelName];
 			if(repositioner.action=="move"){
@@ -5123,7 +5379,7 @@
 			}
 			return null;
 		};
-		
+
 		STX.Drawing.shape.prototype.copyConfig=function(){
 			this.color=this.stx.currentVectorParameters.currentColor;
 			this.fillColor=this.stx.currentVectorParameters.fillColor;
@@ -5134,7 +5390,7 @@
 		STX.Drawing.shape.prototype.littleCircleRadius=function(){
 			return 3;
 		};
-		
+
 		STX.Drawing.shape.prototype.click=function(context, tick, value){
 			if(!this.points.length) return false;
 			this.copyConfig();
@@ -5196,7 +5452,7 @@
 			this.sy=obj.sy;
 			this.adjust();
 		};
-		
+
 		STX.Drawing.shape.prototype.serialize=function(){
 			return {
 				name:this.name,
@@ -5226,9 +5482,9 @@
 		* 		"Q" - draw quadratic curve where next 2 elements are the control point and following 2 elements are the end coordinates
 		* 		"B" - draw bezier curve where next 2 elements are first control point, next 2 elements are second control point, and next 2 elements are the end coordinates
 		* See sample shapes below.
-		* 
+		*
 		*/
-		
+
 		STX.Drawing.xcross=function(){
 			this.name="xcross";
 			this.dimension=[7,7];
@@ -5291,21 +5547,36 @@
 		 * each panel. Markers are placed by date, tick or bar to control their position on the x-axis. They
 		 * are placed by value (price) to control their position on the y-axis. Markers will be repositioned
 		 * when the user scrolls or zooms the chart.
-		 * 
-		 * The default placement function for any markers is {@link STXChart#defaultMarkerPlacement}, but custom placement functions can be created as needed. 
+		 *
+		 * The default placement function for any markers is {@link STXChart#defaultMarkerPlacement}, but custom placement functions can be created as needed.
 		 * See {@link STX.Marker.AboveCandle} for sample custom rendering function.
-		 * 
+		 *
+		 * If markers must be part of an exported image generated using the {@link STXSocial} plug-in, you need to draw them on the actual canvas instead using [Canvas Markers](tutorial-Popular%20API%20injections.html#marker).
+		 *
 		 * See {@tutorial Markers} tutorials for additional implementation instructions.
-		 * 
+		 *
 		 * @name STX.Marker
 		 * @param {Object} params Parameters that describe the marker
-		 * @param {STXChart} stx The chart to attach the marker
-		 * @param {*} params.x A valid date, date string, tick or bar
-		 * @param {Number} params.y A valid value for positioning on the y-axis
+		 * @param {STXChart} params.stx The chart to attach the marker
+		 * @param {*} params.x A valid date, date string, tick or bar (depending on selected xPositioner) to select a candle to attach to.
+		 * @param {Number} params.y A valid value for positioning on the y-axis (depending on selected yPositioner, if missing the marker will be set "above_candle" as long as a valid candle is selected by `params.x`)
 		 * @param {HTMLElement} [params.node] The HTML element. This should be detached from the DOM! If none passed then a blank div will be created.
 		 * @param {string} params.panelName="chart" The name of the panel to attach the holder. Defaults to the main chart panel.
-		 * @param {String} [params.xPositioner="date"] Value values are "date" (a JavaScript date), "master" (masterData position), "bar" (dataSegment position), "none" (use CSS positioning)
-		 * @param {String} [params.yPositioner="value"] Value values are "value", "none" (use CSS positioning)
+		 * @param {String} [params.xPositioner="date"] Determines the x position. 
+		 * Values are:
+		 * - "date" (`params.x` must be set to a JavaScript date)
+		 * - "master" (`params.x` must be set to a masterData position)
+		 * - "bar" (`params.x` must be set to a dataSegment position)
+		 * - "none" (use CSS positioning, `params.x` will not be used)
+		 * @param {String} [params.yPositioner="value"] Determines the y position. Candle positioning requires a valid candle selected by `params.x`
+		 * Values are:
+		 * - "value" (`params.y` must be set to an exact y axis value)
+		 * - "above_candle" (right above the candle or line. If more than one on same position, they will align upwards from the first. `params.y` will not be used)
+		 * - "under_candle" (right under the candle or line. If more than one on same position, they will align downwards from the first. `params.y` will not be used)
+		 * - "on_candle" (in the center or the candle or line - covering it. If more than one on same position, they will align downwards from the first. `params.y` will not be used)
+		 * - "top" (on top of the chart, right under the margin. If more than one on same position, they will align downwards from the first. `params.y` will not be used)
+		 * - "bottom" ( on the bottom of the chart, right over the margin. If more than one on same position, they will align upwards from the first. `params.y` will not be used)
+		 * - "none" (use CSS positioning. `params.y` will not be used)
 		 * @param {boolean} [params.permanent=false] Stays on the chart even when chart is re-initialized (symbol change, newChart(), initializeChart())
 		 * @param {String} [params.label="generic"] A label for the marker. Multiple markers can be assigned the same label. This allows them to be deleted in one fell swoop.
 		 * @param {boolean} [params.includeAxis=false] If true then the marker can display on the x or y axis. Otherwise it will be cropped at the axis edges.
@@ -5313,12 +5584,15 @@
 		 * markers directly in the chart container, the z-index setting for the marker should be set vis a vis the z-index of the holders in order to place
 		 * the markers below or above those inside the holders.
 		 * @constructor
-		 * @since 15-07-01
+		 * @since 
+		 * <br> 15-07-01 Class added
+		 * <br> 05-2016-10 It now takes the following `params.yPositioner` values: "value", "above_candle", "under_candle","on_candle","top","bottom"
 		 * @version ChartIQ Advanced Package
 		 * @example
 		 * new STX.Marker({
 	     * 	stx: stxx,
 	     * 	xPositioner: "date",
+	     *  yPositioner: "value",
 	     * 	x: someDate,
 		 * 	label: "events",
 	     * 	node: newNode
@@ -5385,10 +5659,10 @@
 		};
 
 		/**
-		 * AboveCandle is a sample Marker placement handler that positions markers above the candles on the chart. 
-		 * This is equivalent to a "placementFunction" in the previous version of Markers. You can create your own marker placement objects 
-		 * by following the same pattern as {@link STXChart#defaultMarkerPlacement}.
-		 * 
+		 * AboveCandle is a sample Marker placement handler that positions markers above the candles on the chart.
+		 * This is equivalent to a "placementFunction" in the previous version of Markers.
+		 * You can create your own marker placement objects by following the same pattern.
+		 *
 		 * @param  {Object} params Parameters inherited from {@link STX.Marker}
 		 * @name STX.Marker.AboveCandle
 		 * @constructor
@@ -5409,8 +5683,8 @@
 		STX.Marker.AboveCandle.stxInheritsFrom(STX.Marker, false);
 
 		/**
-		 * Sample `placementFuncion` override used to draw markers above a particular candle, bar or line value. Derived from {@link STXChart#defaultMarkerPlacement}
-		 * 
+		 * Sample `placementFuncion` override used to draw markers above a particular candle, bar or line value regardless of `marker.params.y` and `marker.params.yPositioner` settings.
+		 *
 		 * @param  {Object} params Parameters including the list of markers and placement details
 		 * @param {STXChart} params.stx The chart object
 		 * @param {Array} params.arr The array of markers to place
@@ -5425,6 +5699,8 @@
 			var chart=panel.chart;
 			var stx=params.stx;
 			var useHighs=STXChart.chartShowsHighs(stx.layout.chartType);
+
+			var placementMap ={};
 			for(var i=0;i<params.arr.length;i++){
 				var marker=params.arr[i];
 				var node=marker.node;
@@ -5434,10 +5710,9 @@
 				if(!marker.clientWidth) marker.clientWidth=node.clientWidth;
 				if(!marker.clientHeight) marker.clientHeight=node.clientHeight;
 				var quote=null;
-				
-				
+
 				// X axis positioning logic
-				
+
 				if(marker.params.xPositioner=="bar"){
 					if(marker.params.x<chart.xaxis.length){
 						var xaxis=chart.xaxis[marker.params.x];
@@ -5453,7 +5728,7 @@
 							stx.futureTickIfDisplayed(marker); // Just in time check for tick
 							if(!marker.tick && marker.tick!==0){
 								node.style.left="-1000px";
-								continue;								
+								continue;
 							}
 						}else{
 							node.style.left="-1000px";
@@ -5467,27 +5742,39 @@
 					node.style.left=marker.leftpx+"px";
 				}
 				if(!quote) quote=chart.dataSet[chart.dataSet.length-1]; // Future ticks based off the value of the current quote
-		
+
+				if ( typeof placementMap[node.style.left]!="undefined")
+					placementMap[node.style.left]+=1;
+				else
+					placementMap[node.style.left]=0;
+
 				// Y axis positioning logic
-				
+
 				var height=marker.params.chartContainer?stx.height:panel.yAxis.bottom;
+
+				var bottomAdjust=0;
+				if ( placementMap[node.style.left]){
+					bottomAdjust = (node.clientHeight+2)*placementMap[node.style.left];
+				}
+
 				var bottom;
 				if(useHighs){
-					bottom=Math.round(height-stx.pixelFromPriceTransform(quote.High, panel, yAxis))+"px";
+					bottom=Math.round(height-stx.pixelFromPriceTransform(quote.High, panel, yAxis)+bottomAdjust)+"px";
 				}else{
-					bottom=Math.round(height-stx.pixelFromPriceTransform(quote.Close, panel, yAxis))+"px";
+					bottom=Math.round(height-stx.pixelFromPriceTransform(quote.Close, panel, yAxis)+bottomAdjust)+"px";
 				}
 				if(node.style.bottom!=bottom) node.style.bottom=bottom;
 			}
 		};
-		
-		
+
+
 		/**
-		 * Placement functions are responsible for positioning markers in their holder. They are called directly form the draw() function in the animation loop. 
+		 * Placement functions are responsible for positioning markers in their holder according to each marker's settings. 
+		 * They are called directly form the draw() function in the animation loop.
 		 * Each Marker placement handler must have a corresponding `placementFunction` or this method will be used.
-		 * 
+		 *
 		 * `firstTick` and `lastTick` can be used as a hint as to whether to display a marker or not.
-		 * 
+		 *
 		 * See {@link STX.Marker} and {@tutorial Markers} for more details
 		 * @memberOf  STXChart
 		 * @param {Object} params The parameters
@@ -5495,13 +5782,110 @@
 		 * @param {Object} params.panel The panel to display
 		 * @param {Number} params.firstTick The first tick displayed on the screen
 		 * @param {Number} params.lastTick The last tick displayed on the screen
-		 * @since 2015-09-01 On prior versions you must define your own default function. Example: STXChart.prototype.defaultMarkerPlacement = STX.Marker.AboveCandle.placementFunction;
+		 * @since 
+		 * <br> 2015-09-01 On prior versions you must define your own default function. Example: STXChart.prototype.defaultMarkerPlacement = STX.Marker.AboveCandle.placementFunction;
 		 */
 		STXChart.prototype.defaultMarkerPlacement=function(params){
-			STX.Marker.AboveCandle.placementFunction(params);
+			var panel=params.panel;
+			var yAxis=params.yAxis?params.yAxis:params.panel.yAxis;
+			var chart=panel.chart;
+			var stx=params.stx;
+			var showsHighs=STXChart.chartShowsHighs(stx.layout.chartType);
+
+			var placementMap ={};
+			for(var i=0;i<params.arr.length;i++){
+				var marker=params.arr[i];
+				var node=marker.node;
+				// Getting clientWidth and clientHeight is a very expensive operation
+				// so we'll cache the results. Don't use this function if your markers change
+				// shape or size dynamically!
+				if(!marker.clientWidth) marker.clientWidth=node.clientWidth;
+				if(!marker.clientHeight) marker.clientHeight=node.clientHeight;
+				var quote=null;
+
+				// X axis positioning logic
+
+				if(marker.params.xPositioner!="none"){
+					if(marker.params.xPositioner=="bar" && marker.params.x){
+						if(marker.params.x<chart.xaxis.length){
+							var xaxis=chart.xaxis[marker.params.x];
+							if(xaxis) quote=xaxis.data;
+						}
+						node.style.left=Math.round(stx.pixelFromBar(marker.params.x, chart)-marker.clientWidth/2)+1+"px";
+					}else{
+						// This is a section of code to hide markers if they are off screen, and also to figure out
+						// the position of markers "just in time"
+						// the tick is conditionally pre-set by STXChart.prototype.setMarkerTick depending on marker.params.xPositioner
+						if(!marker.tick && marker.tick!==0){ // if tick is not defined then hide, probably in distant past
+							if(marker.params.future && chart.scroll<chart.maxTicks){ // In future
+								stx.futureTickIfDisplayed(marker); // Just in time check for tick
+								if(!marker.tick && marker.tick!==0){
+									node.style.left="-1000px";
+									continue;
+								}
+							}else{
+								node.style.left="-1000px";
+								continue;
+							}
+						}
+						if(marker.tick<chart.dataSet.length) quote=chart.dataSet[marker.tick];
+						if(marker.tick<params.firstTick && marker.rightEdge<0) continue; // off screen, no need to reposition the marker
+						marker.leftpx=Math.round(stx.pixelFromTick(marker.tick, chart)-chart.left-marker.clientWidth/2);
+						marker.rightEdge=marker.leftpx+node.clientWidth;
+						node.style.left=marker.leftpx+"px";
+					}
+					if(!quote) quote=chart.dataSet[chart.dataSet.length-1]; // Future ticks based off the value of the current quote
+	
+					if ( typeof placementMap[node.style.left]!="undefined")
+						placementMap[node.style.left]+=1;
+					else
+						placementMap[node.style.left]=0;
+				}
+				
+				// Y axis positioning logic
+				if(marker.params.yPositioner!="none"){
+					var height=marker.params.chartContainer?stx.height:panel.yAxis.bottom;
+					var bottom=0;
+					var bottomAdjust=0;
+					if ( placementMap[node.style.left]){
+						bottomAdjust = (node.clientHeight+2)*placementMap[node.style.left];
+					}
+					bottomAdjust+=2;
+					
+					if(marker.params.yPositioner=="value" && marker.params.y){	
+							bottom=Math.round(height-stx.pixelFromPriceTransform(marker.params.y, panel, yAxis)-node.clientHeight/2)+"px";						
+					} else if(marker.params.yPositioner=="under_candle" && quote) {
+						if(showsHighs){
+							bottom=Math.round(height-stx.pixelFromPriceTransform(quote.Low, panel, yAxis)-node.clientHeight-bottomAdjust)+"px";
+						}else{
+							bottom=Math.round(height-stx.pixelFromPriceTransform(quote.Close, panel, yAxis)-node.clientHeight-bottomAdjust)+"px";
+						}
+					} else if(marker.params.yPositioner=="on_candle" && quote) {
+						if(showsHighs){
+							bottom=Math.round(height-stx.pixelFromPriceTransform(quote.Low+(quote.High-quote.Low)/2, panel, yAxis)-node.clientHeight/2-bottomAdjust)+"px";
+						}else{
+							bottom=Math.round(height-stx.pixelFromPriceTransform(quote.Close, panel, yAxis)-node.clientHeight/2-bottomAdjust)+"px";
+						}
+					} else if(marker.params.yPositioner=="top") {
+						bottom=Math.round(height-node.clientHeight-bottomAdjust)+"px";
+					} else if(marker.params.yPositioner=="bottom") {
+						bottom=Math.round(bottomAdjust)+"px";
+					} else {
+						//above_candle
+						if(showsHighs){
+							bottom=Math.round(height-stx.pixelFromPriceTransform(quote.High, panel, yAxis)+bottomAdjust)+"px";
+						}else{
+							bottom=Math.round(height-stx.pixelFromPriceTransform(quote.Close, panel, yAxis)+bottomAdjust)+"px";
+						}
+					}
+					if(node.style.bottom!=bottom) node.style.bottom=bottom;
+				}
+			}		
 		};
 
 		/**
+		 * Base class to create an empty marker node that can then be styled. Used by {@link STX.Marker.Simple}
+		 * See {@tutorial Markers} tutorials for additional implementation instructions.
 		 * @name STX.Marker.NodeCreator
 		 * @constructor
 		 */
@@ -5513,6 +5897,7 @@
 
 		/**
 		 * Constructor for basic built-in markers.
+		 * See {@tutorial Markers} tutorials for additional implementation instructions.
 		 * @name STX.Marker.Simple
 		 * @constructor
 		 * @param {Object} params Parameters to describe the marker
@@ -5526,11 +5911,12 @@
 			this.node.className="stx-marker";
 			STX.appendClassName(this.node, params.type);
 			if(params.category) STX.appendClassName(this.node, params.category);
+			var visual=STX.newChild(this.node, "div", "stx-visual");
 			STX.newChild(this.node, "div", "stx-stem");
 
 			var expand;
 			if(params.type=="callout"){
-				var content=STX.newChild(this.node, "div", "stx-marker-content");
+				var content=STX.newChild(visual, "div", "stx-marker-content");
 				STX.newChild(content, "h4", null, params.headline);
 				expand=STX.newChild(content, "div", "stx-marker-expand");
 				STX.newChild(expand, "p", null, params.story);
@@ -5549,13 +5935,13 @@
 
 
 		return _exports;
-		
+
 	}
 
 	{
 		if ( typeof define === "function" && define.amd ) {
 			define( ["stxLibrary"], function(_stxLibrary) { return _stxAdvanced_js(_stxLibrary); } );
-		}else{	
+		}else{
 			var _stxLibrary={
 				"STX":window.STX,
 				"STXChart":window.STXChart,
@@ -5567,6 +5953,4 @@
 	}
 
 })();
-
-
 

@@ -2,11 +2,10 @@
 
 	function _stxThirdParty_js(_exports) {
 		// IE8 shim, http://stackoverflow.com/questions/10173236/window-innerheight-ie8-alternative
-		
-		if(!window.innerHeight){
+
+		if(!window.innerHeight && window.innerHeight!==0){
 		  (function (window, document) {
 			var html = document.documentElement;
-			  var body = document.body;
 
 			var define = function (object, property, getter) {
 				if (typeof object[property] === 'undefined') {
@@ -20,8 +19,8 @@
 			define(window, 'scrollX', function () { return window.pageXOffset || html.scrollLeft; });
 			define(window, 'scrollY', function () { return window.pageYOffset || html.scrollTop; });
 
-			define(document, 'width', function () { return Math.max(body.scrollWidth, html.scrollWidth, body.offsetWidth, html.offsetWidth, body.clientWidth, html.clientWidth); });
-			define(document, 'height', function () { return Math.max(body.scrollHeight, html.scrollHeight, body.offsetHeight, html.offsetHeight, body.clientHeight, html.clientHeight); });
+			define(document, 'width', function () { return Math.max(document.body.scrollWidth, html.scrollWidth, document.body.offsetWidth, html.offsetWidth, document.body.clientWidth, html.clientWidth); });
+			define(document, 'height', function () { return Math.max(document.body.scrollHeight, html.scrollHeight, document.body.offsetHeight, html.offsetHeight, document.body.clientHeight, html.clientHeight); });
 
 			return define;
 		  }(window, document));
@@ -38,20 +37,54 @@
 
 			Object.create = function(proto, props) {
 				var obj;
-		
+
 				function F() {}
 				F.prototype = proto;
 				obj = new F();
-		
+
 				for (var k in props) {
 					if (Object.prototype.hasOwnProperty.call(props, k))
 						Object.defineProperty(obj, k, props[k]);
 				}
-		
+
 				return obj;
 			};
 		}
 
+		// Adapted from https://gist.github.com/paulirish/1579671 which derived from
+		// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+		// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+
+		// requestAnimationFrame polyfill by Erik MÃ¶ller.
+		// Fixes from Paul Irish, Tino Zijdel, Andrew Mao, Klemen SlaviÄ, Darius Bacon
+
+		// MIT license
+
+		if (!Date.now)
+		    Date.now = function() { return new Date().getTime(); };
+
+		(function() {
+		    'use strict';
+
+		    var vendors = ['webkit', 'moz'];
+		    for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
+		        var vp = vendors[i];
+		        window.requestAnimationFrame = window[vp+'RequestAnimationFrame'];
+		        window.cancelAnimationFrame = (window[vp+'CancelAnimationFrame'] ||
+		        								window[vp+'CancelRequestAnimationFrame']);
+		    }
+		    if (/iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent) || // iOS6 is buggy
+		    		!window.requestAnimationFrame || !window.cancelAnimationFrame) {
+		        var lastTime = 0;
+		        window.requestAnimationFrame = function(callback) {
+		            var now = Date.now();
+		            var nextTime = Math.max(lastTime + 16, now);
+		            return setTimeout(function() { callback(lastTime = nextTime); },
+		                              nextTime - now);
+		        };
+		        window.cancelAnimationFrame = clearTimeout;
+		    }
+		}());
 
 		// IE8 addEventListener polyfill https://gist.github.com/jonathantneal/3748027
 		if(!window.addEventListener){
@@ -100,7 +133,7 @@
 					fToBind = this,
 					fNOP	= function() {},
 					fBound	= function() {
-					  return fToBind.apply(this instanceof fNOP && 
+					  return fToBind.apply(this instanceof fNOP &&
 							  oThis ? this : oThis,
 							 aArgs.concat(Array.prototype.slice.call(arguments)));
 					};
@@ -116,9 +149,9 @@
 		/*jshint proto:true, eqnull:true, boss:true, laxbreak:true, newcap:false, shadow:true, funcscope:true */
 		if (typeof window !== 'undefined')
 			window.OldIntl = window.Intl;
-		
+
 		window.Intl = window.Intl || (function (Intl) {
-		
+
 		/**
 		 * @license Copyright 2013 Andy Earnshaw, MIT License
 		 *
@@ -129,12 +162,12 @@
 		 *
 		 * CLDR format locale data should be provided using Intl.__addLocaleData().
 		 */
-		
+
 		"use strict";
 		var
 			// We use this a lot (and need it for proto-less objects)
 			hop = Object.prototype.hasOwnProperty,
-		
+
 			// Naive defineProperty for compatibility
 			defineProperty = (!window.isIE8 && Object.defineProperty) || function (obj, name, desc) {
 				if (desc.get && obj.__defineGetter__)
@@ -142,81 +175,81 @@
 				else if (desc.value || desc.get)
 					obj[name] = desc.value || desc.get;
 			},
-		
+
 			// Array.prototype.indexOf, as good as we need it to be
 			arrIndexOf = Array.prototype.indexOf || function (search) {
 				/*jshint validthis:true */
 				var t = this;
 				if (!t.length)
 					return -1;
-		
+
 				for (var i = arguments[1] || 0, max = t.length; i < max; i++) {
 					if (t[i] === search)
 						return i;
 				}
 			},
-		
+
 			// Create an object with the specified prototype (2nd arg required for Record)
 			objCreate = Object.create || function (proto, props) {
 				var obj;
-		
+
 				function F() {}
 				F.prototype = proto;
 				obj = new F();
-		
+
 				for (var k in props) {
 					if (hop.call(props, k))
 						defineProperty(obj, k, props[k]);
 				}
-		
+
 				return obj;
 			},
-		
+
 			// Snapshot some (hopefully still) native built-ins
 			arrSlice  = Array.prototype.slice,
 			arrConcat = Array.prototype.concat,
 			arrPush	  = Array.prototype.push,
 			arrJoin	  = Array.prototype.join,
 			arrShift  = Array.prototype.shift,
-		
+
 			// Naive Function.prototype.bind for compatibility
 			fnBind = Function.prototype.bind || function (thisObj) {
 				var fn = this,
 					args = arrSlice.call(arguments, 1);
-		
+
 				return function () {
 					fn.apply(thisObj, arrConcat.call(args, arrSlice.call(arguments)));
 				};
 			},
-		
+
 			// Default locale is the first-added locale data for us
 			defaultLocale,
-		
+
 			// Object housing internal properties for constructors
 			internals = objCreate(null),
-		
+
 			// Keep internal properties internal
 			secret = Math.random(),
-		
+
 			// An object map of date component keys, saves using a regex later
-			dateWidths = objCreate(null, { narrow:{}, short:{}, long:{} }),
-		
+			dateWidths = objCreate(null, { "narrow":{}, "short":{}, "long":{} }),
+
 			// Each constructor prototype should be an instance of the constructor itself, but we
 			// can't initialise them as such until some locale data has been added, so this is how
 			// we keep track
 			numberFormatProtoInitialised = false,
 			dateTimeFormatProtoInitialised = false,
-		
+
 			// Some regular expressions we're using
 			expInsertGroups = /(?=(?!^)(?:\d{3})+(?!\d))/g,
 			expCurrencyCode = /^[A-Z]{3}$/,
 			expUnicodeExSeq = /-u(?:-[0-9a-z]{2,8})+/gi, // See `extension` below
-		
+
 			expBCP47Syntax,
 			expExtSequences,
 			expVariantDupes,
 			expSingletonDupes,
-		
+
 			// IANA Subtag Registry redundant tag and subtag maps
 			redundantTags = {
 				tags: {
@@ -300,14 +333,14 @@
 					zmi: [ "zmi", "ms"	], zsl: [ "zsl", "sgn" ], zsm: [ "zsm", "ms"  ]
 				}
 			},
-		
+
 			// Currency minor units output from tools/getISO4217data.js, formatted
 			currencyMinorUnits = {
 				BHD: 3, BYR: 0, XOF: 0, BIF: 0, XAF: 0, CLF: 0, CLP: 0, KMF: 0, DJF: 0,
 				XPF: 0, GNF: 0, ISK: 0, IQD: 3, JPY: 0, JOD: 3, KRW: 0, KWD: 3, LYD: 3,
 				OMR: 3, PYG: 0, RWF: 0, TND: 3, UGX: 0, UYI: 0, VUV: 0, VND: 0
 			};
-		
+
 		/**
 		 * Defines regular expressions for various operations related to the BCP 47 syntax,
 		 * as defined at http://tools.ietf.org/html/bcp47#section-2.1
@@ -317,25 +350,25 @@
 				// extlang		 = 3ALPHA			   ; selected ISO 639 codes
 				//				   *2("-" 3ALPHA)	   ; permanently reserved
 				extlang = '[a-z]{3}(?:-[a-z]{3}){0,2}',
-		
+
 				// language		 = 2*3ALPHA			   ; shortest ISO 639 code
 				//				   ["-" extlang]	   ; sometimes followed by
 				//									   ; extended language subtags
 				//				 / 4ALPHA			   ; or reserved for future use
 				//				 / 5*8ALPHA			   ; or registered language subtag
 				language = '(?:[a-z]{2,3}(?:-' + extlang + ')?|[a-z]{4}|[a-z]{5,8})',
-		
+
 				// script		 = 4ALPHA			   ; ISO 15924 code
 				script = '[a-z]{4}',
-		
+
 				// region		 = 2ALPHA			   ; ISO 3166-1 code
 				//				 / 3DIGIT			   ; UN M.49 code
 				region = '(?:[a-z]{2}|\\d{3})',
-		
+
 				// variant		 = 5*8alphanum		   ; registered variants
 				//				 / (DIGIT 3alphanum)
 				variant = '(?:[a-z0-9]{5,8}|\\d[a-z0-9]{3})',
-		
+
 				//									   ; Single alphanumerics
 				//									   ; "x" reserved for private use
 				// singleton	 = DIGIT			   ; 0 - 9
@@ -344,13 +377,13 @@
 				//				 / %x61-77			   ; a - w
 				//				 / %x79-7A			   ; y - z
 				singleton = '[0-9a-wy-z]',
-		
+
 				// extension	 = singleton 1*("-" (2*8alphanum))
 				extension = singleton + '(?:-[a-z0-9]{2,8})+',
-		
+
 				// privateuse	 = "x" 1*("-" (1*8alphanum))
 				privateuse = 'x(?:-[a-z0-9]{1,8})+',
-		
+
 				// irregular	 = "en-GB-oed"		   ; irregular tags do not match
 				//				 / "i-ami"			   ; the 'langtag' production and
 				//				 / "i-bnn"			   ; would not otherwise be
@@ -371,7 +404,7 @@
 				irregular = '(?:en-GB-oed'
 						  + '|i-(?:ami|bnn|default|enochian|hak|klingon|lux|mingo|navajo|pwn|tao|tay|tsu)'
 						  + '|sgn-(?:BE-FR|BE-NL|CH-DE))',
-		
+
 				// regular		 = "art-lojban"		   ; these tags match the 'langtag'
 				//				 / "cel-gaulish"	   ; production, but their subtags
 				//				 / "no-bok"			   ; are not extended language
@@ -383,11 +416,11 @@
 				//				 / "zh-xiang"
 				regular = '(?:art-lojban|cel-gaulish|no-bok|no-nyn'
 						+ '|zh-(?:guoyu|hakka|min|min-nan|xiang))',
-		
+
 				// grandfathered = irregular		   ; non-redundant tags registered
 				//				 / regular			   ; during the RFC 3066 era
 				grandfathered = '(?:' + irregular + '|' + regular + ')',
-		
+
 				// langtag		 = language
 				//				   ["-" script]
 				//				   ["-" region]
@@ -396,25 +429,25 @@
 				//				   ["-" privateuse]
 				langtag = language + '(?:-' + script + ')?(?:-' + region + ')?(?:-'
 						+ variant + ')*(?:-' + extension + ')*(?:-' + privateuse + ')?';
-		
+
 			// Language-Tag	 = langtag			   ; normal language tags
 			//				 / privateuse		   ; private use tag
 			//				 / grandfathered	   ; grandfathered tags
 			expBCP47Syntax = RegExp('^(?:'+langtag+'|'+privateuse+'|'+grandfathered+')$', 'i');
-		
+
 			// Match duplicate variants in a language tag
 			expVariantDupes = RegExp('^(?!x).*?-('+variant+')-(?:\\w{4,8}-(?!x-))*\\1\\b', 'i');
-		
+
 			// Match duplicate singletons in a language tag (except in private use)
 			expSingletonDupes = RegExp('^(?!x).*?-('+singleton+')-(?:\\w+-(?!x-))*\\1\\b', 'i');
-		
+
 			// Match all extension sequences
 			expExtSequences = RegExp('-'+extension, 'ig');
 		})();
-		
+
 		// Sect 6.2 Language Tags
 		// ======================
-		
+
 		/**
 		 * The IsStructurallyValidLanguageTag abstract operation verifies that the locale
 		 * argument (which must be a String value)
@@ -434,18 +467,18 @@
 			// represents a well-formed BCP 47 language tag as specified in RFC 5646
 			if (!expBCP47Syntax.test(locale))
 				return false;
-		
+
 			// does not include duplicate variant subtags, and
 			if (expVariantDupes.test(locale))
 				return false;
-		
+
 			// does not include duplicate singleton subtags.
 			if (expSingletonDupes.test(locale))
 				return false;
-		
+
 			return true;
 		}
-		
+
 		/**
 		 * The CanonicalizeLanguageTag abstract operation returns the canonical and case-
 		 * regularized form of the locale argument (which must be a String value that is
@@ -453,9 +486,9 @@
 		 * IsStructurallyValidLanguageTag abstract operation). It takes the steps
 		 * specified in RFC 5646 section 4.5, or successor, to bring the language tag
 		 * into canonical form, and to regularize the case of the subtags, but does not
-		 * take the steps to bring a language tag into “extlang form” and to reorder
+		 * take the steps to bring a language tag into â€œextlang formâ€ and to reorder
 		 * variant subtags.
-		
+
 		 * The specifications for extensions to BCP 47 language tags, such as RFC 6067,
 		 * may include canonicalization rules for the extension subtag sequences they
 		 * define that go beyond the canonicalization rules of RFC 5646 section 4.5.
@@ -463,13 +496,13 @@
 		 */
 		function /* 6.2.3 */CanonicalizeLanguageTag (locale) {
 			var match, parts;
-		
+
 			// A language tag is in 'canonical form' when the tag is well-formed
 			// according to the rules in Sections 2.1 and 2.2
-		
+
 			// Section 2.1 says all subtags use lowercase...
 			locale = locale.toLowerCase();
-		
+
 			// ...with 2 exceptions: 'two-letter and four-letter subtags that neither
 			// appear at the start of the tag nor occur after singletons.  Such two-letter
 			// subtags are all uppercase (as in the tags "en-CA-x-ca" or "sgn-BE-FR") and
@@ -479,50 +512,50 @@
 				// Two-letter subtags are all uppercase
 				if (parts[i].length === 2)
 					parts[i] = parts[i].toUpperCase();
-		
+
 				// Four-letter subtags are titlecase
 				else if (parts[i].length === 4)
 					parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
-		
+
 				// Is it a singleton?
 				else if (parts[i].length === 1 && parts[i] != 'x')
 					break;
 			}
 			locale = arrJoin.call(parts, '-');
-		
+
 			// The steps laid out in RFC 5646 section 4.5 are as follows:
-		
+
 			// 1.  Extension sequences are ordered into case-insensitive ASCII order
 			//	   by singleton subtag.
 			if ((match = locale.match(expExtSequences)) && match.length > 1) {
 				// The built-in sort() sorts by ASCII order, so use that
 				match.sort();
-		
+
 				// Replace all extensions with the joined, sorted array
 				locale = locale.replace(
 					RegExp('(?:' + expExtSequences.source + ')+', 'i'),
 					arrJoin.call(match, '')
 				);
 			}
-		
+
 			// 2.  Redundant or grandfathered tags are replaced by their 'Preferred-
 			//	   Value', if there is one.
 			if (hop.call(redundantTags.tags, locale))
 				locale = redundantTags.tags[locale];
-		
+
 			// 3.  Subtags are replaced by their 'Preferred-Value', if there is one.
 			//	   For extlangs, the original primary language subtag is also
 			//	   replaced if there is a primary language subtag in the 'Preferred-
 			//	   Value'.
 			parts = locale.split('-');
-		
+
 			for (var i = 1, max = parts.length; i < max; i++) {
 				if (hop.call(redundantTags.subtags, parts[i]))
 					parts[i] = redundantTags.subtags[parts[i]];
-		
+
 				else if (hop.call(redundantTags.extLang, parts[i])) {
 					parts[i] = redundantTags.extLang[parts[i]][0];
-		
+
 					// For extlang tags, the prefix needs to be removed if it is redundant
 					if (i === 1 && redundantTags.extLang[parts[1]][1] === parts[0]) {
 						parts = arrSlice.call(parts, i++);
@@ -530,22 +563,22 @@
 					}
 				}
 			}
-		
+
 			return arrJoin.call(parts, '-');
 		}
-		
+
 		/**
 		 * The DefaultLocale abstract operation returns a String value representing the
 		 * structurally valid (6.2.2) and canonicalized (6.2.3) BCP 47 language tag for the
-		 * host environment’s current locale.
+		 * host environmentâ€™s current locale.
 		 */
 		function /* 6.2.4 */DefaultLocale () {
 			return defaultLocale;
 		}
-		
+
 		// Sect 6.3 Currency Codes
 		// =======================
-		
+
 		/**
 		 * The IsWellFormedCurrencyCode abstract operation verifies that the currency argument
 		 * (after conversion to a String value) represents a well-formed 3-letter ISO currency
@@ -555,102 +588,102 @@
 			var
 				// 1. Let `c` be ToString(currency)
 				c = String(currency),
-		
+
 				// 2. Let `normalized` be the result of mapping c to upper case as described
 				//	  in 6.1.
 				normalized = toLatinUpperCase(c);
-		
+
 			// 3. If the string length of normalized is not 3, return false.
 			// 4. If normalized contains any character that is not in the range "A" to "Z"
 			//	  (U+0041 to U+005A), return false.
 			if (expCurrencyCode.test(normalized) === false)
 				return false;
-		
+
 			// 5. Return true
 			return true;
 		}
-		
+
 		// Sect 9.2 Abstract Operations
 		// ============================
 		function /* 9.2.1 */CanonicalizeLocaleList (locales) {
 		// The abstract operation CanonicalizeLocaleList takes the following steps:
-		
+
 			// 1. If locales is undefined, then a. Return a new empty List
 			if (locales === undefined)
 				return new List();
-		
+
 			var
 				// 2. Let seen be a new empty List.
 				seen = new List(),
-		
+
 				// 3. If locales is a String value, then
 				//	  a. Let locales be a new array created as if by the expression new
 				//	  Array(locales) where Array is the standard built-in constructor with
 				//	  that name and locales is the value of locales.
 				locales = typeof locales === 'string' ? [ locales ] : locales,
-		
+
 				// 4. Let O be ToObject(locales).
 				O = toObject(locales),
-		
+
 				// 5. Let lenValue be the result of calling the [[Get]] internal method of
 				//	  O with the argument "length".
 				// 6. Let len be ToUint32(lenValue).
 				len = O.length,
-		
+
 				// 7. Let k be 0.
 				k = 0;
-		
+
 			// 8. Repeat, while k < len
 			while (k < len) {
 				var
 					// a. Let Pk be ToString(k).
 					Pk = String(k),
-		
+
 					// b. Let kPresent be the result of calling the [[HasProperty]] internal
 					//	  method of O with argument Pk.
 					kPresent = Pk in O;
-		
+
 				// c. If kPresent is true, then
 				if (kPresent) {
 					var
 						// i. Let kValue be the result of calling the [[Get]] internal
 						//	   method of O with argument Pk.
 						kValue = O[Pk];
-		
+
 					// ii. If the type of kValue is not String or Object, then throw a
 					//	   TypeError exception.
 					if (kValue == null || (typeof kValue !== 'string' && typeof kValue !== 'object'))
 						throw new TypeError('String or Object type expected');
-		
+
 					var
 						// iii. Let tag be ToString(kValue).
 						tag = String(kValue);
-		
+
 					// iv. If the result of calling the abstract operation
 					//	   IsStructurallyValidLanguageTag (defined in 6.2.2), passing tag as
 					//	   the argument, is false, then throw a RangeError exception.
 					if (!IsStructurallyValidLanguageTag(tag))
 						throw new RangeError("'" + tag + "' is not a structurally valid language tag");
-		
+
 					// v. Let tag be the result of calling the abstract operation
 					//	  CanonicalizeLanguageTag (defined in 6.2.3), passing tag as the
 					//	  argument.
 					tag = CanonicalizeLanguageTag(tag);
-		
+
 					// vi. If tag is not an element of seen, then append tag as the last
 					//	   element of seen.
 					if (arrIndexOf.call(seen, tag) === -1)
 						arrPush.call(seen, tag);
 				}
-		
+
 				// d. Increase k by 1.
 				k++;
 			}
-		
+
 			// 9. Return seen.
 			return seen;
 		}
-		
+
 		/**
 		 * The BestAvailableLocale abstract operation compares the provided argument
 		 * locale, which must be a String value with a structurally valid and
@@ -663,34 +696,34 @@
 			var
 			   // 1. Let candidate be locale
 			   candidate = locale;
-		
+
 			// 2. Repeat
 			while (true) {
 				// a. If availableLocales contains an element equal to candidate, then return
 				// candidate.
 				if (arrIndexOf.call(availableLocales, candidate) > -1)
 					return candidate;
-		
+
 				var
 					// b. Let pos be the character index of the last occurrence of "-"
 					// (U+002D) within candidate. If that character does not occur, return
 					// undefined.
 					pos = candidate.lastIndexOf('-');
-		
+
 				if (pos < 0)
 					return;
-		
-				// c. If pos ≥ 2 and the character "-" occurs at index pos-2 of candidate,
+
+				// c. If pos â‰¥ 2 and the character "-" occurs at index pos-2 of candidate,
 				//	  then decrease pos by 2.
 				if (pos >= 2 && candidate.charAt(pos - 2) == '-')
 					pos -= 2;
-		
+
 				// d. Let candidate be the substring of candidate from position 0, inclusive,
 				//	  to position pos, exclusive.
 				candidate = candidate.substring(0, pos);
 			}
 		}
-		
+
 		/**
 		 * The LookupMatcher abstract operation compares requestedLocales, which must be
 		 * a List as returned by CanonicalizeLocaleList, against the locales in
@@ -701,56 +734,56 @@
 			var
 				// 1. Let i be 0.
 				i = 0,
-		
+
 				// 2. Let len be the number of elements in requestedLocales.
 				len = requestedLocales.length,
-		
+
 				// 3. Let availableLocale be undefined.
 				availableLocale;
-		
+
 			// 4. Repeat while i < len and availableLocale is undefined:
 			while (i < len && !availableLocale) {
 				var
 					// a. Let locale be the element of requestedLocales at 0-origined list
 					//	  position i.
 					locale = requestedLocales[i],
-		
+
 					// b. Let noExtensionsLocale be the String value that is locale with all
 					//	  Unicode locale extension sequences removed.
 					noExtensionsLocale = String(locale).replace(expUnicodeExSeq, ''),
-		
+
 					// c. Let availableLocale be the result of calling the
 					//	  BestAvailableLocale abstract operation (defined in 9.2.2) with
 					//	  arguments availableLocales and noExtensionsLocale.
 					availableLocale = BestAvailableLocale(availableLocales, noExtensionsLocale);
-		
+
 				// d. Increase i by 1.
 				i++;
 			}
-		
+
 			var
 				// 5. Let result be a new Record.
 				result = new Record();
-		
+
 			// 6. If availableLocale is not undefined, then
 			if (availableLocale !== undefined) {
 				// a. Set result.[[locale]] to availableLocale.
 				result['[[locale]]'] = availableLocale;
-		
+
 				// b. If locale and noExtensionsLocale are not the same String value, then
 				if (String(locale) !== String(noExtensionsLocale)) {
 					var
 						// i. Let extension be the String value consisting of the first
 						//	  substring of locale that is a Unicode locale extension sequence.
 						extension = locale.match(expUnicodeExSeq)[0],
-		
+
 						// ii. Let extensionIndex be the character position of the initial
 						//	   "-" of the first Unicode locale extension sequence within locale.
 						extensionIndex = locale.indexOf('-u-');
-		
+
 					// iii. Set result.[[extension]] to extension.
 					result['[[extension]]'] = extension;
-		
+
 					// iv. Set result.[[extensionIndex]] to extensionIndex.
 					result['[[extensionIndex]]'] = extensionIndex;
 				}
@@ -760,11 +793,11 @@
 				// a. Set result.[[locale]] to the value returned by the DefaultLocale abstract
 				//	  operation (defined in 6.2.4).
 				result['[[locale]]'] = DefaultLocale();
-		
+
 			// 8. Return result
 			return result;
 		}
-		
+
 		/**
 		 * The BestFitMatcher abstract operation compares requestedLocales, which must be
 		 * a List as returned by CanonicalizeLocaleList, against the locales in
@@ -786,7 +819,7 @@
 		function /* 9.2.4 */BestFitMatcher (availableLocales, requestedLocales) {
 			return LookupMatcher(availableLocales, requestedLocales);
 		}
-		
+
 		/**
 		 * The ResolveLocale abstract operation compares a BCP 47 language priority list
 		 * requestedLocales against the locales in availableLocales and determines the
@@ -797,12 +830,12 @@
 			if (availableLocales.length === 0) {
 				throw new ReferenceError('No locale data has been provided for this object yet.');
 			}
-		
+
 			// The following steps are taken:
 			var
 				// 1. Let matcher be the value of options.[[localeMatcher]].
 				matcher = options['[[localeMatcher]]'];
-		
+
 			// 2. If matcher is "lookup", then
 			if (matcher === 'lookup')
 				var
@@ -810,7 +843,7 @@
 					//	  (defined in 9.2.3) with arguments availableLocales and
 					//	  requestedLocales.
 					r = LookupMatcher(availableLocales, requestedLocales);
-		
+
 			// 3. Else
 			else
 				var
@@ -818,11 +851,11 @@
 					//	  operation (defined in 9.2.4) with arguments availableLocales and
 					//	  requestedLocales.
 					r = BestFitMatcher(availableLocales, requestedLocales);
-		
+
 			var
 				// 4. Let foundLocale be the value of r.[[locale]].
 				foundLocale = r['[[locale]]'];
-		
+
 			// 5. If r has an [[extension]] field, then
 			if (hop.call(r, '[[extension]]'))
 				var
@@ -840,14 +873,14 @@
 					// e. Let extensionSubtagsLength be the result of calling the [[Get]]
 					//	  internal method of extensionSubtags with argument "length".
 					extensionSubtagsLength = extensionSubtags.length;
-		
+
 			var
 				// 6. Let result be a new Record.
 				result = new Record();
-		
+
 			// 7. Set result.[[dataLocale]] to foundLocale.
 			result['[[dataLocale]]'] = foundLocale;
-		
+
 			var
 				// 8. Let supportedExtension be "-u".
 				supportedExtension = '-u',
@@ -856,7 +889,7 @@
 				// 10. Let len be the result of calling the [[Get]] internal method of
 				//	   relevantExtensionKeys with argument "length".
 				len = relevantExtensionKeys.length;
-		
+
 			// 11 Repeat while i < len:
 			while (i < len) {
 				var
@@ -877,7 +910,7 @@
 					// f. Let indexOf be the standard built-in function object defined in
 					//	  ES5, 15.4.4.14.
 					indexOf = arrIndexOf;
-		
+
 				// g. If extensionSubtags is not undefined, then
 				if (extensionSubtags !== undefined) {
 					var
@@ -885,8 +918,8 @@
 						//	  method of indexOf with extensionSubtags as the this value and
 						// an argument list containing the single item key.
 						keyPos = indexOf.call(extensionSubtags, key);
-		
-					// ii. If keyPos ≠ -1, then
+
+					// ii. If keyPos â‰  -1, then
 					if (keyPos !== -1) {
 						// 1. If keyPos + 1 < extensionSubtagsLength and the length of the
 						//	  result of calling the [[Get]] internal method of
@@ -904,8 +937,8 @@
 								//	  this value and an argument list containing the single
 								//	  item requestedValue.
 								valuePos = indexOf.call(keyLocaleData, requestedValue);
-		
-							// c. If valuePos ≠ -1, then
+
+							// c. If valuePos â‰  -1, then
 							if (valuePos !== -1)
 								var
 									// i. Let value be requestedValue.
@@ -922,8 +955,8 @@
 								// value and an argument list containing the single item
 								// "true".
 								valuePos = indexOf(keyLocaleData, 'true');
-		
-							// b. If valuePos ≠ -1, then
+
+							// b. If valuePos â‰  -1, then
 							if (valuePos !== -1)
 								var
 									// i. Let value be "true".
@@ -936,7 +969,7 @@
 					var
 						// i. Let optionsValue be the value of options.[[<key>]].
 						optionsValue = options['[[' + key + ']]'];
-		
+
 					// ii. If the result of calling the [[Call]] internal method of indexOf
 					//	   with keyLocaleData as the this value and an argument list
 					//	   containing the single item optionsValue is not -1, then
@@ -952,10 +985,10 @@
 				}
 				// i. Set result.[[<key>]] to value.
 				result['[[' + key + ']]'] = value;
-		
+
 				// j. Append supportedExtensionAddition to supportedExtension.
 				supportedExtension += supportedExtensionAddition;
-		
+
 				// k. Increase i by 1.
 				i++;
 			}
@@ -974,11 +1007,11 @@
 			}
 			// 13. Set result.[[locale]] to foundLocale.
 			result['[[locale]]'] = foundLocale;
-		
+
 			// 14. Return result.
 			return result;
 		}
-		
+
 		/**
 		 * The LookupSupportedLocales abstract operation returns the subset of the
 		 * provided BCP 47 language priority list requestedLocales for which
@@ -994,7 +1027,7 @@
 				subset = new List(),
 				// 3. Let k be 0.
 				k = 0;
-		
+
 			// 4. Repeat while k < len
 			while (k < len) {
 				var
@@ -1008,25 +1041,25 @@
 					//	  BestAvailableLocale abstract operation (defined in 9.2.2) with
 					//	  arguments availableLocales and noExtensionsLocale.
 					availableLocale = BestAvailableLocale(availableLocales, noExtensionsLocale);
-		
+
 				// d. If availableLocale is not undefined, then append locale to the end of
 				//	  subset.
 				if (availableLocale !== undefined)
 					arrPush.call(subset, locale);
-		
+
 				// e. Increment k by 1.
 				k++;
 			}
-		
+
 			var
 				// 5. Let subsetArray be a new Array object whose elements are the same
 				//	  values in the same order as the elements of subset.
 				subsetArray = arrSlice.call(subset);
-		
+
 			// 6. Return subsetArray.
 			return subsetArray;
 		}
-		
+
 		/**
 		 * The BestFitSupportedLocales abstract operation returns the subset of the
 		 * provided BCP 47 language priority list requestedLocales for which
@@ -1038,7 +1071,7 @@
 			// ###TODO: implement this function as described by the specification###
 			return LookupSupportedLocales(availableLocales, requestedLocales);
 		}
-		
+
 		/**
 		 * The SupportedLocales abstract operation returns the subset of the provided BCP
 		 * 47 language priority list requestedLocales for which availableLocales has a
@@ -1056,12 +1089,12 @@
 					// b. Let matcher be the result of calling the [[Get]] internal method of
 					//	  options with argument "localeMatcher".
 					matcher = options.localeMatcher;
-		
+
 				// c. If matcher is not undefined, then
 				if (matcher !== undefined) {
 					// i. Let matcher be ToString(matcher).
 					matcher = String(matcher);
-		
+
 					// ii. If matcher is not "lookup" or "best fit", then throw a RangeError
 					//	   exception.
 					if (matcher !== 'lookup' && matcher !== 'best fit')
@@ -1082,12 +1115,12 @@
 					//	  abstract operation (defined in 9.2.6) with arguments
 					//	  availableLocales and requestedLocales.
 					subset = LookupSupportedLocales(availableLocales, requestedLocales);
-		
+
 			// 4. For each named own property name P of subset,
 			for (var P in subset) {
 				if (!hop.call(subset, P))
 					continue;
-		
+
 				// a. Let desc be the result of calling the [[GetOwnProperty]] internal
 				//	  method of subset with P.
 				// b. Set desc.[[Writable]] to false.
@@ -1100,11 +1133,11 @@
 			}
 			// "Freeze" the array so no new elements can be added
 			defineProperty(subset, 'length', { writable: false });
-		
+
 			// 5. Return subset
 			return subset;
 		}
-		
+
 		/**
 		 * The GetOption abstract operation extracts the value of the property named
 		 * property from the provided options object, converts it to the required type,
@@ -1116,7 +1149,7 @@
 				// 1. Let value be the result of calling the [[Get]] internal method of
 				//	  options with argument property.
 				value = options[property];
-		
+
 			// 2. If value is not undefined, then
 			if (value !== undefined) {
 				// a. Assert: type is "boolean" or "string".
@@ -1124,7 +1157,7 @@
 				// c. If type is "string", then let value be ToString(value).
 				value = type === 'boolean' ? Boolean(value)
 						  : (type === 'string' ? String(value) : value);
-		
+
 				// d. If values is not undefined, then
 				if (values !== undefined) {
 					// i. If values does not contain an element equal to value, then throw a
@@ -1132,14 +1165,14 @@
 					if (arrIndexOf.call(values, value) === -1)
 						throw new RangeError("'" + value + "' is not an allowed value for `" + property +'`');
 				}
-		
+
 				// e. Return value.
 				return value;
 			}
 			// Else return fallback.
 			return fallback;
 		}
-		
+
 		/**
 		 * The GetNumberOption abstract operation extracts a property value from the
 		 * provided options object, converts it to a Number value, checks whether it is
@@ -1150,50 +1183,50 @@
 				// 1. Let value be the result of calling the [[Get]] internal method of
 				//	  options with argument property.
 				value = options[property];
-		
+
 			// 2. If value is not undefined, then
 			if (value !== undefined) {
 				// a. Let value be ToNumber(value).
 				value = Number(value);
-		
+
 				// b. If value is NaN or less than minimum or greater than maximum, throw a
 				//	  RangeError exception.
 				if (isNaN(value) || value < minimum || value > maximum)
 					throw new RangeError('Value is not a number or outside accepted range');
-		
+
 				// c. Return floor(value).
 				return Math.floor(value);
 			}
 			// 3. Else return fallback.
 			return fallback;
 		}
-		
+
 		// 11.1 The Intl.NumberFormat constructor
 		// ======================================
-		
+
 		// Define the NumberFormat constructor internally so it cannot be tainted
 		function NumberFormatConstructor () {
 			var locales = arguments[0];
 			var options = arguments[1];
-		
+
 			if (!this || this === Intl) {
 				return new Intl.NumberFormat(locales, options);
 			}
-		
+
 			return InitializeNumberFormat(toObject(this), locales, options);
 		}
-		
+
 		defineProperty(Intl, 'NumberFormat', {
 			configurable: true,
 			writable: true,
 			value: NumberFormatConstructor
 		});
-		
+
 		// Must explicitly set prototypes as unwritable
 		defineProperty(Intl.NumberFormat, 'prototype', {
 			writable: false
 		});
-		
+
 		/**
 		 * The abstract operation InitializeNumberFormat accepts the arguments
 		 * numberFormat (which must be an object), locales, and options. It initializes
@@ -1203,15 +1236,15 @@
 			var
 			// This will be a internal properties object if we're not already initialized
 				internal = getInternalProperties(numberFormat),
-		
+
 			// Create an object whose props can be used to restore the values of RegExp props
 				regexpState = createRegExpRestore();
-		
+
 			// 1. If numberFormat has an [[initializedIntlObject]] internal property with
 			// value true, throw a TypeError exception.
 			if (internal['[[initializedIntlObject]]'] === true)
 				throw new TypeError('`this` object has already been initialized as an Intl object');
-		
+
 			// Need this to access the `internal` object
 			defineProperty(numberFormat, '__getInternalProperties', {
 				value: function () {
@@ -1220,47 +1253,47 @@
 						return internal;
 				}
 			});
-		
+
 			// 2. Set the [[initializedIntlObject]] internal property of numberFormat to true.
 			internal['[[initializedIntlObject]]'] = true;
-		
+
 			var
 			// 3. Let requestedLocales be the result of calling the CanonicalizeLocaleList
 			//	  abstract operation (defined in 9.2.1) with argument locales.
 				requestedLocales = CanonicalizeLocaleList(locales);
-		
+
 			// 4. If options is undefined, then
 			if (options === undefined)
 				// a. Let options be the result of creating a new object as if by the
 				// expression new Object() where Object is the standard built-in constructor
 				// with that name.
 				options = {};
-		
+
 			// 5. Else
 			else
 				// a. Let options be ToObject(options).
 				options = toObject(options);
-		
+
 			var
 			// 6. Let opt be a new Record.
 				opt = new Record(),
-		
+
 			// 7. Let matcher be the result of calling the GetOption abstract operation
 			//	  (defined in 9.2.9) with the arguments options, "localeMatcher", "string",
 			//	  a List containing the two String values "lookup" and "best fit", and
 			//	  "best fit".
 				matcher =  GetOption(options, 'localeMatcher', 'string', new List('lookup', 'best fit'), 'best fit');
-		
+
 			// 8. Set opt.[[localeMatcher]] to matcher.
 			opt['[[localeMatcher]]'] = matcher;
-		
+
 			var
 			// 9. Let NumberFormat be the standard built-in object that is the initial value
 			//	  of Intl.NumberFormat.
 			// 10. Let localeData be the value of the [[localeData]] internal property of
 			//	   NumberFormat.
 				localeData = internals.NumberFormat['[[localeData]]'],
-		
+
 			// 11. Let r be the result of calling the ResolveLocale abstract operation
 			//	   (defined in 9.2.5) with the [[availableLocales]] internal property of
 			//	   NumberFormat, requestedLocales, opt, the [[relevantExtensionKeys]]
@@ -1269,126 +1302,126 @@
 						internals.NumberFormat['[[availableLocales]]'], requestedLocales,
 						opt, internals.NumberFormat['[[relevantExtensionKeys]]'], localeData
 					);
-		
+
 			// 12. Set the [[locale]] internal property of numberFormat to the value of
 			//	   r.[[locale]].
 			internal['[[locale]]'] = r['[[locale]]'];
-		
+
 			// 13. Set the [[numberingSystem]] internal property of numberFormat to the value
 			//	   of r.[[nu]].
 			internal['[[numberingSystem]]'] = r['[[nu]]'];
-		
+
 			// The specification doesn't tell us to do this, but it's helpful later on
 			internal['[[dataLocale]]'] = r['[[dataLocale]]'];
-		
+
 			var
 			// 14. Let dataLocale be the value of r.[[dataLocale]].
 				dataLocale = r['[[dataLocale]]'],
-		
+
 			// 15. Let s be the result of calling the GetOption abstract operation with the
 			//	   arguments options, "style", "string", a List containing the three String
 			//	   values "decimal", "percent", and "currency", and "decimal".
 				s = GetOption(options, 'style', 'string', new List('decimal', 'percent', 'currency'), 'decimal');
-		
+
 			// 16. Set the [[style]] internal property of numberFormat to s.
 			internal['[[style]]'] = s;
-		
+
 			var
 			// 17. Let c be the result of calling the GetOption abstract operation with the
 			//	   arguments options, "currency", "string", undefined, and undefined.
 				c = GetOption(options, 'currency', 'string');
-		
+
 			// 18. If c is not undefined and the result of calling the
 			//	   IsWellFormedCurrencyCode abstract operation (defined in 6.3.1) with
 			//	   argument c is false, then throw a RangeError exception.
 			if (c !== undefined && !IsWellFormedCurrencyCode(c))
 				throw new RangeError("'" + c + "' is not a valid currency code");
-		
+
 			// 19. If s is "currency" and c is undefined, throw a TypeError exception.
 			if (s === 'currency' && c === undefined)
 				throw new TypeError('Currency code is required when style is currency');
-		
+
 			// 20. If s is "currency", then
 			if (s === 'currency') {
 				// a. Let c be the result of converting c to upper case as specified in 6.1.
 				c = c.toUpperCase();
-		
+
 				// b. Set the [[currency]] internal property of numberFormat to c.
 				internal['[[currency]]'] = c;
-		
+
 				var
 				// c. Let cDigits be the result of calling the CurrencyDigits abstract
 				//	  operation (defined below) with argument c.
 					cDigits = CurrencyDigits(c);
 			}
-		
+
 			var
 			// 21. Let cd be the result of calling the GetOption abstract operation with the
 			//	   arguments options, "currencyDisplay", "string", a List containing the
 			//	   three String values "code", "symbol", and "name", and "symbol".
 				cd = GetOption(options, 'currencyDisplay', 'string', new List('code', 'symbol', 'name'), 'symbol');
-		
+
 			// 22. If s is "currency", then set the [[currencyDisplay]] internal property of
 			//	   numberFormat to cd.
 			if (s === 'currency')
 				internal['[[currencyDisplay]]'] = cd;
-		
+
 			var
 			// 23. Let mnid be the result of calling the GetNumberOption abstract operation
 			//	   (defined in 9.2.10) with arguments options, "minimumIntegerDigits", 1, 21,
 			//	   and 1.
 				mnid = GetNumberOption(options, 'minimumIntegerDigits', 1, 21, 1);
-		
+
 			// 24. Set the [[minimumIntegerDigits]] internal property of numberFormat to mnid.
 			internal['[[minimumIntegerDigits]]'] = mnid;
-		
+
 			var
 			// 25. If s is "currency", then let mnfdDefault be cDigits; else let mnfdDefault
 			//	   be 0.
 				mnfdDefault = s === 'currency' ? cDigits : 0,
-		
+
 			// 26. Let mnfd be the result of calling the GetNumberOption abstract operation
 			//	   with arguments options, "minimumFractionDigits", 0, 20, and mnfdDefault.
 				mnfd = GetNumberOption(options, 'minimumFractionDigits', 0, 20, mnfdDefault);
-		
+
 			// 27. Set the [[minimumFractionDigits]] internal property of numberFormat to mnfd.
 			internal['[[minimumFractionDigits]]'] = mnfd;
-		
+
 			var
 			// 28. If s is "currency", then let mxfdDefault be max(mnfd, cDigits); else if s
 			//	   is "percent", then let mxfdDefault be max(mnfd, 0); else let mxfdDefault
 			//	   be max(mnfd, 3).
 				mxfdDefault = s === 'currency' ? Math.max(mnfd, cDigits)
 							: (s === 'percent' ? Math.max(mnfd, 0) : Math.max(mnfd, 3)),
-		
+
 			// 29. Let mxfd be the result of calling the GetNumberOption abstract operation
 			//	   with arguments options, "maximumFractionDigits", mnfd, 20, and mxfdDefault.
 				mxfd = GetNumberOption(options, 'maximumFractionDigits', mnfd, 20, mxfdDefault);
-		
+
 			// 30. Set the [[maximumFractionDigits]] internal property of numberFormat to mxfd.
 			internal['[[maximumFractionDigits]]'] = mxfd;
-		
+
 			var
 			// 31. Let mnsd be the result of calling the [[Get]] internal method of options
 			//	   with argument "minimumSignificantDigits".
 				mnsd = options.minimumSignificantDigits,
-		
+
 			// 32. Let mxsd be the result of calling the [[Get]] internal method of options
 			//	   with argument "maximumSignificantDigits".
 				mxsd = options.maximumSignificantDigits;
-		
+
 			// 33. If mnsd is not undefined or mxsd is not undefined, then:
 			if (mnsd !== undefined || mxsd !== undefined) {
 				// a. Let mnsd be the result of calling the GetNumberOption abstract
 				//	  operation with arguments options, "minimumSignificantDigits", 1, 21,
 				//	  and 1.
 				mnsd = GetNumberOption(options, 'minimumSignificantDigits', 1, 21, 1);
-		
+
 				// b. Let mxsd be the result of calling the GetNumberOption abstract
 				//	   operation with arguments options, "maximumSignificantDigits", mnsd,
 				//	   21, and 21.
 				mxsd = GetNumberOption(options, 'maximumSignificantDigits', mnsd, 21, 21);
-		
+
 				// c. Set the [[minimumSignificantDigits]] internal property of numberFormat
 				//	  to mnsd, and the [[maximumSignificantDigits]] internal property of
 				//	  numberFormat to mxsd.
@@ -1399,54 +1432,54 @@
 			// 34. Let g be the result of calling the GetOption abstract operation with the
 			//	   arguments options, "useGrouping", "boolean", undefined, and true.
 				g = GetOption(options, 'useGrouping', 'boolean', undefined, true);
-		
+
 			// 35. Set the [[useGrouping]] internal property of numberFormat to g.
 			internal['[[useGrouping]]'] = g;
-		
+
 			var
 			// 36. Let dataLocaleData be the result of calling the [[Get]] internal method of
 			//	   localeData with argument dataLocale.
 				dataLocaleData = localeData[dataLocale],
-		
+
 			// 37. Let patterns be the result of calling the [[Get]] internal method of
 			//	   dataLocaleData with argument "patterns".
 				patterns = dataLocaleData.patterns;
-		
+
 			// 38. Assert: patterns is an object (see 11.2.3)
-		
+
 			var
 			// 39. Let stylePatterns be the result of calling the [[Get]] internal method of
 			//	   patterns with argument s.
 				stylePatterns = patterns[s];
-		
+
 			// 40. Set the [[positivePattern]] internal property of numberFormat to the
 			//	   result of calling the [[Get]] internal method of stylePatterns with the
 			//	   argument "positivePattern".
 			internal['[[positivePattern]]'] = stylePatterns.positivePattern;
-		
+
 			// 41. Set the [[negativePattern]] internal property of numberFormat to the
 			//	   result of calling the [[Get]] internal method of stylePatterns with the
 			//	   argument "negativePattern".
 			internal['[[negativePattern]]'] = stylePatterns.negativePattern;
-		
+
 			// 42. Set the [[boundFormat]] internal property of numberFormat to undefined.
 			internal['[[boundFormat]]'] = undefined;
-		
+
 			// 43. Set the [[initializedNumberFormat]] internal property of numberFormat to
 			//	   true.
 			internal['[[initializedNumberFormat]]'] = true;
-		
+
 			// Restore the RegExp properties
 			regexpState.exp.test(regexpState.input);
-		
+
 			// Return the newly initialised object
 			return numberFormat;
 		}
-		
+
 		function CurrencyDigits(currency) {
 			// When the CurrencyDigits abstract operation is called with an argument currency
 			// (which must be an upper case String value), the following steps are taken:
-		
+
 			// 1. If the ISO 4217 currency and funds code list contains currency as an
 			// alphabetic code, then return the minor unit value corresponding to the
 			// currency from the list; else return 2.
@@ -1454,13 +1487,13 @@
 						? currencyMinorUnits[currency]
 						: 2;
 		}
-		
+
 		/* 11.2.3 */internals.NumberFormat = {
 			'[[availableLocales]]': [],
 			'[[relevantExtensionKeys]]': ['nu'],
 			'[[localeData]]': {}
 		};
-		
+
 		/**
 		 * When the supportedLocalesOf method of Intl.NumberFormat is called, the
 		 * following steps are taken:
@@ -1470,7 +1503,7 @@
 			writable: true,
 			value: fnBind.call(supportedLocalesOf, internals.NumberFormat)
 		});
-		
+
 		/**
 		 * This named accessor property returns a function that formats a number
 		 * according to the effective locale and the formatting options of this
@@ -1480,14 +1513,14 @@
 			configurable: true,
 			get: function () {
 				var internal = this != null && typeof this === 'object' && getInternalProperties(this);
-		
+
 				// Satisfy test 11.3_b
 				if (!internal || !internal['[[initializedNumberFormat]]'])
 					throw new TypeError('`this` value for format() is not an initialized Intl.NumberFormat object.');
-		
+
 				// The value of the [[Get]] attribute is a function that takes the following
 				// steps:
-		
+
 				// 1. If the [[boundFormat]] internal property of this NumberFormat object
 				//	  is undefined, then:
 				if (internal['[[boundFormat]]'] === undefined) {
@@ -1503,14 +1536,14 @@
 							//		operation (defined below) with arguments this and x.
 							return FormatNumber(this, /* x = */Number(value));
 						},
-		
+
 					// b. Let bind be the standard built-in function object defined in ES5,
 					//	  15.3.4.5.
 					// c. Let bf be the result of calling the [[Call]] internal method of
 					//	  bind with F as the this value and an argument list containing
 					//	  the single item this.
 						bf = fnBind.call(F, this);
-		
+
 					// d. Set the [[boundFormat]] internal property of this NumberFormat
 					//	  object to bf.
 					internal['[[boundFormat]]'] = bf;
@@ -1520,7 +1553,7 @@
 				return internal['[[boundFormat]]'];
 			}
 		});
-		
+
 		/**
 		 * When the FormatNumber abstract operation is called with arguments numberFormat
 		 * (which must be an object initialized as a NumberFormat) and x (which must be a
@@ -1529,25 +1562,25 @@
 		 */
 		function FormatNumber (numberFormat, x) {
 			var n,
-		
+
 			// Create an object whose props can be used to restore the values of RegExp props
 				regexpState = createRegExpRestore(),
-		
+
 				internal = getInternalProperties(numberFormat),
 				locale = internal['[[dataLocale]]'],
 				nums   = internal['[[numberingSystem]]'],
 				data   = internals.NumberFormat['[[localeData]]'][locale],
 				ild	   = data.symbols[nums] || data.symbols.latn,
-		
+
 			// 1. Let negative be false.
 				negative = false;
-		
+
 			// 2. If the result of isFinite(x) is false, then
 			if (isFinite(x) === false) {
 				// a. If x is NaN, then let n be an ILD String value indicating the NaN value.
 				if (isNaN(x))
 					n = ild.nan;
-		
+
 				// b. Else
 				else {
 					// a. Let n be an ILD String value indicating infinity.
@@ -1566,12 +1599,12 @@
 					// ii. Let x be -x.
 					x = -x;
 				}
-		
+
 				// b. If the value of the [[style]] internal property of numberFormat is
-				//	  "percent", let x be 100 × x.
+				//	  "percent", let x be 100 Ã— x.
 				if (internal['[[style]]'] === 'percent')
 					x *= 100;
-		
+
 				// c. If the [[minimumSignificantDigits]] and [[maximumSignificantDigits]]
 				//	  internal properties of numberFormat are present, then
 				if (hop.call(internal, '[[minimumSignificantDigits]]') &&
@@ -1593,14 +1626,14 @@
 						  internal['[[minimumIntegerDigits]]'],
 						  internal['[[minimumFractionDigits]]'],
 						  internal['[[maximumFractionDigits]]']);
-		
+
 				// e. If the value of the [[numberingSystem]] internal property of
-				//	  numberFormat matches one of the values in the “Numbering System” column
+				//	  numberFormat matches one of the values in the â€œNumbering Systemâ€ column
 				//	  of Table 2 below, then
 				if (numSys[nums]) {
 					// i. Let digits be an array whose 10 String valued elements are the
 					//	  UTF-16 string representations of the 10 digits specified in the
-					//	  “Digits” column of Table 2 in the row containing the value of the
+					//	  â€œDigitsâ€ column of Table 2 in the row containing the value of the
 					//	  [[numberingSystem]] internal property.
 					var digits = numSys[internal['[[numberingSystem]]']];
 					// ii. Replace each digit in n with the value of digits[digit].
@@ -1612,31 +1645,31 @@
 				//	  appropriate representation of n in the given numbering system.
 				else
 					n = String(n); // ###TODO###
-		
+
 				// g. If n contains the character ".", then replace it with an ILND String
 				//	  representing the decimal separator.
 				n = n.replace(/\./g, ild.decimal);
-		
+
 				// h. If the value of the [[useGrouping]] internal property of numberFormat
 				//	  is true, then insert an ILND String representing a grouping separator
 				//	  into an ILND set of locations within the integer part of n.
 				if (internal['[[useGrouping]]'] === true) {
 					var parts = n.split(ild.decimal);
 					parts[0] = parts[0].replace(expInsertGroups, ild.group);
-		
+
 					n = arrJoin.call(parts, ild.decimal);
 				}
 			}
-		
+
 			var
 			// 4. If negative is true, then let result be the value of the [[negativePattern]]
 			//	  internal property of numberFormat; else let result be the value of the
 			//	  [[positivePattern]] internal property of numberFormat.
 				result = internal[negative === true ? '[[negativePattern]]' : '[[positivePattern]]'];
-		
+
 			// 5. Replace the substring "{number}" within result with n.
 			result = result.replace('{number}', n);
-		
+
 			// 6. If the value of the [[style]] internal property of numberFormat is
 			//	  "currency", then:
 			if (internal['[[style]]'] === 'currency') {
@@ -1644,40 +1677,40 @@
 				// a. Let currency be the value of the [[currency]] internal property of
 				//	  numberFormat.
 					currency = internal['[[currency]]'],
-		
+
 				// Shorthand for the currency data
 					cData = data.currencies[currency];
-		
+
 				// b. If the value of the [[currencyDisplay]] internal property of
 				//	  numberFormat is "code", then let cd be currency.
 				if (internal['[[currencyDisplay]]'] === 'code')
 					cd = currency;
-		
+
 				// c. Else if the value of the [[currencyDisplay]] internal property of
 				//	  numberFormat is "symbol", then let cd be an ILD string representing
 				//	  currency in short form. If the implementation does not have such a
 				//	  representation of currency, then use currency itself.
 				else if (internal['[[currencyDisplay]]'] === 'symbol')
 					cd = cData || currency;
-		
+
 				// d. Else if the value of the [[currencyDisplay]] internal property of
 				//	  numberFormat is "name", then let cd be an ILD string representing
 				//	  currency in long form. If the implementation does not have such a
 				//	  representation of currency, then use currency itself.
 				else if (internal['[[currencyDisplay]]'] === 'name')
 					cd = cData ? cData['displayName-count-one'] : currency;
-		
+
 				// e. Replace the substring "{currency}" within result with cd.
 				result = result.replace('{currency}', cd);
 			}
-		
+
 			// Restore the RegExp properties
 			regexpState.exp.test(regexpState.input);
-		
+
 			// 7. Return result.
 			return result;
 		}
-		
+
 		/**
 		 * When the ToRawPrecision abstract operation is called with arguments x (which
 		 * must be a finite non-negative number), minPrecision, and maxPrecision (both
@@ -1687,7 +1720,7 @@
 			var
 			// 1. Let p be maxPrecision.
 				p = maxPrecision;
-		
+
 			// 2. If x = 0, then
 			if (x === 0) {
 				var
@@ -1698,70 +1731,70 @@
 			}
 			// 3. Else
 			else {
-				// a. Let e and n be integers such that 10ᵖ⁻¹ ≤ n < 10ᵖ and for which the
-				//	  exact mathematical value of n × 10ᵉ⁻ᵖ⁺¹ – x is as close to zero as
+				// a. Let e and n be integers such that 10áµ–â»Â¹ â‰¤ n < 10áµ– and for which the
+				//	  exact mathematical value of n Ã— 10áµ‰â»áµ–âºÂ¹ â€“ x is as close to zero as
 				//	  possible. If there are two such sets of e and n, pick the e and n for
-				//	  which n × 10ᵉ⁻ᵖ⁺¹ is larger.
-		
+				//	  which n Ã— 10áµ‰â»áµ–âºÂ¹ is larger.
+
 				var idx,
-		
+
 					isInt = x % 1,
-		
+
 					// Fix floating point precision issues in Chrome and Firefox
 					pre = isInt ? Math.pow(10, maxPrecision) : 1,
-		
+
 					// toPrecision already does most of this for us
 					m = Number.prototype.toPrecision.call(x*pre, maxPrecision),
-		
+
 					// Get the exponential value
 					e = (idx = m.indexOf('e')) > -1 ? Number(m.slice(idx + 1))
 							: ((idx = m.indexOf('.')) > -1 ? idx - 1 : m.length - 1);
-		
+
 				// Multiplying by 10^maxPrecision means we need to take that away from e
 				if (isInt)
 					e -= maxPrecision;
-		
+
 				// Get the numbers without the decimal point
 				m = m.slice(0, m.indexOf('e') > -1 ? idx : m.length).replace('.', '');
 			}
-		
-			// 4. If e ≥ p, then
+
+			// 4. If e â‰¥ p, then
 			if (e >= p)
 				// a. Return the concatenation of m and e-p+1 occurrences of the character "0".
 				return m + arrJoin.call(Array(e-p+1 + 1), '0');
-		
+
 			// 5. If e = p-1, then
 			else if (e === p - 1)
 				// a. Return m.
 				return m;
-		
-			// 6. If e ≥ 0, then
+
+			// 6. If e â‰¥ 0, then
 			else if (e >= 0)
 				// a. Let m be the concatenation of the first e+1 characters of m, the character
-				//	  ".", and the remaining p–(e+1) characters of m.
+				//	  ".", and the remaining pâ€“(e+1) characters of m.
 				m = m.slice(0, e + 1) + '.' + m.slice(e + 1);
-		
+
 			// 7. If e < 0, then
 			else if (e < 0)
-				// a. Let m be the concatenation of the String "0.", –(e+1) occurrences of the
+				// a. Let m be the concatenation of the String "0.", â€“(e+1) occurrences of the
 				//	  character "0", and the string m.
 				m = '0.' + arrJoin.call(Array (-(e+1) + 1), '0') + m;
-		
+
 			// 8. If m contains the character ".", and maxPrecision > minPrecision, then
 			if (m.indexOf(".") >= 0 && maxPrecision > minPrecision) {
 				var
-				// a. Let cut be maxPrecision – minPrecision.
+				// a. Let cut be maxPrecision â€“ minPrecision.
 					cut = maxPrecision - minPrecision;
-		
+
 				// b. Repeat while cut > 0 and the last character of m is "0":
 				while (cut > 0 && m.charAt(m.length-1) === '0') {
 					//	i. Remove the last character from m.
 					m = m.slice(0, -1);
-		
+
 					//	ii. Decrease cut by 1.
 					cut--;
 				}
-		
+
 				// c. If the last character of m is ".", then
 				if (m.charAt(m.length-1) === '.')
 					//	  i. Remove the last character from m.
@@ -1770,7 +1803,7 @@
 			// 9. Return m.
 			return m;
 		}
-		
+
 		/**
 		 * When the ToRawFixed abstract operation is called with arguments x (which must
 		 * be a finite non-negative number), minInteger (which must be an integer between
@@ -1780,55 +1813,55 @@
 		function ToRawFixed (x, minInteger, minFraction, maxFraction) {
 			// (or not because Number.toPrototype.toFixed does a lot of it for us)
 			var idx,
-		
+
 				// We can pick up after the fixed formatted string (m) is created
 				m	= Number.prototype.toFixed.call(x, maxFraction),
-		
-				// 4. If [maxFraction] ≠ 0, then
+
+				// 4. If [maxFraction] â‰  0, then
 				//	  ...
 				//	  e. Let int be the number of characters in a.
 				//
 				// 5. Else let int be the number of characters in m.
 				igr = m.split(".")[0].length,  // int is a reserved word
-		
-				// 6. Let cut be maxFraction – minFraction.
+
+				// 6. Let cut be maxFraction â€“ minFraction.
 				cut = maxFraction - minFraction,
-		
+
 				exp = (idx = m.indexOf('e')) > -1 ? m.slice(idx + 1) : 0;
-		
+
 			if (exp) {
 				m = m.slice(0, idx).replace('.', '');
 				m += arrJoin.call(Array(exp - (m.length - 1) + 1), '0')
 				  + '.' + arrJoin.call(Array(maxFraction + 1), '0');
-		
+
 				igr = m.length;
 			}
-		
+
 			// 7. Repeat while cut > 0 and the last character of m is "0":
 			while (cut > 0 && m.slice(-1) === "0") {
 				// a. Remove the last character from m.
 				m = m.slice(0, -1);
-		
+
 				// b. Decrease cut by 1.
 				cut--;
 			}
-		
+
 			// 8. If the last character of m is ".", then
 			if (m.slice(-1) === ".")
 				// a. Remove the last character from m.
 				m = m.slice(0, -1);
-		
+
 			// 9. If int < minInteger, then
 			if (igr < minInteger)
-				// a. Let z be the String consisting of minInteger–int occurrences of the
+				// a. Let z be the String consisting of minIntegerâ€“int occurrences of the
 				//	  character "0".
 				var z = arrJoin.call(Array(minInteger - igr + 1), '0');
-		
+
 			// 10. Let m be the concatenation of Strings z and m.
 			// 11. Return m.
 			return (z ? z : '') + m;
 		}
-		
+
 		// Sect 11.3.2 Table 2, Numbering systems
 		// ======================================
 		var numSys = {
@@ -1855,7 +1888,7 @@
 			thai:	 [ '\u0E50', '\u0E51', '\u0E52', '\u0E53', '\u0E54', '\u0E55', '\u0E56', '\u0E57', '\u0E58', '\u0E59' ],
 			tibt:	 [ '\u0F20', '\u0F21', '\u0F22', '\u0F23', '\u0F24', '\u0F25', '\u0F26', '\u0F27', '\u0F28', '\u0F29' ]
 		};
-		
+
 		/**
 		 * This function provides access to the locale and formatting options computed
 		 * during initialization of the object.
@@ -1881,45 +1914,45 @@
 						'minimumSignificantDigits', 'maximumSignificantDigits', 'useGrouping'
 					],
 					internal = this != null && typeof this === 'object' && getInternalProperties(this);
-		
+
 				// Satisfy test 11.3_b
 				if (!internal || !internal['[[initializedNumberFormat]]'])
 					throw new TypeError('`this` value for resolvedOptions() is not an initialized Intl.NumberFormat object.');
-		
+
 				for (var i = 0, max = props.length; i < max; i++) {
 					if (hop.call(internal, prop = '[['+ props[i] +']]'))
 						descs[props[i]] = { value: internal[prop], writable: true, configurable: true, enumerable: true };
 				}
-		
+
 				return objCreate({}, descs);
 			}
 		});
-		
+
 		// 12.1 The Intl.DateTimeFormat constructor
 		// ==================================
-		
+
 		// Define the DateTimeFormat constructor internally so it cannot be tainted
 		function DateTimeFormatConstructor () {
 			var locales = arguments[0];
 			var options = arguments[1];
-		
+
 			if (!this || this === Intl) {
 				return new Intl.DateTimeFormat(locales, options);
 			}
 			return InitializeDateTimeFormat(toObject(this), locales, options);
 		}
-		
+
 		defineProperty(Intl, 'DateTimeFormat', {
 			configurable: true,
 			writable: true,
 			value: DateTimeFormatConstructor
 		});
-		
+
 		// Must explicitly set prototypes as unwritable
 		defineProperty(DateTimeFormatConstructor, 'prototype', {
 			writable: false
 		});
-		
+
 		/**
 		 * The abstract operation InitializeDateTimeFormat accepts the arguments dateTimeFormat
 		 * (which must be an object), locales, and options. It initializes dateTimeFormat as a
@@ -1929,15 +1962,15 @@
 			var
 			// This will be a internal properties object if we're not already initialized
 				internal = getInternalProperties(dateTimeFormat),
-		
+
 			// Create an object whose props can be used to restore the values of RegExp props
 				regexpState = createRegExpRestore();
-		
+
 			// 1. If dateTimeFormat has an [[initializedIntlObject]] internal property with
 			//	  value true, throw a TypeError exception.
 			if (internal['[[initializedIntlObject]]'] === true)
 				throw new TypeError('`this` object has already been initialized as an Intl object');
-		
+
 			// Need this to access the `internal` object
 			defineProperty(dateTimeFormat, '__getInternalProperties', {
 				value: function () {
@@ -1946,69 +1979,69 @@
 						return internal;
 				}
 			});
-		
+
 			// 2. Set the [[initializedIntlObject]] internal property of numberFormat to true.
 			internal['[[initializedIntlObject]]'] = true;
-		
+
 			var
 			// 3. Let requestedLocales be the result of calling the CanonicalizeLocaleList
 			//	  abstract operation (defined in 9.2.1) with argument locales.
 				requestedLocales = CanonicalizeLocaleList(locales),
-		
+
 			// 4. Let options be the result of calling the ToDateTimeOptions abstract
 			//	  operation (defined below) with arguments options, "any", and "date".
 				options = ToDateTimeOptions(options, 'any', 'date'),
-		
+
 			// 5. Let opt be a new Record.
 				opt = new Record(),
-		
+
 			// 6. Let matcher be the result of calling the GetOption abstract operation
 			//	  (defined in 9.2.9) with arguments options, "localeMatcher", "string", a List
 			//	  containing the two String values "lookup" and "best fit", and "best fit".
 				matcher = GetOption(options, 'localeMatcher', 'string', new List('lookup', 'best fit'), 'best fit');
-		
+
 			// 7. Set opt.[[localeMatcher]] to matcher.
 			opt['[[localeMatcher]]'] = matcher;
-		
+
 			var
 			// 8. Let DateTimeFormat be the standard built-in object that is the initial
 			//	  value of Intl.DateTimeFormat.
 				DateTimeFormat = internals.DateTimeFormat, // This is what we *really* need
-		
+
 			// 9. Let localeData be the value of the [[localeData]] internal property of
 			//	  DateTimeFormat.
 				localeData = DateTimeFormat['[[localeData]]'],
-		
+
 			// 10. Let r be the result of calling the ResolveLocale abstract operation
 			//	   (defined in 9.2.5) with the [[availableLocales]] internal property of
 			//		DateTimeFormat, requestedLocales, opt, the [[relevantExtensionKeys]]
 			//		internal property of DateTimeFormat, and localeData.
 				r = ResolveLocale(DateTimeFormat['[[availableLocales]]'], requestedLocales,
 						opt, DateTimeFormat['[[relevantExtensionKeys]]'], localeData);
-		
+
 			// 11. Set the [[locale]] internal property of dateTimeFormat to the value of
 			//	   r.[[locale]].
 			internal['[[locale]]'] = r['[[locale]]'];
-		
+
 			// 12. Set the [[calendar]] internal property of dateTimeFormat to the value of
 			//	   r.[[ca]].
 			internal['[[calendar]]'] = r['[[ca]]'];
-		
+
 			// 13. Set the [[numberingSystem]] internal property of dateTimeFormat to the value of
 			//	   r.[[nu]].
 			internal['[[numberingSystem]]'] = r['[[nu]]'];
-		
+
 			// The specification doesn't tell us to do this, but it's helpful later on
 			internal['[[dataLocale]]'] = r['[[dataLocale]]'];
-		
+
 			var
 			// 14. Let dataLocale be the value of r.[[dataLocale]].
 				dataLocale = r['[[dataLocale]]'],
-		
+
 			// 15. Let tz be the result of calling the [[Get]] internal method of options with
 			//	   argument "timeZone".
 				tz = options.timeZone;
-		
+
 			// 16. If tz is not undefined, then
 			if (tz !== undefined) {
 				// a. Let tz be ToString(tz).
@@ -2017,24 +2050,24 @@
 				//			under certain conditions by the Conformance clause, different casing
 				//			rules apply.
 				tz = toLatinUpperCase(tz);
-		
+
 				// c. If tz is not "UTC", then throw a RangeError exception.
 				// ###TODO: accept more time zones###
 				if (tz !== 'UTC')
 					throw new RangeError('timeZone is not supported.');
 			}
-		
+
 			// 17. Set the [[timeZone]] internal property of dateTimeFormat to tz.
 			internal['[[timeZone]]'] = tz;
-		
+
 			// 18. Let opt be a new Record.
 			opt = new Record();
-		
+
 			// 19. For each row of Table 3, except the header row, do:
 			for (var prop in dateTimeComponents) {
 				if (!hop.call(dateTimeComponents, prop))
 					continue;
-		
+
 				var
 				// 20. Let prop be the name given in the Property column of the row.
 				// 21. Let value be the result of calling the GetOption abstract operation,
@@ -2042,19 +2075,19 @@
 				//	   row, "string", a List containing the strings given in the Values column of
 				//	   the row, and undefined.
 					value = GetOption(options, prop, 'string', dateTimeComponents[prop]);
-		
+
 				// 22. Set opt.[[<prop>]] to value.
 				opt['[['+prop+']]'] = value;
 			}
-		
+
 			var
 				// Assigned a value below
 				bestFormat,
-		
+
 				// 23. Let dataLocaleData be the result of calling the [[Get]] internal method of
 				//	   localeData with argument dataLocale.
 				dataLocaleData = localeData[dataLocale],
-		
+
 				// 24. Let formats be the result of calling the [[Get]] internal method of
 				//	   dataLocaleData with argument "formats".
 				formats = dataLocaleData.formats,
@@ -2062,24 +2095,24 @@
 				//	   arguments options, "formatMatcher", "string", a List containing the two String
 				//	   values "basic" and "best fit", and "best fit".
 				matcher = GetOption(options, 'formatMatcher', 'string', new List('basic', 'best fit'), 'best fit');
-		
+
 			// 26. If matcher is "basic", then
 			if (matcher === 'basic')
 				// 27. Let bestFormat be the result of calling the BasicFormatMatcher abstract
 				//	   operation (defined below) with opt and formats.
 				bestFormat = BasicFormatMatcher(opt, formats);
-		
+
 			// 28. Else
 			else
 				// 29. Let bestFormat be the result of calling the BestFitFormatMatcher
 				//	   abstract operation (defined below) with opt and formats.
 				bestFormat = BestFitFormatMatcher(opt, formats);
-		
+
 			// 30. For each row in Table 3, except the header row, do
 			for (var prop in dateTimeComponents) {
 				if (!hop.call(dateTimeComponents, prop))
 					continue;
-		
+
 				// a. Let prop be the name given in the Property column of the row.
 				// b. Let pDesc be the result of calling the [[GetOwnProperty]] internal method of
 				//	  bestFormat with argument prop.
@@ -2089,74 +2122,74 @@
 					// i. Let p be the result of calling the [[Get]] internal method of bestFormat
 					//	  with argument prop.
 						p = bestFormat[prop];
-		
+
 					// ii. Set the [[<prop>]] internal property of dateTimeFormat to p.
 					internal['[['+prop+']]'] = p;
 				}
 			}
-		
+
 			var
 				// Assigned a value below
 				pattern,
-		
+
 			// 31. Let hr12 be the result of calling the GetOption abstract operation with
 			//	   arguments options, "hour12", "boolean", undefined, and undefined.
 				hr12 = GetOption(options, 'hour12', 'boolean'/*, undefined, undefined*/);
-		
+
 			// 32. If dateTimeFormat has an internal property [[hour]], then
 			if (internal['[[hour]]']) {
 				// a. If hr12 is undefined, then let hr12 be the result of calling the [[Get]]
 				//	  internal method of dataLocaleData with argument "hour12".
 				hr12 = hr12 === undefined ? dataLocaleData.hour12 : hr12;
-		
+
 				// b. Set the [[hour12]] internal property of dateTimeFormat to hr12.
 				internal['[[hour12]]'] = hr12;
-		
+
 				// c. If hr12 is true, then
 				if (hr12 === true) {
 					var
 					// i. Let hourNo0 be the result of calling the [[Get]] internal method of
 					//	  dataLocaleData with argument "hourNo0".
 						hourNo0 = dataLocaleData.hourNo0;
-		
+
 					// ii. Set the [[hourNo0]] internal property of dateTimeFormat to hourNo0.
 					internal['[[hourNo0]]'] = hourNo0;
-		
+
 					// iii. Let pattern be the result of calling the [[Get]] internal method of
 					//		bestFormat with argument "pattern12".
 					pattern = bestFormat.pattern12;
 				}
-		
+
 				// d. Else
 				else
 					// i. Let pattern be the result of calling the [[Get]] internal method of
 					//	  bestFormat with argument "pattern".
 					pattern = bestFormat.pattern;
 			}
-		
+
 			// 33. Else
 			else
 				// a. Let pattern be the result of calling the [[Get]] internal method of
 				//	  bestFormat with argument "pattern".
 				pattern = bestFormat.pattern;
-		
+
 			// 34. Set the [[pattern]] internal property of dateTimeFormat to pattern.
 			internal['[[pattern]]'] = pattern;
-		
+
 			// 35. Set the [[boundFormat]] internal property of dateTimeFormat to undefined.
 			internal['[[boundFormat]]'] = undefined;
-		
+
 			// 36. Set the [[initializedDateTimeFormat]] internal property of dateTimeFormat to
 			//	   true.
 			internal['[[initializedDateTimeFormat]]'] = true;
-		
+
 			// Restore the RegExp properties
 			regexpState.exp.test(regexpState.input);
-		
+
 			// Return the newly initialised object
 			return dateTimeFormat;
 		}
-		
+
 		/**
 		 * Several DateTimeFormat algorithms use values from the following table, which provides
 		 * property names and allowable values for the components of date and time formats:
@@ -2172,7 +2205,7 @@
 				  second: [ "2-digit", "numeric" ],
 			timeZoneName: [ "short", "long" ]
 		};
-		
+
 		/**
 		 * When the ToDateTimeOptions abstract operation is called with arguments options,
 		 * required, and defaults, the following steps are taken:
@@ -2181,19 +2214,19 @@
 			// 1. If options is undefined, then let options be null, else let options be
 			//	  ToObject(options).
 			options = options === undefined ? null : new Record(toObject(options));
-		
+
 			var
 			// 2. Let create be the standard built-in function object defined in ES5, 15.2.3.5.
 				create = objCreate,
-		
+
 			// 3. Let options be the result of calling the [[Call]] internal method of create with
 			//	  undefined as the this value and an argument list containing the single item
 			//	  options.
 				options = create(options),
-		
+
 			// 4. Let needDefaults be true.
 				needDefaults = true;
-		
+
 			// 5. If required is "date" or "any", then
 			if (required === 'date' || required === 'any') {
 				// a. For each of the property names "weekday", "year", "month", "day":
@@ -2203,7 +2236,7 @@
 						|| options.month !== undefined || options.day !== undefined)
 					needDefaults = false;
 			}
-		
+
 			// 6. If required is "time" or "any", then
 			if (required === 'time' || required === 'any') {
 				// a. For each of the property names "hour", "minute", "second":
@@ -2212,7 +2245,7 @@
 				if (options.hour !== undefined || options.minute !== undefined || options.second !== undefined)
 						needDefaults = false;
 			}
-		
+
 			// 7. If needDefaults is true and defaults is either "date" or "all", then
 			if (needDefaults && (defaults === 'date' || defaults === 'all'))
 				// a. For each of the property names "year", "month", "day":
@@ -2220,7 +2253,7 @@
 					//	  property name, Property Descriptor {[[Value]]: "numeric", [[Writable]]:
 					//	  true, [[Enumerable]]: true, [[Configurable]]: true}, and false.
 				options.year = options.month = options.day = 'numeric';
-		
+
 			// 8. If needDefaults is true and defaults is either "time" or "all", then
 			if (needDefaults && (defaults === 'time' || defaults === 'all'))
 				// a. For each of the property names "hour", "minute", "second":
@@ -2228,11 +2261,11 @@
 					//	  property name, Property Descriptor {[[Value]]: "numeric", [[Writable]]:
 					//	  true, [[Enumerable]]: true, [[Configurable]]: true}, and false.
 				options.hour = options.minute = options.second = 'numeric';
-		
+
 			// 9. Return options.
 			return options;
 		}
-		
+
 		/**
 		 * When the BasicFormatMatcher abstract operation is called with two arguments options and
 		 * formats, the following steps are taken:
@@ -2241,119 +2274,119 @@
 			var
 			// 1. Let removalPenalty be 120.
 				removalPenalty = 120,
-		
+
 			// 2. Let additionPenalty be 20.
 				additionPenalty = 20,
-		
+
 			// 3. Let longLessPenalty be 8.
 				longLessPenalty = 8,
-		
+
 			// 4. Let longMorePenalty be 6.
 				longMorePenalty = 6,
-		
+
 			// 5. Let shortLessPenalty be 6.
 				shortLessPenalty = 6,
-		
+
 			// 6. Let shortMorePenalty be 3.
 				shortMorePenalty = 3,
-		
+
 			// 7. Let bestScore be -Infinity.
 				bestScore = -Infinity,
-		
+
 			// 8. Let bestFormat be undefined.
 				bestFormat,
-		
+
 			// 9. Let i be 0.
 				i = 0,
-		
+
 			// 10. Let len be the result of calling the [[Get]] internal method of formats with argument "length".
 				len = formats.length;
-		
+
 			// 11. Repeat while i < len:
 			while (i < len) {
 				var
 				// a. Let format be the result of calling the [[Get]] internal method of formats with argument ToString(i).
 					format = formats[i],
-		
+
 				// b. Let score be 0.
 					score = 0;
-		
+
 				// c. For each property shown in Table 3:
 				for (var property in dateTimeComponents) {
 					if (!hop.call(dateTimeComponents, property))
 						continue;
-		
+
 					var
 					// i. Let optionsProp be options.[[<property>]].
 						optionsProp = options['[['+ property +']]'],
-		
+
 					// ii. Let formatPropDesc be the result of calling the [[GetOwnProperty]] internal method of format
 					//	   with argument property.
 					// iii. If formatPropDesc is not undefined, then
 						// 1. Let formatProp be the result of calling the [[Get]] internal method of format with argument property.
 						formatProp = hop.call(format, property) ? format[property] : undefined;
-		
+
 					// iv. If optionsProp is undefined and formatProp is not undefined, then decrease score by
 					//	   additionPenalty.
 					if (optionsProp === undefined && formatProp !== undefined)
 						score -= additionPenalty;
-		
+
 					// v. Else if optionsProp is not undefined and formatProp is undefined, then decrease score by
 					//	  removalPenalty.
 					else if (optionsProp !== undefined && formatProp === undefined)
 						score -= removalPenalty;
-		
+
 					// vi. Else
 					else {
 						var
 						// 1. Let values be the array ["2-digit", "numeric", "narrow", "short",
 						//	  "long"].
 							values = [ '2-digit', 'numeric', 'narrow', 'short', 'long' ],
-		
+
 						// 2. Let optionsPropIndex be the index of optionsProp within values.
 							optionsPropIndex = arrIndexOf.call(values, optionsProp),
-		
+
 						// 3. Let formatPropIndex be the index of formatProp within values.
 							formatPropIndex = arrIndexOf.call(values, formatProp),
-		
+
 						// 4. Let delta be max(min(formatPropIndex - optionsPropIndex, 2), -2).
 							delta = Math.max(Math.min(formatPropIndex - optionsPropIndex, 2), -2);
-		
+
 						// 5. If delta = 2, decrease score by longMorePenalty.
 						if (delta === 2)
 							score -= longMorePenalty;
-		
+
 						// 6. Else if delta = 1, decrease score by shortMorePenalty.
 						else if (delta === 1)
 							score -= shortMorePenalty;
-		
+
 						// 7. Else if delta = -1, decrease score by shortLessPenalty.
 						else if (delta === -1)
 							score -= shortLessPenalty;
-		
+
 						// 8. Else if delta = -2, decrease score by longLessPenalty.
 						else if (delta === -2)
 							score -= longLessPenalty;
 					}
 				}
-		
+
 				// d. If score > bestScore, then
 				if (score > bestScore) {
 					// i. Let bestScore be score.
 					bestScore = score;
-		
+
 					// ii. Let bestFormat be format.
 					bestFormat = format;
 				}
-		
+
 				// e. Increase i by 1.
 				i++;
 			}
-		
+
 			// 12. Return bestFormat.
 			return bestFormat;
 		}
-		
+
 		/**
 		 * When the BestFitFormatMatcher abstract operation is called with two arguments options
 		 * and formats, it performs implementation dependent steps, which should return a set of
@@ -2364,13 +2397,13 @@
 			// This is good enough for now
 			return BasicFormatMatcher(options, formats);
 		}
-		
+
 		/* 12.2.3 */internals.DateTimeFormat = {
 			'[[availableLocales]]': [],
 			'[[relevantExtensionKeys]]': ['ca', 'nu'],
 			'[[localeData]]': {}
 		};
-		
+
 		/**
 		 * When the supportedLocalesOf method of Intl.DateTimeFormat is called, the
 		 * following steps are taken:
@@ -2380,7 +2413,7 @@
 			writable: true,
 			value: fnBind.call(supportedLocalesOf, internals.DateTimeFormat)
 		});
-		
+
 		/**
 		 * This named accessor property returns a function that formats a number
 		 * according to the effective locale and the formatting options of this
@@ -2390,14 +2423,14 @@
 			configurable: true,
 			get: function () {
 				var internal = this != null && typeof this === 'object' && getInternalProperties(this);
-		
+
 				// Satisfy test 12.3_b
 				if (!internal || !internal['[[initializedDateTimeFormat]]'])
 					throw new TypeError('`this` value for format() is not an initialized Intl.DateTimeFormat object.');
-		
+
 				// The value of the [[Get]] attribute is a function that takes the following
 				// steps:
-		
+
 				// 1. If the [[boundFormat]] internal property of this DateTimeFormat object
 				//	  is undefined, then:
 				if (internal['[[boundFormat]]'] === undefined) {
@@ -2431,7 +2464,7 @@
 				return internal['[[boundFormat]]'];
 			}
 		});
-		
+
 		/**
 		 * When the FormatDateTime abstract operation is called with arguments dateTimeFormat
 		 * (which must be an object initialized as a DateTimeFormat) and x (which must be a Number
@@ -2443,42 +2476,42 @@
 			// 1. If x is not a finite Number, then throw a RangeError exception.
 			if (!isFinite(x))
 				throw new RangeError('Invalid valid date passed to format');
-		
+
 			var
 				internal = dateTimeFormat.__getInternalProperties(secret),
-		
+
 			// Creating restore point for properties on the RegExp object... please wait
 				regexpState = createRegExpRestore(),
-		
+
 			// 2. Let locale be the value of the [[locale]] internal property of dateTimeFormat.
 				locale = internal['[[locale]]'],
-		
+
 			// 3. Let nf be the result of creating a new NumberFormat object as if by the
 			// expression new Intl.NumberFormat([locale], {useGrouping: false}) where
 			// Intl.NumberFormat is the standard built-in constructor defined in 11.1.3.
 				nf = new Intl.NumberFormat([locale], {useGrouping: false}),
-		
+
 			// 4. Let nf2 be the result of creating a new NumberFormat object as if by the
 			// expression new Intl.NumberFormat([locale], {minimumIntegerDigits: 2, useGrouping:
 			// false}) where Intl.NumberFormat is the standard built-in constructor defined in
 			// 11.1.3.
 				nf2 = new Intl.NumberFormat([locale], {minimumIntegerDigits: 2, useGrouping: false}),
-		
+
 			// 5. Let tm be the result of calling the ToLocalTime abstract operation (defined
 			// below) with x, the value of the [[calendar]] internal property of dateTimeFormat,
 			// and the value of the [[timeZone]] internal property of dateTimeFormat.
 				tm = ToLocalTime(x, internal['[[calendar]]'], internal['[[timeZone]]']),
-		
+
 			// 6. Let result be the value of the [[pattern]] internal property of dateTimeFormat.
 				result = internal['[[pattern]]'],
-		
+
 			// Need the locale minus any extensions
 				dataLocale = internal['[[dataLocale]]'],
-		
+
 			// Need the calendar data from CLDR
 				localeData = internals.DateTimeFormat['[[localeData]]'][dataLocale].calendars,
 				ca = internal['[[calendar]]'];
-		
+
 			// 7. For each row of Table 3, except the header row, do:
 			for (var p in dateTimeComponents) {
 				// a. If dateTimeFormat has an internal property with the name given in the
@@ -2487,56 +2520,56 @@
 					var
 					// Assigned values below
 						pm, fv,
-		
+
 					//	 i. Let p be the name given in the Property column of the row.
 					//	ii. Let f be the value of the [[<p>]] internal property of dateTimeFormat.
 						f = internal['[['+ p +']]'],
-		
+
 					// iii. Let v be the value of tm.[[<p>]].
 						v = tm['[['+ p +']]'];
-		
-					//	iv. If p is "year" and v ≤ 0, then let v be 1 - v.
+
+					//	iv. If p is "year" and v â‰¤ 0, then let v be 1 - v.
 					if (p === 'year' && v <= 0)
 						v = 1 - v;
-		
+
 					//	 v. If p is "month", then increase v by 1.
 					else if (p === 'month')
 						v++;
-		
+
 					//	vi. If p is "hour" and the value of the [[hour12]] internal property of
 					//		dateTimeFormat is true, then
 					else if (p === 'hour' && internal['[[hour12]]'] === true) {
 						// 1. Let v be v modulo 12.
 						v = v % 12;
-		
+
 						// 2. If v is equal to the value of tm.[[<p>]], then let pm be false; else
 						//	  let pm be true.
 						pm = v !== tm['[['+ p +']]'];
-		
+
 						// 3. If v is 0 and the value of the [[hourNo0]] internal property of
 						//	  dateTimeFormat is true, then let v be 12.
 						if (v === 0 && internal['[[hourNo0]]'] === true)
 							v = 12;
 					}
-		
+
 					// vii. If f is "numeric", then
 					if (f === 'numeric')
 						// 1. Let fv be the result of calling the FormatNumber abstract operation
 						//	  (defined in 11.3.2) with arguments nf and v.
 						fv = FormatNumber(nf, v);
-		
+
 					// viii. Else if f is "2-digit", then
 					else if (f === '2-digit') {
 						// 1. Let fv be the result of calling the FormatNumber abstract operation
 						//	  with arguments nf2 and v.
 						fv = FormatNumber(nf2, v);
-		
+
 						// 2. If the length of fv is greater than 2, let fv be the substring of fv
 						//	  containing the last two characters.
 						if (fv.length > 2)
 							fv = fv.slice(-2);
 					}
-		
+
 					// ix. Else if f is "narrow", "short", or "long", then let fv be a String
 					//	   value representing f in the desired form; the String value depends upon
 					//	   the implementation and the effective locale and calendar of
@@ -2549,7 +2582,7 @@
 							case 'month':
 								fv = resolveDateString(localeData, ca, 'months', f, tm['[['+ p +']]']);
 								break;
-		
+
 							case 'weekday':
 								try {
 									fv = resolveDateString(localeData, ca, 'days', f, tm['[['+ p +']]']);
@@ -2558,17 +2591,17 @@
 									throw new Error('Could not find weekday data for locale '+locale);
 								}
 								break;
-		
+
 							case 'timeZoneName':
 								fv = ''; // TODO
 								break;
-		
+
 							// TODO: Era
 							default:
 								fv = tm['[['+ p +']]'];
 						}
 					}
-		
+
 					// x. Replace the substring of result that consists of "{", p, and "}", with
 					//	  fv.
 					result = result.replace('{'+ p +'}', fv);
@@ -2577,21 +2610,21 @@
 			// 8. If dateTimeFormat has an internal property [[hour12]] whose value is true, then
 			if (internal['[[hour12]]'] === true) {
 				// a. If pm is true, then let fv be an implementation and locale dependent String
-				//	  value representing “post meridiem”; else let fv be an implementation and
-				//	  locale dependent String value representing “ante meridiem”.
+				//	  value representing â€œpost meridiemâ€; else let fv be an implementation and
+				//	  locale dependent String value representing â€œante meridiemâ€.
 				fv = resolveDateString(localeData, ca, 'dayPeriods', pm ? 'pm' : 'am');
-		
+
 				// b. Replace the substring of result that consists of "{ampm}", with fv.
 				result = result.replace('{ampm}', fv);
 			}
-		
+
 			// Restore properties of the RegExp object
 			regexpState.exp.test(regexpState.input);
-		
+
 			// 9. Return result.
 			return result;
 		}
-		
+
 		/**
 		 * When the ToLocalTime abstract operation is called with arguments date, calendar, and
 		 * timeZone, the following steps are taken:
@@ -2607,7 +2640,7 @@
 			//	  ES5, 15.9.1.7 and 15.9.1.8.
 			// ###TODO###
 			var d = new Date(date);
-		
+
 			// 2. Return a Record with fields [[weekday]], [[era]], [[year]], [[month]], [[day]],
 			//	  [[hour]], [[minute]], [[second]], and [[inDST]], each with the corresponding
 			//	  calculated value.
@@ -2623,7 +2656,7 @@
 				'[[inDST]]'	 : false // ###TODO###
 			});
 		}
-		
+
 		/**
 		 * The function returns a new object whose properties and attributes are set as if
 		 * constructed by an object literal assigning to each of the following properties the
@@ -2641,28 +2674,28 @@
 					props = [
 						'locale', 'calendar', 'numberingSystem', 'timeZone', 'hour12', 'weekday',
 						'era', 'year', 'month', 'day', 'hour', 'minute', 'second', 'timeZoneName',
-		
+
 						// Not part of the spec, but in here for debugging purposes
 						'pattern'
 					],
 					internal = this != null && typeof this === 'object' && getInternalProperties(this);
-		
+
 				// Satisfy test 12.3_b
 				if (!internal || !internal['[[initializedDateTimeFormat]]'])
 					throw new TypeError('`this` value for resolvedOptions() is not an initialized Intl.DateTimeFormat object.');
-		
+
 				for (var i = 0, max = props.length; i < max; i++) {
 					if (hop.call(internal, prop = '[[' + props[i] + ']]'))
 						descs[props[i]] = { value: internal[prop], writable: true, configurable: true, enumerable: true };
 				}
-		
+
 				return objCreate({}, descs);
 			}
 		});
-		
+
 		// Sect 13 Locale Sensitive Functions of the ECMAScript Language Specification
 		// ===========================================================================
-		
+
 		/**
 		 * When the toLocaleString method is called with optional arguments locales and options,
 		 * the following steps are taken:
@@ -2674,7 +2707,7 @@
 				// Satisfy test 13.2.1_1
 				if (Object.prototype.toString.call(this) !== '[object Number]')
 					throw new TypeError('`this` value must be a number for Number.prototype.toLocaleStringIntl()');
-		
+
 				// 1. Let x be this Number value (as defined in ES5, 15.7.4).
 				// 2. If locales is not provided, then let locales be undefined.
 				// 3. If options is not provided, then let options be undefined.
@@ -2686,7 +2719,7 @@
 				return FormatNumber(new NumberFormatConstructor(arguments[0], arguments[1]), this);
 			}
 		});
-		
+
 		/**
 		 * When the toLocaleString method is called with optional arguments locales and options,
 		 * the following steps are taken:
@@ -2698,37 +2731,37 @@
 				// Satisfy test 13.3.0_1
 				if (Object.prototype.toString.call(this) !== '[object Date]')
 					throw new TypeError('`this` value must be a Date instance for Date.prototype.toLocaleStringIntl()');
-		
+
 				var
 				// 1. Let x be this time value (as defined in ES5, 15.9.5).
 					x = +this;
-		
+
 				// 2. If x is NaN, then return "Invalid Date".
 				if (isNaN(x))
 					return 'Invalid Date';
-		
+
 				var
 				// 3. If locales is not provided, then let locales be undefined.
 					locales = arguments[0],
-		
+
 				// 4. If options is not provided, then let options be undefined.
 					options = arguments[1],
-		
+
 				// 5. Let options be the result of calling the ToDateTimeOptions abstract
 				//	  operation (defined in 12.1.1) with arguments options, "any", and "all".
 					options = ToDateTimeOptions(options, 'any', 'all'),
-		
+
 				// 6. Let dateTimeFormat be the result of creating a new object as if by the
 				//	  expression new Intl.DateTimeFormat(locales, options) where
 				//	  Intl.DateTimeFormat is the standard built-in constructor defined in 12.1.3.
 					dateTimeFormat = new DateTimeFormatConstructor(locales, options);
-		
+
 				// 7. Return the result of calling the FormatDateTime abstract operation (defined
 				//	  in 12.3.2) with arguments dateTimeFormat and x.
 				return FormatDateTime(dateTimeFormat, x);
 			}
 		});
-		
+
 		/**
 		 * When the toLocaleDateString method is called with optional arguments locales and
 		 * options, the following steps are taken:
@@ -2740,37 +2773,37 @@
 				// Satisfy test 13.3.0_1
 				if (Object.prototype.toString.call(this) !== '[object Date]')
 					throw new TypeError('`this` value must be a Date instance for Date.prototype.toLocaleDateString()');
-		
+
 				var
 				// 1. Let x be this time value (as defined in ES5, 15.9.5).
 					x = +this;
-		
+
 				// 2. If x is NaN, then return "Invalid Date".
 				if (isNaN(x))
 					return 'Invalid Date';
-		
+
 				var
 				// 3. If locales is not provided, then let locales be undefined.
 					locales = arguments[0],
-		
+
 				// 4. If options is not provided, then let options be undefined.
 					options = arguments[1],
-		
+
 				// 5. Let options be the result of calling the ToDateTimeOptions abstract
 				//	  operation (defined in 12.1.1) with arguments options, "date", and "date".
 					options = ToDateTimeOptions(options, 'date', 'date'),
-		
+
 				// 6. Let dateTimeFormat be the result of creating a new object as if by the
 				//	  expression new Intl.DateTimeFormat(locales, options) where
 				//	  Intl.DateTimeFormat is the standard built-in constructor defined in 12.1.3.
 					dateTimeFormat = new DateTimeFormatConstructor(locales, options);
-		
+
 				// 7. Return the result of calling the FormatDateTime abstract operation (defined
 				//	  in 12.3.2) with arguments dateTimeFormat and x.
 				return FormatDateTime(dateTimeFormat, x);
 			}
 		});
-		
+
 		/**
 		 * When the toLocaleTimeString method is called with optional arguments locales and
 		 * options, the following steps are taken:
@@ -2782,37 +2815,37 @@
 				// Satisfy test 13.3.0_1
 				if (Object.prototype.toString.call(this) !== '[object Date]')
 					throw new TypeError('`this` value must be a Date instance for Date.prototype.toLocaleTimeString()');
-		
+
 				var
 				// 1. Let x be this time value (as defined in ES5, 15.9.5).
 					x = +this;
-		
+
 				// 2. If x is NaN, then return "Invalid Date".
 				if (isNaN(x))
 					return 'Invalid Date';
-		
+
 				var
 				// 3. If locales is not provided, then let locales be undefined.
 					locales = arguments[0],
-		
+
 				// 4. If options is not provided, then let options be undefined.
 					options = arguments[1],
-		
+
 				// 5. Let options be the result of calling the ToDateTimeOptions abstract
 				//	  operation (defined in 12.1.1) with arguments options, "time", and "time".
 					options = ToDateTimeOptions(options, 'time', 'time'),
-		
+
 				// 6. Let dateTimeFormat be the result of creating a new object as if by the
 				//	  expression new Intl.DateTimeFormat(locales, options) where
 				//	  Intl.DateTimeFormat is the standard built-in constructor defined in 12.1.3.
 					dateTimeFormat = new DateTimeFormatConstructor(locales, options);
-		
+
 				// 7. Return the result of calling the FormatDateTime abstract operation (defined
 				//	  in 12.3.2) with arguments dateTimeFormat and x.
 				return FormatDateTime(dateTimeFormat, x);
 			}
 		});
-		
+
 		/**
 		 * Can't really ship a single script with data for hundreds of locales, so we provide
 		 * this __addLocaleData method as a means for the developer to add the data on an
@@ -2824,24 +2857,24 @@
 		function addLocaleData (data) {
 			if (!IsStructurallyValidLanguageTag(data.locale))
 				throw new Error("Object passed doesn't identify itself with a valid language tag");
-		
+
 			// Both NumberFormat and DateTimeFormat require number data, so throw if it isn't present
 			if (!data.number)
 				throw new Error("Object passed doesn't contain locale data for Intl.NumberFormat");
-		
+
 			var locale,
 				locales = [ data.locale ],
 				parts	= data.locale.split('-');
-		
+
 			// Create fallbacks for locale data with scripts, e.g. Latn, Hans, Vaii, etc
 			if (parts.length > 2 && parts[1].length == 4)
 				arrPush.call(locales, parts[0] + '-' + parts[2]);
-		
+
 			while (locale = arrShift.call(locales)) {
 				// Add to NumberFormat internal properties as per 11.2.3
 				arrPush.call(internals.NumberFormat['[[availableLocales]]'], locale);
 				internals.NumberFormat['[[localeData]]'][locale] = data.number;
-		
+
 				// ...and DateTimeFormat internal properties as per 12.2.3
 				if (data.date) {
 					data.date.nu = data.number.nu;
@@ -2849,31 +2882,31 @@
 					internals.DateTimeFormat['[[localeData]]'][locale] = data.date;
 				}
 			}
-		
+
 			// If this is the first set of locale data added, make it the default
 			if (defaultLocale === undefined)
 				defaultLocale = data.locale;
-		
+
 			// 11.3 (the NumberFormat prototype object is an Intl.NumberFormat instance)
 			if (!numberFormatProtoInitialised) {
 				InitializeNumberFormat(Intl.NumberFormat.prototype);
 				numberFormatProtoInitialised = true;
 			}
-		
+
 			// 11.3 (the NumberFormat prototype object is an Intl.NumberFormat instance)
 			if (data.date && !dateTimeFormatProtoInitialised) {
 				InitializeDateTimeFormat(Intl.DateTimeFormat.prototype);
 				dateTimeFormatProtoInitialised = true;
 			}
 		}
-		
+
 		// Exposed for debugging
 		if (typeof window !== 'undefined')
 			window.IntlLocaleData = internals;
-		
+
 		// Helper functions
 		// ================
-		
+
 		/**
 		 * A merge of the Intl.{Constructor}.supportedLocalesOf functions
 		 * To make life easier, the function should be bound to the constructor's internal
@@ -2881,38 +2914,38 @@
 		 */
 		function supportedLocalesOf(locales) {
 			/*jshint validthis:true */
-		
+
 			// Bound functions only have the `this` value altered if being used as a constructor,
 			// this lets us imitate a native function that has no constructor
 			if (!hop.call(this, '[[availableLocales]]'))
 				throw new TypeError('supportedLocalesOf() is not a constructor');
-		
+
 			var
 			// Create an object whose props can be used to restore the values of RegExp props
 				regexpState = createRegExpRestore(),
-		
+
 			// 1. If options is not provided, then let options be undefined.
 				options = arguments[1],
-		
+
 			// 2. Let availableLocales be the value of the [[availableLocales]] internal
 			//	  property of the standard built-in object that is the initial value of
 			//	  Intl.NumberFormat.
-		
+
 				availableLocales = this['[[availableLocales]]'],
-		
+
 			// 3. Let requestedLocales be the result of calling the CanonicalizeLocaleList
 			//	  abstract operation (defined in 9.2.1) with argument locales.
 				requestedLocales = CanonicalizeLocaleList(locales);
-		
+
 			// Restore the RegExp properties
 			regexpState.exp.test(regexpState.input);
-		
+
 			// 4. Return the result of calling the SupportedLocales abstract operation
 			//	  (defined in 9.2.8) with arguments availableLocales, requestedLocales,
 			//	  and options.
 			return SupportedLocales(availableLocales, requestedLocales, options);
 		}
-		
+
 		/**
 		 * Returns a string for a date component, resolved using multiple inheritance as specified
 		 * as specified in the Unicode Technical Standard 35.
@@ -2924,25 +2957,25 @@
 			var obj = data[ca] && data[ca][component]
 						? data[ca][component]
 						: data.gregory[component],
-		
+
 				// "sideways" inheritance resolves strings when a key doesn't exist
 				alts = {
-					narrow: ['short', 'long'],
-					short:	['long', 'narrow'],
-					long:	['short', 'narrow']
+					"narrow": ['short', 'long'],
+					"short":	['long', 'narrow'],
+					"long":	['short', 'narrow']
 				},
-		
+
 				//
 				resolved = hop.call(obj, width)
 						  ? obj[width]
 						  : hop.call(obj, alts[width][0])
 							  ? obj[alts[width][0]]
 							  : obj[alts[width][1]];
-		
+
 			// `key` wouldn't be specified for components 'dayPeriods'
 			return key != null ? resolved[key] : resolved;
 		}
-		
+
 		/**
 		 * A map that doesn't contain Object in its prototype chain
 		 */
@@ -2954,18 +2987,18 @@
 					defineProperty(this, k, { value: obj[k], enumerable: true, writable: true, configurable: true });
 			}
 		}
-		
+
 		/**
 		 * An ordered list
 		 */
 		List.prototype = objCreate(null);
 		function List() {
 			defineProperty(this, 'length', { writable:true, value: 0 });
-		
+
 			if (arguments.length)
 				arrPush.apply(this, arrSlice.call(arguments));
 		}
-		
+
 		/**
 		 * Constructs a regular expression to restore tainted RegExp properties
 		 */
@@ -2977,62 +3010,62 @@
 				esc = /[.?*+^$[\]\\(){}|-]/g,
 				reg = new List(),
 				cap = {};
-		
+
 			if(lm==')') lm="\\)";
 			// Create a snapshot of all the 'captured' properties
 			for (var i = 1; i <= 9; i++)
 				cap['$'+i] = RegExp['$'+i];
-			
-		
+
+
 			// Now, iterate over them
 			for (var i = 1; i <= 9; i++) {
 				var m = cap['$'+i];
-		
+
 				// If it's empty, add an empty capturing group
 				if (!m)
 					lm = '()' + lm;
-		
+
 				// Else find the string in lm and escape & wrap it to capture it
 				else
 					lm = lm.replace(m, '(' + m.replace(esc, '\\$0') + ')');
-		
+
 				// Push it to the reg and chop lm to make sure further groups come after
 				arrPush.call(reg, lm.slice(0, lm.indexOf('(') + 1));
 				lm = lm.slice(lm.indexOf('(') + 1);
 			}
-		
+
 			// Create the regular expression that will reconstruct the RegExp properties
 			ret.exp = new RegExp(arrJoin.call(reg, '') + lm, RegExp.multiline ? 'm' : '');
-		
+
 			return ret;
 		}
-		
+
 		/**
 		 * Convert only a-z to uppercase as per section 6.1 of the spec
 		 */
 		function toLatinUpperCase (str) {
 			var i = str.length;
-		
+
 			while (i--) {
 				var ch = str.charAt(i);
-		
+
 				if (ch >= "a" && ch <= "z")
 					str = str.slice(0, i) + ch.toUpperCase() + str.slice(i+1);
 			}
-		
+
 			return str;
 		}
-		
+
 		/**
 		 * Mimics ES5's abstract ToObject() function
 		 */
 		function toObject (arg) {
 			if (arg == null)
 				throw new TypeError('Cannot convert null or undefined to object');
-		
+
 			return Object(arg);
 		}
-		
+
 		/**
 		 * Returns "internal" properties for an object
 		 */
@@ -3042,18 +3075,18 @@
 			else
 				return objCreate(null);
 		}
-		
+
 		return Intl;
 		})({});
-		
-		
+
+
 		//-----
 		//The `timezoneJS.Date` object gives you full-blown timezone support, independent from the timezone set on the end-user's machine running the browser. It uses the Olson zoneinfo files for its timezone data.
 		//
 		//The constructor function and setter methods use proxy JavaScript Date objects behind the scenes, so you can use strings like '10/22/2006' with the constructor. You also get the same sensible wraparound behavior with numeric parameters (like setting a value of 14 for the month wraps around to the next March).
 		//
 		//The other significant difference from the built-in JavaScript Date is that `timezoneJS.Date` also has named properties that store the values of year, month, date, etc., so it can be directly serialized to JSON and used for data transfer.
-		
+
 		/*
 		* Copyright 2010 Matthew Eernisse (mde@fleegix.org)
 		* and Open Source Applications Foundation
@@ -3078,19 +3111,19 @@
 		* Ricky Romero
 		* Preston Hunt (prestonhunt@gmail.com)
 		* Dov. B Katz (dov.katz@morganstanley.com)
-		* Peter Bergström (pbergstr@mac.com)
+		* Peter BergstrÃ¶m (pbergstr@mac.com)
 		* Long Ho
 		*
 		* Modified from original by ChartIQ to include caching for improved performance
 		*/
-		
+
 		/*jslint laxcomma:true, laxbreak:true, expr:true*/
 		(function () {
 		// Standard initialization stuff to make sure the library is
 		// usable on both client and server (node) side.
 		"use strict";
 		var root = this;
-		
+
 		var timezoneJS;
 		if (typeof exports !== 'undefined') {
 		 timezoneJS = exports;
@@ -3098,9 +3131,9 @@
 		 timezoneJS = /*root.timezoneJS =*/ {};
 		}
 		_exports.timezoneJS=timezoneJS;
-		
+
 		timezoneJS.VERSION = '0.4.4';
-		
+
 		// Grab the ajax library from global context.
 		// This can be jQuery, Zepto or fleegix.
 		// You can also specify your own transport mechanism by declaring
@@ -3113,18 +3146,18 @@
 		 , SHORT_MONTHS = {}
 		 , SHORT_DAYS = {}
 		 , EXACT_DATE_TIME = {};
-		
+
 		//`{ "Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "Jun": 5, "Jul": 6, "Aug": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Dec": 11 }`
 		for (var i = 0; i < MONTHS.length; i++) {
 		 SHORT_MONTHS[MONTHS[i].substr(0, 3)] = i;
 		}
-		
+
 		//`{ "Sun": 0, "Mon": 1, "Tue": 2, "Wed": 3, "Thu": 4, "Fri": 5, "Sat": 6 }`
 		for (i = 0; i < DAYS.length; i++) {
 		 SHORT_DAYS[DAYS[i].substr(0, 3)] = i;
 		}
-		
-		
+
+
 		//Handle array indexOf in IE
 		//From https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/indexOf
 		//Extending Array prototype causes IE to iterate thru extra element
@@ -3157,7 +3190,7 @@
 		 }
 		 return -1;
 		};
-		
+
 		// Format a number to the length = digits. For ex:
 		//
 		// `_fixWidth(2, 2) = '02'`
@@ -3176,7 +3209,7 @@
 		 }
 		 return s;
 		};
-		
+
 		// Abstraction layer for different transport layers, including fleegix/jQuery/Zepto
 		//
 		// Object `opts` include
@@ -3216,17 +3249,17 @@
 		   success : opts.success
 		 });
 		};
-		
+
 		timezoneJS.ruleCache={};
-		
+
 		// Constructor, which is similar to that of the native Date object itself
 		timezoneJS.Date = function () {
 		 var args = Array.prototype.slice.apply(arguments)
 		 , dt = null
 		 , tz = null
 		 , arr = [];
-		
-		
+
+
 		 //We support several different constructors, including all the ones from `Date` object
 		 // with a timezone string at the end.
 		 //
@@ -3270,7 +3303,7 @@
 			 is_dt_local = true;
 			 break;
 		 }
-		
+
 		 this._useCache = false;
 		 this._tzInfo = {};
 		 this._day = 0;
@@ -3303,7 +3336,7 @@
 			this.setFromTimeProxy(dt.getTime(), tz);
 		 }
 		};
-		
+
 		// Implements most of the native Date object
 		timezoneJS.Date.prototype = {
 		 getDate: function () { return this.date; },
@@ -3574,8 +3607,8 @@
 		   return this._dateProxy.getTimezoneOffset();
 		 }
 		};
-		
-		
+
+
 		function Timezone() {
 		 var _this = this
 		   , regionMap = {'Etc':'etcetera','EST':'northamerica','MST':'northamerica','HST':'northamerica','EST5EDT':'northamerica','CST6CDT':'northamerica','MST7MDT':'northamerica','PST8PDT':'northamerica','America':'northamerica','Pacific':'australasia','Atlantic':'europe','Africa':'africa','Indian':'africa','Antarctica':'antarctica','Asia':'asia','Australia':'australasia','Europe':'europe','WET':'europe','CET':'europe','MET':'europe','EET':'europe'}
@@ -3680,21 +3713,21 @@
 		 function getAdjustedOffset(off, min) {
 		   return -Math.ceil(min - off);
 		 }
-		
+
 		 //if isUTC is true, date is given in UTC, otherwise it's given
 		 // in local time (ie. date.getUTC*() returns local time components)
 		 function getRule(dt, zone, isUTC, cacheKey) {
 		   var date = typeof dt === 'number' ? new Date(dt) : dt;
 		   var ruleset = zone[1];
 		   var basicOffset = zone[0];
-		
+
 		   // If the zone has a DST rule like '1:00', create a rule and return it
 		   // instead of looking it up in the parsed rules
 		   var staticDstMatch = ruleset.match(/^([0-9]):([0-9][0-9])$/);
 		   if (staticDstMatch) {
 			 return [-1000000, 'max', '-', 'Jan', 1, [0, 0, 0], parseInt(staticDstMatch[1],10) * 60 + parseInt(staticDstMatch[2], 10), '-'];
 		   }
-		
+
 		   //Convert a date to UTC. Depending on the 'type' parameter, the date
 		   // parameter may be:
 		   //
@@ -3707,7 +3740,7 @@
 		   // DST adjustment is done using the rule given as third argument.
 		   var convertDateToUTC = function (date, type, rule) {
 			 var offset = 0;
-		
+
 			 if (type === 'u' || type === 'g' || type === 'z') { // UTC
 			   offset = 0;
 			 } else if (type === 's') { // Standard Time
@@ -3718,10 +3751,10 @@
 			   throw new Error("unknown type " + type);
 			 }
 			 offset *= 60 * 1000; // to millis
-		
+
 			 return new Date(date.getTime() + offset);
 		   };
-		
+
 		   //Step 1:  Find applicable rules for this year.
 		   //
 		   //Step 2:  Sort the rules by effective date.
@@ -3741,13 +3774,13 @@
 			   , rule = yearAndRule[1];
 			   // Assume that the rule applies to the year of the given date.
 			   //if(rule[8]) return rule[8]; // We've already computed the exact date and time for this rule
-		
+
 			 var hms = rule[5];
 			 var effectiveDate;
-		
+
 			 if (!EXACT_DATE_TIME[year])
 			   EXACT_DATE_TIME[year] = {};
-		
+
 			 // Result for given parameters is already stored
 			 if (EXACT_DATE_TIME[year][rule])
 			   effectiveDate = EXACT_DATE_TIME[year][rule];
@@ -3786,8 +3819,8 @@
 			   }
 			   EXACT_DATE_TIME[year][rule] = effectiveDate;
 			 }
-		
-		
+
+
 			 //If previous rule is given, correct for the fact that the starting time of the current
 			 // rule may be specified in local time.
 			 if (prevRule) {
@@ -3795,7 +3828,7 @@
 			 }
 			 return effectiveDate;
 		   };
-		
+
 		   var findApplicableRules = function (year, ruleset) {
 			 var applicableRules = [];
 			 for (var i = 0; ruleset && i < ruleset.length; i++) {
@@ -3818,7 +3851,7 @@
 			 }
 			 return applicableRules;
 		   };
-		
+
 		   var compareDates = function (a, b, prev) {
 			 var year, rule, exactYearAndDate;
 			 if (!(a instanceof Date)) {
@@ -3844,10 +3877,10 @@
 			 b = Number(b);
 			 return a - b;
 		   };
-		
+
 		   var year = date.getUTCFullYear();
-		
-		
+
+
 		   var cache=timezoneJS.ruleCache[cacheKey];
 		   if(!cache) cache=timezoneJS.ruleCache[cacheKey]={};
 		   var applicableRules=cache[year];
@@ -3857,9 +3890,9 @@
 			  applicableRules.sort(compareDates);  // Probably already sorted?
 			  cache[year]=applicableRules;
 			}
-		
+
 		   if(!applicableRules || !applicableRules.length) return null;	 // No applicable rules
-		
+
 		   var prev;
 		   for(var i=applicableRules.length-1;i>=0;i--){
 				if(i>0) prev=applicableRules[i-1][1];
@@ -3871,8 +3904,8 @@
 				if(compareDates(date, rule, prev)>=0) return rule[1];
 		   }
 		   return null;
-		
-		
+
+
 		  /* var applicableRules = findApplicableRules(year, _this.rules[ruleset]);
 		   applicableRules.push(date);
 		   //While sorting, the time zone in which the rule starting time is specified
@@ -3881,7 +3914,7 @@
 		   // As the given date may indeed be close to a DST change, it may get sorted
 		   // to a wrong position (off by one), which is corrected below.
 		   applicableRules.sort(compareDates);
-		
+
 		   //If there are not enough past DST rules...
 		   if (_arrIndexOf.call(applicableRules, date) < 2) {
 			 applicableRules = applicableRules.concat(findApplicableRules(year-1, _this.rules[ruleset]));
@@ -3892,7 +3925,7 @@
 			 //The previous rule does not really apply, take the one before that.
 			 return applicableRules[pinpoint - 2][1];
 		   } else if (pinpoint > 0 && pinpoint < applicableRules.length - 1 && compareDates(date, applicableRules[pinpoint+1], applicableRules[pinpoint-1][1]) > 0) {
-		
+
 			 //The next rule does already apply, take that one.
 			 return applicableRules[pinpoint + 1][1];
 		   } else if (pinpoint === 0) {
@@ -3921,7 +3954,7 @@
 		   }
 		   return base;
 		 }
-		
+
 		 this.zoneFileBasePath = null;
 		 this.zoneFiles = ['africa', 'antarctica', 'asia', 'australasia', 'backward', 'etcetera', 'europe', 'northamerica', 'pacificnew', 'southamerica'];
 		 this.loadingSchemes = {
@@ -3934,7 +3967,7 @@
 		 this.loadedZones = {};
 		 this.zones = {};
 		 this.rules = {};
-		
+
 		 this.init = function (o) {
 		   var opts = { async: true }
 			 , def = this.loadingScheme === this.loadingSchemes.PRELOAD_ALL
@@ -3960,7 +3993,7 @@
 			 this.loadZoneFile(def[i], opts);
 		   }
 		 };
-		
+
 		 //Get the zone files via XHR -- if the sync flag
 		 // is set to true, it's being called by the lazy-loading
 		 // mechanism, so the result needs to be returned inline.
@@ -4091,6 +4124,7 @@
 		}).call(this);
 
 
+		// Minimal timezone information required for US Equities
 		_exports.timezoneJS.timezone.loadingScheme=_exports.timezoneJS.timezone.loadingSchemes.MANUAL_LOAD;
 		_exports.timezoneJS.timezone.loadZoneDataFromObject(
 		{'zones':{
@@ -4098,1275 +4132,15 @@
 		'UTC':"Etc/UTC",
 		'Etc/UTC':[[0,"-","UTC",null]],
 		'America/New_York':[[296.0333333333333,"-","LMT",-2717668562000],[300,"US","E%sT",-1546387200000],[300,"NYC","E%sT",-852163200000],[300,"US","E%sT",-725932800000],[300,"NYC","E%sT",-63244800000],[300,"US","E%sT",null]],
+		'America/Chicago':[[350.6,"-","LMT",-2717668236000],[360,"US","C%sT",-1546387200000],[360,"Chicago","C%sT",-1067810400000],[300,"-","EST",-1045432800000],[360,"Chicago","C%sT",-852163200000],[360,"US","C%sT",-725932800000],[360,"Chicago","C%sT",-63244800000],[360,"US","C%sT",null]],
 		},
 		'rules':{
 		'US':[[1918,1919,"-","Mar","lastSun",[2,0,0,null],60,"D"],[1918,1919,"-","Oct","lastSun",[2,0,0,null],0,"S"],[1942,"only","-","Feb","9",[2,0,0,null],60,"W",""],[1945,"only","-","Aug","14",[23,0,0,"u"],60,"P",""],[1945,"only","-","Sep","30",[2,0,0,null],0,"S"],[1967,2006,"-","Oct","lastSun",[2,0,0,null],0,"S"],[1967,1973,"-","Apr","lastSun",[2,0,0,null],60,"D"],[1974,"only","-","Jan","6",[2,0,0,null],60,"D"],[1975,"only","-","Feb","23",[2,0,0,null],60,"D"],[1976,1986,"-","Apr","lastSun",[2,0,0,null],60,"D"],[1987,2006,"-","Apr","Sun>=1",[2,0,0,null],60,"D"],[2007,"max","-","Mar","Sun>=8",[2,0,0,null],60,"D"],[2007,"max","-","Nov","Sun>=1",[2,0,0,null],0,"S"]],
 		'NYC':[[1920,"only","-","Mar","lastSun",[2,0,0,null],60,"D"],[1920,"only","-","Oct","lastSun",[2,0,0,null],0,"S"],[1921,1966,"-","Apr","lastSun",[2,0,0,null],60,"D"],[1921,1954,"-","Sep","lastSun",[2,0,0,null],0,"S"],[1955,1966,"-","Oct","lastSun",[2,0,0,null],0,"S"]],
+		'Chicago':[[1920,"only","-","Jun","13",[2,0,0,null],60,"D"],[1920,1921,"-","Oct","lastSun",[2,0,0,null],0,"S"],[1921,"only","-","Mar","lastSun",[2,0,0,null],60,"D"],[1922,1966,"-","Apr","lastSun",[2,0,0,null],60,"D"],[1922,1954,"-","Sep","lastSun",[2,0,0,null],0,"S"],[1955,1966,"-","Oct","lastSun",[2,0,0,null],0,"S"]],
 		}});
 
 
-		
-		/*!
-		 * iScroll v4.2.5 ~ Copyright (c) 2012 Matteo Spinelli, http://cubiq.org
-		 * Released under MIT license, http://cubiq.org/license
-		 */
-		(function(window, doc){
-		var m = Math,
-			dummyStyle = doc.createElement('div').style,
-			vendor = (function () {
-				var vendors = 't,webkitT,MozT,msT,OT'.split(','),
-					t,
-					i = 0,
-					l = vendors.length;
-		
-				for ( ; i < l; i++ ) {
-					t = vendors[i] + 'ransform';
-					if ( t in dummyStyle ) {
-						return vendors[i].substr(0, vendors[i].length - 1);
-					}
-				}
-		
-				return false;
-			})(),
-			cssVendor = vendor ? '-' + vendor.toLowerCase() + '-' : '',
-		
-			// Style properties
-			transform = prefixStyle('transform'),
-			transitionProperty = prefixStyle('transitionProperty'),
-			transitionDuration = prefixStyle('transitionDuration'),
-			transformOrigin = prefixStyle('transformOrigin'),
-			transitionTimingFunction = prefixStyle('transitionTimingFunction'),
-			transitionDelay = prefixStyle('transitionDelay'),
-		
-			// Browser capabilities
-			isAndroid = (/android/gi).test(navigator.appVersion),
-			isIDevice = (/iphone|ipad/gi).test(navigator.appVersion),
-			isTouchPad = (/hp-tablet/gi).test(navigator.appVersion),
-		
-			hasPointerTouch = navigator.msMaxTouchPoints && navigator.msMaxTouchPoints > 1, // Microsoft surface for instance
-			hasPointerDown = navigator.pointerEnabled,
-			hasPointers = hasPointerTouch || hasPointerDown,
-			has3d = prefixStyle('perspective') in dummyStyle,
-			//hasTouch = isIDevice || isAndroid || hasPointerTouch,
-			//hasTouch = ('ontouchstart' in window && !isTouchPad) || hasPointerTouch,
-			hasTransform = vendor !== false,
-			hasTransitionEnd = prefixStyle('transition') in dummyStyle,
-			grabCutoffMS = hasPointers ? 400 : 300,	// Microsoft Surface is a bit less responsive than other devices
-		
-			RESIZE_EV = 'onorientationchange' in window ? 'orientationchange' : 'resize',
-			//START_EV = hasPointerTouch ? 'MSPointerDown' : hasTouch ? 'touchstart' : 'mousedown',
-			//MOVE_EV = hasPointerTouch ? 'MSPointerMove' : hasTouch ? 'touchmove' : 'mousemove',
-			//END_EV = hasPointerTouch ? 'MSPointerUp' : hasTouch ? 'touchend' : 'mouseup',
-			//CANCEL_EV = hasPointerTouch ? 'MSPointerCancel' : hasTouch ? 'touchcancel' : 'mouseup',
-			TRNEND_EV = (function () {
-				if ( vendor === false ) return false;
-		
-				var transitionEnd = {
-						''			: 'transitionend',
-						'webkit'	: 'webkitTransitionEnd',
-						'Moz'		: 'transitionend',
-						'O'			: 'otransitionend',
-						'ms'		: 'MSTransitionEnd'
-					};
-		
-				return transitionEnd[vendor];
-			})(),
-		
-			nextFrame = (function() {
-				return window.requestAnimationFrame ||
-					window.webkitRequestAnimationFrame ||
-					window.mozRequestAnimationFrame ||
-					window.oRequestAnimationFrame ||
-					window.msRequestAnimationFrame ||
-					function(callback) { return setTimeout(callback, 1); };
-			})(),
-			cancelFrame = (function () {
-				return window.cancelAnimationFrame ||
-					window.cancelRequestAnimationFrame ||
-					window.webkitCancelAnimationFrame ||
-					window.webkitCancelRequestAnimationFrame ||
-					window.mozCancelRequestAnimationFrame ||
-					window.oCancelRequestAnimationFrame ||
-					window.msCancelRequestAnimationFrame ||
-					clearTimeout;
-			})(),
-		
-			// Helpers
-			translateZ = has3d ? ' translateZ(0)' : '',
-		
-			// Constructor
-			iScroll = function (el, options) {
-				var that = this,
-					i;
-				
-				that.wrapper = typeof el == 'object' ? el : doc.getElementById(el);
-				if(that.wrapper==null) return;
-		
-				that.wrapper.style.overflow = 'hidden';
-				that.scroller = options.scroller?options.scroller:that.wrapper.children[0];
-				that.touches = [];
-		
-				// Default options
-				that.options = {
-					hScroll: true,
-					vScroll: true,
-					x: 0,
-					y: 0,
-					bounce: true,
-					bounceBottom: true,	// Set to false to prevent bounce at bottom, such as when dynamically creating "load more" element
-					bounceTop: true,
-					bounceLock: false,
-					momentum: true,
-					lockDirection: true,
-					useTransform: true,
-					useTransition: false,
-					topOffset: 0,
-					checkDOMChanges: false,		// Experimental
-					handleClick: true,
-		
-					// Scrollbar
-					hScrollbar: true,
-					vScrollbar: true,
-					fixedScrollbar: isAndroid,
-					hideScrollbar: isIDevice,
-					fadeScrollbar: isIDevice && has3d,
-					scrollbarClass: '',
-		
-					// Zoom
-					zoom: false,
-					zoomMin: 1,
-					zoomMax: 4,
-					doubleTapZoom: 2,
-					wheelAction: 'scroll',
-					wheelMultiplier: 6,	// Controls how wheel action manages scroll. Increase as your contained elements get taller.
-		
-					// Snap
-					snap: false,
-					snapThreshold: 1,
-		
-					// Events
-					onRefresh: null,
-					onBeforeScrollStart: function (e) {
-						if(e.target.tagName=="SELECT" || e.target.tagName=="INPUT" || e.tagName=="TEXTAREA" || e.tagName=="BUTTON")
-							return;
-						if(e.target.getAttribute("noiscroll")) return;
-						e.preventDefault();
-					},
-					onScrollStart: null,
-					onBeforeScrollMove: null,
-					onScrollMove: null,
-					onBeforeScrollEnd: null,
-					onScrollEnd: null,
-					onTouchEnd: null,
-					onDestroy: null,
-					onZoomStart: null,
-					onZoom: null,
-					onZoomEnd: null
-				};
-		
-				// User defined options
-				for (i in options) that.options[i] = options[i];
-				
-				// Set starting position
-				that.x = that.options.x;
-				that.y = that.options.y;
-		
-				// Normalize options
-				that.options.useTransform = hasTransform && that.options.useTransform;
-				that.options.hScrollbar = that.options.hScroll && that.options.hScrollbar;
-				that.options.vScrollbar = that.options.vScroll && that.options.vScrollbar;
-				that.options.zoom = that.options.useTransform && that.options.zoom;
-				that.options.useTransition = hasTransitionEnd && that.options.useTransition;
-		
-				// Helpers FIX ANDROID BUG!
-				// translate3d and scale doesn't work together!
-				// Ignoring 3d ONLY WHEN YOU SET that.options.zoom
-				if ( that.options.zoom && isAndroid ){
-					translateZ = '';
-				}
-				
-				// Set some default styles
-				that.scroller.style[transitionProperty] = that.options.useTransform ? cssVendor + 'transform' : 'top left';
-				that.scroller.style[transitionDuration] = '0';
-				that.scroller.style[transformOrigin] = '0 0';
-				if (that.options.useTransition) that.scroller.style[transitionTimingFunction] = 'cubic-bezier(0.33,0.66,0.66,1)';
-				
-				if (that.options.useTransform) that.scroller.style[transform] = 'translate(' + that.x + 'px,' + that.y + 'px)' + translateZ;
-				else that.scroller.style.cssText += ';position:absolute;top:' + that.y + 'px;left:' + that.x + 'px';
-		
-				if (that.options.useTransition) that.options.fixedScrollbar = true;
-		
-				that.refresh();
-		
-				that._bind(RESIZE_EV, window);
-				if(hasPointerDown) that._bind("pointerdown");
-				if(hasPointerTouch && !hasPointerDown) that._bind("MSPointerDown");
-				that._bind("touchstart");
-				if(!hasPointers && !isIDevice) that._bind("mousedown");
-				//if (!hasTouch) {
-					if (that.options.wheelAction != 'none') {
-						that._bind('DOMMouseScroll');
-						that._bind('mousewheel');
-						that._bind('wheel');
-					}
-				//}
-		
-				if (that.options.checkDOMChanges) that.checkDOMTime = setInterval(function () {
-					that._checkDOMChanges();
-				}, 500);
-			};
-		
-		// Prototype
-		iScroll.prototype = {
-			enabled: true,
-			x: 0,
-			y: 0,
-			steps: [],
-			scale: 1,
-			currPageX: 0, currPageY: 0,
-			pagesX: [], pagesY: [],
-			aniTime: null,
-			wheelZoomCount: 0,
-			
-			handleEvent: function (e) {
-				var that = this;
-				switch(e.type) {
-				case "pointerdown":
-				case "MSPointerDown":
-				case "touchstart":
-						that.hasTouch=true;
-						that._start(e);
-						break;
-					case "mousedown":
-						that.hasTouch=false;
-						that._start(e);
-						break;
-					/*case START_EV:
-						if (!hasTouch && e.button !== 0) return;
-						that._start(e);
-						break;*/
-					case "pointermove":
-					case "MSPointerMove":
-					case "touchmove":
-					case "mousemove":
-						that._move(e); break;
-					case "pointercancel":
-					case "touchcancel":
-					case "MSPointerCancel":
-					case "MSPointerUp":
-					case "pointerup":
-					case "touchend":
-					case "mouseup":
-						that._end(e); break;
-					case RESIZE_EV: that._resize(); break;
-					case 'DOMMouseScroll':
-					case 'mousewheel':
-					case 'wheel':
-						that._wheel(e); break;
-					case TRNEND_EV: that._transitionEnd(e); break;
-				}
-			},
-			
-			_checkDOMChanges: function () {
-				if (this.moved || this.zoomed || this.animating ||
-					(this.scrollerW == this.scroller.offsetWidth * this.scale && this.scrollerH == this.scroller.offsetHeight * this.scale)) return;
-		
-				this.refresh();
-			},
-			
-			_scrollbar: function (dir) {
-				var that = this,
-					bar;
-		
-				if (!that[dir + 'Scrollbar']) {
-					if (that[dir + 'ScrollbarWrapper']) {
-						if (hasTransform) that[dir + 'ScrollbarIndicator'].style[transform] = '';
-						that[dir + 'ScrollbarWrapper'].parentNode.removeChild(that[dir + 'ScrollbarWrapper']);
-						that[dir + 'ScrollbarWrapper'] = null;
-						that[dir + 'ScrollbarIndicator'] = null;
-					}
-		
-					return;
-				}
-		
-				if (!that[dir + 'ScrollbarWrapper']) {
-					// Create the scrollbar wrapper
-					bar = doc.createElement('div');
-		
-					if (that.options.scrollbarClass) bar.className = that.options.scrollbarClass + dir.toUpperCase();
-					else bar.style.cssText = 'position:absolute;z-index:100;' + (dir == 'h' ? 'height:7px;bottom:1px;left:2px;right:' + (that.vScrollbar ? '7' : '2') + 'px' : 'width:7px;bottom:' + (that.hScrollbar ? '7' : '2') + 'px;top:2px;right:1px');
-		
-					bar.style.cssText += ';pointer-events:none;' + cssVendor + 'transition-property:opacity;' + cssVendor + 'transition-duration:' + (that.options.fadeScrollbar ? '350ms' : '0') + ';overflow:hidden;opacity:' + (that.options.hideScrollbar ? '0' : '1');
-		
-					that.wrapper.appendChild(bar);
-					that[dir + 'ScrollbarWrapper'] = bar;
-		
-					// Create the scrollbar indicator
-					bar = doc.createElement('div');
-					if (!that.options.scrollbarClass) {
-						bar.style.cssText = 'position:absolute;z-index:100;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.9);' + cssVendor + 'background-clip:padding-box;' + cssVendor + 'box-sizing:border-box;' + (dir == 'h' ? 'height:100%' : 'width:100%') + ';' + cssVendor + 'border-radius:3px;border-radius:3px';
-					}
-					bar.style.cssText += ';pointer-events:none;' + cssVendor + 'transition-property:' + cssVendor + 'transform;' + cssVendor + 'transition-timing-function:cubic-bezier(0.33,0.66,0.66,1);' + cssVendor + 'transition-duration:0;' + cssVendor + 'transform: translate(0,0)' + translateZ;
-					if (that.options.useTransition) bar.style.cssText += ';' + cssVendor + 'transition-timing-function:cubic-bezier(0.33,0.66,0.66,1)';
-		
-					that[dir + 'ScrollbarWrapper'].appendChild(bar);
-					that[dir + 'ScrollbarIndicator'] = bar;
-				}
-		
-				if (dir == 'h') {
-					that.hScrollbarSize = that.hScrollbarWrapper.clientWidth;
-					that.hScrollbarIndicatorSize = m.max(m.round(that.hScrollbarSize * that.hScrollbarSize / that.scrollerW), 8);
-					that.hScrollbarIndicator.style.width = that.hScrollbarIndicatorSize + 'px';
-					that.hScrollbarMaxScroll = that.hScrollbarSize - that.hScrollbarIndicatorSize;
-					that.hScrollbarProp = that.hScrollbarMaxScroll / that.maxScrollX;
-				} else {
-					that.vScrollbarSize = that.vScrollbarWrapper.clientHeight;
-					that.vScrollbarIndicatorSize = m.max(m.round(that.vScrollbarSize * that.vScrollbarSize / that.scrollerH), 8);
-					that.vScrollbarIndicator.style.height = that.vScrollbarIndicatorSize + 'px';
-					that.vScrollbarMaxScroll = that.vScrollbarSize - that.vScrollbarIndicatorSize;
-					that.vScrollbarProp = that.vScrollbarMaxScroll / that.maxScrollY;
-				}
-		
-				// Reset position
-				that._scrollbarPos(dir, true);
-			},
-			
-			_resize: function () {
-				var that = this;
-				setTimeout(function () { that.refresh(); }, isAndroid ? 200 : 0);
-			},
-			
-			_pos: function (x, y) {
-				if (this.zoomed) return;
-		
-				x = this.hScroll ? x : 0;
-				y = this.vScroll ? y : 0;
-		
-				if (this.options.useTransform) {
-					this.scroller.style[transform] = 'translate(' + x + 'px,' + y + 'px) scale(' + this.scale + ')' + translateZ;
-				} else {
-					x = m.round(x);
-					y = m.round(y);
-					this.scroller.style.left = x + 'px';
-					this.scroller.style.top = y + 'px';
-				}
-		
-				this.x = x;
-				this.y = y;
-		
-				this._scrollbarPos('h');
-				this._scrollbarPos('v');
-			},
-		
-			_scrollbarPos: function (dir, hidden) {
-				var that = this,
-					pos = dir == 'h' ? that.x : that.y,
-					size;
-		
-				if (!that[dir + 'Scrollbar']) return;
-		
-				pos = that[dir + 'ScrollbarProp'] * pos;
-		
-				if (pos < 0) {
-					if (!that.options.fixedScrollbar) {
-						size = that[dir + 'ScrollbarIndicatorSize'] + m.round(pos * 3);
-						if (size < 8) size = 8;
-						that[dir + 'ScrollbarIndicator'].style[dir == 'h' ? 'width' : 'height'] = size + 'px';
-					}
-					pos = 0;
-				} else if (pos > that[dir + 'ScrollbarMaxScroll']) {
-					if (!that.options.fixedScrollbar) {
-						size = that[dir + 'ScrollbarIndicatorSize'] - m.round((pos - that[dir + 'ScrollbarMaxScroll']) * 3);
-						if (size < 8) size = 8;
-						that[dir + 'ScrollbarIndicator'].style[dir == 'h' ? 'width' : 'height'] = size + 'px';
-						pos = that[dir + 'ScrollbarMaxScroll'] + (that[dir + 'ScrollbarIndicatorSize'] - size);
-					} else {
-						pos = that[dir + 'ScrollbarMaxScroll'];
-					}
-				}
-		
-				that[dir + 'ScrollbarWrapper'].style[transitionDelay] = '0';
-				that[dir + 'ScrollbarWrapper'].style.opacity = hidden && that.options.hideScrollbar ? '0' : '1';
-				that[dir + 'ScrollbarIndicator'].style[transform] = 'translate(' + (dir == 'h' ? pos + 'px,0)' : '0,' + pos + 'px)') + translateZ;
-			},
-			
-			_start: function (e) {
-				if(hasPointers){
-					this.touches[this.touches.length]={
-							pointerId:e.pointerId,
-							pageX:e.screenX,
-							pageY:e.screenY				
-					};
-					e.touches=this.touches;
-				}
-				var that = this,
-					point = this.hasTouch ? (e.touches && e.touches[0]) : e,
-					matrix, x, y,
-					c1, c2;
-		
-				if (!that.enabled) return;
-		
-				if (that.options.onBeforeScrollStart) that.options.onBeforeScrollStart.call(that, e);
-		
-				if (that.options.useTransition || that.options.zoom) that._transitionTime(0);
-		
-				that.moved = false;
-				that.animating = false;
-				that.zoomed = false;
-				that.distX = 0;
-				that.distY = 0;
-				that.absDistX = 0;
-				that.absDistY = 0;
-				that.dirX = 0;
-				that.dirY = 0;
-		
-				// Gesture start
-				if (that.options.zoom && this.hasTouch && e.touches.length > 1) {
-					c1 = m.abs(e.touches[0].pageX-e.touches[1].pageX);
-					c2 = m.abs(e.touches[0].pageY-e.touches[1].pageY);
-					that.touchesDistStart = m.sqrt(c1 * c1 + c2 * c2);
-		
-					that.originX = m.abs(e.touches[0].pageX + e.touches[1].pageX - that.wrapperOffsetLeft * 2) / 2 - that.x;
-					that.originY = m.abs(e.touches[0].pageY + e.touches[1].pageY - that.wrapperOffsetTop * 2) / 2 - that.y;
-		
-					if (that.options.onZoomStart) that.options.onZoomStart.call(that, e);
-				}
-		
-				if (that.options.momentum) {
-					if (that.options.useTransform) {
-						// Very lame general purpose alternative to CSSMatrix
-						matrix = getComputedStyle(that.scroller, null)[transform].replace(/[^0-9\-.,]/g, '').split(',');
-						x = +(matrix[12] || matrix[4]);
-						y = +(matrix[13] || matrix[5]);
-					} else {
-						x = +getComputedStyle(that.scroller, null).left.replace(/[^0-9-]/g, '');
-						y = +getComputedStyle(that.scroller, null).top.replace(/[^0-9-]/g, '');
-					}
-					
-					if (x != that.x || y != that.y) {
-						if (that.options.useTransition) that._unbind(TRNEND_EV);
-						else cancelFrame(that.aniTime);
-						that.steps = [];
-						that._pos(x, y);
-						if (that.options.onScrollEnd) that.options.onScrollEnd.call(that);
-					}
-				}
-		
-				that.absStartX = that.x;	// Needed by snap threshold
-				that.absStartY = that.y;
-		
-				that.startX = that.x;
-				that.startY = that.y;
-				that.pointX = point.pageX;
-				that.pointY = point.pageY;
-		
-				that.startTime = e.timeStamp || Date.now();
-		
-				if (that.options.onScrollStart) that.options.onScrollStart.call(that, e);
-		
-				if(hasPointerDown) that._bind("pointermove", window);
-				if(hasPointerTouch && !hasPointerDown) that._bind("MSPointerMove", window);
-				that._bind("touchmove", window);
-				if(!hasPointers && !isIDevice) that._bind("mousemove", window);
-				if(hasPointerDown) that._bind("pointerup", window);
-				if(hasPointerTouch && !hasPointerDown) that._bind("MSPointerUp", window);
-				that._bind("touchend", window);
-				if(!hasPointers && !isIDevice) that._bind("mouseup", window);
-				if(hasPointerDown) that._bind("pointercancel", window);
-				if(hasPointerTouch && !hasPointerDown) that._bind("MSPointerCancel", window);
-				that._bind("touchcancel", window);
-				//that._bind(MOVE_EV, window);
-				//that._bind(END_EV, window);
-				//that._bind(CANCEL_EV, window);
-			},
-			
-			_move: function (e) {
-				if(hasPointers){
-					for(var i=0;i<this.touches.length;i++){
-						if(this.touches[i].pageX==e.screenX && this.touches[i].pageY==e.screenY) return; // pointers fire continuous start events
-						this.touches[i].pageX=e.screenX;
-						this.touches[i].pageY=e.screenY;
-						break;
-					}
-					e.touches=this.touches;
-				}
-				var that = this,
-					point = this.hasTouch ? e.touches[0] : e,
-					deltaX = point.pageX - that.pointX,
-					deltaY = point.pageY - that.pointY,
-					newX = that.x + deltaX,
-					newY = that.y + deltaY,
-					c1, c2, scale,
-					timestamp = e.timeStamp || Date.now();
-		
-				if (that.options.onBeforeScrollMove) that.options.onBeforeScrollMove.call(that, e);
-		
-				// Zoom
-				if (that.options.zoom && this.hasTouch && e.touches.length > 1) {
-					c1 = m.abs(e.touches[0].pageX - e.touches[1].pageX);
-					c2 = m.abs(e.touches[0].pageY - e.touches[1].pageY);
-					that.touchesDist = m.sqrt(c1*c1+c2*c2);
-		
-					that.zoomed = true;
-		
-					scale = 1 / that.touchesDistStart * that.touchesDist * this.scale;
-		
-					if (scale < that.options.zoomMin) scale = 0.5 * that.options.zoomMin * Math.pow(2.0, scale / that.options.zoomMin);
-					else if (scale > that.options.zoomMax) scale = 2.0 * that.options.zoomMax * Math.pow(0.5, that.options.zoomMax / scale);
-		
-					that.lastScale = scale / this.scale;
-		
-					newX = this.originX - this.originX * that.lastScale + this.x,
-					newY = this.originY - this.originY * that.lastScale + this.y;
-		
-					this.scroller.style[transform] = 'translate(' + newX + 'px,' + newY + 'px) scale(' + scale + ')' + translateZ;
-		
-					if (that.options.onZoom) that.options.onZoom.call(that, e);
-					return;
-				}
-		
-				that.pointX = point.pageX;
-				that.pointY = point.pageY;
-		
-				// Slow down if outside of the boundaries
-				if (newX > 0 || newX < that.maxScrollX) {
-					newX = that.options.bounce ? that.x + (deltaX / 2) : newX >= 0 || that.maxScrollX >= 0 ? 0 : that.maxScrollX;
-				}
-				if (newY < that.maxScrollY) {
-					newY = (that.options.bounce || that.options.bounceBottom) ? that.y + (deltaY / 2) : newY >= that.minScrollY || that.maxScrollY >= 0 ? that.minScrollY : that.maxScrollY;
-				}else if (newY > that.minScrollY) { 
-					newY = (that.options.bounce || that.options.bounceTop) ? that.y + (deltaY / 2) : newY >= that.minScrollY || that.maxScrollY >= 0 ? that.minScrollY : that.maxScrollY;
-				}
-		
-				that.distX += deltaX;
-				that.distY += deltaY;
-				that.absDistX = m.abs(that.distX);
-				that.absDistY = m.abs(that.distY);
-		
-				if (that.absDistX < 6 && that.absDistY < 6) {
-					return;
-				}
-		
-				// Lock direction
-				if (that.options.lockDirection) {
-					if (that.absDistX > that.absDistY + 5) {
-						newY = that.y;
-						deltaY = 0;
-					} else if (that.absDistY > that.absDistX + 5) {
-						newX = that.x;
-						deltaX = 0;
-					}
-				}
-				that.moved = true;
-				that._pos(newX, newY);
-				that.dirX = deltaX > 0 ? -1 : deltaX < 0 ? 1 : 0;
-				that.dirY = deltaY > 0 ? -1 : deltaY < 0 ? 1 : 0;
-		
-				if (timestamp - that.startTime > grabCutoffMS) {
-					that.startTime = timestamp;
-					that.startX = that.x;
-					that.startY = that.y;
-				}
-				
-				if (that.options.onScrollMove) that.options.onScrollMove.call(that, e);
-			},
-			
-			_end: function (e) {
-				if(hasPointers){
-					for(var i=0;i<this.touches.length;i++){
-						if(this.touches[i].pointerId==e.pointerId){
-							this.touches.splice(i,1);
-							break;
-						}
-					}
-					e.touches=this.touches;
-				}
-				if (this.hasTouch && e.touches.length !== 0) return;
-		
-				var that = this,
-					point = (hasPointers) ? e : this.hasTouch ? e.changedTouches[0] : e,
-					target, ev,
-					momentumX = { dist:0, time:0 },
-					momentumY = { dist:0, time:0 },
-					duration = (e.timeStamp || Date.now()) - that.startTime,
-					newPosX = that.x,
-					newPosY = that.y,
-					distX, distY,
-					newDuration,
-					snap,
-					scale;
-		
-					that._unbind("pointermove", window);
-					that._unbind("MSPointerMove", window);
-					that._unbind("touchmove", window);
-					that._unbind("mousemove", window);
-					that._unbind("pointerup", window);
-					that._unbind("MSPointerUp", window);
-					that._unbind("touchend", window);
-					that._unbind("mouseup", window);
-					that._unbind("pointercancel", window);
-					that._unbind("MSPointerCancel", window);
-					that._unbind("touchcancel", window);
-				//that._unbind(MOVE_EV, window);
-				//that._unbind(END_EV, window);
-				//that._unbind(CANCEL_EV, window);
-		
-				if (that.options.onBeforeScrollEnd) that.options.onBeforeScrollEnd.call(that, e);
-		
-				if (that.zoomed) {
-					scale = that.scale * that.lastScale;
-					scale = Math.max(that.options.zoomMin, scale);
-					scale = Math.min(that.options.zoomMax, scale);
-					that.lastScale = scale / that.scale;
-					that.scale = scale;
-		
-					that.x = that.originX - that.originX * that.lastScale + that.x;
-					that.y = that.originY - that.originY * that.lastScale + that.y;
-					
-					that.scroller.style[transitionDuration] = '200ms';
-					that.scroller.style[transform] = 'translate(' + that.x + 'px,' + that.y + 'px) scale(' + that.scale + ')' + translateZ;
-					
-					that.zoomed = false;
-					that.refresh();
-		
-					if (that.options.onZoomEnd) that.options.onZoomEnd.call(that, e);
-					return;
-				}
-		
-				if (!that.moved) {
-					if (this.hasTouch) {
-						if (that.doubleTapTimer && that.options.zoom) {
-							// Double tapped
-							clearTimeout(that.doubleTapTimer);
-							that.doubleTapTimer = null;
-							if (that.options.onZoomStart) that.options.onZoomStart.call(that, e);
-							that.zoom(that.pointX, that.pointY, that.scale == 1 ? that.options.doubleTapZoom : 1);
-							if (that.options.onZoomEnd) {
-								setTimeout(function() {
-									that.options.onZoomEnd.call(that, e);
-								}, 200); // 200 is default zoom duration
-							}
-						} else if (this.options.handleClick && !(hasPointers)) {	// Microsoft surface has more aggressive onclick events, they'll fire even if iscroll is in effect
-							that.doubleTapTimer = setTimeout(function () {
-								that.doubleTapTimer = null;
-		
-								// Find the last touched element
-								target = point.target;
-								while (target.nodeType != 1) target = target.parentNode;
-		
-								if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA') {
-									ev = doc.createEvent('MouseEvents');
-									ev.initMouseEvent('click', true, true, e.view, 1,
-										point.screenX, point.screenY, point.clientX, point.clientY,
-										e.ctrlKey, e.altKey, e.shiftKey, e.metaKey,
-										0, null);
-									ev._fake = true;
-									target.dispatchEvent(ev);
-								}
-							}, that.options.zoom ? 250 : 0);
-						}
-					}
-		
-					that._resetPos(400);
-		
-					if (that.options.onTouchEnd) that.options.onTouchEnd.call(that, e);
-					return;
-				}
-				if (duration < grabCutoffMS && that.options.momentum) {
-					momentumX = newPosX ? that._momentum(newPosX - that.startX, duration, -that.x, that.scrollerW - that.wrapperW + that.x, that.options.bounce ? that.wrapperW : 0) : momentumX;
-					var bounceIt=that.options.bounce;
-					if(that.options.bounceBottom && (newPosY - that.startY)<0) bounceIt=true;
-					if(that.options.bounceTop && (newPosY - that.startY)>0) bounceIt=true;
-					momentumY = newPosY ? that._momentum(newPosY - that.startY, duration, -that.y, (that.maxScrollY < 0 ? that.scrollerH - that.wrapperH + that.y - that.minScrollY : 0), bounceIt ? that.wrapperH : 0) : momentumY;
-		
-					newPosX = that.x + momentumX.dist;
-					newPosY = that.y + momentumY.dist;
-		
-					if ((that.x > 0 && newPosX > 0) || (that.x < that.maxScrollX && newPosX < that.maxScrollX)) momentumX = { dist:0, time:0 };
-					if ((that.y > that.minScrollY && newPosY > that.minScrollY) || (that.y < that.maxScrollY && newPosY < that.maxScrollY)) momentumY = { dist:0, time:0 };
-				}
-		
-				if (momentumX.dist || momentumY.dist) {
-					newDuration = m.max(m.max(momentumX.time, momentumY.time), 10);
-		
-					// Do we need to snap?
-					if (that.options.snap) {
-						distX = newPosX - that.absStartX;
-						distY = newPosY - that.absStartY;
-						if (m.abs(distX) < that.options.snapThreshold && m.abs(distY) < that.options.snapThreshold) { that.scrollTo(that.absStartX, that.absStartY, 200); }
-						else {
-							snap = that._snap(newPosX, newPosY);
-							newPosX = snap.x;
-							newPosY = snap.y;
-							newDuration = m.max(snap.time, newDuration);
-						}
-					}
-		
-					that.scrollTo(m.round(newPosX), m.round(newPosY), newDuration);
-		
-					if (that.options.onTouchEnd) that.options.onTouchEnd.call(that, e);
-					return;
-				}
-		
-				// Do we need to snap?
-				if (that.options.snap) {
-					distX = newPosX - that.absStartX;
-					distY = newPosY - that.absStartY;
-					if (m.abs(distX) < that.options.snapThreshold && m.abs(distY) < that.options.snapThreshold) that.scrollTo(that.absStartX, that.absStartY, 200);
-					else {
-						snap = that._snap(that.x, that.y);
-						if (snap.x != that.x || snap.y != that.y) that.scrollTo(snap.x, snap.y, snap.time);
-					}
-		
-					if (that.options.onTouchEnd) that.options.onTouchEnd.call(that, e);
-					return;
-				}
-		
-				that._resetPos(200);
-				if (that.options.onTouchEnd) that.options.onTouchEnd.call(that, e);
-			},
-			
-			_resetPos: function (time) {
-				var that = this,
-					resetX = that.x >= 0 ? 0 : that.x < that.maxScrollX ? that.maxScrollX : that.x,
-					resetY = that.y >= that.minScrollY || that.maxScrollY > 0 ? that.minScrollY : that.y < that.maxScrollY ? that.maxScrollY : that.y;
-		
-				if (resetX == that.x && resetY == that.y) {
-					if (that.moved) {
-						that.moved = false;
-						if (that.options.onScrollEnd) that.options.onScrollEnd.call(that);		// Execute custom code on scroll end
-					}
-		
-					if (that.hScrollbar && that.options.hideScrollbar) {
-						if (vendor == 'webkit') that.hScrollbarWrapper.style[transitionDelay] = '300ms';
-						that.hScrollbarWrapper.style.opacity = '0';
-					}
-					if (that.vScrollbar && that.options.hideScrollbar) {
-						if (vendor == 'webkit') that.vScrollbarWrapper.style[transitionDelay] = '300ms';
-						that.vScrollbarWrapper.style.opacity = '0';
-					}
-		
-					return;
-				}
-		
-				that.scrollTo(resetX, resetY, time || 0);
-			},
-		
-			//RB.ChartIQ added fix for FireFox scrolling and decoupled x from y scrolling  
-			_wheel: function (e) {
-				var that = this,
-					wheelDeltaX, wheelDeltaY,
-					deltaX, deltaY,
-					deltaScale;
-		
-				if ('wheelDeltaX' in e) {
-					wheelDeltaX = e.wheelDeltaX / 12;
-					wheelDeltaY = e.wheelDeltaY / 12;
-				} else if('wheelDelta' in e) {
-					wheelDeltaX = 0;
-					wheelDeltaY = e.wheelDelta / 12;
-				} else if ('detail' in e) {
-					wheelDeltaX = wheelDeltaY = 0;
-					if(e.axis){
-						if(e.axis==1) wheelDeltaX = -e.detail * that.options.wheelMultiplier;
-						else if(e.axis==2) wheelDeltaY = -e.detail * that.options.wheelMultiplier;
-					}else{
-						wheelDeltaX = wheelDeltaY = -e.detail * that.options.wheelMultiplier;
-					}
-				} else {
-					return;
-				}
-				
-				if (that.options.onBeforeScrollMove) that.options.onBeforeScrollMove.call(that, e);	// Wheel movement should behave like pan
-		
-				if (that.options.wheelAction == 'zoom') {
-					deltaScale = that.scale * Math.pow(2, 1/3 * (wheelDeltaY ? wheelDeltaY / Math.abs(wheelDeltaY) : 0));
-					if (deltaScale < that.options.zoomMin) deltaScale = that.options.zoomMin;
-					if (deltaScale > that.options.zoomMax) deltaScale = that.options.zoomMax;
-					
-					if (deltaScale != that.scale) {
-						if (!that.wheelZoomCount && that.options.onZoomStart) that.options.onZoomStart.call(that, e);
-						that.wheelZoomCount++;
-						
-						that.zoom(e.pageX, e.pageY, deltaScale, 400);
-						
-						setTimeout(function() {
-							that.wheelZoomCount--;
-							if (!that.wheelZoomCount && that.options.onZoomEnd) that.options.onZoomEnd.call(that, e);
-						}, 400);
-					}
-					
-					return;
-				}
-				
-				deltaX = that.x + wheelDeltaX;
-				deltaY = that.y + wheelDeltaY;
-		
-				if (deltaX > 0) deltaX = 0;
-				else if (deltaX < that.maxScrollX) deltaX = that.maxScrollX;
-		
-				if (deltaY > that.minScrollY) deltaY = that.minScrollY;
-				else if (deltaY < that.maxScrollY) deltaY = that.maxScrollY;
-			
-				if (that.maxScrollY < 0) {
-					that.scrollTo(deltaX, deltaY, 0);
-				}
-				if (that.options.onScrollMove) that.options.onScrollMove.call(that, e);	// Wheel movement should replicate pan
-			},
-			
-			_transitionEnd: function (e) {
-				var that = this;
-		
-				if (e.target != that.scroller) return;
-		
-				that._unbind(TRNEND_EV);
-				
-				that._startAni();
-			},
-		
-		
-			/**
-			*
-			* Utilities
-			*
-			*/
-			_startAni: function () {
-				var that = this,
-					startX = that.x, startY = that.y,
-					startTime = Date.now(),
-					step, easeOut,
-					animate;
-		
-				if (that.animating) return;
-				
-				if (!that.steps.length) {
-					that._resetPos(400);
-					return;
-				}
-				
-				step = that.steps.shift();
-				
-				if (step.x == startX && step.y == startY) step.time = 0;
-		
-				that.animating = true;
-				that.moved = true;
-				
-				if (that.options.useTransition) {
-					that._transitionTime(step.time);
-					that._pos(step.x, step.y);
-					that.animating = false;
-					if (step.time) that._bind(TRNEND_EV);
-					else that._resetPos(0);
-					return;
-				}
-		
-				animate = function () {
-					var now = Date.now(),
-						newX, newY;
-		
-					if (now >= startTime + step.time) {
-						that._pos(step.x, step.y);
-						that.animating = false;
-						if (that.options.onAnimationEnd) that.options.onAnimationEnd.call(that);			// Execute custom code on animation end
-						that._startAni();
-						return;
-					}
-		
-					now = (now - startTime) / step.time - 1;
-					easeOut = m.sqrt(1 - now * now);
-					newX = (step.x - startX) * easeOut + startX;
-					newY = (step.y - startY) * easeOut + startY;
-					that._pos(newX, newY);
-					if (that.animating) that.aniTime = nextFrame(animate);
-				};
-		
-				animate();
-			},
-		
-			_transitionTime: function (time) {
-				time += 'ms';
-				this.scroller.style[transitionDuration] = time;
-				if (this.hScrollbar) this.hScrollbarIndicator.style[transitionDuration] = time;
-				if (this.vScrollbar) this.vScrollbarIndicator.style[transitionDuration] = time;
-			},
-		
-			_momentum: function (dist, time, maxDistUpper, maxDistLower, size) {
-				var deceleration = 0.0006,
-					speed = m.abs(dist) / time,
-					newDist = (speed * speed) / (2 * deceleration),
-					newTime = 0, outsideDist = 0;
-		
-				// Proportinally reduce speed if we are outside of the boundaries
-				if (dist > 0 && newDist > maxDistUpper) {
-					outsideDist = size / (6 / (newDist / speed * deceleration));
-					maxDistUpper = maxDistUpper + outsideDist;
-					speed = speed * maxDistUpper / newDist;
-					newDist = maxDistUpper;
-				} else if (dist < 0 && newDist > maxDistLower) {
-					outsideDist = size / (6 / (newDist / speed * deceleration));
-					maxDistLower = maxDistLower + outsideDist;
-					speed = speed * maxDistLower / newDist;
-					newDist = maxDistLower;
-				}
-		
-				newDist = newDist * (dist < 0 ? -1 : 1);
-				newTime = speed / deceleration;
-		
-				return { dist: newDist, time: m.round(newTime) };
-			},
-		
-			_offset: function (el) {
-				var left = -el.offsetLeft,
-					top = -el.offsetTop;
-					
-				while (el = el.offsetParent) {
-					left -= el.offsetLeft;
-					top -= el.offsetTop;
-				}
-				
-				if (el != this.wrapper) {
-					left *= this.scale;
-					top *= this.scale;
-				}
-		
-				return { left: left, top: top };
-			},
-		
-			_snap: function (x, y) {
-				var that = this,
-					i, l,
-					page, time,
-					sizeX, sizeY;
-		
-				// Check page X
-				page = that.pagesX.length - 1;
-				for (i=0, l=that.pagesX.length; i<l; i++) {
-					if (x >= that.pagesX[i]) {
-						page = i;
-						break;
-					}
-				}
-				if (page == that.currPageX && page > 0 && that.dirX < 0) page--;
-				x = that.pagesX[page];
-				sizeX = m.abs(x - that.pagesX[that.currPageX]);
-				sizeX = sizeX ? m.abs(that.x - x) / sizeX * 500 : 0;
-				that.currPageX = page;
-		
-				// Check page Y
-				page = that.pagesY.length-1;
-				for (i=0; i<page; i++) {
-					if (y >= that.pagesY[i]) {
-						page = i;
-						break;
-					}
-				}
-				if (page == that.currPageY && page > 0 && that.dirY < 0) page--;
-				y = that.pagesY[page];
-				sizeY = m.abs(y - that.pagesY[that.currPageY]);
-				sizeY = sizeY ? m.abs(that.y - y) / sizeY * 500 : 0;
-				that.currPageY = page;
-		
-				// Snap with constant speed (proportional duration)
-				time = m.round(m.max(sizeX, sizeY)) || 200;
-		
-				return { x: x, y: y, time: time };
-			},
-		
-			_bind: function (type, el, bubble) {
-				(el || this.scroller).addEventListener(type, this, !!bubble);
-			},
-		
-			_unbind: function (type, el, bubble) {
-				(el || this.scroller).removeEventListener(type, this, !!bubble);
-			},
-		
-		
-			/**
-			*
-			* Public methods
-			*
-			*/
-			destroy: function () {
-				var that = this;
-		
-				that.scroller.style[transform] = '';
-		
-				// Remove the scrollbars
-				that.hScrollbar = false;
-				that.vScrollbar = false;
-				that._scrollbar('h');
-				that._scrollbar('v');
-		
-				// Remove the event listeners
-				that._unbind("pointerdown");
-				that._unbind("MSPointerDown");
-				that._unbind("touchstart");
-				that._unbind("mousedown");
-				that._unbind("pointermove", window);
-				that._unbind("MSPointerMove", window);
-				that._unbind("touchmove", window);
-				that._unbind("mousemove", window);
-				that._unbind("pointerup", window);
-				that._unbind("MSPointerUp", window);
-				that._unbind("touchend", window);
-				that._unbind("mouseup", window);
-				that._unbind("pointercancel", window);
-				that._unbind("MSPointerCancel", window);
-				that._unbind("touchcancel", window);
-				that._unbind(RESIZE_EV, window);
-				//that._unbind(START_EV);
-				//that._unbind(MOVE_EV, window);
-				//that._unbind(END_EV, window);
-				//that._unbind(CANCEL_EV, window);
-				
-				//if (!that.options.hasTouch) {
-					that._unbind('DOMMouseScroll');
-					that._unbind('mousewheel');
-					that._unbind('wheel');
-				//}
-				
-				if (that.options.useTransition) that._unbind(TRNEND_EV);
-				
-				if (that.options.checkDOMChanges) clearInterval(that.checkDOMTime);
-				
-				if (that.options.onDestroy) that.options.onDestroy.call(that);
-			},
-		
-			fixScrollElementWidth: function() {
-				// Added by Terry to make horizontal scrolling work
-				// https://github.com/cubiq/iscroll/issues/573
-				var scrollElement=this.scroller;
-				scrollElement.style.width="4000px";	// Temporarily make it huge so that the full offsetWidth's are available for each child
-				var scrollWrapper=this.wrapper;
-				  // (border-box) width of all children
-				  if(!window.isIE8){
-				  var width = [].reduce.call(scrollElement.children[0].children, function(sum, element) {
-					return sum + element.offsetWidth; 
-				  }, 0);
-				  // add some space so last element appears centered
-				  // (also fixes last-page identification problem within iScroll)
-				  //width += (scrollWrapper.clientWidth - scrollElement.lastElementChild.offsetWidth) / 2;
-				  width+=1; // IE 11 cuts off otherwise
-				  scrollElement.style.width = width + 'px';
-				}
-				},
-		
-			refresh: function () {
-				var that = this,
-					offset,
-					i, l,
-					els,
-					pos = 0,
-					page = 0;
-		
-				if (that.scale < that.options.zoomMin) that.scale = that.options.zoomMin;
-				that.wrapperW = that.wrapper.clientWidth || 1;
-				that.wrapperH = that.wrapper.clientHeight || 1;
-				if(that.options.hScroll){
-					that.fixScrollElementWidth();
-				}
-		
-				that.minScrollY = -that.options.topOffset || 0;
-				that.scrollerW = m.round(that.scroller.offsetWidth * that.scale);
-				that.scrollerH = m.round((that.scroller.offsetHeight + that.minScrollY) * that.scale);
-				that.maxScrollX = that.wrapperW - that.scrollerW;
-				that.maxScrollY = that.wrapperH - that.scrollerH + that.minScrollY;
-				that.dirX = 0;
-				that.dirY = 0;
-		
-				if (that.options.onRefresh) that.options.onRefresh.call(that);
-		
-				that.hScroll = that.options.hScroll && that.maxScrollX < 0;
-				that.vScroll = that.options.vScroll && (!that.options.bounceLock && !that.hScroll || that.scrollerH > that.wrapperH);
-		
-				that.hScrollbar = that.hScroll && that.options.hScrollbar;
-				that.vScrollbar = that.vScroll && that.options.vScrollbar && that.scrollerH > that.wrapperH;
-		
-				offset = that._offset(that.wrapper);
-				that.wrapperOffsetLeft = -offset.left;
-				that.wrapperOffsetTop = -offset.top;
-		
-				// Prepare snap
-				if (typeof that.options.snap == 'string') {
-					that.pagesX = [];
-					that.pagesY = [];
-					els = that.scroller.querySelectorAll(that.options.snap);
-					for (i=0, l=els.length; i<l; i++) {
-						pos = that._offset(els[i]);
-						pos.left += that.wrapperOffsetLeft;
-						pos.top += that.wrapperOffsetTop;
-						that.pagesX[i] = pos.left < that.maxScrollX ? that.maxScrollX : pos.left * that.scale;
-						that.pagesY[i] = pos.top < that.maxScrollY ? that.maxScrollY : pos.top * that.scale;
-					}
-				} else if (that.options.snap) {
-					that.pagesX = [];
-					while (pos >= that.maxScrollX) {
-						that.pagesX[page] = pos;
-						pos = pos - that.wrapperW;
-						page++;
-					}
-					if (that.maxScrollX%that.wrapperW) that.pagesX[that.pagesX.length] = that.maxScrollX - that.pagesX[that.pagesX.length-1] + that.pagesX[that.pagesX.length-1];
-		
-					pos = 0;
-					page = 0;
-					that.pagesY = [];
-					while (pos >= that.maxScrollY) {
-						that.pagesY[page] = pos;
-						pos = pos - that.wrapperH;
-						page++;
-					}
-					if (that.maxScrollY%that.wrapperH) that.pagesY[that.pagesY.length] = that.maxScrollY - that.pagesY[that.pagesY.length-1] + that.pagesY[that.pagesY.length-1];
-				}
-		
-				// Prepare the scrollbars
-				that._scrollbar('h');
-				that._scrollbar('v');
-		
-				if (!that.zoomed) {
-					that.scroller.style[transitionDuration] = '0';
-					that._resetPos(400);
-				}
-			},
-		
-			scrollTo: function (x, y, time, relative) {
-				var that = this,
-					step = x,
-					i, l;
-		
-				that.stop();
-		
-				if (!step.length) step = [{ x: x, y: y, time: time, relative: relative }];
-				
-				for (i=0, l=step.length; i<l; i++) {
-					if (step[i].relative) { step[i].x = that.x - step[i].x; step[i].y = that.y - step[i].y; }
-					that.steps.push({ x: step[i].x, y: step[i].y, time: step[i].time || 0 });
-				}
-		
-				that._startAni();
-			},
-		
-			scrollToElement: function (el, time) {
-				var that = this, pos;
-				el = el.nodeType ? el : that.scroller.querySelector(el);
-				if (!el) return;
-		
-				pos = that._offset(el);
-				pos.left += that.wrapperOffsetLeft;
-				pos.top += that.wrapperOffsetTop;
-		
-				pos.left = pos.left > 0 ? 0 : pos.left < that.maxScrollX ? that.maxScrollX : pos.left;
-				// This line was causing unwanted bouncing when scrolling to an element in a list that did not fill up the entire containing div
-				//pos.top = pos.top > that.minScrollY ? that.minScrollY : pos.top < that.maxScrollY ? that.maxScrollY : pos.top;
-				time = time === undefined ? m.max(m.abs(pos.left)*2, m.abs(pos.top)*2) : time;
-				if(pos.top!==0 && pos.top<that.maxScrollY) pos.top=that.maxScrollY;
-				if(pos.top>0) return;
-				that.scrollTo(pos.left, pos.top, time);
-			},
-		
-			scrollToPage: function (pageX, pageY, time) {
-				var that = this, x, y;
-				
-				time = time === undefined ? 400 : time;
-		
-				if (that.options.onScrollStart) that.options.onScrollStart.call(that);
-		
-				if (that.options.snap) {
-					pageX = pageX == 'next' ? that.currPageX+1 : pageX == 'prev' ? that.currPageX-1 : pageX;
-					pageY = pageY == 'next' ? that.currPageY+1 : pageY == 'prev' ? that.currPageY-1 : pageY;
-		
-					pageX = pageX < 0 ? 0 : pageX > that.pagesX.length-1 ? that.pagesX.length-1 : pageX;
-					pageY = pageY < 0 ? 0 : pageY > that.pagesY.length-1 ? that.pagesY.length-1 : pageY;
-		
-					that.currPageX = pageX;
-					that.currPageY = pageY;
-					x = that.pagesX[pageX];
-					y = that.pagesY[pageY];
-				} else {
-					x = -that.wrapperW * pageX;
-					y = -that.wrapperH * pageY;
-					if (x < that.maxScrollX) x = that.maxScrollX;
-					if (y < that.maxScrollY) y = that.maxScrollY;
-				}
-		
-				that.scrollTo(x, y, time);
-			},
-		
-			disable: function () {
-				this.stop();
-				this._resetPos(0);
-				this.enabled = false;
-		
-				// If disabled after touchstart we make sure that there are no left over events
-				this._unbind("pointermove", window);
-				this._unbind("MSPointerMove", window);
-				this._unbind("touchmove", window);
-				this._unbind("mousemove", window);
-				this._unbind("pointerup", window);
-				this._unbind("MSPointerUp", window);
-				this._unbind("touchend", window);
-				this._unbind("mouseup", window);
-				this._unbind("pointercancel", window);
-				this._unbind("MSPointerCancel", window);
-				this._unbind("touchcancel", window);
-				//this._unbind(MOVE_EV, window);
-				//this._unbind(END_EV, window);
-				//this._unbind(CANCEL_EV, window);
-			},
-			
-			enable: function () {
-				this.enabled = true;
-			},
-			
-			stop: function () {
-				if (this.options.useTransition) this._unbind(TRNEND_EV);
-				else cancelFrame(this.aniTime);
-				this.steps = [];
-				this.moved = false;
-				this.animating = false;
-			},
-			
-			zoom: function (x, y, scale, time) {
-				var that = this,
-					relScale = scale / that.scale;
-		
-				if (!that.options.useTransform) return;
-		
-				that.zoomed = true;
-				time = time === undefined ? 200 : time;
-				x = x - that.wrapperOffsetLeft - that.x;
-				y = y - that.wrapperOffsetTop - that.y;
-				that.x = x - x * relScale + that.x;
-				that.y = y - y * relScale + that.y;
-		
-				that.scale = scale;
-				that.refresh();
-		
-				that.x = that.x > 0 ? 0 : that.x < that.maxScrollX ? that.maxScrollX : that.x;
-				that.y = that.y > that.minScrollY ? that.minScrollY : that.y < that.maxScrollY ? that.maxScrollY : that.y;
-		
-				that.scroller.style[transitionDuration] = time + 'ms';
-				that.scroller.style[transform] = 'translate(' + that.x + 'px,' + that.y + 'px) scale(' + scale + ')' + translateZ;
-				that.zoomed = false;
-			},
-			
-			isReady: function () {
-				return !this.moved && !this.zoomed && !this.animating;
-			}
-		};
-		
-		function prefixStyle (style) {
-			if ( vendor === '' ) return style;
-		
-			style = style.charAt(0).toUpperCase() + style.substr(1);
-			return vendor + style;
-		}
-		
-		dummyStyle = null;	// for the sake of it
-		
-		_exports.iScroll = iScroll;
-		
-		})(window, document);
-		
 		/*! iScroll v5.1.3 ~ (c) 2008-2014 Matteo Spinelli ~ http://cubiq.org/license */
 		(function (window, document, Math) {
 		var rAF = window.requestAnimationFrame	||
@@ -5417,7 +4191,7 @@
 			};
 
 			me.prefixPointerEvent = function (pointerEvent) {
-				return window.MSPointerEvent ? 
+				return window.MSPointerEvent ?
 					'MSPointer' + pointerEvent.charAt(9).toUpperCase() + pointerEvent.substr(10):
 					pointerEvent;
 			};
@@ -5627,7 +4401,7 @@
 
 				snapThreshold: 0.334,
 
-		// INSERT POINT: OPTIONS 
+		// INSERT POINT: OPTIONS
 
 				startX: 0,
 				startY: 0,
@@ -5687,7 +4461,7 @@
 
 		// INSERT POINT: NORMALIZATION
 
-			// Some defaults	
+			// Some defaults
 			this.x = 0;
 			this.y = 0;
 			this.directionX = 0;
@@ -5705,7 +4479,7 @@
 
 		/*! iScroll v5.1.3 ~ (c) 2008-2014 Matteo Spinelli ~ http://cubiq.org/license */
 		/* With some modifications by ChartIQ */
-		
+
 		IScroll.prototype = {
 			version: '5.1.3',
 
@@ -5717,6 +4491,7 @@
 				}
 
 				this.options.mouseWheel=true; // Terry, turn on mouse wheel by default in iScroll5
+				this.wrapper.style.overflow = 'hidden';  // Rob, hide the default overflow scrollbars
 
 				if ( this.options.mouseWheel ) {
 					this._initWheel();
@@ -6894,7 +5669,7 @@
 					if ( now >= destTime ) {
 						that.isAnimating = false;
 						that._translate(destX, destY);
-						
+
 						if ( !that.resetPosition(that.options.bounceTime) ) {
 							that._execEvent('scrollEnd');
 						}
@@ -7277,7 +6052,7 @@
 						this.maxBoundaryX = this.maxPosX;
 					}
 
-					this.sizeRatioX = this.options.speedRatioX || (this.scroller.maxScrollX && (this.maxPosX / this.scroller.maxScrollX));	
+					this.sizeRatioX = this.options.speedRatioX || (this.scroller.maxScrollX && (this.maxPosX / this.scroller.maxScrollX));
 				}
 
 				if ( this.options.listenY ) {
@@ -7410,7 +6185,7 @@
 			_exports.IScroll5 = IScroll;
 		}
 
-		})(window, document, Math);		
+		})(window, document, Math);
 
 		function plotSplinePrimitive(points, tension, context) {
 			function getControlPoints(i){
@@ -7420,33 +6195,33 @@
 				var y1=points[i+3];
 				var x2=points[i+4];
 				var y2=points[i+5];
-		
+
 				if(isNaN(x0) || isNaN(x1) || isNaN(x2) || isNaN(y0) || isNaN(y1) || isNaN(y2)){
 					return null;
 				}
 				//	x0,y0,x1,y1 are the coordinates of the end (knot) points of this segment
 				//	x2,y2 is the next knot -- not connected here but needed to calculate p2
 				//	p1 is the control point calculated here, from x1 back toward x0.
-				//	p2 is the next control point, calculated here and returned to become the 
+				//	p2 is the next control point, calculated here and returned to become the
 				//	next segment's p1.
 				//	tension controls how far the control points spread.
-				
+
 				//	Scaling factors: distances from this knot to the previous and following knots.
 				var d01=Math.sqrt(Math.pow(x1-x0,2)+Math.pow(y1-y0,2));
 				var d12=Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
-			   
+
 				var fa=tension*d01/(d01+d12);
 				var fb=tension-fa;
-			  
+
 				var p1x=x1+fa*(x0-x2);
 				var p1y=y1+fa*(y0-y2);
-		
+
 				var p2x=x1-fb*(x0-x2);
-				var p2y=y1-fb*(y0-y2);	
-				
+				var p2y=y1-fb*(y0-y2);
+
 				return [p1x,p1y,p2x,p2y];
 			}
-		
+
 			var cp=[];	 // array of control points, as x0,y0,x1,y1,...
 			var n=points.length;
 			// Draw an open curve, not connected at the ends
@@ -7454,7 +6229,7 @@
 				cp=cp.concat(getControlPoints(i));
 			}
 			if(cp==null) return;
-			
+
 			//plot the first segment
 			context.quadraticCurveTo(cp[0],cp[1],points[2],points[3]);
 
@@ -7480,33 +6255,33 @@
 				var y1=points[i+3];
 				var x2=points[i+4];
 				var y2=points[i+5];
-		
+
 				if(isNaN(x0) || isNaN(x1) || isNaN(x2) || isNaN(y0) || isNaN(y1) || isNaN(y2)){
 					return null;
 				}
 				//	x0,y0,x1,y1 are the coordinates of the end (knot) points of this segment
 				//	x2,y2 is the next knot -- not connected here but needed to calculate p2
 				//	p1 is the control point calculated here, from x1 back toward x0.
-				//	p2 is the next control point, calculated here and returned to become the 
+				//	p2 is the next control point, calculated here and returned to become the
 				//	next segment's p1.
 				//	tension controls how far the control points spread.
-				
+
 				//	Scaling factors: distances from this knot to the previous and following knots.
 				var d01=Math.sqrt(Math.pow(x1-x0,2)+Math.pow(y1-y0,2));
 				var d12=Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
-			   
+
 				var fa=tension*d01/(d01+d12);
 				var fb=tension-fa;
-			  
+
 				var p1x=x1+fa*(x0-x2);
 				var p1y=y1+fa*(y0-y2);
-		
+
 				var p2x=x1-fb*(x0-x2);
-				var p2y=y1-fb*(y0-y2);	
-				
+				var p2y=y1-fb*(y0-y2);
+
 				return [p1x,p1y,p2x,p2y];
 			}
-		
+
 			var cp=[];	 // array of control points, as x0,y0,x1,y1,...
 			var n=points.length;
 			// Draw an open curve, not connected at the ends
@@ -7514,9 +6289,9 @@
 				cp=cp.concat(getControlPoints(i));
 			}
 			if(cp==null) return;
-		
+
 			context.save();
-		
+
 			for(var i=2;i<points.length-5;i+=2){
 				context.beginPath();
 				context.moveTo(points[i],points[i+1]);
@@ -7530,7 +6305,7 @@
 			context.quadraticCurveTo(cp[0],cp[1],points[2],points[3]);
 			context.stroke();
 			context.closePath();
-			
+
 			context.beginPath();
 			context.moveTo(points[n-2],points[n-1]);
 			context.quadraticCurveTo(cp[2*n-10],cp[2*n-9],points[n-4],points[n-3]);
@@ -7540,7 +6315,7 @@
 			context.restore();
 		}
 		_exports.plotSpline=plotSpline;
-		
+
 		//http://jsfiddle.net/JRKwH/1/
 		function saveSelection() {
 		  if (window.getSelection) {
@@ -7572,25 +6347,7 @@
 		}
 		_exports.saveSelection=saveSelection;
 		_exports.restoreSelection=restoreSelection;
-		
-		/************  delete if all is well with the new console log
-		// Console-polyfill. MIT license.
-		// https://github.com/paulmillr/console-polyfill
-		// Make it safe to do console.log() always.
-		(function(con) {
-		  'use strict';
-		  var prop, method;
-		  var empty = {};
-		  var dummy = function() {};
-		  var properties = 'memory'.split(',');
-		  var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
-			 'groupCollapsed,groupEnd,info,log,markTimeline,profile,profileEnd,' +
-			 'table,time,timeEnd,timeStamp,trace,warn').split(',');
-		  while (prop = properties.pop()) con[prop] = con[prop] || empty;
-		  while (method = methods.pop()) con[method] = con[method] || dummy;
-		})(this.console = this.console || {}); // Using `this` for web workers.
-		**************/
-		
+
 		// Update console polyfill. Fix #731 #732 - https://github.com/zhukov/webogram/pull/732
 		// Console-polyfill. MIT license.
 		// https://github.com/paulmillr/console-polyfill
@@ -7611,9 +6368,9 @@
 		})(typeof window === 'undefined' ? this : window);
 		// Using `this` for web workers while maintaining compatibility with browser
 		// targeted script loaders such as Browserify or Webpack where the only way to
-		// get to the global object is via `window`.		
-		
-		/* Easing cubics from 
+		// get to the global object is via `window`.
+
+		/* Easing cubics from
 		http://gizma.com/easing/#expo1
 		t = current time (t should move from zero to d)
 		b = starting value
@@ -7635,19 +6392,1097 @@
 			return c/2*(t*t*t + 2) + b;
 		};
 
+		//JavaScript Expression Evaluator: https://silentmatt.com/javascript-expression-evaluator/
+		/*!
+		 Based on ndef.parser, by Raphael Graf(r@undefined.ch)
+		 http://www.undefined.ch/mparser/index.html
+		 Ported to JavaScript and modified by Matthew Crumley (email@matthewcrumley.com, http://silentmatt.com/)
+		 You are free to use and modify this code in anyway you find useful. Please leave this comment in the code
+		 to acknowledge its original source. If you feel like it, I enjoy hearing about projects that use my code,
+		 but don't feel like you have to let me know or ask permission.
+		*/
+
+		//  Added by stlsmiths 6/13/2011
+		//  re-define Array.indexOf, because IE doesn't know it ...
+		//
+		//  from http://stellapower.net/content/javascript-support-and-arrayindexof-ie
+		if (!Array.indexOf) {
+			Array.prototype.indexOf = function (obj, start) {
+				for (var i = (start || 0); i < this.length; i++) {
+					if (this[i] === obj) {
+						return i;
+					}
+				}
+				return -1;
+			};
+		}
+
+		var Parser = function(){
+			function object(o) {
+				function F() {}
+				F.prototype = o;
+				return new F();
+			}
+
+			var TNUMBER = 0;
+			var TOP1 = 1;
+			var TOP2 = 2;
+			var TVAR = 3;
+			var TFUNCALL = 4;
+
+			function Token(type_, index_, prio_, number_) {
+				this.type_ = type_;
+				this.index_ = index_ || 0;
+				this.prio_ = prio_ || 0;
+				this.number_ = (number_ !== undefined && number_ !== null) ? number_ : 0;
+				this.toString = function () {
+					switch (this.type_) {
+					case TNUMBER:
+						return this.number_;
+					case TOP1:
+					case TOP2:
+					case TVAR:
+						return this.index_;
+					case TFUNCALL:
+						return "CALL";
+					default:
+						return "Invalid Token";
+					}
+				};
+			}
+
+			function Expression(tokens, ops1, ops2, functions) {
+				this.tokens = tokens;
+				this.ops1 = ops1;
+				this.ops2 = ops2;
+				this.functions = functions;
+			}
+
+			// Based on http://www.json.org/json2.js
+		    var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+		        escapable = /[\\\'\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+		        meta = {    // table of character substitutions
+		            '\b': '\\b',
+		            '\t': '\\t',
+		            '\n': '\\n',
+		            '\f': '\\f',
+		            '\r': '\\r',
+		            "'" : "\\'",
+		            '\\': '\\\\'
+		        };
+
+			function escapeValue(v) {
+				if (typeof v === "string") {
+					escapable.lastIndex = 0;
+			        return escapable.test(v) ?
+			            "'" + v.replace(escapable, function (a) {
+			                var c = meta[a];
+			                return typeof c === 'string' ? c :
+			                    '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+			            }) + "'" :
+			            "'" + v + "'";
+				}
+				return v;
+			}
+
+			Expression.prototype = {
+				simplify: function (values) {
+					values = values || {};
+					var nstack = [];
+					var newexpression = [];
+					var n1;
+					var n2;
+					var f;
+					var L = this.tokens.length;
+					var item;
+					var i = 0;
+					for (i = 0; i < L; i++) {
+						item = this.tokens[i];
+						var type_ = item.type_;
+						if (type_ === TNUMBER) {
+							nstack.push(item);
+						}
+						else if (type_ === TVAR && (item.index_ in values)) {
+							item = new Token(TNUMBER, 0, 0, values[item.index_]);
+							nstack.push(item);
+						}
+						else if (type_ === TOP2 && nstack.length > 1) {
+							n2 = nstack.pop();
+							n1 = nstack.pop();
+							f = this.ops2[item.index_];
+							item = new Token(TNUMBER, 0, 0, f(n1.number_, n2.number_));
+							nstack.push(item);
+						}
+						else if (type_ === TOP1 && nstack.length > 0) {
+							n1 = nstack.pop();
+							f = this.ops1[item.index_];
+							item = new Token(TNUMBER, 0, 0, f(n1.number_));
+							nstack.push(item);
+						}
+						else {
+							while (nstack.length > 0) {
+								newexpression.push(nstack.shift());
+							}
+							newexpression.push(item);
+						}
+					}
+					while (nstack.length > 0) {
+						newexpression.push(nstack.shift());
+					}
+
+					return new Expression(newexpression, object(this.ops1), object(this.ops2), object(this.functions));
+				},
+
+				substitute: function (variable, expr) {
+					if (!(expr instanceof Expression)) {
+						expr = new Parser().parse(String(expr));
+					}
+					var newexpression = [];
+					var L = this.tokens.length;
+					var item;
+					var i = 0;
+					for (i = 0; i < L; i++) {
+						item = this.tokens[i];
+						var type_ = item.type_;
+						if (type_ === TVAR && item.index_ === variable) {
+							for (var j = 0; j < expr.tokens.length; j++) {
+								var expritem = expr.tokens[j];
+								var replitem = new Token(expritem.type_, expritem.index_, expritem.prio_, expritem.number_);
+								newexpression.push(replitem);
+							}
+						}
+						else {
+							newexpression.push(item);
+						}
+					}
+
+					var ret = new Expression(newexpression, object(this.ops1), object(this.ops2), object(this.functions));
+					return ret;
+				},
+
+				evaluate: function (values) {
+					values = values || {};
+					var nstack = [];
+					var n1;
+					var n2;
+					var f;
+					var L = this.tokens.length;
+					var item;
+					var i = 0;
+					for (i = 0; i < L; i++) {
+						item = this.tokens[i];
+						var type_ = item.type_;
+						if (type_ === TNUMBER) {
+							nstack.push(item.number_);
+						}
+						else if (type_ === TOP2) {
+							n2 = nstack.pop();
+							n1 = nstack.pop();
+							f = this.ops2[item.index_];
+							nstack.push(f(n1, n2));
+						}
+						else if (type_ === TVAR) {
+							if (item.index_ in values) {
+								nstack.push(values[item.index_]);
+							}
+							else if (item.index_ in this.functions) {
+								nstack.push(this.functions[item.index_]);
+							}
+							else {
+								throw new Error("undefined variable: " + item.index_);
+							}
+						}
+						else if (type_ === TOP1) {
+							n1 = nstack.pop();
+							f = this.ops1[item.index_];
+							nstack.push(f(n1));
+						}
+						else if (type_ === TFUNCALL) {
+							n1 = nstack.pop();
+							f = nstack.pop();
+							if (f.apply && f.call) {
+								if (Object.prototype.toString.call(n1) == "[object Array]") {
+									nstack.push(f.apply(undefined, n1));
+								}
+								else {
+									nstack.push(f.call(undefined, n1));
+								}
+							}
+							else {
+								throw new Error(f + " is not a function");
+							}
+						}
+						else {
+							throw new Error("invalid Expression");
+						}
+					}
+					if (nstack.length > 1) {
+						throw new Error("invalid Expression (parity)");
+					}
+					return nstack[0];
+				},
+
+				toString: function (toJS) {
+					var nstack = [];
+					var n1;
+					var n2;
+					var f;
+					var L = this.tokens.length;
+					var item;
+					var i = 0;
+					for (i = 0; i < L; i++) {
+						item = this.tokens[i];
+						var type_ = item.type_;
+						if (type_ === TNUMBER) {
+							nstack.push(escapeValue(item.number_));
+						}
+						else if (type_ === TOP2) {
+							n2 = nstack.pop();
+							n1 = nstack.pop();
+							f = item.index_;
+							if (toJS && f == "^") {
+								nstack.push("Math.pow(" + n1 + "," + n2 + ")");
+							}
+							else {
+								nstack.push("(" + n1 + f + n2 + ")");
+							}
+						}
+						else if (type_ === TVAR) {
+							nstack.push(item.index_);
+						}
+						else if (type_ === TOP1) {
+							n1 = nstack.pop();
+							f = item.index_;
+							if (f === "-") {
+								nstack.push("(" + f + n1 + ")");
+							}
+							else {
+								nstack.push(f + "(" + n1 + ")");
+							}
+						}
+						else if (type_ === TFUNCALL) {
+							n1 = nstack.pop();
+							f = nstack.pop();
+							nstack.push(f + "(" + n1 + ")");
+						}
+						else {
+							throw new Error("invalid Expression");
+						}
+					}
+					if (nstack.length > 1) {
+						throw new Error("invalid Expression (parity)");
+					}
+					return nstack[0];
+				},
+
+				variables: function () {
+					var L = this.tokens.length;
+					var vars = [];
+					for (var i = 0; i < L; i++) {
+						var item = this.tokens[i];
+						if (item.type_ === TVAR && (vars.indexOf(item.index_) == -1)) {
+							vars.push(item.index_);
+						}
+					}
+
+					return vars;
+				}/*,
+
+				toJSFunction: function (param, variables) {
+					var f = new Function(param, "with(Parser.values) { return " + this.simplify(variables).toString(true) + "; }");
+					return f;
+				}*/
+			};
+
+			function add(a, b) {
+				return Number(a) + Number(b);
+			}
+			function sub(a, b) {
+				return a - b;
+			}
+			function mul(a, b) {
+				return a * b;
+			}
+			function div(a, b) {
+				return a / b;
+			}
+			function mod(a, b) {
+				return a % b;
+			}
+			function concat(a, b) {
+				return "" + a + b;
+			}
+			function equal(a, b) {
+				return a == b;
+			}
+			function notEqual(a, b) {
+				return a != b;
+			}
+			function greaterThan(a, b) {
+				return a > b;
+			}
+			function lessThan(a, b) {
+				return a < b;
+			}
+			function greaterThanEqual(a, b) {
+				return a >= b;
+			}
+			function lessThanEqual(a, b) {
+				return a <= b;
+			}
+			function andOperator(a, b) {
+				return Boolean(a && b);
+			}
+			function orOperator(a, b) {
+				return Boolean(a || b);
+			}
+			function sinh(a) {
+				return Math.sinh ? Math.sinh(a) : ((Math.exp(a) - Math.exp(-a)) / 2);
+			}
+			function cosh(a) {
+				return Math.cosh ? Math.cosh(a) : ((Math.exp(a) + Math.exp(-a)) / 2);
+			}
+			function tanh(a) {
+				if (Math.tanh) return Math.tanh(a);
+				if(a === Infinity) return 1;
+				if(a === -Infinity) return -1;
+				return (Math.exp(a) - Math.exp(-a)) / (Math.exp(a) + Math.exp(-a));
+			}
+			function asinh(a) {
+				if (Math.asinh) return Math.asinh(a);
+				if(a === -Infinity) return a;
+				return Math.log(a + Math.sqrt(a * a + 1));
+			}
+			function acosh(a) {
+				return Math.acosh ? Math.acosh(a) : Math.log(a + Math.sqrt(a * a - 1));
+			}
+			function atanh(a) {
+				return Math.atanh ? Math.atanh(a) : (Math.log((1+a)/(1-a)) / 2);
+			}
+			function log10(a) {
+			      return Math.log(a) * Math.LOG10E;
+			}
+			function neg(a) {
+				return -a;
+			}
+			function trunc(a) {
+				if(Math.trunc) return Math.trunc(a);
+				else return x < 0 ? Math.ceil(x) : Math.floor(x);
+			}
+			function random(a) {
+				return Math.random() * (a || 1);
+			}
+			function fac(a) { //a!
+				a = Math.floor(a);
+				var b = a;
+				while (a > 1) {
+					b = b * (--a);
+				}
+				return b;
+			}
+
+			// TODO: use hypot that doesn't overflow
+			function hypot() {
+				if(Math.hypot) return Math.hypot.apply(this, arguments);
+				var y = 0;
+				var length = arguments.length;
+				for (var i = 0; i < length; i++) {
+					if (arguments[i] === Infinity || arguments[i] === -Infinity) {
+						return Infinity;
+					}
+					y += arguments[i] * arguments[i];
+				}
+				return Math.sqrt(y);
+			}
+
+			function condition(cond, yep, nope) {
+				return cond ? yep : nope;
+			}
+
+			function append(a, b) {
+				if (Object.prototype.toString.call(a) != "[object Array]") {
+					return [a, b];
+				}
+				a = a.slice();
+				a.push(b);
+				return a;
+			}
+
+			function Parser() {
+				this.success = false;
+				this.errormsg = "";
+				this.expression = "";
+
+				this.pos = 0;
+
+				this.tokennumber = 0;
+				this.tokenprio = 0;
+				this.tokenindex = 0;
+				this.tmpprio = 0;
+
+				this.ops1 = {
+					"sin": Math.sin,
+					"cos": Math.cos,
+					"tan": Math.tan,
+					"asin": Math.asin,
+					"acos": Math.acos,
+					"atan": Math.atan,
+					"sinh": sinh,
+					"cosh": cosh,
+					"tanh": tanh,
+					"asinh": asinh,
+					"acosh": acosh,
+					"atanh": atanh,
+					"sqrt": Math.sqrt,
+					"log": Math.log,
+					"lg" : log10,
+					"log10" : log10,
+					"abs": Math.abs,
+					"ceil": Math.ceil,
+					"floor": Math.floor,
+					"round": Math.round,
+					"trunc": trunc,
+					"-": neg,
+					"exp": Math.exp
+				};
+
+				this.ops2 = {
+					"+": add,
+					"-": sub,
+					"*": mul,
+					"/": div,
+					"%": mod,
+					"^": Math.pow,
+					",": append,
+					"||": concat,
+					"==": equal,
+					"!=": notEqual,
+					">": greaterThan,
+					"<": lessThan,
+					">=": greaterThanEqual,
+					"<=": lessThanEqual,
+					"and": andOperator,
+					"or": orOperator
+				};
+
+				this.functions = {
+					"random": random,
+					"fac": fac,
+					"min": Math.min,
+					"max": Math.max,
+					"hypot": hypot,
+					"pyt": hypot, // backward compat
+					"pow": Math.pow,
+					"atan2": Math.atan2,
+					"if": condition
+				};
+
+				this.consts = {
+					"E": Math.E,
+					"PI": Math.PI
+				};
+			}
+
+			Parser.parse = function (expr) {
+				return new Parser().parse(expr);
+			};
+
+			Parser.evaluate = function (expr, variables) {
+				return Parser.parse(expr).evaluate(variables);
+			};
+
+			Parser.Expression = Expression;
+
+			Parser.values = {
+				sin: Math.sin,
+				cos: Math.cos,
+				tan: Math.tan,
+				asin: Math.asin,
+				acos: Math.acos,
+				atan: Math.atan,
+				sinh: sinh,
+				cosh: cosh,
+				tanh: tanh,
+				asinh: asinh,
+				acosh: acosh,
+				atanh: atanh,
+				sqrt: Math.sqrt,
+				log: Math.log,
+				lg: log10,
+				log10: log10,
+				abs: Math.abs,
+				ceil: Math.ceil,
+				floor: Math.floor,
+				round: Math.round,
+				trunc: trunc,
+				random: random,
+				fac: fac,
+				exp: Math.exp,
+				min: Math.min,
+				max: Math.max,
+				hypot: hypot,
+				pyt: hypot, // backward compat
+				pow: Math.pow,
+				atan2: Math.atan2,
+				"if": condition,
+				E: Math.E,
+				PI: Math.PI
+			};
+
+			var PRIMARY      = 1 << 0;
+			var OPERATOR     = 1 << 1;
+			var FUNCTION     = 1 << 2;
+			var LPAREN       = 1 << 3;
+			var RPAREN       = 1 << 4;
+			var COMMA        = 1 << 5;
+			var SIGN         = 1 << 6;
+			var CALL         = 1 << 7;
+			var NULLARY_CALL = 1 << 8;
+
+			Parser.prototype = {
+				parse: function (expr) {
+					this.errormsg = "";
+					this.success = true;
+					var operstack = [];
+					var tokenstack = [];
+					this.tmpprio = 0;
+					var expected = (PRIMARY | LPAREN | FUNCTION | SIGN);
+					var noperators = 0;
+					this.expression = expr;
+					this.pos = 0;
+
+					while (this.pos < this.expression.length) {
+						if (this.isOperator()) {
+							if (this.isSign() && (expected & SIGN)) {
+								if (this.isNegativeSign()) {
+									this.tokenprio = 2;
+									this.tokenindex = "-";
+									noperators++;
+									this.addfunc(tokenstack, operstack, TOP1);
+								}
+								expected = (PRIMARY | LPAREN | FUNCTION | SIGN);
+							}
+							else if (this.isComment()) {
+
+							}
+							else {
+								if ((expected & OPERATOR) === 0) {
+									this.error_parsing(this.pos, "unexpected operator");
+								}
+								noperators += 2;
+								this.addfunc(tokenstack, operstack, TOP2);
+								expected = (PRIMARY | LPAREN | FUNCTION | SIGN);
+							}
+						}
+						else if (this.isNumber()) {
+							if ((expected & PRIMARY) === 0) {
+								this.error_parsing(this.pos, "unexpected number");
+							}
+							var token = new Token(TNUMBER, 0, 0, this.tokennumber);
+							tokenstack.push(token);
+
+							expected = (OPERATOR | RPAREN | COMMA);
+						}
+						else if (this.isString()) {
+							if ((expected & PRIMARY) === 0) {
+								this.error_parsing(this.pos, "unexpected string");
+							}
+							var token = new Token(TNUMBER, 0, 0, this.tokennumber);
+							tokenstack.push(token);
+
+							expected = (OPERATOR | RPAREN | COMMA);
+						}
+						else if (this.isLeftParenth()) {
+							if ((expected & LPAREN) === 0) {
+								this.error_parsing(this.pos, "unexpected \"(\"");
+							}
+
+							if (expected & CALL) {
+								noperators += 2;
+								this.tokenprio = -2;
+								this.tokenindex = -1;
+								this.addfunc(tokenstack, operstack, TFUNCALL);
+							}
+
+							expected = (PRIMARY | LPAREN | FUNCTION | SIGN | NULLARY_CALL);
+						}
+						else if (this.isRightParenth()) {
+						    if (expected & NULLARY_CALL) {
+								var token = new Token(TNUMBER, 0, 0, []);
+								tokenstack.push(token);
+							}
+							else if ((expected & RPAREN) === 0) {
+								this.error_parsing(this.pos, "unexpected \")\"");
+							}
+
+							expected = (OPERATOR | RPAREN | COMMA | LPAREN | CALL);
+						}
+						else if (this.isComma()) {
+							if ((expected & COMMA) === 0) {
+								this.error_parsing(this.pos, "unexpected \",\"");
+							}
+							this.addfunc(tokenstack, operstack, TOP2);
+							noperators += 2;
+							expected = (PRIMARY | LPAREN | FUNCTION | SIGN);
+						}
+						else if (this.isConst()) {
+							if ((expected & PRIMARY) === 0) {
+								this.error_parsing(this.pos, "unexpected constant");
+							}
+							var consttoken = new Token(TNUMBER, 0, 0, this.tokennumber);
+							tokenstack.push(consttoken);
+							expected = (OPERATOR | RPAREN | COMMA);
+						}
+						else if (this.isOp2()) {
+							if ((expected & FUNCTION) === 0) {
+								this.error_parsing(this.pos, "unexpected function");
+							}
+							this.addfunc(tokenstack, operstack, TOP2);
+							noperators += 2;
+							expected = (LPAREN);
+						}
+						else if (this.isOp1()) {
+							if ((expected & FUNCTION) === 0) {
+								this.error_parsing(this.pos, "unexpected function");
+							}
+							this.addfunc(tokenstack, operstack, TOP1);
+							noperators++;
+							expected = (LPAREN);
+						}
+						else if (this.isVar()) {
+							if ((expected & PRIMARY) === 0) {
+								this.error_parsing(this.pos, "unexpected variable");
+							}
+							var vartoken = new Token(TVAR, this.tokenindex, 0, 0);
+							tokenstack.push(vartoken);
+
+							expected = (OPERATOR | RPAREN | COMMA | LPAREN | CALL);
+						}
+						else if (this.isWhite()) {
+						}
+						else {
+							if (this.errormsg === "") {
+								this.error_parsing(this.pos, "unknown character");
+							}
+							else {
+								this.error_parsing(this.pos, this.errormsg);
+							}
+						}
+					}
+					if (this.tmpprio < 0 || this.tmpprio >= 10) {
+						this.error_parsing(this.pos, "unmatched \"()\"");
+					}
+					while (operstack.length > 0) {
+						var tmp = operstack.pop();
+						tokenstack.push(tmp);
+					}
+					if (noperators + 1 !== tokenstack.length) {
+						//print(noperators + 1);
+						//print(tokenstack);
+						this.error_parsing(this.pos, "parity");
+					}
+
+					return new Expression(tokenstack, object(this.ops1), object(this.ops2), object(this.functions));
+				},
+
+				evaluate: function (expr, variables) {
+					return this.parse(expr).evaluate(variables);
+				},
+
+				error_parsing: function (column, msg) {
+					this.success = false;
+					this.errormsg = "parse error [column " + (column) + "]: " + msg;
+					this.column = column;
+					throw new Error(this.errormsg);
+				},
+
+		//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+
+				addfunc: function (tokenstack, operstack, type_) {
+					var operator = new Token(type_, this.tokenindex, this.tokenprio + this.tmpprio, 0);
+					while (operstack.length > 0) {
+						if (operator.prio_ <= operstack[operstack.length - 1].prio_) {
+							tokenstack.push(operstack.pop());
+						}
+						else {
+							break;
+						}
+					}
+					operstack.push(operator);
+				},
+
+				isNumber: function () {
+					var r = false;
+					var str = "";
+					while (this.pos < this.expression.length) {
+						var code = this.expression.charCodeAt(this.pos);
+						if ((code >= 48 && code <= 57) || code === 46) {
+							str += this.expression.charAt(this.pos);
+							this.pos++;
+							this.tokennumber = parseFloat(str);
+							r = true;
+						}
+						else {
+							break;
+						}
+					}
+					return r;
+				},
+
+				// Ported from the yajjl JSON parser at http://code.google.com/p/yajjl/
+				unescape: function(v, pos) {
+					var buffer = [];
+					var escaping = false;
+
+					for (var i = 0; i < v.length; i++) {
+						var c = v.charAt(i);
+
+						if (escaping) {
+							switch (c) {
+							case "'":
+								buffer.push("'");
+								break;
+							case '\\':
+								buffer.push('\\');
+								break;
+							case '/':
+								buffer.push('/');
+								break;
+							case 'b':
+								buffer.push('\b');
+								break;
+							case 'f':
+								buffer.push('\f');
+								break;
+							case 'n':
+								buffer.push('\n');
+								break;
+							case 'r':
+								buffer.push('\r');
+								break;
+							case 't':
+								buffer.push('\t');
+								break;
+							case 'u':
+								// interpret the following 4 characters as the hex of the unicode code point
+								var codePoint = parseInt(v.substring(i + 1, i + 5), 16);
+								buffer.push(String.fromCharCode(codePoint));
+								i += 4;
+								break;
+							default:
+								throw this.error_parsing(pos + i, "Illegal escape sequence: '\\" + c + "'");
+							}
+							escaping = false;
+						} else {
+							if (c == '\\') {
+								escaping = true;
+							} else {
+								buffer.push(c);
+							}
+						}
+					}
+
+					return buffer.join('');
+				},
+
+				isString: function () {
+					var r = false;
+					var str = "";
+					var startpos = this.pos;
+					if (this.pos < this.expression.length && this.expression.charAt(this.pos) == "'") {
+						this.pos++;
+						while (this.pos < this.expression.length) {
+							var code = this.expression.charAt(this.pos);
+							if (code != "'" || str.slice(-1) == "\\") {
+								str += this.expression.charAt(this.pos);
+								this.pos++;
+							}
+							else {
+								this.pos++;
+								this.tokennumber = this.unescape(str, startpos);
+								r = true;
+								break;
+							}
+						}
+					}
+					return r;
+				},
+
+				isConst: function () {
+					var str;
+					for (var i in this.consts) {
+						if (true) {
+							var L = i.length;
+							str = this.expression.substr(this.pos, L);
+							if (i === str) {
+								this.tokennumber = this.consts[i];
+								this.pos += L;
+								return true;
+							}
+						}
+					}
+					return false;
+				},
+
+				isOperator: function () {
+					var code = this.expression.charCodeAt(this.pos);
+					if (code === 43) { // +
+						this.tokenprio = 2;
+						this.tokenindex = "+";
+					}
+					else if (code === 45) { // -
+						this.tokenprio = 2;
+						this.tokenindex = "-";
+					}
+					else if (code === 62) { // >
+						if (this.expression.charCodeAt(this.pos + 1) === 61) {
+							this.pos++;
+							this.tokenprio = 1;
+							this.tokenindex = ">=";
+						} else {
+							this.tokenprio = 1;
+							this.tokenindex = ">";
+						}
+					}
+					else if (code === 60) { // <
+						if (this.expression.charCodeAt(this.pos + 1) === 61) {
+							this.pos++;
+							this.tokenprio = 1;
+							this.tokenindex = "<=";
+						} else {
+							this.tokenprio = 1;
+							this.tokenindex = "<";
+						}
+					}
+					else if (code === 124) { // |
+						if (this.expression.charCodeAt(this.pos + 1) === 124) {
+							this.pos++;
+							this.tokenprio = 1;
+							this.tokenindex = "||";
+						}
+						else {
+							return false;
+						}
+					}
+					else if (code === 61) { // =
+						if (this.expression.charCodeAt(this.pos + 1) === 61) {
+							this.pos++;
+							this.tokenprio = 1;
+							this.tokenindex = "==";
+						}
+						else {
+							return false;
+						}
+					}
+					else if (code === 33) { // !
+						if (this.expression.charCodeAt(this.pos + 1) === 61) {
+							this.pos++;
+							this.tokenprio = 1;
+							this.tokenindex = "!=";
+						}
+						else {
+							return false;
+						}
+					}
+					else if (code === 97) { // a
+						if (this.expression.charCodeAt(this.pos + 1) === 110 && this.expression.charCodeAt(this.pos + 2) === 100) { // n && d
+							this.pos++;
+							this.pos++;
+							this.tokenprio = 0;
+							this.tokenindex = "and";
+						}
+						else {
+							return false;
+						}
+					}
+					else if (code === 111) { // o
+						if (this.expression.charCodeAt(this.pos + 1) === 114) { // r
+							this.pos++;
+							this.tokenprio = 0;
+							this.tokenindex = "or";
+						}
+						else {
+							return false;
+						}
+					}
+					else if (code === 42 || code === 8729 || code === 8226) { // * or âˆ™ or â€¢
+						this.tokenprio = 3;
+						this.tokenindex = "*";
+					}
+					else if (code === 47) { // /
+						this.tokenprio = 4;
+						this.tokenindex = "/";
+					}
+					else if (code === 37) { // %
+						this.tokenprio = 4;
+						this.tokenindex = "%";
+					}
+					else if (code === 94) { // ^
+						this.tokenprio = 5;
+						this.tokenindex = "^";
+					}
+					else {
+						return false;
+					}
+					this.pos++;
+					return true;
+				},
+
+				isSign: function () {
+					var code = this.expression.charCodeAt(this.pos - 1);
+					if (code === 45 || code === 43) { // -
+						return true;
+					}
+					return false;
+				},
+
+				isPositiveSign: function () {
+					var code = this.expression.charCodeAt(this.pos - 1);
+					if (code === 43) { // +
+						return true;
+					}
+					return false;
+				},
+
+				isNegativeSign: function () {
+					var code = this.expression.charCodeAt(this.pos - 1);
+					if (code === 45) { // -
+						return true;
+					}
+					return false;
+				},
+
+				isLeftParenth: function () {
+					var code = this.expression.charCodeAt(this.pos);
+					if (code === 40) { // (
+						this.pos++;
+						this.tmpprio += 10;
+						return true;
+					}
+					return false;
+				},
+
+				isRightParenth: function () {
+					var code = this.expression.charCodeAt(this.pos);
+					if (code === 41) { // )
+						this.pos++;
+						this.tmpprio -= 10;
+						return true;
+					}
+					return false;
+				},
+
+				isComma: function () {
+					var code = this.expression.charCodeAt(this.pos);
+					if (code === 44) { // ,
+						this.pos++;
+						this.tokenprio = -1;
+						this.tokenindex = ",";
+						return true;
+					}
+					return false;
+				},
+
+				isWhite: function () {
+					var code = this.expression.charCodeAt(this.pos);
+					if (code === 32 || code === 9 || code === 10 || code === 13) {
+						this.pos++;
+						return true;
+					}
+					return false;
+				},
+
+				isOp1: function () {
+					var str = "";
+					for (var i = this.pos; i < this.expression.length; i++) {
+						var c = this.expression.charAt(i);
+						if (c.toUpperCase() === c.toLowerCase()) {
+							if (i === this.pos || (c != '_' && (c < '0' || c > '9'))) {
+								break;
+							}
+						}
+						str += c;
+					}
+					if (str.length > 0 && (str in this.ops1)) {
+						this.tokenindex = str;
+						this.tokenprio = 5;
+						this.pos += str.length;
+						return true;
+					}
+					return false;
+				},
+
+				isOp2: function () {
+					var str = "";
+					for (var i = this.pos; i < this.expression.length; i++) {
+						var c = this.expression.charAt(i);
+						if (c.toUpperCase() === c.toLowerCase()) {
+							if (i === this.pos || (c != '_' && (c < '0' || c > '9'))) {
+								break;
+							}
+						}
+						str += c;
+					}
+					if (str.length > 0 && (str in this.ops2)) {
+						this.tokenindex = str;
+						this.tokenprio = 5;
+						this.pos += str.length;
+						return true;
+					}
+					return false;
+				},
+
+				isVar: function () {
+					var str = "";
+					for (var i = this.pos; i < this.expression.length; i++) {
+						var c = this.expression.charAt(i);
+						if (c.toUpperCase() === c.toLowerCase()) {
+							if (i === this.pos || (c != '_' && (c < '0' || c > '9'))) {
+								break;
+							}
+						}
+						str += c;
+					}
+					if (str.length > 0) {
+						this.tokenindex = str;
+						this.tokenprio = 4;
+						this.pos += str.length;
+						return true;
+					}
+					return false;
+				},
+
+				isComment: function () {
+					var code = this.expression.charCodeAt(this.pos - 1);
+					if (code === 47 && this.expression.charCodeAt(this.pos) === 42) {
+						this.pos = this.expression.indexOf("*/", this.pos) + 2;
+						if (this.pos === 1) {
+							this.pos = this.expression.length;
+						}
+						return true;
+					}
+					return false;
+				}
+			};
+			return Parser;
+		};
+
+		_exports.EquationParser=Parser();
+
 		return _exports;
-	
+
 	}
-	
+
 	{
 		var _stx3rdParty_js_exports={};
 		if(typeof exports!=="undefined") _stx3rdParty_js_exports=exports;
-		
+
 		if ( typeof define === "function" && define.amd ) {
 			define( function() { return _stxThirdParty_js(_stx3rdParty_js_exports); } );
 		}else{
 			window.STXThirdParty=_stxThirdParty_js(_stx3rdParty_js_exports);
 		}
 	}
-	
+
 })();
+

@@ -59,7 +59,7 @@
 					return;
 				}
 				if(!maxResults) maxResults=this.maxResults;
-				var url="http"+(STX.isIE9?"":"s")+"://services.chartiq.com/symbol_lookup_service/";
+				var url="https://services.chartiq.com/symbol_lookup_service/";
 				var body="t="+encodeURIComponent(keyword)+"&m="+parseInt(maxResults,10);
 				if(type && type!="ALL") body+="&e="+encodeURIComponent(type);
 				body+="&x="+encodeURIComponent(JSON.stringify(this.searchExchanges));
@@ -126,3 +126,4 @@
 	}
 
 })();
+

@@ -86,7 +86,7 @@
 			inputs.display="Stoch (" + inputs.Period + ")";
 			return STX.Studies.initializeFN.apply(null, arguments);
 		};
-
+		
 		/**
 		 * A simple calculation function.  Volume is already obtained, so all that is done here is setting colors.
 		 * @memberOf STX.Studies
@@ -98,10 +98,8 @@
 			}else{
 				if(!stx || !stx.chart.dataSet) return;
 				var remove=sd.parameters.removeStudy;
-				var previous=stx.layout.volumeUnderlay;
 				stx.layout.volumeUnderlay=!remove;
-				if(previous!=stx.layout.volumeUnderlay)
-					stx.changeOccurred("layout");
+				stx.changeOccurred("layout");
 				if(remove){
 					STX.Studies.removeStudy(stx, sd);
 				}else{
@@ -112,17 +110,17 @@
 				}
 			}
 		};
-
-
+		
+		
 		/**
 		 * Moving Average convenience function
-		 * @param  {string}   type    The type of moving average, e.g. simple, exponential, triangular, etc
-		 * @param  {number}   periods Moving average period
-		 * @param  {string}   field   The field in the data array to perform the moving average on
-		 * @param  {number}   offset  Periods to offset the result by
-		 * @param  {string}   name    String to prefix to the name of the output.  Full name of output would be name + " " + sd.name, for instance "Signal MACD"
-		 * @param  {STXChart} stx     Chart object
-		 * @param  {object}   sd      Study Descriptor
+		 * @param  {string} type The type of moving average, e.g. simple, exponential, triangular, etc
+		 * @param  {number} periods Moving average period
+		 * @param  {string} field The field in the data array to perform the moving average on
+		 * @param  {number} offset Periods to offset the result by
+		 * @param  {string} name String to prefix to the name of the output.  Full name of output would be name + " " + sd.name, for instance "Signal MACD"
+		 * @param  {STXChart} stx Chart object
+		 * @param  {object} sd  Study Descriptor
 		 * @memberOf STX.Studies
 		 * @since 04-2015
 		 */
@@ -166,7 +164,7 @@
 		 *
 		 * Creates a volume chart. This is the one study that requires a specific panel name called "vchart".
 		 * If no volume is available on the screen then the panel will be watermarked "Volume Not Available" (translated if a translate function is attached to the kernel object).
-		 *
+		 * 
 		 */
 		STX.Studies.createVolumeChart=function(stx, sd, quotes){
 			var seriesParam=[{
@@ -178,7 +176,7 @@
 				border_color_down:	"#000000",//this.canvasStyle("stx_volume_down")["borderLeftColor"]
 				opacity_down:		1
 			}];
-
+			
 			var params={
 				name: 				"Volume",
 				panel:				sd.panel,
@@ -190,7 +188,7 @@
 			STX.Studies.createYAxis(stx, sd, sd.chart.dataSegment, stx.panels[sd.panel]);
 			stx.drawHistogram(params,seriesParam);
 		};
-
+				
 
 		/**
 		 * Calculate function for MACD study
@@ -210,16 +208,16 @@
 			if(!sd.macd2Days) sd.macd2Days=parseFloat(sd.inputs["Slow MA Period"]);
 			if(!sd.signalDays) sd.signalDays=parseFloat(sd.inputs["Signal Period"]);
 			if(!sd.days) sd.days=Math.max(sd.macd1Days,sd.macd2Days,sd.signalDays);
-
+		
 			var field=sd.inputs.Field;
 			if(!field || field=="field") field="Close";
-
+			
 			var maType=sd.inputs["Moving Average Type"];
 			if(!maType) maType="exponential";
-
+			
 			STX.Studies.MA(maType, sd.macd1Days, field, 0, "MACD1", stx, sd);
 			STX.Studies.MA(maType, sd.macd2Days, field, 0, "MACD2", stx, sd);
-
+		
 			var i, quote;
 			for(i=sd.days-1;i<quotes.length;i++){
 				quote=quotes[i];
@@ -228,7 +226,7 @@
 			var sigMaType=sd.inputs["Signal MA Type"];
 			if(!sigMaType) sigMaType="exponential";
 			STX.Studies.MA(sigMaType, sd.signalDays, "MACD "+sd.name, 0, "Signal", stx, sd);
-
+		
 			var histogram=sd.name+"_hist";
 			for(i=sd.days-1;i<quotes.length;i++){
 				quote=quotes[i];
@@ -237,7 +235,7 @@
 				quote[histogram]=quote["MACD "+sd.name]-quote["Signal "+sd.name];
 			}
 		};
-
+		
 		/**
 		 * Calculate function for standard deviation.
 		 * @param  {STXChart} stx Chart object
@@ -279,7 +277,7 @@
 				}
 			}
 		};
-
+		
 		/**
 		 * Calculate function for moving averages. sd.inputs["Type"] can be used to request a specific type of moving average.
 		 * @param  {STXChart} stx Chart object
@@ -289,18 +287,28 @@
 			if(!sd.chart.scrubbed) return;
 			var type=sd.inputs.Type;
 			if(type=="ma" || !type) type="simple";	// handle when the default inputs are passed in
-			var typeMap = {
-				"ema": "Exponential", "exponential": "Exponential",
-				"tsma": "TimeSeries", "time series": "TimeSeries",
-				"tma": "Triangular", "triangular": "Triangular",
-				"vma": "Variable", "variable": "Variable",
-				"vdma": "Variable", "vidya": "Variable",
-				"wma": "Weighted", "weighted": "Weighted",
-				"smma": "Exponential", "welles wilder": "Exponential"
-			};
-			if (type in typeMap) {
-				return STX.Studies["calculateMovingAverage" + typeMap[type]](stx, sd);
-			} else if (type !== "simple") {
+			if(type=="ema" || type=="exponential"){
+				STX.Studies.calculateMovingAverageExponential(stx, sd);
+				return;
+			}else if(type=="tsma" || type=="time series"){
+				STX.Studies.calculateMovingAverageTimeSeries(stx, sd);
+				return;
+			}else if(type=="tma" || type=="triangular"){
+				STX.Studies.calculateMovingAverageTriangular(stx, sd);
+				return;
+			}else if(type=="vma" || type=="variable"){
+				STX.Studies.calculateMovingAverageVariable(stx, sd);
+				return;
+			}else if(type=="vdma" || type=="vidya"){
+				STX.Studies.calculateMovingAverageVariable(stx, sd);
+				return;
+			}else if(type=="wma" || type=="weighted"){
+				STX.Studies.calculateMovingAverageWeighted(stx, sd);
+				return;
+			}else if(type=="smma" || type=="welles wilder"){
+				STX.Studies.calculateMovingAverageExponential(stx, sd);
+				return;
+			}else if(type!="simple"){
 				return;
 			}
 			var quotes=sd.chart.scrubbed;
@@ -344,7 +352,7 @@
 				ii++;
 			}
 		};
-
+		
 		/**
 		 * Calculate function for exponential moving average
 		 * @param  {STXChart} stx Chart object
@@ -364,7 +372,7 @@
 			for(var p in sd.outputs){
 				name=p + " " + name;
 			}
-
+		
 			var field=sd.inputs.Field;
 			if(!field || field=="field") field="Close";	// Handle when the default inputs are passed in
 			var offset=parseInt(sd.inputs.Offset,10);
@@ -397,7 +405,7 @@
 				ii++;
 			}
 		};
-
+		
 		/**
 		 * Calculate function for variable moving average and VI Dynamic MA (VIDYA)
 		 * @param  {STXChart} stx Chart object
@@ -413,7 +421,7 @@
 			for(var p in sd.outputs){
 				name=p + " " + name;
 			}
-
+		
 			var field=sd.inputs.Field;
 			if(!field || field=="field") field="Close";	// Handle when the default inputs are passed in
 
@@ -424,7 +432,7 @@
 				sd.std.inputs={"Field":field, "Standard Deviations":1, "Type":"ma"};
 				sd.std.outputs={"STD":null};
 				STX.Studies.calculateStandardDeviation(stx,sd.std);
-
+	
 				STX.Studies.MA("ma", 20, "STD "+sd.name, 0, "MASTD", stx, sd);
 
 			}else{
@@ -432,9 +440,9 @@
 				sd.cmo.chart=sd.chart;
 				sd.cmo.days=9;
 				sd.cmo.outputs={"CMO":null};
-				STX.Studies.calculateChandeMomentum(stx, sd.cmo);
+				STX.Studies.calculateChandeMomentum(stx, sd.cmo);				
 			}
-
+			
 			var offset=parseInt(sd.inputs.Offset,10);
 			if(isNaN(offset)) offset=0;
 			for(var i=0;i<quotes.length;i++){
@@ -447,7 +455,7 @@
 				var vi;
 				if(type=="vidya") {
 					if(!quote["MASTD "+sd.name]) continue;
-					else vi=quote["STD "+sd.name]/quote["MASTD "+sd.name];
+					else vi=quote["STD "+sd.name]/quote["MASTD "+sd.name];	
 				}
 				else {
 					if(!quote["CMO "+sd.name]) continue;
@@ -458,7 +466,7 @@
 				vmaPreviousDay=vma;
 			}
 		};
-
+		
 		/**
 		 * Calculate function for time series moving average
 		 * @param  {STXChart} stx Chart object
@@ -481,10 +489,10 @@
 			var quotes=sd.chart.scrubbed;
 			for(var i=0;i<quotes.length;i++){
 				var quote=quotes[i];
-				if(i+offset>=0 && i+offset<quotes.length) quotes[i+offset][name]=quote["Forecast "+sd.name];
+				if(i+offset>=0 && i+offset<quotes.length) quotes[i+offset][name]=quote["Forecast "+sd.name];			
 			}
 		};
-
+		
 		/**
 		 * Calculate function for triangular moving average
 		 * @param  {STXChart} stx Chart object
@@ -493,8 +501,6 @@
 		STX.Studies.calculateMovingAverageTriangular=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 
-			var field=sd.inputs.Field;
-			if(!field || field=="field") field="Close";	// Handle when the default inputs are passed in
 			var days=Math.ceil(sd.days/2);
 			STX.Studies.MA("simple", days, sd.inputs.Field, 0, "TRI1", stx, sd);
 			if(sd.days%2===0) days++;
@@ -508,7 +514,7 @@
 			if(isNaN(offset)) offset=0;
 			for(var i=0;i<quotes.length;i++){
 				var quote=quotes[i];
-				if(i+offset>=0 && i+offset<quotes.length) quotes[i+offset][name]=quote["TRI2 "+sd.name];
+				if(i+offset>=0 && i+offset<quotes.length) quotes[i+offset][name]=quote["TRI2 "+sd.name];			
 			}
 			return;
 		};
@@ -526,7 +532,7 @@
 			var field=sd.inputs.Field;
 			if(!field || field=="field") field="Close";	// Handle when the default inputs are passed in
 			var divisor=sd.days*(sd.days+1)/2;
-
+			
 			var name=sd.name;
 			for(var p in sd.outputs){
 				name=p + " " + name;
@@ -547,7 +553,7 @@
 				}
 				accAdd+=weight*val;
 				accSubtract+=val;
-
+				
 				if(i<sd.days-1){
 					if(i+offset>=0 && i+offset<quotes.length) quotes[i+offset][name]=null;
 				}else{
@@ -556,7 +562,7 @@
 			}
 			return;
 		};
-
+		
 		/**
 		 * Calculate function for klinger
 		 * @param  {STXChart} stx Chart object
@@ -566,8 +572,14 @@
 		STX.Studies.calculateKlinger=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 
-			var field=sd.name+"_hist",
-				klinger="Klinger " + sd.name,
+			sd.tp=new STX.Studies.StudyDescriptor(sd.name, "typical price", sd.panel);
+			sd.tp.chart=sd.chart;
+			sd.tp.days=1;
+			sd.tp.outputs={"Typ Price":null};
+			STX.Studies.calculateTypicalPrice(stx,sd.tp);
+
+			var field=sd.name+"_hist", 
+				klinger="Klinger " + sd.name, 
 				klingerSignal="KlingerSignal " + sd.name,
 				signedVolume="SV " + sd.name,
 				shortEMA="EMA-S " + sd.name,
@@ -575,10 +587,10 @@
 				i;
 			for(i=1;i<quotes.length;i++){
 				var sv=quotes[i].Volume;
-				if(quotes[i]["hlc/3"]<quotes[i-1]["hlc/3"]) sv*=-1;
+				if(quotes[i]["Typ Price "+sd.name]<quotes[i-1]["Typ Price "+sd.name]) sv*=-1;
 				quotes[i][signedVolume]=sv;
 			}
-
+			
 			STX.Studies.MA("exponential", Number(sd.inputs["Short Cycle"]), signedVolume, 0, "EMA-S", stx, sd);
 			STX.Studies.MA("exponential", Number(sd.inputs["Long Cycle"]), signedVolume, 0, "EMA-L", stx, sd);
 
@@ -587,12 +599,12 @@
 			}
 
 			STX.Studies.MA("exponential", Number(sd.inputs["Signal Periods"]), klinger, 0, "KlingerSignal", stx, sd);
-
+			
 			for(i=0;i<quotes.length;i++){
 				quotes[i][field]=quotes[i][klinger]-quotes[i][klingerSignal];
 			}
 		};
-
+		
 		/**
 		 * Calculate function for stochastics
 		 * @param  {STXChart} stx Chart object
@@ -607,13 +619,13 @@
 
 			var quotes=sd.chart.scrubbed;
 			if(!quotes) return;
-
+		
 			if(quotes.length<sd.days+1){
 				if(typeof practiceMode!="undefined" && practiceMode) return;
 				stx.watermark(sd.panel,"center","bottom",stx.translateIf("Not enough quotes to compute stochastics " + sd.chart.dataSet.length + ":" + sd.days));
 				return;
 			}
-
+		
 			function computeStochastics(position, field, days){
 				var beg=position-days+1;
 				var low=1000000, high=0;
@@ -624,7 +636,7 @@
 				var k=(quotes[position][field]-low)/(high-low)*100;
 				return k;
 			}
-
+		
 			var name=sd.name;
 			if(sd.smooth) name=name.substring(0,name.length-2);
 
@@ -634,7 +646,7 @@
 			for(var i=fastPeriod;i<quotes.length;i++){
 				quotes[i][name]=computeStochastics(i,field,fastPeriod);
 			}
-
+		
 			var smoothingPeriod=sd.inputs["%K Smoothing Periods"];
 			if(smoothingPeriod) sd.smooth=true;
 			else if(sd.smooth) smoothingPeriod=3;
@@ -658,8 +670,8 @@
 			STX.Studies.calculateMovingAverage(stx, sd.ma);
 			sd.outputMap[sd.name+"_3"]="Slow";
 		};
-
-
+		
+		
 		//Copyright 2012 by ChartIQ LLC
 		STX.Studies.calculateStudyATR=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
@@ -680,7 +692,7 @@
 
 		STX.Studies.calculatePSAR=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
-
+			
 			var af=0;
 			var ep=null;
 			var lasttrend=false;
@@ -694,6 +706,7 @@
 				lasttrend=!lasttrend;
 			}
 			for(var i=0;i<quotes.length-1;i++){
+				if(!quotes[i]) continue;
 
 				var priorSAR=SAR;
 				if(lasttrend){
@@ -726,7 +739,7 @@
 				quotes[i+1]["Result " + sd.name]=SAR;
 	    	}
 		};
-
+		
 		STX.Studies.calculateTRIX=function(stx, sd){
 			var fields=["Close","MA1 "+sd.name,"MA2 "+sd.name,"MA3 "+sd.name];
 			var e;
@@ -735,35 +748,32 @@
 			}
 			var quotes=sd.chart.scrubbed;
 		    for(var i=1;i<quotes.length;i++){
-					if(!quotes[i-1][fields[e]]) continue;
+		    	if(!quotes[i]) continue;
+		    	if(!quotes[i-1]) continue;
+		    	if(!quotes[i-1][fields[e]]) continue;
 				quotes[i]["Result " + sd.name]=100*((quotes[i][fields[e]]/quotes[i-1][fields[e]])-1);
 		    }
 		};
-
+		
 		STX.Studies.calculateMedianPrice=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
-			var period=sd.days;
 			var name=sd.name;
 			for(var p in sd.outputs){
 				name=p + " " + name;
 			}
-			var total=0;
 			for(var i=0;i<quotes.length;i++){
-				total+=quotes[i]["hl/2"];
-				if (i>=period) {
-					total-=quotes[i-period]["hl/2"];
-					quotes[i][name]=total/period;
-				}
+				quotes[i][name]=(quotes[i].High + quotes[i].Low) / 2;
 			}
 		};
 
 		STX.Studies.calculateIntradayMomentum=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 			var period=sd.days;
-
+			
 			var totalUp=0;
 			var totalDown=0;
 			for(var i=0;i<quotes.length;i++){
+				if(!quotes[i]) continue;
 				var diff=quotes[i].Close-quotes[i].Open;
 				if(diff>0) totalUp+=diff;
 				else totalDown-=diff;
@@ -772,15 +782,16 @@
 					if(pDiff>0) totalUp-=pDiff;
 					else totalDown+=pDiff;
 				}
-	    		quotes[i]["Result " + sd.name]=100*totalUp/(totalUp+totalDown);
+	    		quotes[i]["Result " + sd.name]=100*totalUp/(totalUp+totalDown);				
 			}
 		};
-
+		
 		STX.Studies.calculateQStick=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 			var period=sd.days;
-
+			
 			for(var i=0;i<quotes.length;i++){
+				if(!quotes[i]) continue;
 				quotes[i]["Close-Open " + sd.name]=quotes[i].Close-quotes[i].Open;
 			}
 			STX.Studies.MA(sd.inputs["Moving Average Type"], period, "Close-Open "+sd.name, 0, "Result", stx, sd);
@@ -795,7 +806,7 @@
 
 			STX.Studies.MA(sd.inputs["Moving Average Type"], Number(sd.inputs["Short Cycle"]), field, 0, "MACD1", stx, sd);
 			STX.Studies.MA(sd.inputs["Moving Average Type"], Number(sd.inputs["Long Cycle"]), field, 0, "MACD2", stx, sd);
-
+		
 			function getLLVHHV(p,x,n){
 				var l=null, h=null;
 				for(var j=x-p+1;j<=x;j++){
@@ -819,7 +830,7 @@
 				var lh=getLLVHHV(period,i,"MACD");
 				f1=(lh[1]>lh[0]?(100*(quote["MACD "+sd.name]-lh[0])/(lh[1]-lh[0])):f1);
 				quote["PF "+sd.name]=( quotes[i-1]["PF "+sd.name] ? quotes[i-1]["PF "+sd.name]+factor*(f1-quotes[i-1]["PF "+sd.name]) : f1 );
-
+				
 				if(i<longCycle+2*(period-1)) continue;
 				lh=getLLVHHV(period,i,"PF");
 				f2=(lh[1]>lh[0]?(100*(quote["PF "+sd.name]-lh[0])/(lh[1]-lh[0])):f2);
@@ -829,7 +840,7 @@
 
 		STX.Studies.calculateStochMomentum=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
-
+			
 			function getLLVHHV(p,x){
 				var l=null, h=null;
 				for(var j=x-p+1;j<=x;j++){
@@ -852,13 +863,13 @@
 			STX.Studies.MA("exponential", Number(sd.inputs["%K Double Smoothing Periods"]), "HS1 "+sd.name, 0, "HS2", stx, sd);
 			STX.Studies.MA("exponential", Number(sd.inputs["%K Smoothing Periods"]), "DHL "+sd.name, 0, "DHL1", stx, sd);
 			STX.Studies.MA("exponential", Number(sd.inputs["%K Double Smoothing Periods"]), "DHL1 "+sd.name, 0, "DHL2", stx, sd);
-
+		
 			for(i=pKPeriods-1;i<quotes.length;i++){
 				quotes[i]["%K "+sd.name]=(quotes[i]["HS2 "+sd.name]/(0.5*quotes[i]["DHL2 "+sd.name]))*100;
 			}
-
+			
 			STX.Studies.MA(sd.inputs["%D Moving Average Type"], Number(sd.inputs["%D Periods"]), "%K "+sd.name, 0, "%D", stx, sd);
-
+			
 			sd.zoneOutput="%K";
 		};
 
@@ -874,7 +885,7 @@
 				}
 				return [l,h];
 			}
-
+			
 			var n=0;
 			for(var i=0;i<quotes.length;i++){
 				var quote=quotes[i];
@@ -883,14 +894,14 @@
 					continue;
 				}
 				var lh=getLLVHHV(sd.days,i);
-				n=0.33*2*((((quotes[i].High+quotes[i].Low)/2)-lh[0])/(Math.max(0.000001,lh[1]-lh[0]))-0.5)+0.67*n;
+				n=0.33*2*((((quotes[i].High+quotes[i].Low)/2)-lh[0])/(lh[1]-lh[0])-0.5)+0.67*n;
 				if(n>0) n=Math.min(n,0.9999);
 				else if(n<0) n=Math.max(n,-0.9999);
 				quote["EF "+sd.name]=0.5*Math.log((1+n)/(1-n))+0.5*quotes[i-1]["EF "+sd.name];
 				quote["EF Trigger "+sd.name]=quotes[i-1]["EF "+sd.name];
 			}
 		};
-
+		
 		STX.Studies.calculatePrettyGoodOscillator=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 
@@ -900,11 +911,11 @@
 			STX.Studies.MA("simple", sd.days, "Close", 0, "SMA", stx, sd);
 
 		    for(var i=1;i<quotes.length;i++){
-					if(!quotes[i]["SMA "+sd.name] || !quotes[i]["EMA "+sd.name]) continue;
+		    	if(!quotes[i] || !quotes[i]["SMA "+sd.name] || !quotes[i]["EMA "+sd.name]) continue;
 				quotes[i]["Result " + sd.name]=(quotes[i].Close-quotes[i]["SMA "+sd.name])/quotes[i]["EMA "+sd.name];
 		    }
 		};
-
+		
 		STX.Studies.calculateUltimateOscillator=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 			var cycle=[sd.inputs["Cycle 1"],sd.inputs["Cycle 2"],sd.inputs["Cycle 3"]];
@@ -915,6 +926,7 @@
 			var acctr=[0,0,0];
 			var start=Math.max(cycle[0],Math.max(cycle[1],cycle[2]));
 		    for(var i=1;i<quotes.length;i++){
+		    	if(!quotes[i] || !quotes[i-1]) continue;
 		    	var minLC=Math.min(quotes[i].Low,quotes[i-1].Close);
 		    	var bp=quotes[i].Close-minLC;
 		    	var tr=Math.max(quotes[i].High,quotes[i-1].Close)-minLC;
@@ -935,7 +947,7 @@
 				quotes[i]["Result " + sd.name]=100*numerator/denominator;
 		    }
 		};
-
+		
 		STX.Studies.calculatePriceVolumeTrend=function(stx, sd){
 			var field=sd.inputs.Field;
 			if(!field || field=="field") field="Close";
@@ -943,9 +955,9 @@
 			var quotes=sd.chart.scrubbed;
 			var total=0;
 		    for(var i=1;i<quotes.length;i++){
-					if(!quotes[i][field]) continue;
-					if(!quotes[i-1][field]) continue;
-
+		    	if(!quotes[i] || !quotes[i][field]) continue;
+		    	if(!quotes[i-1] || !quotes[i-1][field]) continue;
+		    	
 		    	total+=quotes[i].Volume*(quotes[i][field]-quotes[i-1][field])/quotes[i-1][field];
 	    		quotes[i]["Result " + sd.name]=total;
 		    }
@@ -964,9 +976,9 @@
 			var total=0;
 			var direction=0;
 		    for(var i=1;i<quotes.length;i++){
-					if(!quotes[i][field]) continue;
-					if(!quotes[i-1][field]) continue;
-
+		    	if(!quotes[i] || !quotes[i][field]) continue;
+		    	if(!quotes[i-1] || !quotes[i-1][field]) continue;
+		    	
 		    	if(quotes[i][field]-quotes[i-1][field]>minTick) direction=1;
 		    	else if(quotes[i-1][field]-quotes[i][field]>minTick) direction=-1;
 		    	else if(obv) direction=0;
@@ -981,8 +993,8 @@
 			var quotes=sd.chart.scrubbed;
 			var total=100;
 		    for(var i=1;i<quotes.length;i++){
-					if(!quotes[i][field]) continue;
-					if(!quotes[i-1][field]) continue;
+		    	if(!quotes[i] || !quotes[i][field]) continue;
+		    	if(!quotes[i-1] || !quotes[i-1][field]) continue;
 		    	if((sd.type=="Pos Vol" && quotes[i].Volume>quotes[i-1].Volume) ||
 		    	   (sd.type=="Neg Vol" && quotes[i].Volume<quotes[i-1].Volume)){
 		    		total*=(quotes[i][field]/quotes[i-1][field]);
@@ -997,10 +1009,11 @@
 			var origin=quotes[0];
 		    for(var i=1;i<quotes.length;i++){
 		    	if(!origin) origin=quotes[i];
+		    	if(!quotes[i]) continue;
 		    	quotes[i]["Result " + sd.name]=100*(quotes[i].Close/origin.Close-1);
 		    }
 		};
-
+		
 		STX.Studies.calculateHistoricalVolatility=function(stx, sd){
 			function intFactor(days){
 				if(isNaN(days)) days=365;
@@ -1015,10 +1028,11 @@
 			var mult=sd.inputs["Standard Deviations"];
 			if(mult<0) mult=1;
 			annualizingFactor=100*Math.sqrt(intFactor(sd.inputs["Days Per Year"]))*mult;
-
+			
 			var arr=[];
 			var accum=0;
 			for(var i=1;i<quotes.length;i++){
+				if(!quotes[i] || !quotes[i-1]) continue;
 				var ln=Math.log(quotes[i][field]/quotes[i-1][field]);
 				arr.push(ln);
 				accum+=ln;
@@ -1041,6 +1055,8 @@
 			var quotes=sd.chart.scrubbed;
 			var total=0;
 		    for(var i=1;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
+		    	if(!quotes[i-1]) continue;
 
 		    	var A=Math.abs(quotes[i].High-quotes[i-1].Close);
 		    	var B=Math.abs(quotes[i].Low-quotes[i-1].Close);
@@ -1054,7 +1070,7 @@
 
 		    	var swing = (50*((quotes[i].Close-quotes[i-1].Close)+0.5*(quotes[i].Close-quotes[i].Open)+0.25*(quotes[i-1].Close-quotes[i-1].Open))/R)*(K/T);
     			if(R===0 || T===0) swing=0;
-
+ 		    	
 	    		if(sd.type=="Swing") total=0;
 	   			total+=swing;
 	    		quotes[i]["Result " + sd.name]=total;
@@ -1071,12 +1087,13 @@
 			var smoothMinusDM=0;
 			var runningDX=0;
 		    for(var i=1;i<quotes.length;i++){
+		    	if(!quotes[i] || !quotes[i-1]) continue;
 		    	var plusDM=Math.max(0,quotes[i].High-quotes[i-1].High);
 		    	var minusDM=Math.max(0,quotes[i-1].Low-quotes[i].Low);
 		    	if(plusDM>minusDM) minusDM=0;
 		    	else if(minusDM>plusDM) plusDM=0;
 		    	else plusDM=minusDM=0;
-
+		    	
 		    	if(i<=period){
 		    		smoothPlusDM+=plusDM;
 		    		smoothMinusDM+=minusDM;
@@ -1085,13 +1102,13 @@
 		    	}else{
 			    	smoothPlusDM=smoothPlusDM-smoothPlusDM/period+plusDM;
 			    	smoothMinusDM=smoothMinusDM-smoothMinusDM/period+minusDM;
-		    		smoothTR=smoothTR-smoothTR/period+quotes[i]["True Range " + sd.name];
+		    		smoothTR=smoothTR-smoothTR/period+quotes[i]["True Range " + sd.name];		    		
 		    	}
-
+		    	
 		    	var plusDI=100*smoothPlusDM/smoothTR;
 		    	var minusDI=100*smoothMinusDM/smoothTR;
 		    	var DX=100*Math.abs(plusDI-minusDI)/(plusDI+minusDI);
-
+		    	
 	    		quotes[i]["+DI " + sd.name]=plusDI;
 	    		quotes[i]["-DI " + sd.name]=minusDI;
 	    		if(sd.inputs.Series!==false){
@@ -1100,7 +1117,7 @@
 				    }else if(i==2*period-1){
 				    	quotes[i]["ADX " + sd.name]=runningDX/period;
 				    }else{
-				    	quotes[i]["ADX " + sd.name]=(quotes[i-1]["ADX " + sd.name]*(period-1) + DX)/period;
+				    	quotes[i]["ADX " + sd.name]=(quotes[i-1]["ADX " + sd.name]*(period-1) + DX)/period;    		
 				    }
 	    		}
 		    }
@@ -1118,14 +1135,15 @@
 			}
 
 		};
-
+		
 		STX.Studies.calculateRandomWalk=function(stx, sd){
 			STX.Studies.calculateStudyATR(stx,sd);
 
 			var quotes=sd.chart.scrubbed;
 			var period=sd.days;
-
+			
 			for(var i=2;i<quotes.length;i++){
+				if(!quotes[i]) continue;
 				var ttr=0;
 				var high=quotes[i].High;
 				var low=quotes[i].Low;
@@ -1147,16 +1165,18 @@
 				quotes[i]["Random Walk Low " + sd.name]=maxLow;
 			}
 		};
-
+		
 		STX.Studies.calculateChange=function(stx, sd){
 			var field=sd.inputs.Field;
 			if(!field || field=="field") field="Close";
 			var quotes=sd.chart.scrubbed;
 		    for(var i=sd.days;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
+		    	if(!quotes[i-sd.days]) continue;
 				quotes[i]["Result " + sd.name]=quotes[i][field]-quotes[i-sd.days][field];
 		    }
 		};
-
+		
 		STX.Studies.calculateRateOfChange=function(stx, sd){
 			var field=sd.inputs.Field;
 			if(sd.name.indexOf("Vol ROC")===0) field="Volume";
@@ -1169,9 +1189,11 @@
 			var offset=sd.inputs["Center Line"];
 			if(!offset) offset=0;
 			else offset=parseInt(offset,10);
-
+			
 			var quotes=sd.chart.scrubbed;
 		    for(var i=sd.days;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
+		    	if(!quotes[i-sd.days]) continue;
 				if(sd.name.indexOf("Momentum")===0) quotes[i][name]=quotes[i][field]-quotes[i-sd.days][field] + offset;
 				else quotes[i][name]=100*((quotes[i][field]/quotes[i-sd.days][field])-1) + offset;
 		    }
@@ -1185,13 +1207,15 @@
 				name=p + " " + name;
 			}
 			var total=0;
-			for(var i=0;i<quotes.length;i++){
-				total+=quotes[i]["hlc/3"];
+		    for(var i=0;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
+		    	quotes[i].typicalPrice=(quotes[i].High+quotes[i].Low+quotes[i].Close)/3;
+				total+=quotes[i].typicalPrice;
 				if(i>=period) {
-					total-=quotes[i-period]["hlc/3"];
+					total-=quotes[i-period].typicalPrice;
 					quotes[i][name]=total/period;
 				}
-			}
+		    }
 		};
 
 		STX.Studies.calculateWeightedClose=function(stx, sd){
@@ -1202,13 +1226,15 @@
 				name=p + " " + name;
 			}
 			var total=0;
-			for(var i=0;i<quotes.length;i++){
-				total+=quotes[i]["hlcc/4"];
+		    for(var i=0;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
+		    	quotes[i].weightedClose=(quotes[i].High+quotes[i].Low+2*quotes[i].Close)/4;
+				total+=quotes[i].weightedClose;
 				if(i>=period) {
-					total-=quotes[i-period]["hlcc/4"];
+					total-=quotes[i-period].weightedClose;
 					quotes[i][name]=total/period;
 				}
-			}
+		    }
 		};
 
 		STX.Studies.calculateElderRay=function(stx, sd){
@@ -1216,23 +1242,26 @@
 			STX.Studies.MA("exponential", sd.days, "Close", 0, "EMA", stx, sd);
 
 		    for(var i=sd.days-1;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
 				quotes[i][sd.name+"_hist1"]=quotes[i].High-quotes[i]["EMA "+sd.name];
 				quotes[i][sd.name+"_hist2"]=quotes[i].Low-quotes[i]["EMA "+sd.name];
 		    }
 		};
-
+		
 		STX.Studies.calculateElderForce=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 		    for(var i=1;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
 				quotes[i]["Result "+sd.name]=quotes[i].Volume*(quotes[i].Close-quotes[i-1].Close);
 		    }
 		};
-
+		
 		STX.Studies.calculateCenterOfGravity=function(stx, sd){
 			var field=sd.inputs.Field;
 			if(!field || field=="field") field="Close";
 			var quotes=sd.chart.scrubbed;
 		    for(var i=sd.days-1;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
 				var num=0,den=0;
 		    	for(var j=0;j<sd.days;j++){
 		    		num-=(j+1)*quotes[i-j][field];
@@ -1245,6 +1274,7 @@
 		STX.Studies.calculateEaseOfMovement=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 		    for(var i=1;i<quotes.length;i++){
+		    	if(!quotes[i] || !quotes[i-1]) continue;
 				var avgCurrent=(quotes[i].High + quotes[i].Low)/2;
 				var avgPrior=(quotes[i-1].High + quotes[i-1].Low)/2;
 				var dm=avgCurrent-avgPrior;
@@ -1259,6 +1289,7 @@
 			var quotes=sd.chart.scrubbed;
 		    var i;
 			for(i=0;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
 		    	quotes[i]["High-Low " + sd.name]=quotes[i].High - quotes[i].Low;
 		    }
 			STX.Studies.MA(sd.inputs["Moving Average Type"], sd.days, "High-Low "+sd.name, 0, "MA", stx, sd);
@@ -1266,37 +1297,39 @@
 			var roc=sd.inputs["Rate Of Change"];
 			if(!roc) roc=sd.days;
 		    for(i=roc;i<quotes.length;i++){
-					if(!quotes[i-roc]["MA "+sd.name]) continue;
+		    	if(!quotes[i]) continue;
+		    	if(!quotes[i-roc]["MA "+sd.name]) continue;
 		    	quotes[i]["Result " + sd.name]=100*((quotes[i]["MA "+sd.name]/quotes[i-roc]["MA "+sd.name])-1);
 		    }
 		};
-
+		
 		STX.Studies.calculateChaikinMoneyFlow=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 			var sumMoneyFlow=0,sumVolume=0;
 		    for(var i=0;i<quotes.length;i++){
-		    	if(quotes[i].High==quotes[i].Low) quotes[i]["MFV " + sd.name]=0;
-		    	else quotes[i]["MFV " + sd.name]=quotes[i].Volume*(2*quotes[i].Close-quotes[i].High-quotes[i].Low)/(quotes[i].High-quotes[i].Low);
+		    	if(!quotes[i]) continue;
+		    	quotes[i]["MFV " + sd.name]=quotes[i].Volume*(2*quotes[i].Close-quotes[i].High-quotes[i].Low)/(quotes[i].High-quotes[i].Low);
 			    sumMoneyFlow+=quotes[i]["MFV " + sd.name];
 		    	sumVolume+=quotes[i].Volume;
 		    	if(i>sd.days-1){
 				    sumMoneyFlow-=quotes[i-sd.days]["MFV " + sd.name];
-			    	sumVolume-=quotes[i-sd.days].Volume;
+			    	sumVolume-=quotes[i-sd.days].Volume;	    		
 			    	if(sumVolume) quotes[i]["Result " + sd.name]=sumMoneyFlow/sumVolume;
 		    	}
 		    }
 		};
-
+		
 		STX.Studies.calculateTwiggsMoneyFlow=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 			var sumMoneyFlow=0,sumVolume=0;
 		    for(var i=1;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
 		    	var trh=Math.max(quotes[i-1].Close,quotes[i].High);
 		    	var trl=Math.min(quotes[i-1].Close,quotes[i].Low);
 		    	quotes[i]["MFV " + sd.name]=quotes[i].Volume*(2*quotes[i].Close-trh-trl)/(trh-trl===0?999999:trh-trl);
 		    	if(i>sd.days-1){
 		    		sumMoneyFlow*=(sd.days-1)/sd.days;
-			    	sumVolume*=(sd.days-1)/sd.days;
+			    	sumVolume*=(sd.days-1)/sd.days;	    		
 		    	}
 			    sumMoneyFlow+=quotes[i]["MFV " + sd.name];
 		    	sumVolume+=quotes[i].Volume;
@@ -1305,10 +1338,11 @@
 		    	}
 		    }
 		};
-
+		
 		STX.Studies.calculateMassIndex=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 		    for(var i=0;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
 		    	quotes[i]["High-Low " + sd.name]=quotes[i].High - quotes[i].Low;
 		    }
 
@@ -1332,6 +1366,7 @@
 			var lastTypPrice=0;
 			var directions=[];
 		    for(var i=0;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
 		    	var typPrice=(quotes[i].High + quotes[i].Low + quotes[i].Close)/3;
 		    	if(i>0){
 	    			var rawMoneyFlow=typPrice*quotes[i].Volume;
@@ -1365,15 +1400,16 @@
 			var sumMomentum=0,absSumMomentum=0;
 			var history=[];
 		    for(var i=1;i<quotes.length;i++){
+		    	if(!quotes[i] || !quotes[i-1]) continue;
 		    	var diff=quotes[i].Close-quotes[i-1].Close;
 		    	history.push(diff);
 		    	sumMomentum+=diff;
 		    	absSumMomentum+=Math.abs(diff);
 		    	if(history.length==sd.days){
 			    	quotes[i][name]=100*sumMomentum/absSumMomentum;
-				    var old=history.shift();
+				    var old=history.shift();	    		
 			    	sumMomentum-=old;
-			    	absSumMomentum-=Math.abs(old);
+			    	absSumMomentum-=Math.abs(old);				    
 		    	}
 		    }
 		};
@@ -1384,6 +1420,7 @@
 			if(!field || field=="field") field="Close";
 			STX.Studies.MA("time series", sd.days, field, 0, "MA", stx, sd);
 		    for(var i=1;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
 			    quotes[i]["Result " + sd.name]=100*(1-(quotes[i]["MA "+sd.name]/quotes[i][field]));
 		    }
 		};
@@ -1406,6 +1443,7 @@
 			var xDayHigh=null,xDayLow=null;
 			var j;
 		    for(var i=0;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
 		    	if(xDayHigh===null) xDayHigh=quotes[i].High;
 		    	if(xDayLow===null) xDayLow=quotes[i].Low;
 		    	xDayHigh=Math.max(xDayHigh,quotes[i].High);
@@ -1467,7 +1505,7 @@
 		    for(var i=0;i<quotes.length;i++){
 		    	var quote=quotes[i];
 		    	if(!quote) continue;
-
+		    	
 		    	var high=quote.High;
 		    	//high=Math.ceil(high);
 		    	for(var h=0;high>0 && high<=10;h++) high*=10;
@@ -1476,7 +1514,7 @@
 		    	if(high%2===0) high++;
 		    	while(!isPrime(high)) high+=2;
 		    	high/=Math.pow(10,h);
-
+		    	
 		    	var low=quote.Low;
 		    	//low=Math.floor(low);
 		    	for(var l=0;low>0 && low<=10;l++) low*=10;
@@ -1487,7 +1525,7 @@
 			    	while(!isPrime(low)) low-=2;
 			    	low/=Math.pow(10,l);
 			    }
-
+		    	
 		        if(sd.type=="Prime Number Bands"){
 		        	quote["Prime Bands Top " + sd.name]=high;
 		        	quote["Prime Bands Bottom " + sd.name]=Math.max(0,low);
@@ -1503,7 +1541,7 @@
 		        }
 		    }
 		};
-
+		
 		STX.Studies.calculateVerticalHorizontalFilter=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 			sd.mhml=new STX.Studies.StudyDescriptor(sd.name, sd.type, sd.panel);
@@ -1515,6 +1553,7 @@
 		    var sumChanges=0;
 		    var changes=[];
 		    for(var i=1;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
 		    	var change=Math.abs(quotes[i].Close-quotes[i-1].Close);
 		    	changes.push(change);
 		    	sumChanges+=change;
@@ -1539,10 +1578,10 @@
 			}
 			var pts=sd.inputs["Points Or Percent"];
 			if(!pts) pts="Points";
-
+			
 			STX.Studies.MA(maType, Number(sd.inputs["Short Cycle"]), field, 0, "Short MA", stx, sd);
 			STX.Studies.MA(maType, Number(sd.inputs["Long Cycle"]), field, 0, "Long MA", stx, sd);
-
+			
 		    for(var i=Number(sd.inputs["Long Cycle"]);i<quotes.length;i++){
 		    	var quote=quotes[i];
 		    	if(!quote) continue;
@@ -1556,7 +1595,7 @@
 			STX.Studies.calculateStudyATR(stx,sd);
 			STX.Studies.calculateGenericEnvelope(stx, sd, sd.inputs.Shift, "MA "+sd.name, "ATR " + sd.name);
 		};
-
+		
 		STX.Studies.calculateCoppock=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 			var field=sd.inputs.Field;
@@ -1571,25 +1610,29 @@
 			if(longDays<shortDays) return;
 
 		    for(var i=longDays;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
+		    	if(!quotes[i-shortDays]) continue;
+		    	if(!quotes[i-longDays]) continue;
 				quotes[i]["Sum "+sd.name]=100*((quotes[i][field]/quotes[i-shortDays][field])+(quotes[i][field]/quotes[i-longDays][field])-2);
 		    }
 
 			STX.Studies.MA("weighted", period, "Sum "+sd.name, 0, "Result", stx, sd);
 		};
-
+		
 		STX.Studies.calculateLinearRegressionIndicator=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 			var field=sd.inputs.Field;
 			if(!field || field=="field") field="Close";
-
+			
 			var sumWeights=sd.days*(sd.days+1)/2;
 			var squaredSumWeights=Math.pow(sumWeights,2);
 			var sumWeightsSquared=sumWeights*(2*sd.days+1)/3;
-
+			
 			var sumCloses=0;
 			var sumWeightedCloses=0;
 			var sumClosesSquared=0;
 		    for(var i=0;i<quotes.length;i++){
+		    	if(!quotes[i]) continue;
 		    	sumWeightedCloses+=sd.days*quotes[i][field]-sumCloses;
 		    	sumCloses+=quotes[i][field];
 		    	sumClosesSquared+=Math.pow(quotes[i][field],2);
@@ -1607,7 +1650,7 @@
 				quotes[i]["RSquared "+sd.name]=b*b*c;
 		    }
 		};
-
+		
 		// Old version of study had outputs "Bollinger Band ...", this will convert to new "Bollinger Bands ..."
 		STX.Studies.convertOldBollinger=function(stx, type, inputs, outputs, parameters, panel){
 			for(var o in outputs){
@@ -1617,11 +1660,11 @@
 			}
 			return STX.Studies.initializeFN(stx, type, inputs, outputs, parameters, panel);
 		};
-
+		
 		STX.Studies.calculateBollinger=function(stx, sd){
 			var field=sd.inputs.Field;
 			if(!field || field=="field") field="Close";
-
+			
 			STX.Studies.MA(sd.inputs["Moving Average Type"], sd.days, field, 0, "MA", stx, sd);
 
 			sd.std=new STX.Studies.StudyDescriptor(sd.name, "STD Dev", sd.panel);
@@ -1630,10 +1673,10 @@
 			sd.std.inputs={"Field":field, "Standard Deviations":1, "Type":sd.inputs["Moving Average Type"]};
 			sd.std.outputs={"STD Dev":null};
 			STX.Studies.calculateStandardDeviation(stx,sd.std);
-
+			
 			STX.Studies.calculateGenericEnvelope(stx, sd, sd.inputs["Standard Deviations"], "MA "+sd.name, "STD Dev "+sd.name);
 		};
-
+		
 		STX.Studies.calculateMAEnvelope=function(stx, sd){
 			var field=sd.inputs.Field;
 			if(!field || field=="field") field="Close";
@@ -1688,10 +1731,10 @@
 		        quote["%b " + sd.name]=50*((quote.Close-quote[centerIndex])/totalShift+1);
 		    }
 		};
-
+		
 		STX.Studies.calculateMaxHighMinLow=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
-
+			
 			var low=-1,high=-1;
 		    for(var i=0;i<quotes.length;i++){
 		        var period=sd.days;
@@ -1727,25 +1770,25 @@
 		        	result=Math.log(high-low)/Math.log(period);
 		        }else if(sd.type=="VT HZ Filter"){
 		        	result=high-low;
-			        quotes[i]["MHML "+sd.name]=result;
+			        quotes[i]["MHML "+sd.name]=result;		        	
 			        continue;
 		        }else if(sd.type=="Williams %R"){
 		        	result=-100*(high-quotes[i].Close)/(high-low);
-			        quotes[i]["Result " + sd.name]=result;
+			        quotes[i]["Result " + sd.name]=result;		        	
 			        continue;
 		        }
 		    	if(i==quotes.length-1) break;
-
+		    	
 		        if(sd.type=="Donchian Channel"){
 			        quotes[i+1]["Donchian High " + sd.name]=high;
 			        quotes[i+1]["Donchian Low " + sd.name]=low;
 			        quotes[i+1]["Donchian Median " + sd.name]=(high+low)/2;
 		        }else{  //width
-			        quotes[i+1]["Result " + sd.name]=result;
+			        quotes[i+1]["Result " + sd.name]=result;		        	
 		        }
 		    }
 		};
-
+				
 		STX.Studies.calculateAccumulationDistribution=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 			var total=0;
@@ -1763,32 +1806,39 @@
 	        	quote["Result " + sd.name]=total;
 		    }
 		};
-
+		
 		STX.Studies.calculateCCI=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
 
-			STX.Studies.MA("simple", sd.days, "hlc/3", 0, "MA", stx, sd);
+			sd.tp=new STX.Studies.StudyDescriptor(sd.name, "typical price", sd.panel);
+			sd.tp.chart=sd.chart;
+			sd.tp.days=sd.days;
+			sd.tp.outputs={"Typ Price":null};
+			STX.Studies.calculateTypicalPrice(stx,sd.tp);
+			
+			STX.Studies.MA("simple", sd.days, "typicalPrice", 0, "MA", stx, sd);
 
 		    for(var i=sd.days-1;i<quotes.length;i++){
 		    	var quote=quotes[i];
 		    	if(!quote) continue;
 				var md=0;
 				for(var j=0;j<sd.days;j++){
-					md+=Math.abs(quotes[i-j]["hlc/3"] - quote["MA " + sd.name]);
+					md+=Math.abs(quotes[i-j].typicalPrice - quote["MA " + sd.name]);
 				}
 				md/=sd.days;
-		        quote["Result " + sd.name]=(quote["hlc/3"] - quote["MA " + sd.name]) / (0.015 * md);
+		        quote["Result " + sd.name]=(quote.typicalPrice - quote["MA " + sd.name]) / (0.015 * md);
 		    }
 		};
-
+		
 		STX.Studies.calculateFractalChaos=function(stx, sd){
 			var quotes=sd.chart.scrubbed;
-
+			
 			var fractalHigh=0;
 			var fractalLow=0;
 			var test=0;
 		    for(var i=4;i<quotes.length;i++){
 		    	quotes[i]["Result " + sd.name]=0;
+		    	if(!quotes[i]) continue;
 		    	var j;
 		    	test=0;
 		    	for(j=0;j<=i;j++){
@@ -1806,7 +1856,7 @@
 		        }else if(test==4){ //oscillator
 		        	quotes[i]["Result " + sd.name]=1;
 		        }
-		        test=0;
+		        test=0;	
 		    	for(j=0;j<=i;j++){
 		    		if(!quotes[i-j]) break;
 		    		if(quotes[i-j].Low<quotes[i-2].Low) break;
@@ -1824,25 +1874,25 @@
 		        }
 		    }
 		};
-
+		
 		STX.Studies.displayPrettyGoodOscillator=function(stx, sd, quotes){
 			STX.Studies.displaySeriesAsLine(stx, sd, quotes);
 
 			var low=-3;
 			var high=3;
-
+			
 			var panel=stx.panels[sd.panel];
 			var color=stx.chart.context.strokeStyle;
-
+			
 			stx.chart.context.globalAlpha=0.2;
 			stx.chart.context.strokeStyle=sd.outputs.Result;
-
+				
 			stx.chart.context.beginPath();
 			var ph=stx.pixelFromPrice(high,panel);
 			stx.chart.context.moveTo(0,ph);
 			stx.chart.context.lineTo(stx.chart.width,ph);
 
-			pl=stx.pixelFromPrice(low,panel);
+			pl=stx.pixelFromPrice(low,panel);			
 			stx.chart.context.moveTo(0,pl);
 			stx.chart.context.lineTo(stx.chart.width,pl);
 			stx.chart.context.stroke();
@@ -1872,7 +1922,7 @@
 
 			var myWidth=stx.layout.candleWidth-2;
 			if(myWidth<2) myWidth=1;
-
+			
 			var upColor=sd.outputs["Increasing Bar"];
 			var downColor=sd.outputs["Decreasing Bar"];
 			stx.canvasColor("stx_histogram");
@@ -1913,11 +1963,11 @@
 			function drawBar(i,reduction,output,hist){
 				stx.chart.context.fillStyle=sd.outputs[output];
 				stx.chart.context.fillRect(Math.floor(stx.pixelFromBar(i, panel.chart)-myWidth/2+myWidth*reduction),
-						Math.floor(y),
+						Math.floor(y), 
 						Math.floor(myWidth*(1-2*reduction)),
 						Math.floor(stx.pixelFromPrice(quote[sd.name+hist], panel)-y));
 			}
-
+			
 			stx.canvasColor("stx_histogram");
 			var fillStyle=stx.chart.context.fillStyle;
 			stx.chart.context.globalAlpha=1;
@@ -1956,13 +2006,13 @@
 			STX.Studies.displaySeriesAsLine(stx, sd, quotes);
 
 			var bulge=sd.inputs["Bulge Threshold"];
-
+			
 			var panel=stx.panels[sd.panel];
 			var color=stx.chart.context.strokeStyle;
-
+			
 			stx.chart.context.globalAlpha=0.2;
 			stx.chart.context.strokeStyle=sd.outputs.Result;
-
+				
 			stx.chart.context.beginPath();
 			var p=stx.pixelFromPrice(bulge,panel);
 			stx.chart.context.moveTo(0,p);
@@ -1975,22 +2025,22 @@
 			stx.chart.context.strokeStyle=color;
 			stx.chart.context.globalAlpha=1;
 		};
-
+		
 		/**
 		 * Rendering function for displaying a Channel study output composed of top, middle and bottom lines.
-		 *
-		 * Requires study library input of <code>"Channel Fill":true</code> to determine if the area within the channel is to be shaded.
+		 * 
+		 * Requires study library input of <code>"Channel Fill":true</code> to determine if the area within the channel is to be shaded. 
 		 * Shading will be done using the "xxxxx Channel" or "xxxxx Median" color defined in the outputs parameter of the study library.
-		 *
+		 * 
 		 * Requires study library outputs to have fields in the format of :
 		 * - 'xxxxx Top' or 'xxxxx High' for the top band,
-		 * - 'xxxxx Bottom' or 'xxxxx Low' for the bottom band and
-		 * - 'xxxxx Median' or 'xxxxx Channel' for the middle line.
-		 *
-		 * It expects 'quotes' to have fields for each series in the channel with keys in the following format:
-		 * - study-output-name ( from study library) + " " + sd.name.
+		 * - 'xxxxx Bottom' or 'xxxxx Low' for the bottom band and 
+		 * - 'xxxxx Median' or 'xxxxx Channel' for the middle line. 
+		 * 
+		 * It expects 'quotes' to have fields for each series in the channel with keys in the following format: 
+		 * - study-output-name ( from study library) + " " + sd.name. 
 		 * - Example: 'Prime Bands Top'+ ' ' +  'Prime Number Bands (true)'. Which equals : 'Prime Bands Top Prime Number Bands (true)'
-		 *
+		 * 
 		 * @param  {STXChart} stx Chart object
 		 * @param  {object} sd  Study Descriptor
 		 * @param {array} quotes The array of quotes needed to render the channel
@@ -2263,17 +2313,17 @@
 			},
 			"Twiggs": {
 				"name": "Twiggs Money Flow",
-				"calculateFN": STX.Studies.calculateTwiggsMoneyFlow,
+				"calculateFN": STX.Studies.calculateTwiggsMoneyFlow,			
 				"inputs":{"Period":21}
 			},
 			"Chaikin MF": {
 				"name": "Chaikin Money Flow",
-				"calculateFN": STX.Studies.calculateChaikinMoneyFlow,
+				"calculateFN": STX.Studies.calculateChaikinMoneyFlow,			
 				"inputs":{"Period":20}
 			},
 			"Chaikin Vol": {
 				"name": "Chaikin Volatility",
-				"calculateFN": STX.Studies.calculateChaikinVolatility,
+				"calculateFN": STX.Studies.calculateChaikinVolatility,			
 				"inputs": {"Period":14, "Rate Of Change":2, "Moving Average Type":"ma"}
 			},
 			"Price Osc": {
@@ -2283,12 +2333,12 @@
 			},
 			"EOM": {
 				"name": "Ease of Movement",
-				"calculateFN": STX.Studies.calculateEaseOfMovement,
+				"calculateFN": STX.Studies.calculateEaseOfMovement,			
 				"inputs": {"Period":14, "Moving Average Type":"ma"}
 			},
 			"CCI": {
 				"name": "Commodity Channel Index",
-				"calculateFN":  STX.Studies.calculateCCI,
+				"calculateFN":  STX.Studies.calculateCCI,			
 				"inputs": {"Period":20},
 				"parameters": {
 					template:"studyOverZones",
@@ -2404,7 +2454,7 @@
 			"Med Price": {
 				"name": "Median Price",
 				"calculateFN": STX.Studies.calculateMedianPrice,
-				"inputs": {"Period":14,"Overlay":false}
+				"inputs": {}
 			},
 			"MA Env": {
 				"name": "Moving Average Envelope",
@@ -2543,7 +2593,7 @@
 				"name": "Money Flow Index",
 				"range": "0 to 100",
 				"calculateFN": STX.Studies.calculateMoneyFlowIndex,
-				"inputs":{"Period":14},
+				"inputs":{"Period":14},				
 				"parameters": {
 					template:"studyOverZones",
 					init:{studyOverZonesEnabled:true, studyOverBoughtValue:80, studyOverBoughtColor:"auto", studyOverSoldValue:20, studyOverSoldColor:"auto"}
@@ -2612,18 +2662,18 @@
 
 		/**
 		 * Creates a Lines renderer
-		 *
+		 * 
 		 * Note: by default the renderer will display lines as underlays. As such, they will appear below the chart ticks and any other studies or drawings.
-		 *
+		 * 
 		 * See {@link STX.Renderer#construct} for parameters required by all renderers
 		 * @param {Object} config Config for renderer
 		 * @param  {object} [config.params] Parameters to control the renderer itself
 		 * @param  {number} [config.params.width] Width of the rendered line
 		 * @param  {string} [config.params.subtype="none"] Subtype of rendering: "step" or "none"
-		 * @param  {string} [config.params.type="line"] Type of rendering "line", "mountain"
+		 * @param  {string} [config.params.type="line"] Type of rendering "line", "mountain" 
 		 * @constructor
 		 * @name  STX.Renderer.Lines
-		 *
+		 * 
 		 * @example
 			// create series for the renderer
 			stxx.addSeries("NOK", {display:"NOK",data:{useDefaultQuoteFeed:true},width:4});
@@ -2643,17 +2693,17 @@
 				.attachSeries("SNE", "#FF9300")
 				.ready();
 			}
-		 *
+		 * 
 		 * @example
-			// This is an example on how completely remove a renderer and all associated data.
+			// This is an example on how completely remove a renderer and all associated data. 
 			// This should only be necessary if you are also removing the chart itself.
-
+			
 			// remove all series from the renderer including series data from the masterData
       		renderer.removeAllSeries(true);
-
+      		
       		// detach the series renderer from the chart.
       		stxx.removeSeriesRenderer(renderer);
-
+      		
       		// delete the renderer itself.
       		delete renderer;
 		 */
@@ -2708,10 +2758,10 @@
 		 * @param  {string} [config.params.subtype="overlaid"] Subtype of rendering "stacked", "clustered", "overlaid"
 		 * @constructor
 		 * @name  STX.Renderer.Histogram
-		 * 	@example
+		 * 	@example		
 			    var axis2=new STXChart.YAxis();
 			    axis2.position="left";
-
+			
 				// configure the histogram display
 				var params={
 					yAxis: axis2,
@@ -2722,24 +2772,24 @@
 					opacity:			.7,  // only needed if supporting IE8, otherwise can use rgba values in histMap instead
 					widthFactor:		.8	 // to control space between bars. 1 = no space in between
 				};
-
+				
 			 	//legend creation callback
 				function histogramLegend(colors){
 			        stxx.chart.legendRenderer(stxx,{legendColorMap:colors, coordinates:{x:260, y:stxx.panels["chart"].yAxis.top+30}, noBase:true});
 			    }
-
+  
   				histRenderer=stxx.setSeriesRenderer(new STX.Renderer.Histogram({params: params, callback: histogramLegend}));
 
 				stxx.addSeries("^NIOALL", {display:"Symbol 1",data:{useDefaultQuoteFeed:true}});
 				stxx.addSeries("^NIOAFN", {display:"Symbol 2",data:{useDefaultQuoteFeed:true}});
 				stxx.addSeries("^NIOAMD", {display:"Symbol 3",data:{useDefaultQuoteFeed:true}});
-
+  				
 	      		histRenderer.removeAllSeries()
 				.attachSeries("^NIOALL","#6B9CF7")
 				.attachSeries("^NIOAFN","#95B7F6")
 				.attachSeries("^NIOAMD","#B9D0F5")
 				.ready();  //use ready() to immediately draw the histogram
-		 *
+		 *		
 		 * @example
 			// this is an example on how completely remove a renderer and all associated data. This should only be necessary if you are also removing the chart itself
 			// remove all series from the renderer including series data from the masterData
@@ -2881,7 +2931,7 @@
 		};
 
 		STX.Drawing.annotation.prototype.measure=function(){};
-
+		
 		STX.Drawing.annotation.prototype.render=function(context){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -2912,7 +2962,7 @@
 					sx1=x+w/2;
 					sy1=y+h/2;
 				}
-
+		
 				context.beginPath();
 				if(this.borderColor) context.strokeStyle=this.borderColor;
 				else context.strokeStyle=color;
@@ -2955,7 +3005,7 @@
 		STX.Drawing.annotation.prototype.onChange=function(e){
 			//no operation. Override if you want to capture the change.
 		};
-
+		
 		STX.Drawing.annotation.prototype.edit=function(context){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -2970,7 +3020,7 @@
 					}
 				};
 			}
-
+		
 			function cancelAnnotation(self){
 				return function(){
 					self.stx.undo();
@@ -2982,14 +3032,14 @@
 					if(self.ta.value==="") return;
 					self.text=self.ta.value;
 					self.adjust();
-
+		
 					self.stx.addDrawing(self);
 					self.stx.changeOccurred("vector");
 					self.stx.undo();
 					self.stx.cancelTouchSingleClick=true;
 				};
 			}
-
+		
 			function resizeAnnotation(self){
 				return function(e){
 					if(e){
@@ -3038,7 +3088,7 @@
 					}
 				};
 			}
-
+		
 			this.stx.undisplayCrosshairs();
 			this.stx.editingAnnotation=true;
 			this.stx.openDialog="annotation";
@@ -3082,14 +3132,14 @@
 			}
 			var x0=this.stx.pixelFromTick(this.p0[0], panel.chart);
 			var y0=this.stx.pixelFromValueAdjusted(panel, this.p0[0], this.p0[1]);
-
+		
 			this.ta.style.left=x0+"px";
 			this.ta.style.top=y0+"px";
 			if(this.name=="callout"){
 				this.ta.style.left=x0-this.defaultWidth+"px";
 				this.ta.style.top=y0-this.defaultHeight+"px";
 			}
-
+		
 			this.stx.controls.annotationSave.style.display="inline-block";
 			this.stx.controls.annotationCancel.style.display="inline-block";
 			this.stx.controls.annotationSave.onclick=saveAnnotation(this);
@@ -3115,14 +3165,14 @@
 				}
 			}
 		};
-
+		
 		STX.Drawing.annotation.prototype.click=function(context, tick, value){
 			var panel=this.stx.panels[this.panelName];
 			this.copyConfig();
 			this.getFontString();
 			this.setPoint(0, tick, value, panel.chart);
 			this.adjust();
-
+		
 			this.edit(context);
 			return false;
 		};
@@ -3158,7 +3208,7 @@
 			return false;
 			//return this.boxIntersection(tick, value);
 		};
-
+		
 		STX.Drawing.annotation.prototype.abort=function(){
 			this.stx.controls.annotationSave.style.display="none";
 			this.stx.controls.annotationCancel.style.display="none";
@@ -3174,7 +3224,7 @@
 			}
 			STX.fixScreen();
 		};
-
+		
 		/**
 		 * Reconstruct an annotation
 		 * @param  {STXChart} stx The chart object
@@ -3189,11 +3239,6 @@
 		 * @param {string} [obj.bg] Background color
 		 * @param {string} [obj.lw] Line width
 		 * @param {string} [obj.ptrn] Line pattern
-		 * @param {object} [obj.fnt] Font
-		 * @param {object} [obj.fnt.st] Font style
-		 * @param {object} [obj.fnt.sz] Font size
-		 * @param {object} [obj.fnt.wt] Font weight
-		 * @param {object} [obj.fnt.fl] Font family
 		 * @memberOf STX.Drawing.annotation
 		 */
 		STX.Drawing.annotation.prototype.reconstruct=function(stx, obj){
@@ -3213,7 +3258,7 @@
 			if(!this.font) this.font={};
 			this.adjust();
 		};
-
+		
 		STX.Drawing.annotation.prototype.serialize=function(){
 			var obj={
 				name:this.name,
@@ -3243,7 +3288,7 @@
 
 			return obj;
 		};
-
+		
 		STX.Drawing.annotation.prototype.adjust=function(){
 			this.getFontString();
 			var panel=this.stx.panels[this.panelName];
@@ -3270,7 +3315,7 @@
 				this.stem.t=this.stx.tickFromDate(this.stem.d, panel.chart);
 			}
 		};
-
+		
 		/**
 		 * segment is an implementation of a {@link STX.Drawing.BaseTwoPoint} drawing.
 		 * @name STX.Drawing.segment
@@ -3279,9 +3324,9 @@
 		STX.Drawing.segment=function(){
 			this.name="segment";
 		};
-
+		
 		STX.Drawing.segment.stxInheritsFrom(STX.Drawing.BaseTwoPoint);
-
+		
 		STX.Drawing.segment.prototype.render=function(context){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -3289,20 +3334,20 @@
 			var x1=this.stx.pixelFromTick(this.p1[0], panel.chart);
 			var y0=this.stx.pixelFromValueAdjusted(panel, this.p0[0], this.p0[1]);
 			var y1=this.stx.pixelFromValueAdjusted(panel, this.p1[0], this.p1[1]);
-
+		
 			var color=this.color;
 			if(color=="auto" || STX.isTransparent(color)) color=this.stx.defaultColor;
 			var width=this.lineWidth;
 			if(this.highlighted){
 				color=this.stx.getCanvasColor("stx_highlight_vector");
 			}
-
+		
 			var parameters={
 					pattern: this.pattern,
 					lineWidth: width
 			};
 			this.stx.plotLine(x0, x1, y0, y1, color, this.name, context, panel, parameters);
-
+		
 			if(this.axisLabel && !this.highlighted){
 				if(this.name=="horizontal") {
 					this.stx.endClip();
@@ -3314,7 +3359,7 @@
 						txt=this.stx.formatYAxisPrice(txt, panel);
 					this.stx.createYAxisLabel(panel, txt, y0, color);
 					this.stx.startClip(panel.name);
-				}else if(this.name=="vertical" && !STXChart.hideDates()) {
+				}else if(this.name=="vertical") {
 					var dt, newDT;
 					/* set d0 to the right timezone */
 					dt=this.stx.dateFromTick(this.p0[0], panel.chart, true);
@@ -3342,7 +3387,7 @@
 						myDate=STX.mmddhhmm(myDate);
 					}
 					this.stx.endClip();
-					this.stx.createXAxisLabel(panel, myDate, x0, color, null, true);
+					this.stx.createXAxisLabel(panel, myDate, x0, color, null, true);			
 					this.stx.startClip(panel.name);
 				}
 			}
@@ -3352,13 +3397,13 @@
 				this.littleCircle(context, x0, y0, p0Fill);
 				this.littleCircle(context, x1, y1, p1Fill);
 			}
-
+		
 		};
-
+		
 		STX.Drawing.segment.prototype.abort=function(){
 			this.stx.setMeasure(null,null,null,null,false);
 		};
-
+		
 		STX.Drawing.segment.prototype.intersected=function(tick, value, box){
 			this.whichPoint=null;
 			if(!this.p0 || !this.p1) return null; // in case invalid drawing (such as from panel that no longer exists)
@@ -3394,14 +3439,14 @@
 				return null;
 			}
 		};
-
+		
 		STX.Drawing.segment.prototype.copyConfig=function(){
 			this.color=this.stx.currentVectorParameters.currentColor;
 			this.lineWidth=this.stx.currentVectorParameters.lineWidth;
 			this.pattern=this.stx.currentVectorParameters.pattern;
 			if(this.pattern=="none") this.pattern="solid";
 		};
-
+		
 		/**
 		 * Reconstruct a segment
 		 * @memberOf  STX.Drawing.segment
@@ -3432,7 +3477,7 @@
 			this.v1=obj.v1;
 			this.adjust();
 		};
-
+		
 		STX.Drawing.segment.prototype.serialize=function(){
 			return {
 				name:this.name,
@@ -3448,11 +3493,11 @@
 				v1:this.v1
 			};
 		};
-
-
+		
+		
 		/**
 		 * Continuous line drawing tool. Creates a series of connected line segments, each one completed with a user click.
-		 *
+		 * 
 		 * It inherits its properties from {@link STX.Drawing.segment}.
 		 * @constructor
 		 * @name  STX.Drawing.continuous
@@ -3462,9 +3507,9 @@
 			this.dragToDraw=false;
 			this.maxSegments=null;
 		};
-
+		
 		STX.Drawing.continuous.stxInheritsFrom(STX.Drawing.segment);
-
+		
 		STX.Drawing.continuous.prototype.click=function(context, tick, value){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -3478,9 +3523,9 @@
 				this.stx.undo();//abort
 				return true;
 			}
-
+			
 			this.setPoint(1, tick, value, panel.chart);
-
+		
 			// render a segment
 			var Segment=STX.Drawing.segment;
 			var segment=new Segment();
@@ -3490,16 +3535,16 @@
 			this.stx.changeOccurred("vector");
 			this.stx.draw();
 			this.segment++;
-
-			if(this.maxSegments && this.segment>this.maxSegments) return true;
+			
+			if(this.maxSegments && this.segment>this.maxSegments) return true;		
 			this.setPoint(0, tick, value, panel.chart);  // reset initial point for next segment, copy by value
 			return false;
 		};
 
-
+		
 		/**
 		 * Line drawing tool. A line is a vector defined by two points that is infinite in both directions.
-		 *
+		 * 
 		 * It inherits its properties from {@link STX.Drawing.segment}.
 		 * @constructor
 		 * @name  STX.Drawing.line
@@ -3509,14 +3554,14 @@
 		};
 
 		STX.Drawing.line.prototype.dragToDraw=false;
-
+		
 		STX.Drawing.line.stxInheritsFrom(STX.Drawing.segment);
-
+		
 		STX.Drawing.line.prototype.calculateOuterSet=function(panel){
 			if(this.p0[0]==this.p1[0] || this.p0[1]==this.p1[1] || this.stx.isDailyInterval(this.stx.layout.interval)){
 				return;
 			}
-
+		
 			var vector={
 					x0:this.p0[0],
 					y0:this.p0[1],
@@ -3531,16 +3576,16 @@
 						y1:this.p0[1]
 				};
 			}
-
+		
 			var earlier=vector.x0-1000;
 			var later=vector.x1+1000;
-
+		
 			this.v0B=STX.yIntersection(vector, earlier);
 			this.v1B=STX.yIntersection(vector, later);
 			this.d0B=this.stx.dateFromTick(earlier, panel.chart);
 			this.d1B=this.stx.dateFromTick(later, panel.chart);
 		};
-
+		
 		STX.Drawing.line.prototype.click=function(context, tick, value){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -3555,7 +3600,7 @@
 			this.penDown=false;
 			return true;	// kernel will call render after this
 		};
-
+		
 		/**
 		 * Reconstruct a line
 		 * @param  {STXChart} stx The chart object
@@ -3596,7 +3641,7 @@
 			}
 			this.adjust();
 		};
-
+		
 		STX.Drawing.line.prototype.serialize=function(){
 			var obj={
 				name:this.name,
@@ -3619,22 +3664,22 @@
 			}
 			return obj;
 		};
-
+		
 		STX.Drawing.line.prototype.adjust=function(){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
-			this.setPoint(0, this.d0, this.v0, panel.chart);
+			this.setPoint(0, this.d0, this.v0, panel.chart);		
 			this.setPoint(1, this.d1, this.v1, panel.chart);
 			// Use outer set if original drawing was on intraday but now displaying on daily
 			if(this.stx.isDailyInterval(this.stx.layout.interval) && this.d0B){
-				this.setPoint(0, this.d0B, this.v0B, panel.chart);
+				this.setPoint(0, this.d0B, this.v0B, panel.chart);		
 				this.setPoint(1, this.d1B, this.v1B, panel.chart);
 			}
 		};
-
+		
 		/**
 		 * Ray drawing tool. A ray is defined by two points. It travels infinitely past the second point.
-		 *
+		 * 
 		 * It inherits its properties from {@link STX.Drawing.line}.
 		 * @constructor
 		 * @name  STX.Drawing.ray
@@ -3642,48 +3687,48 @@
 		STX.Drawing.ray=function(){
 			this.name="ray";
 		};
-
+		
 		STX.Drawing.ray.stxInheritsFrom(STX.Drawing.line);
-
+		
 		STX.Drawing.ray.prototype.calculateOuterSet=function(panel){
 			if(this.p0[0]==this.p1[0] || this.p0[1]==this.p1[1] || this.stx.isDailyInterval(this.stx.layout.interval)){
 				return;
 			}
-
+		
 			var vector={
 					x0:this.p0[0],
 					y0:this.p0[1],
 					x1:this.p1[0],
 					y1:this.p1[1]
 			};
-
+		
 			var endOfRay=vector.x1+1000;
 			if(vector.x0>vector.x1){
 				endOfRay=vector.x1-1000;
 			}
-
-
+		
+		
 			this.v0B=this.v0;
 			this.v1B=STX.yIntersection(vector, endOfRay);
 			this.d0B=this.d0;
 			this.d1B=this.stx.dateFromTick(endOfRay, panel.chart);
 		};
-
+		
 		STX.Drawing.ray.prototype.adjust=function(){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
-			this.setPoint(0, this.d0, this.v0, panel.chart);
+			this.setPoint(0, this.d0, this.v0, panel.chart);		
 			this.setPoint(1, this.d1, this.v1, panel.chart);
 			// Use outer set if original drawing was on intraday but now displaying on daily
-			if(this.stx.isDailyInterval(this.stx.layout.interval) && this.d0B){
+			if(this.stx.isDailyInterval(this.stx.layout.interval) && this.d0B){	
 				this.setPoint(1, this.d1B, this.v1B, panel.chart);
 			}
 		};
-
-
+		
+		
 		/**
 		 * Horizontal line drawing tool. The horizontal line extends infinitely in both directions.
-		 *
+		 * 
 		 * It inherits its properties from {@link STX.Drawing.segment}
 		 * @constructor
 		 * @name  STX.Drawing.horizontal
@@ -3693,10 +3738,10 @@
 		};
 
 		STX.Drawing.horizontal.prototype.dragToDraw=false;
-
+		
 		STX.Drawing.horizontal.stxInheritsFrom(STX.Drawing.segment);
 		STX.Drawing.horizontal.prototype.measure=function(){};
-
+		
 		STX.Drawing.horizontal.prototype.click=function(context, tick, value){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -3704,8 +3749,8 @@
 			this.setPoint(0, tick, value, panel.chart);
 			return true;	// kernel will call render after this
 		};
-
-
+		
+		
 		/**
 		 * Reconstruct a horizontal
 		 * @param  {STXChart} stx The chart object
@@ -3732,7 +3777,7 @@
 			this.axisLabel=obj.al;
 			this.adjust();
 		};
-
+		
 		STX.Drawing.horizontal.prototype.serialize=function(){
 			var obj={
 				name:this.name,
@@ -3745,17 +3790,17 @@
 				tzo0:this.tzo0,
 				al:this.axisLabel
 			};
-
+		
 			return obj;
 		};
-
+		
 		STX.Drawing.horizontal.prototype.adjust=function(){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
 			this.setPoint(0, this.d0, this.v0, panel.chart);
 			this.p1=[this.p0[0]+100, this.p0[1]];
 		};
-
+		
 		STX.Drawing.horizontal.prototype.copyConfig=function(){
 			this.color=this.stx.currentVectorParameters.currentColor;
 			this.lineWidth=this.stx.currentVectorParameters.lineWidth;
@@ -3765,7 +3810,7 @@
 
 		/**
 		 * Vertical line drawing tool. The vertical line extends infinitely in both directions.
-		 *
+		 * 
 		 * It inherits its properties from {@link STX.Drawing.horizontal}.
 		 * @constructor
 		 * @name  STX.Drawing.vertical
@@ -3773,19 +3818,19 @@
 		STX.Drawing.vertical=function(){
 			this.name="vertical";
 		};
-
+		
 		STX.Drawing.vertical.stxInheritsFrom(STX.Drawing.horizontal);
 		STX.Drawing.vertical.prototype.measure=function(){};
-
+		
 		STX.Drawing.vertical.prototype.adjust=function(){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
 			this.setPoint(0, this.d0, this.v0, panel.chart);
 			this.p1=[this.p0[0], this.p0[1]+1];
 		};
+		
 
-
-
+		
 		/**
 		 * Measure tool.
 		 * It inherits its properties from {@link STX.Drawing.segment}.
@@ -3795,15 +3840,15 @@
 		STX.Drawing.measure=function(){
 			this.name="measure";
 		};
-
+		
 		STX.Drawing.measure.stxInheritsFrom(STX.Drawing.segment);
-
+		
 		STX.Drawing.measure.prototype.click=function(context, tick, value){
 			this.copyConfig();
 			if(!this.penDown){
 				this.p0=[tick,value];
 				this.penDown=true;
-
+				
 				return false;
 			}
 			this.stx.undo();
@@ -3819,9 +3864,9 @@
 		STX.Drawing.rectangle=function(){
 			this.name="rectangle";
 		};
-
+		
 		STX.Drawing.rectangle.stxInheritsFrom(STX.Drawing.BaseTwoPoint);
-
+		
 		STX.Drawing.rectangle.prototype.render=function(context){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -3829,7 +3874,7 @@
 			var x1=this.stx.pixelFromTick(this.p1[0], panel.chart);
 			var y0=this.stx.pixelFromValueAdjusted(panel, this.p0[0], this.p0[1]);
 			var y1=this.stx.pixelFromValueAdjusted(panel, this.p1[0], this.p1[1]);
-
+		
 			var x=Math.round(Math.min(x0, x1))+0.5;
 			var y=Math.min(y0, y1);
 			var width=Math.max(x0,x1)-x;
@@ -3838,7 +3883,7 @@
 			if(this.highlighted){
 				edgeColor=this.stx.getCanvasColor("stx_highlight_vector");
 			}
-
+		
 			var fillColor=this.fillColor;
 			if(fillColor && !STX.isTransparent(fillColor) && fillColor!="auto"){
 				context.beginPath();
@@ -3849,7 +3894,7 @@
 				context.closePath();
 				context.globalAlpha=1;
 			}
-
+		
 			var parameters={
 					pattern: this.pattern,
 					lineWidth: this.lineWidth
@@ -3858,7 +3903,7 @@
 				parameters.pattern="solid";
 				if(parameters.lineWidth==0.1) parameters.lineWidth=1;
 			}
-
+		
 			// We extend the vertical lines by .5 to account for displacement of the horizontal lines
 			// HTML5 Canvas exists *between* pixels, not on pixels, so draw on .5 to get crisp lines
 			this.stx.plotLine(x0, x1, y0, y0, edgeColor, "segment", context, panel, parameters);
@@ -3872,7 +3917,7 @@
 				this.littleCircle(context, x1, y1, p1Fill);
 			}
 		};
-
+		
 		STX.Drawing.rectangle.prototype.intersected=function(tick, value, box){
 			this.whichPoint=null;
 			if(!this.p0 || !this.p1) return null; // in case invalid drawing (such as from panel that no longer exists)
@@ -3903,14 +3948,14 @@
 			}
 			return null;
 		};
-
+		
 		STX.Drawing.rectangle.prototype.copyConfig=function(){
 			this.color=this.stx.currentVectorParameters.currentColor;
 			this.fillColor=this.stx.currentVectorParameters.fillColor;
 			this.lineWidth=this.stx.currentVectorParameters.lineWidth;
 			this.pattern=this.stx.currentVectorParameters.pattern;
 		};
-
+		
 		/**
 		 * Reconstruct an rectangle
 		 * @param  {STXChart} stx The chart object
@@ -3943,7 +3988,7 @@
 			this.v1=obj.v1;
 			this.adjust();
 		};
-
+		
 		STX.Drawing.rectangle.prototype.serialize=function(){
 			return {
 				name:this.name,
@@ -3963,7 +4008,7 @@
 
 		/**
 		 * Ellipse drawing tool.
-		 *
+		 * 
 		 * It inherits its properties from {@link STX.Drawing.BaseTwoPoint}.
 		 * @constructor
 		 * @name  STX.Drawing.ellipse
@@ -3971,9 +4016,9 @@
 		STX.Drawing.ellipse=function(){
 			this.name="ellipse";
 		};
-
+		
 		STX.Drawing.ellipse.stxInheritsFrom(STX.Drawing.BaseTwoPoint);
-
+		
 		STX.Drawing.ellipse.prototype.render=function(context){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -3981,8 +4026,8 @@
 			var x1=this.stx.pixelFromTick(this.p1[0], panel.chart);
 			var y0=this.stx.pixelFromValueAdjusted(panel, this.p0[0], this.p0[1]);
 			var y1=this.stx.pixelFromValueAdjusted(panel, this.p1[0], this.p1[1]);
-
-
+		
+		
 			var left=x0-(x1-x0);
 			var right=x1;
 			var middle=y0;
@@ -3997,21 +4042,20 @@
 				edgeColor=this.stx.getCanvasColor("stx_highlight_vector");
 				if(lineWidth==0.1) lineWidth=1.1;
 			}
-
+		
 			var fillColor=this.fillColor;
-			
 			context.beginPath();
 			context.moveTo(left, middle);
 			context.bezierCurveTo(left, bottom+weight, right, bottom+weight, right, middle);
 			context.bezierCurveTo(right, top-weight, left, top-weight, left, middle);
-
+		
 			if(fillColor && !STX.isTransparent(fillColor) && fillColor!="auto"){
 				context.fillStyle=fillColor;
 				context.globalAlpha=0.2;
 				context.fill();
 				context.globalAlpha=1;
 			}
-
+		
 			if(edgeColor && this.pattern!="none"){
 				context.strokeStyle=edgeColor;
 				context.lineWidth=lineWidth;
@@ -4030,8 +4074,8 @@
 				this.littleCircle(context, x1, y1, p1Fill);
 			}
 		};
-
-
+		
+		
 		STX.Drawing.ellipse.prototype.intersected=function(tick, value, box){
 			this.whichPoint=null;
 			if(!this.p0 || !this.p1) return null; // in case invalid drawing (such as from panel that no longer exists)
@@ -4059,14 +4103,14 @@
 				value: value
 			};
 		};
-
+		
 		STX.Drawing.ellipse.prototype.copyConfig=function(){
 			this.color=this.stx.currentVectorParameters.currentColor;
 			this.fillColor=this.stx.currentVectorParameters.fillColor;
 			this.lineWidth=this.stx.currentVectorParameters.lineWidth;
 			this.pattern=this.stx.currentVectorParameters.pattern;
 		};
-
+		
 		/**
 		 * Reconstruct an ellipse
 		 * @param  {STXChart} stx The chart object
@@ -4099,7 +4143,7 @@
 			this.v1=obj.v1;
 			this.adjust();
 		};
-
+		
 		STX.Drawing.ellipse.prototype.serialize=function(){
 			return {
 				name:this.name,
@@ -4116,10 +4160,10 @@
 				v1:this.v1
 			};
 		};
-
+		
 		/**
 		 * Fibonacci drawing tool.
-		 *
+		 * 
 		 * It inherits its properties from {@link STX.Drawing.BaseTwoPoint}
 		 * @constructor
 		 * @name  STX.Drawing.fibonacci
@@ -4128,9 +4172,9 @@
 			this.name="fibonacci";
 			this.configurator="fibonacci";
 		};
-
+		
 		STX.Drawing.fibonacci.stxInheritsFrom(STX.Drawing.BaseTwoPoint);
-
+		
 		STX.Drawing.fibonacci.mapping={
 				"trend":"t",
 				"color":"c",
@@ -4144,7 +4188,7 @@
 				"printValues":"pv",
 				"timezone":"tz"
 		};
-
+		
 		STX.Drawing.fibonacci.prototype.copyConfig=function(){
 			this.color=this.stx.currentVectorParameters.currentColor;
 			this.fillColor=this.stx.currentVectorParameters.fillColor;
@@ -4167,7 +4211,7 @@
 			var bottom=Math.max(y1, y0);
 			var height=bottom-top;
 			var isUpTrend=(y1-y0)/(x1-x0)>0;
-
+		
 			var min=0;
 			var max=1;
 			for(var i=0;i<this.parameters.fibs.length;i++){
@@ -4196,7 +4240,7 @@
 				}
 			}
 		};
-
+		
 		STX.Drawing.fibonacci.prototype.click=function(context, tick, value){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -4207,12 +4251,12 @@
 				return false;
 			}
 			if(this.accidentalClick(tick, value)) return this.dragToDraw;
-
+		
 			this.setPoint(1, tick, value, panel.chart);
 			this.setOuter();
 			this.parameters=STX.clone(this.parameters);	// separate from the global object
 			this.penDown=false;
-
+			
 			return true;	// kernel will call render after this
 		};
 
@@ -4229,7 +4273,7 @@
 			var bottom=Math.max(y1, y0);
 			var height=bottom-top;
 			var isUpTrend=(y1-y0)/(x1-x0)>0;
-
+		
 			var trendLineColor=this.parameters.trend.color;
 			if(trendLineColor=="auto" || STX.isTransparent(trendLineColor)) trendLineColor=this.stx.defaultColor;
 			if(this.highlighted){
@@ -4246,7 +4290,7 @@
 				context.fillStyle=txtColor;
 				var fib=this.parameters.fibs[i];
 				var y=isUpTrend?bottom-height*fib.level:top+height*fib.level;
-				//y=Math.round(y);
+				y=Math.round(y);
 				var x=STX.xIntersection({x0:x0,x1:x1,y0:y0,y1:y1}, y);
 				var nearX=this.parameters.extendLeft?0:x;
 				var farX=this.stx.chart.left+this.stx.chart.width;
@@ -4277,8 +4321,8 @@
 						}
 						if(context==this.stx.chart.context) this.stx.endClip();
 						this.stx.createYAxisLabel(panel, price, y, txtColor, null, context);
-						if(context==this.stx.chart.context) this.stx.startClip(panel.name);
-					}
+						if(context==this.stx.chart.context) this.stx.startClip(panel.name);	
+					}				
 				}
 				var fibColor=fib.color;
 				if(fibColor=="auto" || STX.isTransparent(fibColor)) fibColor=this.color;
@@ -4360,7 +4404,7 @@
 					p1: STX.clone(this.p1),
 					tick: tick, // save original tick
 					value: value // save original value
-				};
+				};				
 			}
 			return null;
 		};
@@ -4401,10 +4445,10 @@
 			this.tzo0=obj.tzo0;
 			this.tzo1=obj.tzo1;
 			this.v0=obj.v0;
-			this.v1=obj.v1;
+			this.v1=obj.v1;			
 			this.adjust();
 		};
-
+		
 		STX.Drawing.fibonacci.prototype.adjust=function(){
 			var panel=this.stx.panels[this.panelName];
 			if(!panel) return;
@@ -4412,7 +4456,7 @@
 			this.setPoint(1, this.d1, this.v1, panel.chart);
 			this.setOuter();
 		};
-
+		
 		STX.Drawing.fibonacci.prototype.serialize=function(){
 			var obj={
 				name:this.name,
@@ -4433,7 +4477,7 @@
 
 		/**
 		 * Retracement drawing tool.
-		 *
+		 * 
 		 * It inherits its properties from {@link STX.Drawing.fibonacci}
 		 * @constructor
 		 * @name  STX.Drawing.retracement
@@ -4441,15 +4485,15 @@
 		STX.Drawing.retracement=function(){
 			this.name="retracement";
 		};
-
+		
 		STX.Drawing.retracement.stxInheritsFrom(STX.Drawing.fibonacci);
-
+		
 
 		STX.QuoteFeed.BarChart=function(url){
 			this.url=url;
 			this.exchangeZones={"AX":"Australia/Sydney"};
 		};
-
+		
 		/**
 		 * Barchart version of quotes which uses web API to fetch data
 		 * @name  Barchart
@@ -4457,34 +4501,28 @@
 		 */
 
 		STX.QuoteFeed.BarChart.stxInheritsFrom(STX.QuoteFeed);
-
+		
 		STX.QuoteFeed.BarChart.prototype.isBats=function(symbol){
 			if(symbol.length<5) return true;
 			return false;
 		};
-
+		
 		STX.QuoteFeed.BarChart.prototype.isIndex=function(symbol){
 			if(symbol.length && symbol[0]=='$') return true;
 			return false;
 		};
-
+		
 		STX.QuoteFeed.BarChart.prototype.symbology=function(symbol){
 			return symbol;
 		};
-
+		
 		STX.QuoteFeed.BarChart.prototype.batsOpen=function(){
 			var nd=STX.getETDateTime();
 			if(nd.getHours()>=17) return false;
 			if(nd.getHours()<8) return false;
 			return true;
 		};
-
-		STX.QuoteFeed.BarChart.prototype.isAfterDelayed=function(){
-			var nd=STX.getETDateTime();
-			if((nd.getHours()>16 || (nd.getHours()==16 && nd.getMinutes()>20))) return true;
-			return false;
-		};
-
+		
 		STX.QuoteFeed.BarChart.prototype.fetch=function(params, cb){
 			var url = this.url + "/getHistory.csv";
 
@@ -4510,29 +4548,29 @@
 			if(params.endDate){
 				myDate=params.endDate;
 				if(STXChart.isDailyInterval(params.interval)){
-					myDate.setDate(myDate.getDate() - 1);   // set a day back since data with end day date,
-															// 00:00 time is actually included in the results,
-															// (even though API doc says exclusive of end date)
+					myDate.setDate(myDate.getDate() - 1);   // set a day back since data with end day date, 
+															// 00:00 time is actually included in the results, 
+															// (even though API doc says exclusive of end date) 
 															// we don't want that result again
 
 				}
 				myDate=STX.convertTimeZone(myDate,null,"America/New_York");
 				url+="&endDate=" + STX.yyyymmddhhmm(myDate);
-
+				
 				if(params.startDate){
 					startDate=new Date(params.startDate);
 					if(STXChart.isDailyInterval(params.interval)){
-						startDate.setDate(startDate.getDate() + 1);   // set a day ahead, same reason as above, 00:00 is included in results.
+						startDate.setDate(startDate.getDate() + 1);   // set a day ahead, same reason as above, 00:00 is included in results. 
 					}
 					startDate=STX.convertTimeZone(startDate,null,"America/New_York");
 					url+="&startDate=" + STX.yyyymmddhhmm(startDate);
 					params.maxRecords=0;
-				}else if(!params.maxRecords) params.maxRecords=maxTicks;
+				}else if(!params.maxRecords) params.maxRecords=20000;
 			}else{
 				if(params.startDate){
 					startDate=new Date(params.startDate);
 					if(STXChart.isDailyInterval(params.interval)){
-						startDate.setDate(startDate.getDate() + 1);   // set a day ahead, same reason as above, 00:00 is included in results.
+						startDate.setDate(startDate.getDate() + 1);   // set a day ahead, same reason as above, 00:00 is included in results. 
 					}
 					startDate=STX.convertTimeZone(startDate,null,"America/New_York");
 					url+="&startDate=" + STX.yyyymmddhhmm(startDate);
@@ -4548,7 +4586,7 @@
 			var symbol=this.symbology(params.symbol);
 
 			if(isbats && params.update){
-				if(symbol.indexOf(".BZ")==-1 && (!this.isAfterDelayed() || params.extended) && this.batsOpen() && symbol.charAt(0)!='$')	// After 4:20 always get delayed data on refreshes
+				if(symbol.indexOf(".BZ")==-1 && (!STX.LegacyMarket.isAfterDelayed(symbol) || params.extended) && this.batsOpen() && symbol.charAt(0)!='$')	// After 4:20 always get delayed data on refreshes
 					symbol=symbol+".BZ";
 			}
 			url+="&symbol=" + encodeURIComponent(symbol);
@@ -4566,18 +4604,18 @@
 					return;
 				}
 				res=self.process(res, params);
-
+				
 				var moreToLoad=!params.stx.quoteDriver.behavior.noLoadMore;
 				if(!params.maxRecords || res.length<params.maxRecords){
 					moreToLoad=false;
 				}
 				var attrExch="DELAYED";
 				if(isBats) attrExch="BATS";
-				else if(STX.Market.Symbology.isForexSymbol(params.symbol)) attrExch="REAL-TIME";
+				else if(STX.LegacyMarket.isForexSymbol(params.symbol)) attrExch="REAL-TIME";
 				cb({quotes:res, moreAvailable:moreToLoad, attribution:{source:"barchart",exchange:attrExch}});
 			});
 		};
-
+		
 		STX.QuoteFeed.BarChart.prototype.process=function(quotes, params){
 			var interval=params.interval;
 			var stx=params.stx;
@@ -4625,21 +4663,21 @@
 		};
 
 		/**
-		 * Xignite version of quotes which uses web API to fetch data. Pass the Xignite provided token to
+		 * Xignite version of quotes which uses web API to fetch data. Pass the Xignite provided token to 
 		 * the constructor. If constructed without a token then the STX.QuoteFeed.Xignite.Utility.overrides members
 		 * will be examined for rules on building the url path. overrides can be used for instance to redirect
 		 * the QuoteFeed to a proxy server that injects the token and an Access-Control-Allow-Origin header.
-		 *
+		 * 
 		 * **Note:** please review the following tutorial about data accessibility before attempting to request data from the browser : {@tutorial Integrating Third Party Data Feeds}
 		 *
 		 * @example Proxy server config
 		 *		Here is a sample proxy setup for Apache:
-		 *
+		 *		
 		 *		        SSLEngine on
 		 *		        SSLProxyEngine On
 		 *		        SSLProxyVerify none
 		 *		        SSLProxyCheckPeerCN off
-		 *
+		 *		
 		 *		        ProxyPass /www_xignite/ https://www.xignite.com/
 		 *		        ProxyPass /globalquotes_xignite/ https://globalquotes.xignite.com/
 		 *		        ProxyPass /batsrealtime_xignite/ https://batsrealtime.xignite.com/
@@ -4657,20 +4695,20 @@
 		 *
 		 *  	Also add the following override before you attach to the feed ( leave the protocol out -- not http:// or https:// should be included) :
 		 * 				STX.QuoteFeed.Xignite.Utility.overrides.server="yourProxyServer.yourCompany.com";
-		 *
-		 *  	If you need to have a different protocol than the default ("https://") add the following line
+		 * 
+		 *  	If you need to have a different protocol than the default ("http"+(STX.isIE9?"":"s")+"://") add the following line	
 		 * 				STX.QuoteFeed.Xignite.Utility.overrides.protocol="https://"; // change protocol as needed.
-		 *
-		 *  	If you need to have a different path than the defaults (see proxy config sample) add the following line. The same path will be appended to all calls.
+		 * 
+		 *  	If you need to have a different path than the defaults (see proxy config sample) add the following line. The same path will be appended to all calls.	
 		 * 				STX.QuoteFeed.Xignite.Utility.overrides.path="your path here";
-		 *
+		 *  
 		 * @example Default use case
 		 * stxx.attachQuoteFeed(new STX.QuoteFeed.Xignite(myToken));
-		 *
+		 * 
 		 * @example Using a proxy server
 		 * STX.QuoteFeed.Xignite.Utility.overrides.server="yourProxyServer.yourCompany.com";
 		 * stxx.attachQuoteFeed(new STX.QuoteFeed.Xignite());
-		 *
+		 * 
 		 * @param  {string} [token] optional Xignite API token
 		 * @name  Xignite
 		 * @constructor
@@ -4691,7 +4729,7 @@
 				STX.QuoteFeed.Xignite.Utility.overrides.path="";
 			}
 		};
-
+		
 		STX.QuoteFeed.Xignite.stxInheritsFrom(STX.QuoteFeed);
 
 		STX.QuoteFeed.Xignite.prototype.requiresImmediateRefresh=function(params){
@@ -4699,23 +4737,18 @@
 		};
 
 		STX.QuoteFeed.Xignite.prototype.isBats=function(symbol){
-			return (symbol && (symbol.length<5 || (symbol.length==5 && symbol[4]!="X")) &&
+			return ((symbol.length<5 || (symbol.length==5 && symbol[4]!="X")) &&
 					symbol.indexOf(".")==-1 && symbol.indexOf(":")==-1 && symbol.charAt(0)!='/');
 		};
-
+		
 		STX.QuoteFeed.Xignite.prototype.isIndex=function(symbol){
 			if(symbol && symbol.indexOf(".IND")>0) return true;
 			if(symbol && symbol.charAt(0)=="^" && symbol.length<6) return true;
 			return false;
 		};
-
-		// Can be overridden if RT Indexes to be supported for certain symbols
-		STX.QuoteFeed.Xignite.prototype.isRTIndex=function(symbol){
-			return false;
-		};
-
+		
 		STX.QuoteFeed.Xignite.prototype.isMutual=function(symbol){
-			if(!symbol || symbol.length<5 || symbol.length>6) return false;
+			if(symbol.length<5 || symbol.length>6) return false;
 			for(var j=0;j<symbol.length;j++){
 				if(symbol[j]<'A' || symbol[j]>'Z') return false;
 			}
@@ -4726,60 +4759,53 @@
 		STX.QuoteFeed.Xignite.prototype.symbology=function(symbol){
 			return symbol;
 		};
-
+		
 		STX.QuoteFeed.Xignite.prototype.batsOpen=function(){
 			var nd=STX.getETDateTime();
 			if(nd.getHours()>=17) return false;
 			if(nd.getHours()<8) return false;
 			return true;
 		};
-
+		
 		STX.QuoteFeed.Xignite.prototype.fetch=function(params, cb){
 
 			var missingBarsShutoff=true;  //not very effective unless we can fetch all of our data at once
 
+			var noDST=true; // Xignite hack: Xignite servers aren't changing GMT offset in DST so data is one hour behind... 
+			// When getting daily rollup (Periods=1440), the Fixing time is unchangeable and set to 11PM in DST
+			// This causes the last hour of the last historical bar to also be represented in the first update bar.
+			// Obviously they need to fix this!
+			function dst(dt){
+				var jan = new Date(dt.getFullYear(), 0, 1);
+				var jul = new Date(dt.getFullYear(), 6, 1);
+				var stdOffset=Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+				return dt.getTimezoneOffset() != stdOffset;
+			}
 			function toMarketTime(date,tz){
 				var utcTime=new Date(date.getTime() + date.getTimezoneOffset() * 60000);
 				if(tz && tz.indexOf("UTC")!=-1) return utcTime;
 				else return STX.convertTimeZone(utcTime,"UTC",tz);
 			}
 
-			function useBats(date,extended){
-				if(date.getDay()%6===0) return false;
-				if(extended){
-					if(date.getHours()>17) return false;
-					if(date.getHours()<8) return false;
-					if(date.getHours()==17 && date.getMinutes()>=15) return false;  //assumes 15 minute delay
-				}else{
-					if(date.getHours()>16) return false;
-					if(date.getHours()<9) return false;
-					if(date.getHours()==16 && date.getMinutes()>=15) return false;  //assumes 15 minute delay
-					if(date.getHours()==9 && date.getMinutes()<30) return false;
-				}
-				return true;
-			}
-
-			var symbol=this.symbology(params.symbol);
-			var isBats=!params.noBats && this.isBats(symbol);
-			var isIndex=this.isIndex(symbol);
-			var isRTIndex=this.isRTIndex(symbol);
-			var isMutual=this.isMutual(symbol);
-			var isForex=STX.Market.Symbology.isForexSymbol(symbol);
-			var isFuture=STX.Market.Symbology.isFuturesSymbol(symbol);
+			var isBats=!params.noBats && this.isBats(params.symbol);
+			var isIndex=this.isIndex(params.symbol);
+			var isMutual=this.isMutual(params.symbol);
+			var isForex=STX.LegacyMarket.isForexSymbol(params.symbol);
+			var isFuture=STX.LegacyMarket.isFuturesSymbol(params.symbol);
 			var isDaily=STXChart.isDailyInterval(params.interval);
+			var symbol=this.symbology(params.symbol);
 			var expiredFuture=false;
 			var marketZone=null;
 			var getSplitInfo=false;
-			var batsQuote=false;
 
-			var maxTicks=20000;  //should be large enough to bridge the weekend gap for 1 minute intervals (at least 5000)
-
-			if(params.chart.loadingMore) params.loadMore=true;
+			var maxTicks=20000;
 			
-			if(!params.update) params.xigniteID=new Date().getTime();
+			if(params.chart.loadingMore) params.loadMore=true;
+
 			if(!this.resultsCache) this.resultsCache={};
 			//initialize or don't use when loading more (since we prepend data, not replace it)
 			if(isForex && symbol.charAt(0)!="^") symbol="^"+symbol;
+			if(!this.resultsCache[symbol] || params.loadMore || !params.totalRecords) this.resultsCache[symbol]=[];
 
 			// Default to today
 			var myDate=new Date();
@@ -4804,7 +4830,7 @@
 				console.log("Interval 'week' not supported natively by Xignite!");
 			}
 			if(!params.maxRecords){
-				myMaxRecords=Math.min(myMaxRecords,maxTicks);
+				myMaxRecords=Math.min(myMaxRecords,maxTicks);				
 			}else{
 				if(!isDaily && params.period<10){
 					myMaxRecords=Math.ceil(Math.min(Math.max(params.maxRecords*theFactor,6000),maxTicks));
@@ -4820,9 +4846,7 @@
 			var error="";
 			var startDate;
 
-			if(!params.symbol){
-				error="No Symbol";
-			}else if(isForex){
+			if(isForex){
 				marketZone="UTC";
 				myDate=toMarketTime(myDate,marketZone);
 				if(symbol.charAt(0)=="^") symbol=symbol.substr(1);
@@ -4840,9 +4864,8 @@
 				}else if(params.startDate){
 					startDate=toMarketTime(params.startDate,marketZone);
 				}
-				if(startDate>myDate) myDate.setDate(myDate.getDate()+1);
 				if(!params.update && isDaily){
-					if(STX.Market.Symbology.isForexMetal(symbol)){
+					if(STX.LegacyMarket.isForexMetal(params.symbol)){
 						if(",USD,AUD,CAD,CHF,EUR,GBP,HKD,ZAR,".indexOf(","+symbol.substr(3,3)+",")!=-1){
 							api=STX.clone(STX.QuoteFeed.Xignite.Templates.HistoricalMajorMetals);
 						}else{
@@ -4857,11 +4880,11 @@
 						EndDate: STX.mmddyyyy(STX.yyyymmdd(myDate))
 					};
 				}else{
-					if(STX.Market.Symbology.isForexMetal(symbol,true)){
+					if(STX.LegacyMarket.isForexMetal(params.symbol,true)){
 						error="Intraday data not available.";  //intraday not available
 					}else{
-						if(STX.Market.Symbology.isForexMetal(symbol)){
-							api=STX.clone(STX.QuoteFeed.Xignite.Templates.IntradayRTMetals);
+						if(STX.LegacyMarket.isForexMetal(params.symbol)){
+							api=STX.clone(STX.QuoteFeed.Xignite.Templates.IntradayRTMetals);				
 						}else{
 							api=STX.clone(STX.QuoteFeed.Xignite.Templates.IntradayRTForex);
 						}
@@ -4872,7 +4895,7 @@
 							Period: (params.interval=="hour"?params.period*60:params.period)
 						};
 						if(isDaily){
-							//api.results.time=null;
+							api.results.time=null;
 							args.Period=1440;
 						}else if(params.update){
 							if(params.startDate){
@@ -4889,30 +4912,29 @@
 			}else if(isFuture){
 				marketZone="America/New_York";
 				myDate=toMarketTime(myDate,marketZone);
-				var root=symbol;
-				if(root.charAt(0)=="/") root=root.substr(1);
+				if(symbol.charAt(0)=="/") symbol=symbol.substr(1);
 				var month=0,year=0;  //default to continuous contract
 				var cash=false;
-				var futureMatch=(/(^[A-Z0-9]{1,3})([A-Z])([0-9]{1,2}$)/i).exec(root);
-				if(futureMatch){  //includes month and year
-					root=futureMatch[1];
+				if(symbol.length>2 && !isNaN(symbol.substr(symbol.length-1))){  //includes month and year
+					//get year from symbol
+					symYear=parseInt(symbol.split("").reverse().join(""),10).toString().split("").reverse().join("");
 					var thisYear=(toMarketTime(new Date(),marketZone)).getFullYear();
 					year=thisYear+9;
-					var symYear=futureMatch[3];
-					var symYearAsInt=parseInt(symYear,10);
+					symYearAsInt=parseInt(symYear,10);
 					if(symYear.length<=4 && symYearAsInt>0 && symYearAsInt<year){
 						while(year%(Math.pow(10,symYear.length))!=symYearAsInt) {
 							year--;
 						}
 						if(thisYear>year) expiredFuture=true;
 					}else year="X";
-					month=STX.convertFutureMonth(futureMatch[2]);
+					month=STX.convertFutureMonth(symbol.charAt(symbol.length-symYear.length-1));
 					if(month=="Y" && symYearAsInt===0) {
 						cash=true;
 						month=0;
 						year=0;
-						expiredFuture=true; //turn off updates for the ..Y0 futures, they don't seem to be up torootnor accessible in delayed API
+						expiredFuture=true; //turn off updates for the ..Y0 futures, they don't seem to be up to date nor accessible in delayed API
 					}
+					symbol=symbol.substr(0,symbol.length-symYear.length-1);
 				}
 				if(isNaN(year) || isNaN(month)){
 					error="Invalid futures symbol.";
@@ -4936,67 +4958,48 @@
 						startDate=toMarketTime(params.startDate,marketZone);
 					}
 					args={
-						Symbol: root,
+						Symbol: symbol,
 						StartDate: (startDate?STX.mmddyyyy(STX.yyyymmdd(startDate)):null),
-						EndDate: STX.mmddyyyy(STX.yyyymmdd(endDate))
+						EndDate: STX.mmddyyyy(STX.yyyymmdd(endDate)),
+						Month: month.toString(),
+						Year: year.toString()
 					};
 					if(year!==0 || cash){  //includes month and year
 						api.method=api.method.future;
-						args.Month=month.toString();
-						args.Year=year.toString();
 					}else{
 						api.method=api.method.commodity;
 					}
 				}else if(!expiredFuture){
 					api=STX.clone(STX.QuoteFeed.Xignite.Templates.DelayedFuture);
 					args={
-						Symbol: root,
+						Symbol: symbol,
 						Month: month.toString(),
 						Year: year.toString()
 					};
 				}
+				if(symbol.charAt(0)!="/") symbol="/"+symbol;		
 			}else if(isBats && params.startDate && params.update){
 				marketZone="America/New_York";
 				myDate=toMarketTime(myDate,marketZone);
+
 				if(params.stx.quoteDriver.behavior.snapshotRefresh && myDate.getDay()%6){
 					var newDT=new timezoneJS.Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate(), myDate.getHours(), myDate.getMinutes(), marketZone);
 					if(STX.QuoteFeed.Xignite.getSnapshotQuote(params,symbol,isDaily,newDT.getTimezoneOffset(),cb,this)) return;
 				}
 
 				if(isDaily){
-					if(params.extended){
-						if(useBats(myDate,true)){
-							api=STX.clone(STX.QuoteFeed.Xignite.Templates.BATSRealQuote);
-							batsQuote=true;
-						}else{
-							api=STX.clone(STX.QuoteFeed.Xignite.Templates.DelayedEquity);
-						}
-						api.results.extCls="ExtendedHoursPrice";
-					}else if(useBats(myDate)){
-						api=STX.clone(STX.QuoteFeed.Xignite.Templates.BATSRealQuote);
-						batsQuote=true;
-					}else{
-						api=STX.clone(STX.QuoteFeed.Xignite.Templates.DelayedEquity);
-					}
+					api=STX.clone(STX.QuoteFeed.Xignite.Templates.BATSRealQuote);
 					args={
-						Identifier: symbol.replace(/-/g,"/")
+						Symbol: symbol
 					};
 			   	}else if(params.update){
 					//We need to force the start date to be today, since Xignite may not provide BATS across days in the future
 					//Besides, we shouldn't need BATS data from any day besides today anyway.
 					//var startDate=STX.mmddyyyy(STX.yyyymmdd(toMarketTime(params.startDate,marketZone)));
 					startDate=STX.mmddyyyy(STX.yyyymmdd(myDate));
-					if(params.extended && useBats(myDate,true)){
-						api=STX.clone(STX.QuoteFeed.Xignite.Templates.IntradayBATSRTEquity);
-						batsQuote=true;
-					}else if(useBats(myDate)){
-						api=STX.clone(STX.QuoteFeed.Xignite.Templates.IntradayBATSRTEquity);
-						batsQuote=true;
-					}else{
-						api=STX.clone(STX.QuoteFeed.Xignite.Templates.IntradayEquity);
-					}
+					api=STX.clone(STX.QuoteFeed.Xignite.Templates.IntradayBATSRTEquity);
 					args={
-						Identifier: symbol.replace(/-/g,"/"),
+						Identifier: symbol,
 						Period: (params.interval=="hour"?params.period*60:params.period),
 						StartTime: startDate+" 00:00:00",
 						EndTime: STX.mmddyyyy(STX.yyyymmdd(myDate))+" 23:59:59",
@@ -5024,7 +5027,7 @@
 					else
 						api=STX.clone(STX.QuoteFeed.Xignite.Templates.HistoricalEquity);
 					args={
-						Identifier: symbol.replace(/-/g,"/"),
+						Identifier: symbol,
 						StartDate: (params.startDate?STX.mmddyyyy(STX.yyyymmdd(toMarketTime(params.startDate,marketZone))):null),
 						EndDate: STX.mmddyyyy(STX.yyyymmdd(myDate)),
 						PeriodType: STX.QuoteFeed.Xignite.Utility.xIgniteInterval(params.interval),
@@ -5034,25 +5037,20 @@
 					if(isDaily){
 						if(isMutual){
 							api=STX.clone(STX.QuoteFeed.Xignite.Templates.DelayedMF);
-							//if(symbol.length==6){  //hack, Xignite sending most recent NAV in PreviousNAV field for UITs
-							//	api.results.open=api.results.close=api.results.high=api.results.low="PreviousNAV";
-							//}
-						}else if(isRTIndex){
-							api=STX.clone(STX.QuoteFeed.Xignite.Templates.RealTimeIndex);
+							if(symbol.length==6){  //hack, Xignite sending most recent NAV in PreviousNAV field for UITs
+								api.results.open=api.results.close=api.results.high=api.results.low="PreviousNAV";
+							}
 						}else if(isIndex){
 							api=STX.clone(STX.QuoteFeed.Xignite.Templates.DelayedIndex);
 						}else{
 							api=STX.clone(STX.QuoteFeed.Xignite.Templates.DelayedEquity);
-							if(params.extended) api.results.extCls="ExtendedHoursPrice";
 						}
 						args={
-							Identifier: symbol.replace(/-/g,"/")
+							Identifier: symbol
 						};
 					}else{
 						if(isMutual){
 							error="Intraday data not available.";  //intraday not available
-						}else if(isRTIndex){
-							api=STX.clone(STX.QuoteFeed.Xignite.Templates.IntradayRTIndex);
 						}else if(isIndex){
 							api=STX.clone(STX.QuoteFeed.Xignite.Templates.IntradayIndex);
 						}else{
@@ -5061,14 +5059,15 @@
 						startDate=myDate;
 						if(!params.startDate && params.maxRecords){  //must calculate startdate so we can use API
 							startDate=new Date(myDate.getTime());
-							startDate.setMinutes(startDate.getMinutes()-myMaxRecords*(params.interval=="hour"?params.period*60:params.period));
+							if(isDaily) startDate.setDate(startDate.getDate()-myMaxRecords);
+							else startDate.setMinutes(startDate.getMinutes()-myMaxRecords*(params.interval=="hour"?params.period*60:params.period));
 						}else if(params.startDate){
 							startDate=toMarketTime(params.startDate,marketZone);
 						}
 						//temporary fix, Xignite is not returning any intraday bars when start date is before 2011
 						//if(!isIndex && startDate<new Date(2011,0,1,0,0,0,0)) startDate=new Date(2011,0,1,0,0,0,0);
 						args={
-							Identifier: symbol.replace(/-/g,"/"),
+							Identifier: symbol,
 							StartTime: STX.mmddyyyy(STX.yyyymmdd(startDate))+" 00:00:00",
 							EndTime: STX.mmddyyyy(STX.yyyymmdd(myDate))+" 23:59:59",
 							Period: (params.interval=="hour"?params.period*60:params.period),
@@ -5076,13 +5075,14 @@
 						};
 					   	if(params.update){
 							if(params.startDate){
-								if(myDate.getDate()>=startDate.getDate()){
-									args.StartTime=args.StartTime.split(" ")[0]+" "+STX.friendlyDate(startDate).split(" ")[1]+":00";
+								var pStartDate3=toMarketTime(params.startDate,marketZone);
+								if(myDate.getDate()>=pStartDate3.getDate()){
+									args.StartTime=STX.mmddyyyy(STX.yyyymmdd(myDate))+" "+STX.friendlyDate(pStartDate3).split(" ")[1]+":00";
 								}
 							}
 						}else{
-							args.StartTime=args.StartTime.split(" ")[0]+" "+STX.friendlyDate(startDate).split(" ")[1]+":00";
-							args.EndTime=args.EndTime.split(" ")[0]+" "+STX.friendlyDate(myDate).split(" ")[1]+":59";
+							args.StartTime=STX.mmddyyyy(STX.yyyymmdd(startDate))+" "+STX.friendlyDate(startDate).split(" ")[1]+":00";
+							args.EndTime=STX.mmddyyyy(STX.yyyymmdd(myDate))+" "+STX.friendlyDate(myDate).split(" ")[1]+":59";
 							if(!isIndex) getSplitInfo=true;
 						}
 					}
@@ -5093,7 +5093,7 @@
 				var splitArray=[];
 				var mamaCallbackFunction=function(status, res){
 					if(status!=200){
-						if(cb) cb({error:status});
+						if(!params.update && cb) cb({error:status});
 						return;
 					}
 					function processData(quotes, params){
@@ -5124,8 +5124,8 @@
 							//UTC time+local offset = local time (for filtering)
 							var bcdt=STX.strToDateTime(date);
 							if(bcdt.getDay()==6) continue; //filter out erroneous Saturday data
-							if(isForex && isDaily && params.update && bcdt.getHours()==23){  //Xignite bug is enabled, for forex daily update
-								bcdt.setHours(bcdt.getHours()+1);
+							if(isForex && isDaily && params.update && noDST && dst(bcdt)){  //Xignite bug is enabled, for forex daily update
+								bcdt.setDate(bcdt.getDate()+1);
 							}
 							if(!isDaily){
 								var marketOffset=0;
@@ -5139,16 +5139,9 @@
 								 * 		even though Xignite is returning data after 4PM, it is still classified as "Market" session.
 								 * 		so we may want to rip this block out in the future if there are complaints.
 								 */
-
-								// The hours are in New York Time.
-								var hours={"beginHour":9,"beginMinute":30,"endHour":16,"endMinute":0};
-								if(isForex || isFuture){
-									hours={"beginHour":0,"beginMinute":0,"endHour":23,"endMinute":59};
-								}else if(symbol.indexOf(".")>1){  //TODO: get proper exchange times and use timezone lib to convert to EST
-									hours={"beginHour":0,"beginMinute":0,"endHour":23,"endMinute":59};
-								}else if(params.extended){
-									hours={"beginHour":8,"beginMinute":0,"endHour":20,"endMinute":0};
-								}
+						
+								//the hours returned from the LegacyMarket.getHours function is in New York Time.
+								var hours=STX.LegacyMarket.getHours(params.symbol, params.extended);
 								if(!(hours.endHour==23 && hours.endMinute==59)){
 									//Calculate the timezone difference just once per day
 									//Store the offsets in a map NYOffsetMap
@@ -5159,16 +5152,13 @@
 										NYOffsetMap[key]=sessionTestOffset*60000;
 									}
 									var bcdt2=new Date(bcdt.getTime()-NYOffsetMap[key]);
-									if(bcdt2.getHours()>hours.endHour || (bcdt2.getHours()==hours.endHour && bcdt2.getMinutes()>=hours.endMinute) ||
-										bcdt2.getHours()<hours.beginHour || (bcdt2.getHours()==hours.beginHour && bcdt2.getMinutes()<hours.beginMinute))
+									if(bcdt2.getHours()>hours.endHour || (bcdt2.getHours()==hours.endHour && bcdt2.getMinutes()>hours.endMinute))
 										continue;
 								}
 							}
 							if(params.startDate && bcdt<params.startDate) continue;
-							if(params.endDate && bcdt>=params.endDate) continue;
-							/*if(!missingBarsShutoff && params.stx.cleanupGaps && !isDaily){
-								// NOTE: this will not longer work since STX.LegacyMarket.nextPeriod is no longer.
-								// To get this working (if we ever need it), import code from doCleanupGaps.
+							if(params.endDate && bcdt>=params.endDate) continue;		
+							if(!missingBarsShutoff && !isDaily){
 								if(dt===null){
 									dt=bcdt;
 								}else{
@@ -5193,7 +5183,7 @@
 										}
 									}
 								}
-							}*/
+							}
 							var ratio=parseFloat(fields[fieldNames[api.results.ratio]]);
 							if(!ratio || isNaN(ratio)) ratio=1;
 							if(getSplitInfo){
@@ -5221,14 +5211,7 @@
 									Volume: (api.results.volume?parseFloat(fields[fieldNames[api.results.volume]]):0),
 									Adj_Close: parseFloat(fields[fieldNames[api.results.close]])/ratio
 								});
-								var extendedClose=parseFloat(fields[fieldNames[api.results.extCls]]);
-								if(extendedClose){
-									newQuotes[newQuotes.length-1].Reg_Close=close;
-									newQuotes[newQuotes.length-1].Close=extendedClose;
-									newQuotes[newQuotes.length-1].Adj_Close=extendedClose;
-								}
-								if(batsQuote && params.batsVolumeMultiplier) newQuotes[newQuotes.length-1].Volume*=params.batsVolumeMultiplier;
-							}else if(!missingBarsShutoff && params.stx.cleanupGaps){
+							}else if(!missingBarsShutoff){
 								var lastQuote=newQuotes[newQuotes.length-1];
 								newQuotes.push({
 										DT: bcdt,
@@ -5256,80 +5239,49 @@
 
 					var todayBarFetch=null;
 
-					if(!params.loadMore){
-						if(isDaily) {
-							if(this.resultsCache[params.xigniteID]){
-								while(results.length && this.resultsCache[params.xigniteID] && this.resultsCache[params.xigniteID].length){
-									if(results[0].DT<this.resultsCache[params.xigniteID][this.resultsCache[params.xigniteID].length-1].DT) results.shift();  //strip dups
-									else if(+results[0].DT==+this.resultsCache[params.xigniteID][this.resultsCache[params.xigniteID].length-1].DT) {
-										var popped=this.resultsCache[params.xigniteID].pop();
-										if(popped.Volume>results[0].Volume) results[0].Volume=popped.Volume;  //replace last bar with one just fetched, preserving Volume if necessary
-									}
-									else break;
-								}
-							}else this.resultsCache[params.xigniteID]=[];
-							results=this.resultsCache[params.xigniteID]=this.resultsCache[params.xigniteID].concat(results);
-							if(isFuture && this.resultsCache[params.xigniteID].length>1 && this.resultsCache[params.xigniteID][this.resultsCache[params.xigniteID].length-2].DT.getTime()==this.resultsCache[params.xigniteID][this.resultsCache[params.xigniteID].length-1].DT.getTime()){
-								this.resultsCache[params.xigniteID].splice(-2,1);
+					if(isDaily && !params.loadMore) {
+						while(results.length && this.resultsCache[symbol].length){
+							if(results[0].DT<this.resultsCache[symbol][this.resultsCache[symbol].length-1].DT) results.shift();  //strip dups
+							else if(+results[0].DT==+this.resultsCache[symbol][this.resultsCache[symbol].length-1].DT) {
+								var popped=this.resultsCache[symbol].pop();
+								if(!results[0].Volume) results[0].Volume=popped.Volume;  //replace last bar with one just fetched, preserving Volume if necessary
 							}
-							if(!params.update){
-								params.update=true;
-								params.endDate=null;
-								if(results.length){
-									params.startDate=new Date(results[results.length-1].DT.getTime());
-								}else{
-									params.startDate=new Date();
-									params.startDate.setDate(params.startDate.getDate()-2);  //params.StartDate is not used for daily forex real time but we
-																				//need to set it and make sure it is before any ticks
-																				//we get from real time query or those ticks will be discarded
-																				//and we need to set it so maxRecords does not get computed.
+							else break;
+						}
+						results=this.resultsCache[symbol]=this.resultsCache[symbol].concat(results);
+						if(isFuture && this.resultsCache[symbol].length>1 && this.resultsCache[symbol][this.resultsCache[symbol].length-2].DT.getTime()==this.resultsCache[symbol][this.resultsCache[symbol].length-1].DT.getTime()){
+							this.resultsCache[symbol].splice(-2,1);
+						}
+						/*if(params.maxRecords && params.totalRecords>=params.maxRecords){
+							this.resultsCache[symbol].splice(0,params.totalRecords-params.maxRecords);
+							params.totalRecords=this.resultsCache[symbol].length;
+							//if(!params.startDate) moreToLoad=true;
+						}*/
+						if(!params.update){
+							params.update=true;
+							params.endDate=null;
+							if(results.length){
+								params.startDate=new Date(results[results.length-1].DT.getTime());
+								params.suppressSymbolNotFound=true;
+							}else{
+								params.startDate=new Date();
+								params.startDate.setDate(params.startDate.getDate()-2);  //params.StartDate is not used for daily forex real time but we
+																			//need to set it and make sure it is before any ticks
+																			//we get from real time query or those ticks will be discarded
+																			//and we need to set it so maxRecords does not get computed.
+							}
+							if(!results.length || STX.yyyymmddhhmm(new Date(myDate)).substr(0,8)!=STX.yyyymmddhhmm(results[results.length-1].DT).substr(0,8)){
+								if(!expiredFuture && !STX.LegacyMarket.isForexMetal(params.symbol,true)){
+									todayBarFetch=function(s){
+										return function(p,c){
+											setTimeout(function(){ s.fetch(STX.extend(p,{noBats:true}),c); },10);
+										};
+									}(this);
 								}
-								if(!results.length || STX.yyyymmddhhmm(new Date(myDate)).substr(0,8)!=STX.yyyymmddhhmm(results[results.length-1].DT).substr(0,8)){
-									if(!expiredFuture && !STX.Market.Symbology.isForexMetal(symbol,true) && !params.noUpdate){
-										todayBarFetch=function(s){
-											return function(p,c){
-												setTimeout(function(){ s.fetch(p,c); },10);
-											};
-										}(this);
-									}else delete this.resultsCache[params.xigniteID];
-								}
-							}else delete this.resultsCache[params.xigniteID];
-						}else if(isBats){
-							if(this.resultsCache[params.xigniteID]){
-								while(results.length && this.resultsCache[params.xigniteID].length){
-									if(results[0].DT<this.resultsCache[params.xigniteID][this.resultsCache[params.xigniteID].length-1].DT) results.shift();  //strip dups
-									else if(+results[0].DT==+this.resultsCache[params.xigniteID][this.resultsCache[params.xigniteID].length-1].DT) {
-										var popped=this.resultsCache[params.xigniteID].pop();
-										//sew together
-										results[0].Open=popped.Open;
-										if(popped.Low<results[0].Low) results[0].Low=popped.Low;
-										if(popped.High>results[0].High) results[0].High=popped.High;
-										if(popped.Volume>results[0].Volume) results[0].Volume=popped.Volume;
-									}
-									else break;
-								}
-							}else this.resultsCache[params.xigniteID]=[];
-							results=this.resultsCache[params.xigniteID]=this.resultsCache[params.xigniteID].concat(results);
-
-							if(!params.update && !params.noUpdate){
-								params.update=true;
-								params.endDate=null;
-								if(results.length){
-									params.startDate=new Date(results[results.length-1].DT.getTime());
-								}else{
-									params.startDate=new Date();
-									params.startDate.setHours(0,0,0,0);
-									params.startDate.setDate(params.startDate.getDate());
-								}
-								todayBarFetch=function(s){
-									return function(p,c){
-										setTimeout(function(){ s.fetch(p,c); },10);
-									};
-								}(this);
-							}else delete this.resultsCache[params.xigniteID];
+							}
 						}
 					}
-
+	
 					//Regardless of all past calculations if the data is sparse, then we may not have gotten back
 					//enough bars.  In that case, we will set params.moreToLoad to true if we feel there is more data behind there.
 					var moreToLoad=false;
@@ -5343,23 +5295,17 @@
 					// 3. are requesting maxRecords (normal fetch) but are not asking for a real time update
 					if(!todayBarFetch || !params.startDate || (params.maxRecords && !params.update)) {
 						params.noUpdate=!!todayBarFetch; //suppress a real time update when fetching today's bar
+						if(!todayBarFetch) params.loadMore=false;
 						if(params.moreToLoad) {
 							moreToLoad=true;
 							params.moreToLoad=false;
 						}
-						if(!todayBarFetch){
-							if(cb){
-								var attrExch="DELAYED";
-								if(batsQuote) attrExch="BATS";
-								else if(isForex) attrExch="REAL-TIME";
-								else if(isMutual) attrExch="EOD";
-								if(results.length===0 && !params.loadMore){
-									cb({error:"Symbol not found"});
-								}else{
-									cb({quotes:results, moreAvailable:moreToLoad, attribution:{source:"xignite",exchange:attrExch}});
-								}
-							}
-							params.loadMore=false;
+						if(!todayBarFetch && cb){
+							var attrExch="DELAYED";
+							if(isBats) attrExch="BATS";
+							else if(isForex) attrExch="REAL-TIME";
+							else if(isMutual) attrExch="EOD";
+							cb({quotes:results, moreAvailable:moreToLoad, attribution:{source:"xignite",exchange:attrExch}});
 						}
 					}else{
 						if(moreToLoad) params.moreToLoad=true;
@@ -5389,7 +5335,7 @@
 								}
 							}
 							mamaCallbackFunction.call(this,status,res);
-						}.bind(this), null, true);
+						}.bind(this), null, true);					
 					}else{
 						mamaCallbackFunction.call(this,status,res);
 					}
@@ -5408,7 +5354,7 @@
 			/* Daily/weekly/monthly historical equity request */
 			HistoricalEquity: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "www.xignite.com",  //"www.xignite.com"
 					path: "/www_xignite"
 				},
@@ -5435,11 +5381,11 @@
 					ratio:	"GlobalQuotes SplitRatio"
 				}
 			},
-
+			
 			/* Historical index request */
 			HistoricalIndex: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "globalindiceshistorical.xignite.com",
 					path: "/globalindiceshistorical_xignite"
 				},
@@ -5464,11 +5410,11 @@
 					ratio:	null
 				}
 			},
-
+			
 			/* Historical FOREX request */
 			HistoricalForex: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "globalcurrencies.xignite.com",
 					path: "/globalcurrencies_xignite"
 				},
@@ -5494,7 +5440,7 @@
 			/* Historical Major (USD,AUD,CAD,CHF,EUR,GBP,HKD,ZAR) Metals request when metal is first in pair */
 			HistoricalMajorMetals: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "globalmetals.xignite.com",
 					path: "/globalmetals_xignite"
 				},
@@ -5520,7 +5466,7 @@
 			/* Historical Metals request for other currencies and when metal is second in pair*/
 			HistoricalMetals: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "globalcurrencies.xignite.com",
 					path: "/globalcurrencies_xignite"
 				},
@@ -5546,7 +5492,7 @@
 			/* Historical Futures request */
 			HistoricalFuture: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "www.xignite.com",
 					path: "/www_xignite"
 				},
@@ -5575,16 +5521,16 @@
 			/* Equity Delayed Quote */
 			DelayedEquity: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "globalquotes.xignite.com",
 					path: "/globalquotes_xignite"
 				},
 				version:"v3",
 				func:	"xglobalquotes",
 				format:	"csv",
-				method:	"GetGlobalExtendedQuote",
+				method:	"GetGlobalDelayedQuote",
 				statics:"IdentifierType=Symbol",
-				fields:	"Date,Volume,Open,High,Low,Last,ExtendedHoursPrice",
+				fields:	"Date,Volume,Open,High,Low,Last",
 				results:{
 					date:	"Date",
 					time:	null,  //not needed for daily update
@@ -5594,15 +5540,14 @@
 					low:	"Low",
 					volume:	"Volume",
 					offset: null,
-					ratio:	null,
-					extCls: null //"ExtendedHoursPrice"
+					ratio:	null
 				}
 			},
 
 			/* Intraday delayed equity request */
 			IntradayEquity: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "chartiq.xignite.com",
 					path: "/chartiq_xignite"
 				},
@@ -5624,11 +5569,11 @@
 					ratio:	null // field not implemented yet "ChartBars AdjustmentRatio"
 				}
 			},
-
+			
 			/* Intraday BATS Real Time equity request */
 			IntradayBATSRTEquity: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "chartiq.xignite.com",
 					path: "/chartiq_xignite"
 				},
@@ -5650,20 +5595,20 @@
 					ratio:	null // field not implemented yet "ChartBars AdjustmentRatio"
 				}
 			},
-
+			
 			/* BATS Real Time Quote */
 			BATSRealQuote: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "batsrealtime.xignite.com",
 					path: "/batsrealtime_xignite"
 				},
-				version:"v3",
+				version:null,
 				func:	"xBATSRealTime",
 				format: "csv",
-				method: "GetExtendedQuote",
-				statics:"IdentifierType=Symbol",
-				fields: "Date,Open,High,Low,Last,ExtendedHoursPrice",
+				method: "GetRealQuote",
+				statics:null,
+				fields: "Date,Last,Open,High,Low",
 				results:{
 					date:	"Date",
 					time:	null,  //not needed for fdaily update
@@ -5673,15 +5618,14 @@
 					low:	"Low",
 					volume:	null,  //not needed for daily update
 					offset: null,
-					ratio:	null,
-					extCls: null //"ExtendedHoursPrice"
+					ratio:	null
 				}
 			},
 
 			/* Index Delayed Quote */
 			DelayedIndex: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "globalindices.xignite.com",
 					path: "/globalindices_xignite"
 				},
@@ -5704,36 +5648,10 @@
 				}
 			},
 
-			/* Index Real Time Quote */
-			RealTimeIndex: {
-				host: {
-					protocol: "https://",
-					server: "globalindicesrealtime.xignite.com",
-					path: "/globalindicesrealtime_xignite"
-				},
-				version:null,
-				func:	"xglobalindicesrealtime",
-				format:	"csv",
-				method:	"GetRealTimeIndexValue",
-				statics:"IdentifierType=Symbol",
-				fields:	"Value.Date,Value.Volume,Value.Open,Value.High,Value.Low,Value.Last",
-				results:{
-					date:	"Value Date",
-					time:	null,  //not needed for daily update
-					open:	"Value Open",
-					close:	"Value Last",
-					high:	"Value High",
-					low:	"Value Low",
-					volume:	"Value Volume",
-					offset: null,
-					ratio:	null
-				}
-			},
-
 			/* Intraday delayed index request */
 			IntradayIndex: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "chartiq.xignite.com",
 					path: "/chartiq_xignite"
 				},
@@ -5755,11 +5673,11 @@
 					ratio:	null
 				}
 			},
-
+			
 			/* Intraday Real Time index request */
 			IntradayRTIndex: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "chartiq.xignite.com",
 					path: "/chartiq_xignite"
 				},
@@ -5781,11 +5699,11 @@
 					ratio:	null
 				}
 			},
-
+			
 			/* Intraday FOREX request */
 			IntradayRTForex: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "chartiq.xignite.com",
 					path: "/chartiq_xignite"
 				},
@@ -5807,11 +5725,11 @@
 					ratio:	"ChartBars AdjustmentRatio"
 				}
 			},
-
+			
 			/* Intraday Metals request */
 			IntradayRTMetals: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "chartiq.xignite.com",
 					path: "/chartiq_xignite"
 				},
@@ -5837,7 +5755,7 @@
 			/* Delayed Futures request (for today)*/
 			DelayedFuture: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "www.xignite.com",
 					path: "/www_xignite"
 				},
@@ -5859,11 +5777,11 @@
 					ratio:	null
 				}
 			},
-
+			
 			/* Delayed Mutual Fund request (for last NAV)*/
 			DelayedMF: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "navs.xignite.com",
 					path: "/navs_xignite"
 				},
@@ -5889,7 +5807,7 @@
 			/* Split Ratio request (for intraday)*/
 			SplitRatio: {
 				host: {
-					protocol: "https://",
+					protocol: "http"+(STX.isIE9?"":"s")+"://",
 					server: "www.xignite.com",
 					path: "/www_xignite"
 				},
@@ -5902,27 +5820,27 @@
 				results:{
 					date: "Splits ExDate",
 					ratio:"Splits SplitRatio"
-				}
+				}			
 			}
 		};
 
 		STX.QuoteFeed.Xignite.getSnapshotQuote=function(params, symbol, isDaily, offset, cb, caller){
 			return false;
-		/*
+		/*	
 			//snapshot update code
-			if(params.update &&
-				!params.bypassSnapshot &&
-				params.stx.chart.masterData &&
+			if(params.update && 
+				!params.bypassSnapshot && 
+				params.stx.chart.masterData && 
 				params.stx.chart.masterData.length &&
 				",line,colored_line,mountain,baseline_delta,".indexOf(params.stx.layout.chartType)>-1){
 				var url;
 				var field="Bid";
 				if(STX.LegacyMarket.isForexMetal(params.symbol)){
-					url=(caller.server?caller.server:"https://"+"services.chartiq.com")+"/chartiq_xignite/xGlobalMetals.json/GetRealTimeMetalQuote?Symbol="+symbol+"&Currency=&_fields=Date,Time,Bid";
+					url=(caller.server?caller.server:"http"+(STX.isIE9?"":"s")+"://"+"services.chartiq.com")+"/chartiq_xignite/xGlobalMetals.json/GetRealTimeMetalQuote?Symbol="+symbol+"&Currency=&_fields=Date,Time,Bid";
 				}else if(STX.LegacyMarket.isForexSymbol(params.symbol)){
-					url=(caller.server?caller.server:"https://"+"services.chartiq.com")+"/chartiq_xignite/xGlobalCurrencies.json/GetRealTimeRate?Symbol="+symbol+"&_fields=Date,Time,Bid";
+					url=(caller.server?caller.server:"http"+(STX.isIE9?"":"s")+"://"+"services.chartiq.com")+"/chartiq_xignite/xGlobalCurrencies.json/GetRealTimeRate?Symbol="+symbol+"&_fields=Date,Time,Bid";					
 				}else{
-					url=(caller.server?caller.server:"https://"+"services.chartiq.com")+"/chartiq_xignite/xBATSRealTime.json/GetRealQuote?Symbol="+symbol+"&_fields=Date,Time,Close";
+					url=(caller.server?caller.server:"http"+(STX.isIE9?"":"s")+"://"+"services.chartiq.com")+"/chartiq_xignite/xBATSRealTime.json/GetRealQuote?Symbol="+symbol+"&_fields=Date,Time,Close";					
 					field="Close";
 				}
 				if(caller.token!=null){
@@ -5975,15 +5893,12 @@
 			 * Set path to "" to override the default proxy paths for the templates.
 			 *
 			 * Set token to "" to not send a token
-			 *
-			 * Set tokenUser if using encrypted tokens
 			 */
 			overrides :{
-				protocol: "https://",
+				protocol: "http"+(STX.isIE9?"":"s")+"://",
 				server: "devservices.chartiq.com/data",
 				path: null,
-				token: null,
-				tokenUser: null
+				token: null
 			},
 
 			xIgniteInterval: function(interval){
@@ -6026,8 +5941,6 @@
 				}else if(override.token!==null){
 					u+="&_Token="+override.token;
 				}
-				if(override.tokenUser) u+="&_Token_Userid="+override.tokenUser;
-
 				if(api.statics) u+="&"+api.statics;
 				if(api.fields) u+="&_fields="+api.fields;
 				for(var a in args){
@@ -6043,16 +5956,15 @@
 												// include market closed times
 			timeZone: {							//Note: this may be replaced by the new STX.Market classes
 				"BVMF":"America/Sao_Paulo",
-				"MISX":"Europe/Moscow",
 				"MTAA":"Europe/Rome",
 				"RTSX":"Europe/Moscow",
 				"XAMS":"Europe/Amsterdam",
 				"XASX":"Australia/Sydney",
 				"XATH":"Europe/Athens",
-                "XBAR": "Europe/Madrid",
+                //"XBAR": "Europe/Madrid",  no data comes back from this exchange
+				"XBRA":"Europe/Bratislava",
 				"XBER":"Europe/Berlin",
 				"XBOM":"Asia/Calcutta",
-				"XBRA":"Europe/Bratislava",
 				"XBRU":"Europe/Brussels",
 				"XBUD":"Europe/Budapest",
 				"XCNQ":"America/Toronto",
@@ -6067,16 +5979,13 @@
 				"XHKG":"Asia/Hong_Kong",
 				"XICE":"Atlantic/Reykjavik",
 				"XJSE":"Africa/Johannesburg",
+				"XLIM":"America/Lima",
 				"XKOS":"Asia/Seoul",
 				"XKRX":"Asia/Seoul",
-				"XLIM":"America/Lima",
 				"XLIS":"Europe/Lisbon",
-				"XLIT":"Europe/Vilnius",
 				"XLON":"Europe/London",
 				"XMAD":"Europe/Madrid",
 				"XMCE":"Europe/Madrid",
-				"XMEX":"America/Mexico_City",
-				"XMOD":"America/Montreal",
 				"XMUN":"Europe/Berlin",
 				"XMUS":"Asia/Muscat",
 				"XNSE":"Asia/Calcutta",
@@ -6085,8 +5994,8 @@
 				"XPAR":"Europe/Paris",
 				"XPRA":"Europe/Prague",
 				"XRIS":"Europe/Riga",
-				"XSES":"Asia/Singapore",
 				"XSGO":"America/Santiago",
+				"XSES":"Asia/Singapore",
 				"XSHE":"Asia/Shanghai",
 				"XSHG":"Asia/Shanghai",
 				"XSTO":"Europe/Stockholm",
@@ -6099,26 +6008,23 @@
 				"XTNX":"America/Toronto",
 				"XTSE":"America/Toronto",
 				"XTSX":"America/Toronto",
-                "XVAL": "Europe/Madrid",
+				"XLIT":"Europe/Vilnius",
+                //"XVAL": "Europe/Madrid",  no data comes back from this exchange
 				"XVTX":"Europe/Zurich",
 				"XWAR":"Europe/Warsaw",
 				"XWBO":"Europe/Vienna",
-
+				
 				"INDARCX":"America/New_York",
 				"INDBVMF":"America/Sao_Paulo",
 				"INDCBSX":"America/Chicago",
 				"INDMTAA":"Europe/Rome",
 				"INDXASE":"America/New_York",
 				"INDXASX":"Australia/Sydney",
-				"INDXATH":"Europe/Athens",
 				"INDXBOM":"Asia/Calcutta",
-				"INDXBRA":"Europe/Bratislava",
-				"INDXBSE":"Europe/Bucharest",
 				"INDXBUD":"Europe/Budapest",
 				"INDXCME":"America/Chicago",
 				"INDXCSE":"Europe/Copenhagen",
 				"IND_DBI":"Europe/Berlin",
-				"INDXDUB":"Europe/Dublin",
 				"INDXHEL":"Europe/Helsinki",
 				"INDXHKG":"Asia/Hong_Kong",
 				"INDXJSE":"Africa/Johannesburg",
@@ -6126,28 +6032,23 @@
 				"INDXKRX":"Asia/Seoul",
 				"INDXMAD":"Europe/Madrid",
 				"INDXMCE":"Europe/Madrid",
-				"INDXMEX":"America/Mexico_City",
 				"INDXNAS":"America/New_York",
 				"INDXNSE":"Asia/Calcutta",
 				"INDXNZE":"Pacific/Auckland",
 				"INDXOSL":"Europe/Oslo",
-				"INDXPHL":"America/New_York",
 				"INDXSES":"Asia/Singapore",
-				"INDXSGO":"America/Santiago",
 				"INDXSHE":"Asia/Shanghai",
 				"INDXSHG":"Asia/Shanghai",
 				"INDXSTO":"Europe/Stockholm",
-                "INDXSTU": "Europe/Berlin",
+                //"INDXSTU": "Europe/Berlin",  no data comes back from this exchange
 				"INDXSTX":"Europe/Zurich",
 				"INDXSWX":"Europe/Zurich",
 				"INDXTAE":"Asia/Tel_Aviv",
 				"INDXTAI":"Asia/Taipei",
 				"INDXTKS":"Asia/Tokyo",
 				"INDXTSE":"America/Toronto",
-				"INDXTSX":"America/Toronto",
 				"INDXWAR":"Europe/Warsaw",
 				"INDXWBO":"Europe/Vienna",
-				"IND_BBGI":"America/New_York",
 				"IND_DJI":"America/New_York",
 				"IND_DJTSMI":"America/New_York",
 				"IND_EURONEXT":"Europe/Brussels",
@@ -6157,26 +6058,22 @@
 				"IND_GIDS":"America/New_York",
 				"IND_GIF":"America/New_York",
 				"IND_HKGI":"Asia/Shanghai",
-				"IND_NIKKEI":"Asia/Tokyo",
-				"IND_OPRAUnderlying":"America/Chicago",
-				"IND_RSL":"America/New_York",
-				"IND_SPF":"America/New_York",
-				"IND_SPW":"America/Chicago"
+				"IND_NIKKEI":"Asia/Tokyo"
 			}
 		};
 
 		return _exports;
-
+		
 	}
 
 
 	{
 		if ( typeof define === "function" && define.amd ) {
 			define( ["stxThirdParty","stxKernelOs"], function(_stxThirdParty,_stxKernel) { return _stxLibrary_js(_stxThirdParty,_stxKernel); } );
-		}else{
+		}else{	
 			var _stxThirdParty={};
 			if(typeof(window.STXThirdParty)!="undefined") _stxThirdParty=window.STXThirdParty;
-
+	
 			var _stxKernel={
 				"STX":window.STX,
 				"STXChart":window.STXChart
@@ -6187,3 +6084,7 @@
 
 })();
 
+
+
+
+	
