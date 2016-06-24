@@ -18,6 +18,36 @@
 		
 		/**
 		 * Base class for a decorator. A decorator adds custom branding to a chart image before it is rendered.
+		 * 
+		 * The decoration function will be called right after the chart image is created to overlay any additional 'decorations' you may want to have on that image.
+		 * The default decoration function can be found in stx-share.js (STXSocial.defaultDecorator.decorate). 
+		 * Feel free to modify as needed or create a new one based on it by setting `STXSocial.defaultDecorator.decorate` to the name of your custom decoration function.
+		 * 
+		 * For example, if you want to have a watermark logo on the shared image but not the interactive chart, 
+		 * you will have to do it as a decoration rather than using {@link STXSocial.brandMyChart}.
+		 * 
+		 * To do this, first add a hidden div in your HTML to store the watermark picture.
+		 * Example (change the image link to whatever you will use):
+		 * ```
+		 * <img id="shareWatermark" src="img/helicopter.png" style="display:none">
+		 * ```
+		 * Then you can take the default decoration function in stx-share.js (STXSocial.defaultDecorator.decorate) and add the following to it:
+		 * ```
+		 * var img = document.getElementById("shareWatermark");
+		 * context.drawImage(img, 10, stx.panels.chart.height-50, 60,60);  //Parameters are: image. x axis, y axis, width, hight.
+		 * ```
+		 * Adjust the location and size as needed. You should be all set.
+		 * 
+		 * Be sure to set the pixel count you want to use for the header and footer. 
+		 * These amounts will be used to reduce the size of the chart and leave space for the additional decorations you will place as footer or headers.
+		 * This is done in the `STXSocial.defaultDecorator.initialize` function. 
+		 * Feel free to modify as needed or create a new one based on it by setting `STXSocial.defaultDecorator.initialize` to the name of your custom initialization function.
+		 * The values to be set are:
+		 * ```
+		 * 	this.headerPX=headerSize;
+		 *	this.footerPX=footerSize;
+		 * ```
+		 * 
 		 * @constructor
 		 * @name STXSocial.Decoration
 		 * @version ChartIQ plug-in
@@ -35,8 +65,8 @@
 		 * then the image will be scaled to the requested dimensions.
 		 * This function is asynchronous and requires a callback function. The callback will be passed
 		 * a data object which can be sent to a server or converted to an image.
-		 * decorationObj can be used to "decorate" the canvas. For instance, you can add a header
-		 * or footer to the canvas.
+		 * [decorationObj]{@link STXSocial.Decoration} can be used to "decorate" the canvas. For instance, you can add a header
+		 * or footer to the canvas, or even brand it with an image if you only want the branding done on the shared image but not on the chart itself.
 		 * @param  {object}   stx           Chart object
 		 * @param  {number}   [widthPX]       Width of image to create. If passed then height will adjust to maintain ratio.
 		 * @param  {number}   [heightPX]      Height of image to create. If passed then width will adjust to maintain ratio.
@@ -234,43 +264,51 @@
 		};
 		
 		/**
-		 * Places a watermark image on the chart for branding. This method should only be called once after you create your STXChart (stx) object.
+		 * Places a watermark image on the chart for branding. This method should only be called once after you create your chart object -new STXChart()-.
 		 * @param  {object} stx         The chart
 		 * @param  {string} imageURL    The URL of the image
 		 * @param  {array} positioning A tuple. The first item of the tuple is the X offset from the edge of the chart. The second item is the Y offset from the top of the chart. Use negative numbers to offset from right of chart or bottom of chart.
+		 * @param  {array} size A tuple. The first item of the tuple is the width. The second item is the height. Leave out to use actual size.
 		 * @memberOf STXSocial
 		 * @version ChartIQ plug-in
 		 * @example
 		 * function runSampleUI(){
 		 * 		// put your code to establish the behavior of your UI.
-		 * 		STXSocial.brandMyChart(stxx, "logo.png",[10,-30]);
+		 * 		STXSocial.brandMyChart(stxx, "logo.png",[10,-30],[50,50]);
 		 * }
+		 * @since  2016-03-11 Image size can now be specified using the new `size` argument
 		 */
-		STXSocial.brandMyChart=function(stx, imageURL, positioning){
-			function prependDisplayChart(stx, image, positioning){
+		STXSocial.brandMyChart=function(stx, imageURL, positioning, size){
+			function prependDisplayChart(stx, image, positioning,size){
 				return function(){
-					var x=stx.chart.canvasWidth/2-image.width/2;
-					var y=stx.panels.chart.height/2-image.height/2;
+					var width=image.width;
+					var height=image.height;
+					if(size){
+						width=size[0];
+						height=size[1];
+					}
+					var x=stx.chart.canvasWidth/2-width/2;
+					var y=stx.panels.chart.height/2-height/2;
 					if(positioning){
 						if(positioning[0]>0){
 							x=positioning[0];
 						}else{
-							x=stx.chart.width-image.width+positioning[0];
+							x=stx.chart.width-width+positioning[0];
 						}
 						if(positioning[1]>0){
 							y=positioning[1];
 						}else{
-							y=stx.panels.chart.height-image.height+positioning[1];
+							y=stx.panels.chart.height-height+positioning[1];
 						}
 					}
-					stx.chart.context.drawImage(image, x, stx.panels.chart.top+y);
+					stx.chart.context.drawImage(image, x, stx.panels.chart.top+y, width, height);
 				};
 			}
 		
 			var image=document.createElement("img");
 			image.onload=function(stx, prependDisplayChart, positioning){
 				return function(){
-					STXChart.prototype.prepend("displayChart", prependDisplayChart(stx, this, positioning));
+					STXChart.prototype.prepend("displayChart", prependDisplayChart(stx, this, positioning, size));
 					stx.draw();
 				};
 			}(stx, prependDisplayChart, positioning);
@@ -284,7 +322,7 @@
 		STXSocial.shareChart=function(stx, override, successCB, failureCB){
 			STXSocial.createImage(stx, null, null, null, function(imgData){
 				var id=STX.uniqueID();
-				var host="http://share.chartiq.com";
+				var host="https://share.chartiq.com";
 				var url= host + "/upload/" + id;
 				if(override){
 					if(override.host) host=override.host;

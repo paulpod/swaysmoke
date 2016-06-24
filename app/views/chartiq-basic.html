@@ -12,7 +12,8 @@
 <link rel="stylesheet" type="text/css" href="/public/stylesheets/font-awesome.css" />
 </head>
 
-<body cq-context class="no-touch">
+<body  cq-context class="no-touch">
+
 <cq-color-picker></cq-color-picker>
 <cq-tfc></cq-tfc>
 
@@ -721,6 +722,9 @@
 <cq-side-panel></cq-side-panel>
 
 
+
+
+
 <script src="//code.jquery.com/jquery-latest.min.js"></script>
 <script src="/public/javascripts/object-observe.js"></script> 
 <script src="/public/javascripts/stxThirdParty.js"></script> 
@@ -731,6 +735,10 @@
 <script src="/public/javascripts/stxAdvanced.js"></script>
 <script src="/public/javascripts/stxUI.js"></script>
 <script src="/public/javascripts/stxSymLookup_Xignite_Svc.js"></script>
+
+
+
+
 <script>
 
 
@@ -810,7 +818,7 @@
 var stxx=new STXChart({container:$("#chartContainer")[0]});
 stxx.chart.xAxis.axisType="ntb";
 stxx.goldenRatioYAxis=true;
-stxx.setMarketFactory(STX.Market.Symbology.factory);
+//stxx.setMarketFactory(STX.Market.Symbology.factory);
 stxx.attachQuoteFeed(new STX.QuoteFeed.Demo(),{refreshInterval:1});
 stxx.preferences.labels=false;
 stxx.xaxisHeight=30;
@@ -1050,6 +1058,12 @@ $(window).resize(resizeScreen);
 
 
 </script>
+
+
+
+
 </body>
 </html>
+
+
 

@@ -1,4 +1,5 @@
-<div id="open-positions-list" style="display:inline-block;margin-top:-4px">
+<div id="open-positions-list" style="display:inline-block;margin-top:6px">
+
 
   <header class="table-head">
     <h4 class="uppercase">Open positions</h4>
@@ -11,93 +12,124 @@
 
   </header> 
 
+
+
+
+
+
   <div class="stock-table positions-table" >
     <table style="">
-      <thead >
-        <tr>
+      <thead>
+        <tr id="open-postions-labels" style="vertical-align:top;height:20px">
           <th>&nbsp;</th>
-          <th style="text-align:left;">Market</th>
-          <th style="text-align:center;">Trade</th>
-          <th id="edit-title"><span style="margin-left:18px">Edit</span></th>
-          <th id="PnL-title">
-            <span style="margin-left:20px">P &amp; L</span><span style="display:none">Unrealised</span>
+          <th colspan="5" style="text-align:left">Market</th>
+          <th>Trade</th>
+          <th>Edit</th>
+          <th>P &amp; L</th>
+          <th colspan="2" style="text-align:center">Close</th>
+          
+        </tr>
+
+        <tr class="table-second-headrow">
+          <th style="background:none">&nbsp;</th>
+          <th colspan="7">&nbsp;</th>
+          <th style="background-repeat: no-repeat;background-position: 0 0;background-size: 32px 10px ;">
+
+          <div style="position:relative;top:-3px">GBP  <a href="#">%</a></div>
+
           </th>
-          <th id="PnL-switches" style="text-align:right">
-            <span style="border-bottom:2px solid black">GBP</span>
-            <span style="margin-left:10px;color:#137fd7">%</span>
-          </th>
-          <th id="close-title" style="text-align:right;">Close</th>
+          <th colspan="2" style="background-repeat: no-repeat;background-position: 12px 0;background-size: 35px 10px ;">&nbsp;</th>
+          
         </tr>
       </thead>
+
 
       <tbody>
         <tr class="toprow">
           <td class="stock-reveal">
             <a href="javascript:toggleDiv('positions-info-row1');">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <svg id="arrow-positions-info-row1" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
             </a>
           </td>
-          <td class="stock-name">Wall Street CFD</td>
+
+          <td class="stock-name" colspan="5">Wall Street CFD</td>
+
           <td class="stock-direction">
             <svg class="icon trade-icon" viewBox="0 0 13 13">
               <use xlink:href="#trade-direction-long"></use>
             </svg>
           </td>
+
           <td class="stock-edit">
             <svg class="icon edit-icon" viewBox="0 0 14 14">
               <use xlink:href="#edit-icon"></use>
             </svg>
           </td>
-          <td class="stock-pl" colspan="2"><span class="pnl-profit">+193.40</span></td>
+
+          <td class="stock-pl"><span class="pnl-profit">+193.40</span></td>
+
           <td class="stock-close">
             <svg class="icon close-icon" viewBox="0 0 14 14">
               <use xlink:href="#close-x"></use>
             </svg>
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
         <!-- The hidden row contains all the details of the open position -->
-        <tr style="display:none" id="positions-info-row1">
-        <td colspan="7" style="">
+        <tr style="display:none;position:relative;top:7px" class="positions-info-row1">
+          <!-- details label row -->
+          <td class="detail-heading">&nbsp;</td>
+          <td class="detail-heading">Open</td>
+          <td class="detail-heading">Margin</td>
+          <td class="detail-heading">Quantity</td>
+          <td class="detail-heading">Current</td>
+          <td class="detail-heading">Stop</td>
+          <td class="detail-heading">Limit</td>
+          <td><!--ED--></td>
+          <td class="detail-heading">P &amp; L</td>
+          <td><!--X--></td>
+          <td class="detail-handle">&nbsp;<!--HANDLE--></td>
+        </tr>
 
-        <table class="position-detail-table">
-          <thead>
-            <th class="detail-blank">&nbsp;</th>
-            <th class="detail-open">Open price</th>
-            <th class="detail-quantity">&#8470;</th>
-            <th class="detail-price">Current</th>
-            <th class="detail-price">Stop</th>
-            <th class="detail-price">Limit</th>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td class="detail-blank">&nbsp;</td>
-              <td class="detail-open">1.12265</td>
-              <td class="detail-quantity">33</td>
-              <td class="detail-price">1.12300</td>
-              <td class="detail-price">1.12120</td>
-              <td class="detail-price">1.12900</td>
-              <td class="detail-pnl pnl-detail-profit">+115.50</td>
-              <td class="stock-close" style="text-align:right;">
-                <svg class="icon close-icon" viewBox="0 0 14 14">
-                  <use xlink:href="#close-x"></use>
-                </svg>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
+        <tr style="display:none;background-color:white;" class="detail-row positions-info-row1">
+          <td class="detail-trade">
+            <svg class="icon trade-icon-detail" viewBox="0 0 13 13">
+              <use xlink:href="#trade-direction-long"></use>
+            </svg>
+          </td>
+          <td class="detail-price">1.12265</td>
+          <td class="detail-price">&pound;943</td>
+          <td class="detail-price">33</td>
+          <td class="detail-price">1.12300</td>
+          <td class="detail-price">1.12120</td>
+          <td class="detail-price">1.12900</td>
+          <td class="detail-edit">
+            <svg class="icon edit-icon" viewBox="0 0 14 14">
+              <use xlink:href="#edit-icon"></use>
+            </svg>
+          </td>
+          <td class="detail-pl">+115.50</td>
+          <td class="detail-close">
+            <svg class="icon close-icon" viewBox="0 0 14 14">
+              <use xlink:href="#close-x"></use>
+            </svg>
+          </td>
+          <td class="detail-handle">&nbsp;<!--HANDLE--></td>
+        </tr>
 
         <tr>
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('positions-info-row2');">
+            <svg id="arrow-positions-info-row2" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-name">UK100 CFD</td>
+          <td class="stock-name" colspan="5">UK100 CFD</td>
           <td class="stock-direction">
             <svg class="icon trade-icon" viewBox="0 0 13 13">
               <use xlink:href="#trade-direction-short"></use>
@@ -108,21 +140,25 @@
               <use xlink:href="#edit-icon"></use>
             </svg>
           </td>
-          <td class="stock-pl" colspan="2"><span class="pnl-loss">-122.54</span></td>
+          <td class="stock-pl"><span class="pnl-loss">-122.54</span></td>
           <td class="stock-close">
             <svg class="icon close-icon" viewBox="0 0 14 14">
               <use xlink:href="#close-x"></use>
             </svg>
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
         <tr>
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('positions-info-row3');">
+            <svg id="arrow-positions-info-row3" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-name">Germany 30 CFD</td>
+          <td class="stock-name" colspan="5">Germany 30 CFD</td>
           <td class="stock-direction">
             <svg class="icon trade-icon" viewBox="0 0 13 13">
               <use xlink:href="#trade-direction-short"></use>
@@ -133,21 +169,25 @@
               <use xlink:href="#edit-icon"></use>
             </svg>
           </td>
-          <td class="stock-pl" colspan="2"><span class="pnl-profit">+856.32</span></td>
+          <td class="stock-pl"><span class="pnl-profit">+856.32</span></td>
           <td class="stock-close">
             <svg class="icon close-icon" viewBox="0 0 14 14">
               <use xlink:href="#close-x"></use>
             </svg>
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
         <tr>
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('positions-info-row4');">
+            <svg id="arrow-positions-info-row4" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-name">Gold (per 0.1) CFD</td>
+          <td class="stock-name" colspan="5">Gold (per 0.1) CFD</td>
           <td class="stock-direction">
             <svg class="icon trade-icon" viewBox="0 0 13 13">
               <use xlink:href="#trade-direction-long"></use>
@@ -158,131 +198,154 @@
               <use xlink:href="#edit-icon"></use>
             </svg>
           </td>
-          <td class="stock-pl" colspan="2"><span class="pnl-profit">+34.20</span></td>
+          <td class="stock-pl"><span class="pnl-profit">+34.20</span></td>
           <td class="stock-close">
             <svg class="icon close-icon" viewBox="0 0 14 14">
               <use xlink:href="#close-x"></use>
             </svg>
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
         <tr style=""><!-- this row has multiple positions, aggregated -->
           <td class="stock-reveal">
 
-            <a href="javascript:toggleDiv('agg-positions');">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
-              <use xlink:href="#down-menu"></use>
+            <a href="javascript:toggleDiv('positions-info-row5');" >
+            <svg id="arrow-positions-info-row5" viewBox="0 0 19 11" class="reveal-icon-right">
+              <use xlink:href="#down-menu" ></use>
             </svg>
-            <span class="reveal-num">3</span>
+            </a>
+
           </td>
-          <td class="stock-name">EUR/USD (per 0.0001) CFD</td>
+          <td class="stock-name" colspan="5">EUR/USD (per 0.0001) CFD</td>
           <td class="stock-direction">
             <svg class="icon trade-icon" viewBox="0 0 13 13">
               <use xlink:href="#trade-direction-long"></use>
             </svg>
           </td>
           <td class="stock-edit">
-            <svg class="icon edit-icon" viewBox="0 0 14 14">
-              <use xlink:href="#edit-icon"></use>
-            </svg>
+            
+            <!-- Indicator of how many aggregated trades are in here 
+            <div class="aggnum">3</div>-->
+
           </td>
-          <td class="stock-pl" colspan="2"><span class="pnl-profit">+376.20</span></td>
+          <td class="stock-pl"><span class="pnl-profit">+376.20</span></td>
           <td class="stock-close">
             <svg class="icon close-icon" viewBox="0 0 14 14">
               <use xlink:href="#close-x"></use>
             </svg>
           </td>
-        </tr>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
+        </tr> 
 
         <!-- The hidden row contains all the details of the aggregated trades -->
-        <tr style="display:none" id="agg-positions">
-        <td colspan="7" style="">
-
-        <table class="positions-detail-table">
-          <thead>
-            <th class="detail-blank">&nbsp;</th>
-            <th class="detail-open">Open price</th>
-            <th class="detail-trade">Trade</th>
-            <th class="detail-quantity">&#8470;</th>
-            <th class="detail-price">Current</th>
-            <th class="detail-price">Stop</th>
-            <th class="detail-price">Limit</th>
-            <th class="detail-pnl pnl-detail-profit">P &amp; L</th>
-            <th id="close-title" style="text-align:right;padding-right:20px">Close</th>
-          </thead>
-
-          <tbody>
-            <tr style="background-color:white">
-              <td class="detail-blank">&nbsp;</td>
-              <td class="detail-open">1.12265</td>
-              <td class="detail-trade">
-                <svg class="icon trade-icon" viewBox="0 0 13 13">
-                  <use xlink:href="#trade-direction-long"></use>
-                </svg>
-              </td>
-              <td class="detail-quantity">33</td>
-              <td class="detail-price">1.12300</td>
-              <td class="detail-price">1.12120</td>
-              <td class="detail-price">1.12900</td>
-              <td class="detail-pnl pnl-detail-profit">+115.50</td>
-              <td class="stock-close" style="text-align:right;padding-right:20px">
-                <svg class="icon close-icon" viewBox="0 0 14 14">
-                  <use xlink:href="#close-x"></use>
-                </svg>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="detail-blank">&nbsp;</td>
-              <td class="detail-open">1.12267</td>
-              <td class="detail-trade">
-                <svg class="icon trade-icon" viewBox="0 0 13 13">
-                  <use xlink:href="#trade-direction-long"></use>
-                </svg>
-              </td>
-              <td class="detail-quantity">50</td>
-              <td class="detail-price">1.12300</td>
-              <td class="detail-price">1.12120</td>
-              <td class="detail-price">1.12900</td>
-              <td class="detail-pnl pnl-detail-profit">+165.50</td>
-              <td class="stock-close" style="text-align:right;padding-right:20px">
-                <svg class="icon close-icon" viewBox="0 0 14 14">
-                  <use xlink:href="#close-x"></use>
-                </svg>
-              </td>
-            </tr>
-
-            <tr style="background-color:white">
-              <td class="detail-blank">&nbsp;</td>
-              <td class="detail-open">1.12271</td>
-              <td class="detail-trade">
-                <svg class="icon trade-icon" viewBox="0 0 13 13">
-                  <use xlink:href="#trade-direction-long"></use>
-                </svg>
-              </td>
-              <td class="detail-quantity">33</td>
-              <td class="detail-price">1.12300</td>
-              <td class="detail-price">1.12120</td>
-              <td class="detail-price">1.12900</td>
-              <td class="detail-pnl pnl-detail-profit">+95.70</td>
-              <td class="stock-close" style="text-align:right;padding-right:20px">
-                <svg class="icon close-icon" viewBox="0 0 14 14">
-                  <use xlink:href="#close-x"></use>
-                </svg>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
+        <tr style="display:none;" class="positions-info-row5">
+          <td class="detail-heading"><!--Trade--></td>
+          <td class="detail-heading">Open <!--price--></td>
+          <td class="detail-heading">Margin</td>
+          <td class="detail-heading">Quantity</td>
+          <td class="detail-heading">Current</td>
+          <td class="detail-heading">Stop</td>
+          <td class="detail-heading">Limit</td>
+          <td class="detail-edit"><!--Edit--></td>
+          <td class="detail-heading">P &amp; L</td>
+          <td><!--Close--></td>
+          <td class="detail-handle">&nbsp;<!--HANDLE--></td>
         </tr>
+
+        <tr style="display:none;" class="detail-row detail-row-odd positions-info-row5">
+          <td class="detail-trade">
+            <svg class="icon trade-icon-detail" viewBox="0 0 13 13">
+              <use xlink:href="#trade-direction-long"></use>
+            </svg>
+          </td>
+          <td class="detail-price">1.12265</td>
+          <td class="detail-price">&pound;943</td>
+          <td class="detail-price">33</td>
+          <td class="detail-price">1.12300</td>
+          <td class="detail-price">1.12120</td>
+          <td class="detail-price">1.12900</td>
+          <td class="detail-edit">
+            <svg class="icon edit-icon" viewBox="0 0 14 14">
+              <use xlink:href="#edit-icon"></use>
+            </svg>
+          </td>
+          <td class="detail-pl">+115.50</td>
+          <td class="detail-close">
+            <svg class="icon close-icon" viewBox="0 0 14 14">
+              <use xlink:href="#close-x"></use>
+            </svg>
+          </td>
+          <td class="detail-handle">&nbsp;<!--HANDLE--></td>
+        </tr>
+
+        <tr style="display:none;" class="detail-row positions-info-row5">
+          <td class="detail-trade">
+            <svg class="icon trade-icon-detail" viewBox="0 0 13 13">
+              <use xlink:href="#trade-direction-long"></use>
+            </svg>
+          </td>
+          <td class="detail-price">1.12265</td>
+          <td class="detail-price">&pound;881,303</td>
+          <td class="detail-price">33</td>
+          <td class="detail-price">1.12300</td>
+          <td class="detail-price">1.12120</td>
+          <td class="detail-price">1.12900</td>
+          <td class="detail-edit">
+            <svg class="icon edit-icon" viewBox="0 0 14 14">
+              <use xlink:href="#edit-icon"></use>
+            </svg>
+          </td>
+          <td class="detail-pl">+115.50</td>
+          <td class="detail-close">
+            <svg class="icon close-icon" viewBox="0 0 14 14">
+              <use xlink:href="#close-x"></use>
+            </svg>
+          </td>
+          <td class="detail-handle">&nbsp;<!--HANDLE--></td>
+        </tr>
+
+        <tr style="display:none;" class="detail-row detail-row-odd positions-info-row5">
+          <td class="detail-trade">
+            <svg class="icon trade-icon-detail" viewBox="0 0 13 13">
+              <use xlink:href="#trade-direction-long"></use>
+            </svg>
+          </td>
+          <td class="detail-price">1.12265</td>
+          <td class="detail-price">&pound;827</td>
+          <td class="detail-price">33</td>
+          <td class="detail-price">1.12300</td>
+          <td class="detail-price">1.12120</td>
+          <td class="detail-price">1.12900</td>
+          <td class="detail-edit">
+            <svg class="icon edit-icon" viewBox="0 0 14 14">
+              <use xlink:href="#edit-icon"></use>
+            </svg>
+          </td>
+          <td class="detail-pl">+115.50</td>
+          <td class="detail-close">
+            <svg class="icon close-icon" viewBox="0 0 14 14">
+              <use xlink:href="#close-x"></use>
+            </svg>
+          </td>
+          <td class="detail-handle">&nbsp;<!--HANDLE--></td>
+        </tr>
+        <!-- END aggregated trade rows -->
+
+
+
 
         <tr>
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('positions-info-row6');">
+            <svg id="arrow-positions-info-row6" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-name">GBP/USD (per 0.0001) CFD</td>
+          <td class="stock-name" colspan="5">GBP/USD (per 0.0001) CFD</td>
           <td class="stock-direction">
             <svg class="icon trade-icon" viewBox="0 0 13 13">
               <use xlink:href="#trade-direction-long"></use>
@@ -293,17 +356,28 @@
               <use xlink:href="#edit-icon"></use>
             </svg>
           </td>
-          <td class="stock-pl" colspan="2"><span class="pnl-profit">+100.32</span></td>
+          <td class="stock-pl"><span class="pnl-profit">+100.32</span></td>
           <td class="stock-close">
             <svg class="icon close-icon" viewBox="0 0 14 14">
               <use xlink:href="#close-x"></use>
             </svg>
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
 
       </tbody>
     </table>
+
+    <br clear="all">
+
+
+    <div id="close-all">
+      <button class="close-all-button">Close all</button>
+    </div>
+
+
   </div>
 </div><!-- Ends the Open Positions List block -->
 

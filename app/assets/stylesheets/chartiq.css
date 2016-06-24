@@ -180,7 +180,7 @@ input[type="number"] {
   bottom: 1px;
   width: 12px;
   height: 12px;
-  background-image: url(/public/images/stx-sprite-ui.svg);
+  background-image: url(img/stx-sprite-ui.svg);
   background-position: -580px -31px; }
 
 .ciq-radio span {
@@ -195,7 +195,7 @@ input[type="number"] {
   background: #398dff; }
 
 .ciq-edit {
-  background-image: url(/public/images/stx-sprite-panels.svg);
+  background-image: url(img/stx-sprite-panels.svg);
   background-position: -300px -25px;
   opacity: .5;
   transition: opacity 0.2s; }
@@ -215,7 +215,7 @@ cq-loader {
   top: 50%;
   margin-left: -25px;
   margin-top: -25px;
-  background-image: url(/public/images/loading-spin.svg);
+  background-image: url(img/loading-spin.svg);
   background-size: cover;
   z-index: 1; }
 
@@ -325,7 +325,7 @@ cq-loader.stx-show {
     height: 25px;
     content: "";
     opacity: .5;
-    background-image: url(/public/images/stx-sprite-panels.svg);
+    background-image: url(img/stx-sprite-panels.svg);
     -webkit-transition: -webkit-transform .2s;
     transition: all .2s; }
   .no-touch .ciq-icon:hover:after, .ciq-icon:active:after {
@@ -392,7 +392,7 @@ cq-close:after {
   content: "";
   opacity: 0.5;
   filter: alpha(opacity=50);
-  background-image: url(/public/images/stx-sprite-panels.svg);
+  background-image: url(img/stx-sprite-panels.svg);
   -webkit-transition: -webkit-transform .2s;
   -webkit-transition: all 0.2s;
   -moz-transition: all 0.2s;
@@ -716,7 +716,7 @@ cq-lookup-icon {
   width: 27px;
   right: 15px;
   top: -5px;
-  background-image: url(/public/images/stx-sprite-ui.svg);
+  background-image: url(img/stx-sprite-ui.svg);
   background-position: -45px -25px;
   opacity: .6;
   transition: opacity .20s 0s; }
@@ -828,7 +828,7 @@ cq-toggle {
     width: 27px;
     height: 27px;
     border: solid 1px transparent;
-    background-image: url(/public/images/stx-sprite-ui.svg);
+    background-image: url(img/stx-sprite-ui.svg);
     opacity: .85;
     transition: opacity .20s 0s; }
   .no-touch cq-toggle:hover > *, cq-toggle:active > * {
@@ -904,7 +904,7 @@ cq-toggle {
   position: static;
   border-right: none;
   border-bottom: none;
-  background-image: url(/public/images/stx-sprite-ui.svg);
+  background-image: url(img/stx-sprite-ui.svg);
   opacity: .85;
   transition: opacity .20s 0s;
   -webkit-transform: rotate(0deg);
@@ -1750,7 +1750,7 @@ cq-dialog[cq-study-context] {
   /* Simple Marker */
   width: 25px;
   height: 25px;
-  background-image: url(/public/images/stx-sprite-markers.svg); }
+  background-image: url(img/stx-sprite-markers.svg); }
 
 .stx-marker.square .stx-visual:after,
 .stx-marker.circle .stx-visual:after {
@@ -1945,11 +1945,11 @@ cq-chart-title cq-chart-price cq-change:after {
   float: left; }
 
 cq-chart-title cq-chart-price.stx-up cq-change:after {
-  background-image: url(/public/images/stx-sprite-ui.svg);
+  background-image: url(img/stx-sprite-ui.svg);
   background-position: -633px -31px; }
 
 cq-chart-title cq-chart-price.stx-down cq-change:after {
-  background-image: url(/public/images/stx-sprite-ui.svg);
+  background-image: url(img/stx-sprite-ui.svg);
   background-position: -683px -31px; }
 
 /* Comparisons */
@@ -1991,7 +1991,7 @@ cq-comparison-plus {
   /* Plus icon image */
   width: 12px;
   height: 12px;
-  background-image: url(/public/images/stx-sprite-ui.svg);
+  background-image: url(img/stx-sprite-ui.svg);
   background-position: -532px -32px; }
 
 /* Add Comparison Module */
@@ -2030,7 +2030,7 @@ cq-comparison-add {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     /*@include placeholder {
-    	color: mix(#000, $DEFAULT-main, 40% );
+      color: mix(#000, $DEFAULT-main, 40% );
     }*/ }
   cq-comparison-add .stx-btn {
     transition: color .20s .2s !important;
@@ -2091,7 +2091,7 @@ cq-comparison-item .ciq-close {
   transition: opacity .20s .0s;
   height: 25px;
   width: 25px;
-  background-image: url(/public/images/stx-sprite-panels.svg);
+  background-image: url(img/stx-sprite-panels.svg);
   cursor: pointer; }
   .no-touch cq-comparison-item .ciq-close {
     opacity: 0; }
@@ -2397,7 +2397,7 @@ cq-comparison-new:hover cq-comparison-add-label {
 .ciq-night cq-comparison-add input {
   color: #d1d4d6;
   /*@include placeholder {
-  	color: mix(#FFF, $theme2-main, 40% );
+    color: mix(#FFF, $theme2-main, 40% );
   }*/ }
 .ciq-night cq-comparison-add .stx-btn {
   color: #a4a9ae !important; }
@@ -2600,7 +2600,7 @@ cq-show-range {
 /* Timezone Dialog */
 
 cq-dialog[cq-timezone-dialog] {
-	 width: 375px;
+   width: 375px;
 }
 
 cq-timezone-dialog h4 {
@@ -2753,7 +2753,7 @@ body .tfc-price,
 body .stx-trade-panel .stx-ico-edit,
 body .stx-trade-panel .stx-ico,
 body .inputTemplate.OTO a .stx-ico {
-  background-image: url(/public/images/stx-sprite-trade.png);
+  background-image: url(../img/stx-sprite-trade.png);
   background-repeat: no-repeat; }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
@@ -2765,7 +2765,7 @@ body .inputTemplate.OTO a .stx-ico {
   body .stx-trade-panel .stx-ico-edit,
   body .stx-trade-panel .stx-ico,
   body .inputTemplate.OTO a .stx-ico {
-    background-image: url(/public/images/stx-sprite-trade@2x.png);
+    background-image: url(../img/stx-sprite-trade@2x.png);
     background-size: 80px 650px; } }
 body.ciq-night .tfc-price {
   color: #000; }
@@ -3113,7 +3113,7 @@ body .stx-trade-panel ul.stx-account li {
   position: absolute;
   left: 0;
   background-color: #999;
-  background-image: url(/public/images/stx-sprite.png);
+  background-image: url(../img/stx-sprite.png);
   background-repeat: no-repeat;
   background-color: rgba(153, 153, 153, 0.2);
   border: 1px solid transparent;

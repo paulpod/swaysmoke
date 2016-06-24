@@ -26,7 +26,7 @@ a {cursor:pointer}
 
 .stx-input-field, .stx-textarea, .stx-input-check, .stx-dialog-container [type=text], .stx-dialog-container [type=number] {
 	background: #f6f6f6;
-	font-family: 'Open Sans', Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	border: #CCC solid 1px;
 	-webkit-border-radius: 3px;
@@ -124,7 +124,7 @@ a {cursor:pointer}
 	line-height: 27px;
 	height: 27px;
 	width: 16px;
-	background-image: url(/public/images/stx-sprite.png);
+	background-image: url(../img/stx-sprite.png);
 	background-position: -302px -118px;
 	border-left: 1px dotted #999;
 	opacity: .4;
@@ -159,7 +159,7 @@ a {cursor:pointer}
 }
 .stx-btn.stx-ico > span, .stx-btn.stx-ico:hover > span, .stx-btn.stx-ico:active > span { /* Styling of visible area and text hiding */
 	background-color: #999;
-	background-image: url(/public/images/stx-sprite.png);
+	background-image: url(../img/stx-sprite.png);
 	background-repeat: no-repeat;
 	background-color: rgba(153,153,153,.2);
 	border: 1px solid transparent;
@@ -192,7 +192,7 @@ a {cursor:pointer}
 
 .stx-dialog .stx-btn.stx-ico > span.stx-ico-close, 
 .menuSelect .stx-btn.stx-ico > span.stx-ico-close { /* Close buttons */
-	background-image: url(/public/images/stx-sprite.png);
+	background-image: url(../img/stx-sprite.png);
 	background-color: #fff;
 	background-position: -160px -40px;
 	border-color: #ddd;
@@ -210,7 +210,7 @@ a {cursor:pointer}
 }
 
 .stx-remove-study, .stx-edit-study {
-	background-image: url(/public/images/stx-sprite.png);
+	background-image: url(../img/stx-sprite.png);
 	border-color: #ddd;
 	float:right;
 	width:15px;
@@ -254,7 +254,7 @@ a {cursor:pointer}
 	margin: 0 auto;
 	text-align: left;
 	position: relative;
-	font-family: 'Open Sans', Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 }
 .stx-nav { /* Navigation Bar */
@@ -341,7 +341,7 @@ input#symbol {
 	border-radius: 0px 3px 3px 0px;
 }
 .stx-nav .stx-btn.stx-menu-btn#cogBtn {  /* Cog Button */
-	background-image: url(/public/images/stx-sprite.png);
+	background-image: url(../img/stx-sprite.png);
 	width: 27px;
 	padding: 0px 20px 0px 0px;
 	background-position: -35px -118px;
@@ -436,7 +436,7 @@ li.stx-menu-divider, li.stx-menu-divider:hover,
 	height: 14px;
 	text-indent: -1000px;
 	overflow: hidden;
-	background-image: url(/public/images/stx-sprite.png);
+	background-image: url(../img/stx-sprite.png);
 	background-position: -142px -122px;
 }
 .menuSelect li.stx-option .stx-checkbox.true { /* Menu checkbox toggle active */
@@ -798,7 +798,7 @@ ul.hu li { /* Data Sets */
 	height: 14px;
 	margin: 5px 0px 0 5px;
 	overflow: hidden;
-	background-image: url(/public/images/stx-sprite.png);
+	background-image: url(../img/stx-sprite.png);
 	background-position: -142px -122px;
 }
 
@@ -1152,7 +1152,7 @@ ul.hu li { /* Data Sets */
 @media (max-width: 768px) {
 .stx-wrapper {
 	display: inline-block;
-	width: 900px;
+	width: 700px;
 	margin: 0px auto;
 	text-align: left;
 	position: relative;
@@ -1256,8 +1256,6 @@ ul.hu li { /* Data Sets */
 
 .Light .stx_candle_down, .Light .stx_line_down { border-left-color: #000000; }
 .Light .stx_candle_up, .Light .stx_line_up { border-left-color: #000000; }
-
-.Light .stx_baseline{color:#2e383b;}
 
 /* Volume underlay styles */
 .Light .stx_volume_underlay_up {
@@ -1416,7 +1414,7 @@ ul.hu li { /* Data Sets */
 
 /* --- OVERLAY CLOSE --- */
 .stx-close-overlay {
-	font-family: 'Open Sans';
+	font-family: "Helvetica";
 	font-size: 10px;
 	position: absolute;
 	z-index: 4;
@@ -1424,7 +1422,7 @@ ul.hu li { /* Data Sets */
 }
 .stx-close-overlay span, .Light .stx-close-overlay span {
 	background-position: -160px -40px;
-	background-image: url(/public/images/stx-sprite.png);
+	background-image: url(../img/stx-sprite.png);
 	background-repeat: no-repeat;
 	cursor: pointer;
 	display: inline-block;

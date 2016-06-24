@@ -5,7 +5,7 @@
 /* --------------------------------------------------------- GENERAL STYLES --------------------------------------------------------- */
 
 html,body {
-	font-family:'Open Sans', Helvetica, sans-serif;
+	font-family:Arial, Helvetica, sans-serif;
 	font-size:12px;
 	margin:0;
 	padding:0;
@@ -45,7 +45,7 @@ a:active {
 .stx-ico-handle span,
 #overlayTrashCan.stx-btn span, 
 #vectorTrashCan.stx-btn span 
-{background-image: url(/public/images/stx-sprite-phone.png);}
+{background-image: url(../img/stx-sprite-phone.png);}
 
 
 @media 
@@ -71,7 +71,7 @@ a:active {
 	.stx-ico-handle span,
 	#overlayTrashCan.stx-btn span, 
 	#vectorTrashCan.stx-btn span  {
-	background-image:url(/public/images/stx-sprite-phone@2x.png);
+	background-image:url(../img/stx-sprite-phone@2x.png);
 	background-size:360px 240px;
 	}
 }
@@ -595,7 +595,7 @@ body #tfcConfirmReplace .value {font-size:14px;}
 	margin-top: 5px;
 	text-indent: -1000px;
 	overflow: hidden;
-	background-image: url(/public/images/stx-sprite.png);
+	background-image: url(../img/stx-sprite.png);
 	background-position: -142px -122px;
 }
 .menuSelect.compare .stx-menu-content.add .stx-checkbox.true { /* Menu checkbox toggle active */

@@ -4726,4 +4726,3 @@ STX.UI.Themes=document.registerElement("cq-themes", {prototype: STX.UI.Prototype
 
 
 STX.UI.TFC=document.registerElement("cq-tfc", {prototype: STX.UI.Prototypes.TFC});
-

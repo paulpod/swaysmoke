@@ -3,7 +3,7 @@
 /* --------------------------------------------------------- GENERAL STYLES --------------------------------------------------------- */
 
 html,body {
-	font-family: 'Open Sans', Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	text-align: center;
 	padding: 0;
@@ -20,12 +20,18 @@ html,body {
 	list-style: none;
 }
 
-/* leave it on by default - comment out of you want the main chart title and related controls off.
-.stx-panel-control.stx-chart-panel{ /* hide chart controls */
-	/*display:none;
+/* comment in if you want the main chart title off. 
+.stx-panel-control.stx-chart-panel .stx-panel-title{
+	display:none;
 }
 */
 
+/* comment out if you want the main chart controls on. */
+.stx-panel-control.stx-chart-panel .stx-btn-panel{
+	display:none;
+}
+
+/* comment out if you want the focus button on. */
 .stx-panel-control div:nth-of-type(3) { /* solo button */
 	display:none;
 }
@@ -144,7 +150,7 @@ html,body {
 }
 
 .stx-nav.stx-collapse .stx-menu-btn.stx-collapsible {
-	background-image: url(/public/images/stx-sprite.png);
+	background-image: url(../img/stx-sprite.png);
 	height: 27px;
 	width: 45px;
 	padding: 0;
@@ -268,7 +274,7 @@ input#symbol {
 	margin-top: 5px;
 	text-indent: -1000px;
 	overflow: hidden;
-	background-image: url(/public/images/stx-sprite.png);
+	background-image: url(../img/stx-sprite.png);
 	background-position: -142px -122px;
 }
 .menuSelect.compare .stx-menu-content.add .stx-checkbox.true { /* Menu checkbox toggle active */
@@ -372,8 +378,11 @@ input#symbol {
 .stx-toolbar ul.hu {
 	width:260px;
 	margin-right:70px;
-	}
-#huDate {white-space:nowrap;}
+}
+
+#huDate {
+	white-space:nowrap;
+}
 
 /* Sharing Button */
 .stx-btn#shareBtn { 
@@ -406,7 +415,7 @@ input#symbol {
 	display:inline-block;
 	width: 25px;
 	height:25px;
-	background:url(/public/images/stx-sprite.png);
+	background:url(../img/stx-sprite.png);
 	background-position: -98px -116px;
 	margin-left:4px;
 }
@@ -423,7 +432,7 @@ input#symbol {
 	box-shadow:none;
 }
 .stx-btn.loading#shareBtn span {
-	background:url(/public/images/stx-loading.gif);	
+	background:url(../img/stx-loading.gif);	
 	cursor:default;
 }
 
@@ -475,7 +484,7 @@ input#symbol {
 .stx-panel-toggle#btnToggleTrade {height:80px;}
 /*.stx-panel-toggle#btnToggleStocktwits {height:105px;}
 .stx-panel-toggle#btnToggleNews {height:65px;}*/
-.stx-panel-selector .stx-panel-toggle {background:url(/public/images/stx-sprite.png);}
+.stx-panel-selector .stx-panel-toggle {background:url(../img/stx-sprite.png);}
 
 /* Sidebar Strucure */
 .stx-panel-side {
@@ -567,6 +576,7 @@ input#symbol {
 	clear:both;
 	height:140px;
 	border-bottom:solid 1px;
+	overflow: hidden;
 	}
 
 #stxWatch.false .watchListScroller {display:none;}
@@ -660,6 +670,7 @@ input#symbol {
 	margin-top:-50px;
 	margin-bottom:-50px;
 	z-index:1;
+	overflow: hidden;
 	}
 #stxWatch.false #symbolScroller {display:none;}
 #stxWatch #stxWatch-symbols {
@@ -896,13 +907,6 @@ textarea#stxWatchEditTA {
 
 /* ------------------------------------------------------- Dialogs ------------------------------------------------------- */
 
-/* study dialog override to allow left scroll bar on large dialogs*/
-#studyDialog {
-   max-height: 500px;
-   width: 210px;
-   overflow-y: auto;
-}
-
 #sharedLinkDialog {
 	width:300px;
 	text-align:center;
@@ -933,7 +937,14 @@ textarea#stxWatchEditTA {
 /* Timezones*/
 #timezoneDialog{text-align:center;}
 #timezoneDialog .title {margin: 0 auto;}
-#timezoneDialogWrapper{border-bottom: solid #CCCCCC 1px;}
+#timezoneDialogWrapper{
+	border-bottom: solid #CCCCCC 1px;
+	overflow:hidden;
+}
+BODY.IE8 #timezoneDialogWrapper {
+	height:360px;
+	position:relative;
+}
 #timezoneDialog .instruct{
 	margin: 10px auto;
 	font-style:italic;
@@ -1038,8 +1049,8 @@ body.Light  {background: #FDFDFD;}
 .Light #stxWatch #stxWatchLists ul li.current {background:#F6F6F6;}
 .Light #stxWatch #stxWatchLists ul li div:active, 
 .Light #stxWatch #stxWatchLists ul li.current div {color: #000;}
-.Light #stxWatch #stxWatchLists ul li.current div.edit {background:url(/public/images/stx-sprite.png) -198px -36px no-repeat;}
-.Light #stxWatch #stxWatchLists ul li.current div.delete {background:url(/public/images/stx-sprite.png) -236px -36px no-repeat;}
+.Light #stxWatch #stxWatchLists ul li.current div.edit {background:url(../img/stx-sprite.png) -198px -36px no-repeat;}
+.Light #stxWatch #stxWatchLists ul li.current div.delete {background:url(../img/stx-sprite.png) -236px -36px no-repeat;}
 .Light #stxWatchUp {
 	background: rgba(253,253,253,1);
 	background: -moz-linear-gradient(top, rgba(253,253,253,1) 0%, rgba(253,253,253,1) 50%, rgba(253,253,253,0) 100%);
@@ -1197,8 +1208,8 @@ body.Dark  {background: #111111;}
 .Dark #stxWatch #stxWatchLists ul li.current {background:#1F1F1F;}
 .Dark #stxWatch #stxWatchLists ul li div:active, 
 .Dark #stxWatch #stxWatchLists ul li.current div {color: #fff;}
-.Dark #stxWatch #stxWatchLists ul li.current div.edit {background:url(/public/images/stx-sprite.png) -198px -76px no-repeat;}
-.Dark #stxWatch #stxWatchLists ul li.current div.delete {background:url(/public/images/stx-sprite.png) -236px -76px no-repeat;}
+.Dark #stxWatch #stxWatchLists ul li.current div.edit {background:url(../img/stx-sprite.png) -198px -76px no-repeat;}
+.Dark #stxWatch #stxWatchLists ul li.current div.delete {background:url(../img/stx-sprite.png) -236px -76px no-repeat;}
 .Dark #stxWatchUp {
 	background: rgba(17,17,17,1);
 	background: -moz-linear-gradient(top, rgba(17,17,17,1) 0%, rgba(17,17,17,1) 50%, rgba(17,17,17,0) 100%);
@@ -1309,6 +1320,7 @@ BODY.IE8.Light .stx_crosshair_y, BODY.IE8.Light .stx_crosshair_x{
 BODY.IE8 #shareBtn {
 	display:none;
 }
+
 /* ------------------------------------------------------- CHART OVERLAY ELEMENTS ------------------------------------------------------ */
 
 .rightclick_study #mouseManageText { display:inline; }
@@ -1355,3 +1367,49 @@ BODY.IE8 #shareBtn {
 .stxLookupStudies li span:nth-of-type(3) { /* Search results Category */
 	display:none;
 }
+
+.stx-study-attribution {
+	position:absolute;
+	bottom:5px;
+	left:5px;
+	font-size:9px;
+	
+}
+.Dark .stx-study-attribution { color:rgba(255,255,255,.4); } 
+.Light .stx-study-attribution { color:rgba(0,0,0,.4); }
+
+.Dark .stx-study-attribution a { color:rgb(255,255,255); } 
+.Light .stx-study-attribution a { color:rgb(0,0,0); }
+
+
+/* ------------------ responsive tool bar functionality ------------------------ */
+/* Remove Drawing Tool Menu Button  on small screens*/
+@media screen and (max-width: 825px) {
+	.stx-toolbar div .stx-drawing { 
+		display:none;
+	}
+	.stx-toolbar div .currentMeasure { 
+		display:none;
+	}
+}
+
+/* Remove compare small screens*/	
+@media screen and (max-width: 692px) {	
+	#menuWrapperCompare  {
+		display:none;
+	}
+}
+/* shift study drop down to right*/	
+@media screen and (max-width: 692px) {	
+	.menuSelect.studies {
+		right:-100px;
+	}
+}
+
+/* remove the events buttin */
+@media screen and (max-width: 638px) {	
+	#menuEvents {
+		display:none;
+	}
+}
+/* ------------------ END responsive tool bar functionality ------------------------ */

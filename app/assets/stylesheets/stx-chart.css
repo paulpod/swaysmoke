@@ -8,7 +8,7 @@ html,body{
 
 .chartContainer, #chartContainer { /* DIV that the canvas expands to. Use any ID you wish. #chartContainer is only for backward compatibility with older libraries. */
 	display: block;
-	font-family: 'Open Sans', Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	position:relative; /* chart container must be relative for internal DOM elements to be correct */
 }
@@ -17,7 +17,42 @@ html,body{
 
 /* Basic Buttons */
 
-//
+.stx-btn { /* Inactive Button */
+	display:inline-block;
+	cursor: pointer;
+	padding: 0px 8px;
+	border: solid 1px #ddd;
+	font-weight: bold;
+	line-height: 27px;
+	color: #7e7e7e;
+	text-align: center;
+	overflow: visible;
+	background-repeat: no-repeat;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-transition: color .25s, border .25s, box-shadow .25s;
+	-moz-transition: color .25s, border .25s, box-shadow .25s;
+	transition: color .25s, border .25s, box-shadow .25s;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.stx-btn:hover { /* Button Hover State */
+	color: #444444;
+	border: solid 1px #c5c5c5;
+	-webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, .1), inset 0px -8px 6px rgba(100, 100, 100, .03);
+	-moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, .1), inset 0px -8px 6px rgba(100, 100, 100, .03);
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, .1), inset 0px -8px 6px rgba(100, 100, 100, .03);
+}
+.stx-btn:active { /* Button Active State */
+	color: #333;
+	-webkit-box-shadow: inset 0px 8px 6px rgba(100, 100, 100, .03);
+	-moz-box-shadow: inset 0px 8px 6px rgba(100, 100, 100, .03);
+	box-shadow: inset 0px 8px 6px rgba(100, 100, 100, .03);
+}
+
 
 /* Panel Buttons */
 
@@ -43,14 +78,14 @@ html,body{
 	transform: scale(1.2, 1.2);
 }
 .stx-btn-panel span {/* Button Icons */
-	background-image:url(/public/images/stx-sprite-panels.svg);
+	background-image:url(../img/stx-sprite-panels.svg);
 	opacity:.6;
    -webkit-transition: opacity .2s;
    -moz-transition: opacity .2s;
    transition: opacity .2s; 
 }
 .no-svg .stx-btn-panel span {/* Button Icons for non SVG browsers */
-	background-image:url(/public/images/stx-sprite-panels.png);
+	background-image:url(../img/stx-sprite-panels.png);
 }
 .stx-btn-panel > span.stx-ico-up {background-position: -150px -25px;}
 .stx-btn-panel > span.stx-ico-down {background-position: -200px -25px;} 
@@ -104,7 +139,7 @@ html,body{
 	background:rgba(0,0,0,.2);
 }
 #chartSize span {/* Chart size (+) and (-) buttons */
-	background-image:url(/public/images/stx-sprite-panels.svg);
+	background-image:url(../img/stx-sprite-panels.svg);
 	width: 35px;
 	cursor: pointer;
 	transition: opacity .25s, transform .2s;
@@ -112,7 +147,7 @@ html,body{
 	opacity: .6;
 }
 .no-svg #chartSize span {/*Chart size (+) and (-) buttons for non SVG browsers */
-	background-image:url(/public/images/stx-sprite-panels.png);
+	background-image:url(../img/stx-sprite-panels.png);
 }
 #chartSize .stx-zoom-out {/* Zoom out */
 	background-position: -45px -25px;
@@ -163,7 +198,7 @@ html,body{
 }
 
 .stx_jump_today span {	
-	background-image:url(/public/images/stx-sprite-panels.svg);
+	background-image:url(../img/stx-sprite-panels.svg);
 	background-repeat: no-repeat;
 	display: inline-block;
 	line-height: 25px;
@@ -176,7 +211,7 @@ html,body{
 	opacity: .6;
 }
 .no-svg .stx_jump_today span {/* Button Icons for non SVG browsers */
-	background-image:url(/public/images/stx-sprite-panels.png);
+	background-image:url(../img/stx-sprite-panels.png);
 }
 .stx_jump_today:hover span {	
 	opacity: 1;
@@ -304,11 +339,11 @@ html,body{
 	text-indent: 100px;
 	background: #efefef;
 	border: solid #ddd 1px;
-	background-image:url(/public/images/stx-sprite-panels.svg);
+	background-image:url(../img/stx-sprite-panels.svg);
 	background-position: -401px -26px;
 }
 .no-svg #overlayTrashCan.stx-btn span, .no-svg #vectorTrashCan.stx-btn span {/* Button Icons for non SVG browsers */
-	background-image:url(/public/images/stx-sprite-panels.png);
+	background-image:url(../img/stx-sprite-panels.png);
 }
 
 #mouseDeleteInstructions {
@@ -331,7 +366,6 @@ html,body{
 	width: 40px;
 	height: 40px;
 	z-index:50;
-	display: none
 }
 
 /* --------------------------------------------------------- CHART ELEMENT STYLES --------------------------------------------------------- */
@@ -351,7 +385,7 @@ html,body{
 
 .stx_xaxis {/* x-axis date styles */
 	font-size: 12px;
-	font-family: 'Open Sans', Helvetica;
+	font-family: Helvetica;
 	color: #666;
 	}
 .stx_xaxis_dark {/* x-axis date divider styles */
@@ -368,7 +402,7 @@ html,body{
 .stx-float-date {/* Crosshair Floating x-axis date label*/
 	position: absolute;
 	font-size: 10px;
-	font-family: 'Open Sans', Helvetica;
+	font-family: Helvetica;
 	z-index: 30;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -412,7 +446,7 @@ html,body{
 /* -------- Chart and Study Panel Styling -------- */
 
 .stx_panels {/* Panel Title text */
-	font-family: 'Open Sans', Helvetica;
+	font-family: Helvetica;
 	font-size: 10px;
 	color: white;
 }
@@ -466,6 +500,19 @@ html,body{
 	color: #8cc176;
 }
 
+.stx_baseline_delta_mountain {/* Default color for baseline delta mountain Charts */
+	background-color: rgba(163, 102, 255,.5);		/* background color for mountain. If IE8 support is needed use #5CC7C0 instead as rgba is not supported*/
+	color: rgba(163, 102, 255,.01);					/* Optional gradient. If IE8 support is needed use #EFF9F9 instead as rgba is not supported */
+	padding: 3px;									/* Optional padding between the baseline and the mountain shading*/
+}
+
+.stx_colored_mountain_chart {/* Default color for colored mountain Charts */
+	background-color: rgba(163, 102, 255,.5);		/* background color for mountain. If IE8 support is needed use #5CC7C0 instead as rgba is not supported*/
+	color: rgba(163, 102, 255,.01);					/* Optional gradient. If IE8 support is needed use #EFF9F9 instead as rgba is not supported */
+	width: 2px;										/* Optional line width */
+	padding: 4px;									/* Optional padding between the baseline and the mountain shading*/
+}
+
 .stx_mountain_chart {/* Default color for mountain Charts */
 	background-color: rgba(102,202,196,.5);			/* background color for mountain. If IE8 support is needed use #5CC7C0 instead as rgba is not supported*/
 	color: rgba(102,202,196,.01);					/* Optional gradient. If IE8 support is needed use #EFF9F9 instead as rgba is not supported */
@@ -473,6 +520,7 @@ html,body{
 	width: 1px;										/* Optional line width */
 }
 /*.stx_mountain_chart.color {width:24px;}*/
+  
 .stx_highlight_vector {/* change the color and weight of drawings and study overlays on hover */
 	color: red;
 	width: 3px;
@@ -503,7 +551,7 @@ html,body{
 .stx_hollow_candle_up{color:#8cc176;}
 .stx_hollow_candle_even{color:#888888;}
 
-.stx_baseline{/* baseline color */
+.stx_baseline{/* color of baseline (dashed horizontal line) */
 	color:#2e383b;
 }
 
@@ -581,7 +629,7 @@ html,body{
 
 .stx_annotation {/* Annotation styles */
 	font-size: 13px;
-	font-family: 'Open Sans', Helvetica;
+	font-family: Helvetica;
 	background: transparent;
 	border: none;
 	box-shadow: none;
@@ -617,12 +665,12 @@ html,body{
 }
 .stx_watermark {/* Optional watermark style */
 	font-size: 16px;
-	font-family: 'Open Sans', Helvetica;
+	font-family: Helvetica;
 	color: rgba(0,0,0,0.5);
 }
 .stx_fib_levels {/* Text for fibonacci values */
 	font-size: 12px;
-	font-family: 'Open Sans', Helvetica;
+	font-family: Helvetica;
 	color: transparent;
 }
 
@@ -636,7 +684,7 @@ html,body{
 }
 .stx_share_symbol {
 	font-size: 14px;
-	font-family: 'Open Sans', Arial;
+	font-family: Arial;
 	font-weight: bold;
 }
 

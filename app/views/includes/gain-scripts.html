@@ -20,13 +20,20 @@ $(function() {
     });
 });
 
+
+
+
+
+
 function toggleDiv(divId) {
-   $("#"+divId).toggle();
+    $("."+divId).toggle();
+    $('#arrow-'+divId).toggleClass('reveal-icon-down reveal-icon-right');
 }
 
 function setDisplayValue() {
     var display = $('.toggle')[0].style.display;
     $('.displayvalue').text(display);
+    e.preventDefault();
 }
 
 

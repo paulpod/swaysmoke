@@ -55,8 +55,8 @@
 		// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 		// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 
-		// requestAnimationFrame polyfill by Erik MÃ¶ller.
-		// Fixes from Paul Irish, Tino Zijdel, Andrew Mao, Klemen SlaviÄ, Darius Bacon
+		// requestAnimationFrame polyfill by Erik Möller.
+		// Fixes from Paul Irish, Tino Zijdel, Andrew Mao, Klemen Slavič, Darius Bacon
 
 		// MIT license
 
@@ -486,7 +486,7 @@
 		 * IsStructurallyValidLanguageTag abstract operation). It takes the steps
 		 * specified in RFC 5646 section 4.5, or successor, to bring the language tag
 		 * into canonical form, and to regularize the case of the subtags, but does not
-		 * take the steps to bring a language tag into â€œextlang formâ€ and to reorder
+		 * take the steps to bring a language tag into “extlang form” and to reorder
 		 * variant subtags.
 
 		 * The specifications for extensions to BCP 47 language tags, such as RFC 6067,
@@ -570,7 +570,7 @@
 		/**
 		 * The DefaultLocale abstract operation returns a String value representing the
 		 * structurally valid (6.2.2) and canonicalized (6.2.3) BCP 47 language tag for the
-		 * host environmentâ€™s current locale.
+		 * host environment’s current locale.
 		 */
 		function /* 6.2.4 */DefaultLocale () {
 			return defaultLocale;
@@ -713,7 +713,7 @@
 				if (pos < 0)
 					return;
 
-				// c. If pos â‰¥ 2 and the character "-" occurs at index pos-2 of candidate,
+				// c. If pos ≥ 2 and the character "-" occurs at index pos-2 of candidate,
 				//	  then decrease pos by 2.
 				if (pos >= 2 && candidate.charAt(pos - 2) == '-')
 					pos -= 2;
@@ -919,7 +919,7 @@
 						// an argument list containing the single item key.
 						keyPos = indexOf.call(extensionSubtags, key);
 
-					// ii. If keyPos â‰  -1, then
+					// ii. If keyPos ≠ -1, then
 					if (keyPos !== -1) {
 						// 1. If keyPos + 1 < extensionSubtagsLength and the length of the
 						//	  result of calling the [[Get]] internal method of
@@ -938,7 +938,7 @@
 								//	  item requestedValue.
 								valuePos = indexOf.call(keyLocaleData, requestedValue);
 
-							// c. If valuePos â‰  -1, then
+							// c. If valuePos ≠ -1, then
 							if (valuePos !== -1)
 								var
 									// i. Let value be requestedValue.
@@ -956,7 +956,7 @@
 								// "true".
 								valuePos = indexOf(keyLocaleData, 'true');
 
-							// b. If valuePos â‰  -1, then
+							// b. If valuePos ≠ -1, then
 							if (valuePos !== -1)
 								var
 									// i. Let value be "true".
@@ -1601,7 +1601,7 @@
 				}
 
 				// b. If the value of the [[style]] internal property of numberFormat is
-				//	  "percent", let x be 100 Ã— x.
+				//	  "percent", let x be 100 × x.
 				if (internal['[[style]]'] === 'percent')
 					x *= 100;
 
@@ -1628,12 +1628,12 @@
 						  internal['[[maximumFractionDigits]]']);
 
 				// e. If the value of the [[numberingSystem]] internal property of
-				//	  numberFormat matches one of the values in the â€œNumbering Systemâ€ column
+				//	  numberFormat matches one of the values in the “Numbering System” column
 				//	  of Table 2 below, then
 				if (numSys[nums]) {
 					// i. Let digits be an array whose 10 String valued elements are the
 					//	  UTF-16 string representations of the 10 digits specified in the
-					//	  â€œDigitsâ€ column of Table 2 in the row containing the value of the
+					//	  “Digits” column of Table 2 in the row containing the value of the
 					//	  [[numberingSystem]] internal property.
 					var digits = numSys[internal['[[numberingSystem]]']];
 					// ii. Replace each digit in n with the value of digits[digit].
@@ -1731,10 +1731,10 @@
 			}
 			// 3. Else
 			else {
-				// a. Let e and n be integers such that 10áµ–â»Â¹ â‰¤ n < 10áµ– and for which the
-				//	  exact mathematical value of n Ã— 10áµ‰â»áµ–âºÂ¹ â€“ x is as close to zero as
+				// a. Let e and n be integers such that 10ᵖ⁻¹ ≤ n < 10ᵖ and for which the
+				//	  exact mathematical value of n × 10ᵉ⁻ᵖ⁺¹ – x is as close to zero as
 				//	  possible. If there are two such sets of e and n, pick the e and n for
-				//	  which n Ã— 10áµ‰â»áµ–âºÂ¹ is larger.
+				//	  which n × 10ᵉ⁻ᵖ⁺¹ is larger.
 
 				var idx,
 
@@ -1758,7 +1758,7 @@
 				m = m.slice(0, m.indexOf('e') > -1 ? idx : m.length).replace('.', '');
 			}
 
-			// 4. If e â‰¥ p, then
+			// 4. If e ≥ p, then
 			if (e >= p)
 				// a. Return the concatenation of m and e-p+1 occurrences of the character "0".
 				return m + arrJoin.call(Array(e-p+1 + 1), '0');
@@ -1768,22 +1768,22 @@
 				// a. Return m.
 				return m;
 
-			// 6. If e â‰¥ 0, then
+			// 6. If e ≥ 0, then
 			else if (e >= 0)
 				// a. Let m be the concatenation of the first e+1 characters of m, the character
-				//	  ".", and the remaining pâ€“(e+1) characters of m.
+				//	  ".", and the remaining p–(e+1) characters of m.
 				m = m.slice(0, e + 1) + '.' + m.slice(e + 1);
 
 			// 7. If e < 0, then
 			else if (e < 0)
-				// a. Let m be the concatenation of the String "0.", â€“(e+1) occurrences of the
+				// a. Let m be the concatenation of the String "0.", –(e+1) occurrences of the
 				//	  character "0", and the string m.
 				m = '0.' + arrJoin.call(Array (-(e+1) + 1), '0') + m;
 
 			// 8. If m contains the character ".", and maxPrecision > minPrecision, then
 			if (m.indexOf(".") >= 0 && maxPrecision > minPrecision) {
 				var
-				// a. Let cut be maxPrecision â€“ minPrecision.
+				// a. Let cut be maxPrecision – minPrecision.
 					cut = maxPrecision - minPrecision;
 
 				// b. Repeat while cut > 0 and the last character of m is "0":
@@ -1817,14 +1817,14 @@
 				// We can pick up after the fixed formatted string (m) is created
 				m	= Number.prototype.toFixed.call(x, maxFraction),
 
-				// 4. If [maxFraction] â‰  0, then
+				// 4. If [maxFraction] ≠ 0, then
 				//	  ...
 				//	  e. Let int be the number of characters in a.
 				//
 				// 5. Else let int be the number of characters in m.
 				igr = m.split(".")[0].length,  // int is a reserved word
 
-				// 6. Let cut be maxFraction â€“ minFraction.
+				// 6. Let cut be maxFraction – minFraction.
 				cut = maxFraction - minFraction,
 
 				exp = (idx = m.indexOf('e')) > -1 ? m.slice(idx + 1) : 0;
@@ -1853,7 +1853,7 @@
 
 			// 9. If int < minInteger, then
 			if (igr < minInteger)
-				// a. Let z be the String consisting of minIntegerâ€“int occurrences of the
+				// a. Let z be the String consisting of minInteger–int occurrences of the
 				//	  character "0".
 				var z = arrJoin.call(Array(minInteger - igr + 1), '0');
 
@@ -2528,7 +2528,7 @@
 					// iii. Let v be the value of tm.[[<p>]].
 						v = tm['[['+ p +']]'];
 
-					//	iv. If p is "year" and v â‰¤ 0, then let v be 1 - v.
+					//	iv. If p is "year" and v ≤ 0, then let v be 1 - v.
 					if (p === 'year' && v <= 0)
 						v = 1 - v;
 
@@ -2610,8 +2610,8 @@
 			// 8. If dateTimeFormat has an internal property [[hour12]] whose value is true, then
 			if (internal['[[hour12]]'] === true) {
 				// a. If pm is true, then let fv be an implementation and locale dependent String
-				//	  value representing â€œpost meridiemâ€; else let fv be an implementation and
-				//	  locale dependent String value representing â€œante meridiemâ€.
+				//	  value representing “post meridiem”; else let fv be an implementation and
+				//	  locale dependent String value representing “ante meridiem”.
 				fv = resolveDateString(localeData, ca, 'dayPeriods', pm ? 'pm' : 'am');
 
 				// b. Replace the substring of result that consists of "{ampm}", with fv.
@@ -3111,7 +3111,7 @@
 		* Ricky Romero
 		* Preston Hunt (prestonhunt@gmail.com)
 		* Dov. B Katz (dov.katz@morganstanley.com)
-		* Peter BergstrÃ¶m (pbergstr@mac.com)
+		* Peter Bergström (pbergstr@mac.com)
 		* Long Ho
 		*
 		* Modified from original by ChartIQ to include caching for improved performance
@@ -7305,7 +7305,7 @@
 							return false;
 						}
 					}
-					else if (code === 42 || code === 8729 || code === 8226) { // * or âˆ™ or â€¢
+					else if (code === 42 || code === 8729 || code === 8226) { // * or ∙ or •
 						this.tokenprio = 3;
 						this.tokenindex = "*";
 					}
@@ -7485,4 +7485,3 @@
 	}
 
 })();
-
