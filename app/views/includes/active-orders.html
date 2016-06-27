@@ -14,30 +14,38 @@
   <div class="stock-table orders-table">
     <table style="">
       <thead>
-        <tr>
+        <tr id="active-orders-labels" style="vertical-align:top;height:20px">
           <th>&nbsp;</th>
-          <th style="text-align:left;">Market</th>
-          <th id="edit-title"><span style="margin-left:18px">Edit</span></th>
+          <th style="text-align:left;" colspan="2">Market</th>
+          <th id="edit-title"><span style="margin-right:10px">Edit</span></th>
           <th style="text-align:left;">Quantity<span style="display:none">uantity</span></th>
           <th style="text-align:left;">Trade @ Price</th>
           <th style="text-align:left;">Distance</th>
-          <th style="text-align:left;">Current</th>
+          <!--<th style="text-align:left;">Current</th>-->
           <!--<th style="text-align:left;">Type</th>-->
-          <th id="delete-title" style="text-align:right;"><span style="display:none">Delete</span></th>
+          <th id="delete-title" colspan="2" style="text-align:right;"><span style="display:none">Delete</span></th>
+        </tr>
+        <tr class="table-second-headrow">
+          <th style="background:none">&nbsp;</th>
+          <th colspan="7">&nbsp;</th>
+          <th style="background:none">&nbsp;</th>
         </tr>
       </thead>
 
       <tbody>
         <tr class="toprow">
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('order-info-row1');">
+            <svg id="arrow-order-info-row1" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-ordername">Wall Street CFD</td>
+
+          <td class="stock-ordername" colspan="2">Wall Street CFD</td>
 
           <td class="stock-edit">
-            <svg class="icon edit-icon" viewBox="0 0 14 14">
+            <svg class="icon order-edit-icon" viewBox="0 0 14 14">
               <use xlink:href="#edit-icon"></use>
             </svg>
           </td>
@@ -51,7 +59,7 @@
           <td class="stock-order">
             <div class="pricebox pricebox-long ">
 
-              <svg class="icon trade-icon" viewBox="0 0 13 13">
+              <svg class="icon order-trade-icon" viewBox="0 0 13 13">
                 <use xlink:href="#trade-direction-long"></use>
               </svg>
 
@@ -66,37 +74,60 @@
             </div>
           </td>
 
-          <td class="stock-current">
-            <div class="pricebox pricebox-long lastmoveup">
-
-              <svg class="icon price-icon" viewBox="0 0 13 13">
-                <use xlink:href="#price-direction-long"></use>
-              </svg>
-
-              <span class="price">17768.9</span>
-
-            </div>
-          </td>
-
-          <!--<td class="stock-type"><span>GTC</span></td>-->
+          
 
           <td class="stock-delete">
             <svg class="icon delete-icon" viewBox="0 0 14 14">
               <use xlink:href="#close-x"></use>
             </svg>
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
+
+
+<!-- The hidden row contains all the details of the open order -->
+        <tr style="display:none;position:relative;top:7px" class="order-info-row1">
+          <!-- details label row -->
+          <td class="detail-heading">&nbsp;</td>
+          <td class="detail-heading" style="text-align:left">Order type</td>
+          <td class="detail-heading">Current</td>
+          <td class="detail-heading" colspan="2">Margin</td>
+
+          <td class="detail-heading">Stop</td>
+          <td class="detail-heading" colspan="2">Limit</td>
+
+          <td class="detail-handle">&nbsp;<!--HANDLE--></td>
+        </tr>
+
+
+        <tr style="display:none;background-color:white;" class="detail-row order-info-row1">
+          <td class="">&nbsp;</td>
+          <td class="detail-type"><span>Good til <a href="#">cancelled</a></span></td>
+          <td class="detail-price">17768.9</td>
+          <td class="detail-price" colspan="2">&pound;943</td>
+
+          <td class="detail-price">17752.2</td>
+          <td class="detail-price" colspan="2">17778.8</td>
+
+          <td class="detail-handle">&nbsp;<!--HANDLE--></td>
+        </tr><!-- END detail row for ORDER -->
+
+
 
         <tr class="toprow">
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('positions-info-row1');">
+            <svg id="arrow-positions-info-row1" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-ordername">Wall Street CFD</td>
+
+          <td class="stock-ordername" colspan="2">Wall Street CFD</td>
 
           <td class="stock-edit">
-            <svg class="icon edit-icon" viewBox="0 0 14 14">
+            <svg class="icon order-edit-icon" viewBox="0 0 14 14">
               <use xlink:href="#edit-icon"></use>
             </svg>
           </td>
@@ -110,7 +141,7 @@
           <td class="stock-order">
             <div class="pricebox pricebox-long ">
 
-              <svg class="icon trade-icon" viewBox="0 0 13 13">
+              <svg class="icon order-trade-icon" viewBox="0 0 13 13">
                 <use xlink:href="#trade-direction-long"></use>
               </svg>
 
@@ -125,37 +156,31 @@
             </div>
           </td>
 
-          <td class="stock-current">
-            <div class="pricebox pricebox-long lastmoveup">
-
-              <svg class="icon price-icon" viewBox="0 0 13 13">
-                <use xlink:href="#price-direction-long"></use>
-              </svg>
-
-              <span class="price">17768.9</span>
-
-            </div>
-          </td>
-
-          <!--<td class="stock-type"><span>GTC</span></td>-->
-
+          
           <td class="stock-delete">
             <svg class="icon delete-icon" viewBox="0 0 14 14">
               <use xlink:href="#close-x"></use>
             </svg>
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
+
+
 
         <tr class="toprow">
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('positions-info-row1');">
+            <svg id="arrow-positions-info-row1" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-ordername">Wall Street CFD</td>
+
+          <td class="stock-ordername" colspan="2">Wall Street CFD</td>
 
           <td class="stock-edit">
-            <svg class="icon edit-icon" viewBox="0 0 14 14">
+            <svg class="icon order-edit-icon" viewBox="0 0 14 14">
               <use xlink:href="#edit-icon"></use>
             </svg>
           </td>
@@ -169,7 +194,7 @@
           <td class="stock-order">
             <div class="pricebox pricebox-long ">
 
-              <svg class="icon trade-icon" viewBox="0 0 13 13">
+              <svg class="icon order-trade-icon" viewBox="0 0 13 13">
                 <use xlink:href="#trade-direction-long"></use>
               </svg>
 
@@ -184,25 +209,13 @@
             </div>
           </td>
 
-          <td class="stock-current">
-            <div class="pricebox pricebox-long lastmoveup">
-
-              <svg class="icon price-icon" viewBox="0 0 13 13">
-                <use xlink:href="#price-direction-long"></use>
-              </svg>
-
-              <span class="price">17768.9</span>
-
-            </div>
-          </td>
-
-          <!--<td class="stock-type"><span>GTC</span></td>-->
-
           <td class="stock-delete">
             <svg class="icon delete-icon" viewBox="0 0 14 14">
               <use xlink:href="#close-x"></use>
             </svg>
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
         

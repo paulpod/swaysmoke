@@ -14,28 +14,39 @@
   <div class="stock-table watchlist-table">
     <table style="">
       <thead>
-        <tr>
+        <tr id="watchlist-labels" style="vertical-align:top;height:20px">
           <th>&nbsp;</th>
           <th style="text-align:left;">Market</th>
-          <th>Short</th>
-          <th>Long</th>
+          <th style="text-align:left;">Short</th>
+          <th style="text-align:left;">Long</th>
           <th>1 day</th>
           <th>
             <svg class="icon clock-icon" viewBox="0 0 14 14">
               <use xlink:href="#clock"></use>
             </svg>
           </th>
+          <th>&nbsp;</th>
+        </tr>
+
+        <tr class="table-second-headrow">
+          <th style="background:none">&nbsp;</th>
+          <th colspan="5">&nbsp;</th>
+          <th style="background:none">&nbsp;</th>
         </tr>
       </thead>
 
       <tbody>
         <tr class="toprow">
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('watch-info-row1');">
+            <svg id="arrow-watch-info-row1" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-market">Wall Street CFD</td>
+
+          <td class="stock-watchname">Wall Street CFD</td>
+
           <td class="stock-short">
 
             <div class="pricebox pricebox-long lastmovedown">
@@ -44,7 +55,8 @@
                 <use xlink:href="#price-direction-short"></use>
               </svg>
 
-              <span class="price"><button class="show" style="background:none;font-size:1em;font-weight:600;font-family:'Open Sans',sans;padding:0;margin:0">
+              <span class="price">
+              <button class="show">
               18022.2
               </button></span>
 
@@ -55,7 +67,7 @@
             
             <div class="pricebox pricebox-short lastmovedown">
 
-              <svg class="icon price-icon white-icon" viewBox="0 0 13 13">
+              <svg class="icon price-icon" viewBox="0 0 13 13">
                 <use xlink:href="#price-direction-long"></use>
               </svg>
 
@@ -71,15 +83,21 @@
             <p class="mini-change negative">-0.26%</p>
 
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
         <tr>
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('watch-info-row2');">
+            <svg id="arrow-watch-info-row2" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-market">UK100 CFD</td>
+
+          <td class="stock-watchname">UK100 CFD</td>
+
           <td class="stock-short">
 
             <div class="pricebox pricebox-long lastmovenone">
@@ -113,15 +131,21 @@
             <p class="mini-change negative">-0.03%</p>
 
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
         <tr>
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('watch-info-row3');">
+            <svg id="arrow-watch-info-row3" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-market">Germany 30 CFD</td>
+
+          <td class="stock-watchname">Germany 30 CFD</td>
+
           <td class="stock-short">
 
             <div class="pricebox pricebox-long lastmovenone">
@@ -139,7 +163,7 @@
             
             <div class="pricebox pricebox-short lastmovenone">
 
-              <svg class="icon price-icon white-icon" viewBox="0 0 13 13">
+              <svg class="icon price-icon" viewBox="0 0 13 13">
                 <use xlink:href="#price-direction-long"></use>
               </svg>
 
@@ -155,15 +179,21 @@
             <p class="mini-change positive">+0.35%</p>
 
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
         <tr>
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('watch-info-row4');">
+            <svg id="arrow-watch-info-row4" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-market">Japan 225 CFD</td>
+
+          <td class="stock-watchname">Japan 225 CFD</td>
+
           <td class="stock-short">
 
             <div class="pricebox pricebox-long lastmovenone">
@@ -181,7 +211,7 @@
             
             <div class="pricebox pricebox-short lastmovenone">
 
-              <svg class="icon price-icon white-icon" viewBox="0 0 13 13">
+              <svg class="icon price-icon" viewBox="0 0 13 13">
                 <use xlink:href="#price-direction-long"></use>
               </svg>
 
@@ -197,15 +227,21 @@
             <p class="mini-change positive">+0.63%</p>
 
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
         <tr>
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('watch-info-row5');">
+            <svg id="arrow-watch-info-row5" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-market">Bolsas y Mercados Espanoles Jun 16</td>
+
+          <td class="stock-watchname">Bolsas y Mercados Espanoles Jun 16</td>
+
           <td class="stock-short">
 
             <div class="pricebox pricebox-long lastmoveup">
@@ -223,7 +259,7 @@
             
             <div class="pricebox pricebox-short lastmoveup">
 
-              <svg class="icon price-icon white-icon" viewBox="0 0 13 13">
+              <svg class="icon price-icon" viewBox="0 0 13 13">
                 <use xlink:href="#price-direction-long"></use>
               </svg>
 
@@ -239,16 +275,21 @@
             <p class="mini-change positive">+0.08%</p>
 
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
 
         <tr>
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('watch-info-row6');">
+            <svg id="arrow-watch-info-row6" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-market">GBP/USD CFD</td>
+          <td class="stock-watchname">GBP/USD CFD</td>
+
           <td class="stock-short">
 
             <div class="pricebox pricebox-long lastmovenone">
@@ -282,15 +323,21 @@
             <p class="mini-change positive">+0.57%</p>
 
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
         <tr>
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('watch-info-row7');">
+            <svg id="arrow-watch-info-row7" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-market">US SP500 DFT</td>
+
+          <td class="stock-watchname">US SP500 DFT</td>
+
           <td class="stock-short">
 
             <div class="pricebox pricebox-long lastmovenone">
@@ -308,7 +355,7 @@
             
             <div class="pricebox pricebox-short lastmovenone">
 
-              <svg class="icon price-icon white-icon" viewBox="0 0 13 13">
+              <svg class="icon price-icon" viewBox="0 0 13 13">
                 <use xlink:href="#price-direction-long"></use>
               </svg>
 
@@ -324,15 +371,21 @@
             <p class="mini-change positive">+4.04%</p>
 
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
         <tr>
           <td class="stock-reveal">
-            <svg class="icon reveal-icon" viewBox="0 0 19 11">
+            <a href="javascript:toggleDiv('watch-info-row8');">
+            <svg id="arrow-watch-info-row8" class="icon reveal-icon-right" viewBox="0 0 19 11">
               <use xlink:href="#down-menu"></use>
             </svg>
+            </a>
           </td>
-          <td class="stock-market">EUR/USD CFD</td>
+
+          <td class="stock-watchname">EUR/USD CFD</td>
+
           <td class="stock-short">
 
             <div class="pricebox pricebox-long lastmovenone">
@@ -350,7 +403,7 @@
             
             <div class="pricebox pricebox-short lastmovenone">
 
-              <svg class="icon price-icon white-icon" viewBox="0 0 13 13">
+              <svg class="icon price-icon" viewBox="0 0 13 13">
                 <use xlink:href="#price-direction-long"></use>
               </svg>
 
@@ -366,6 +419,8 @@
             <p class="mini-change positive">+11.62%</p>
 
           </td>
+
+          <td class="stock-handle">&nbsp;<!--future handle--></td>
         </tr>
 
 

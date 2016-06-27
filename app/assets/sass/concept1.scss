@@ -46,13 +46,13 @@ button.show  {
 /* IFE html prototype styles start here */
 
 .table-head {
-  width: 582px;
+  width: 576px;
   line-height: 1;
   height: 40px;
 
 }
 .table-head h4 {
-width: 500px;
+width: 490px;
 display: inline-block;
 font-weight: 600;
 font-size: 0.9em;
@@ -80,7 +80,7 @@ span.component-menu {
 
 /* Watch list  tables  */
 .watchlist-table {
-  width: 700px;
+  width: 630px;
   margin-left: -40px;
   margin-top:4px;
 }
@@ -89,14 +89,14 @@ span.component-menu {
   margin-left: -40px;
 }
 .orders-table {
-  width: 740px;
+  width: 630px;
   margin-left: -40px;
 }
 .stock-table {
   display: inline-block;
-  padding-bottom: 6px;
+//padding-bottom: 6px;
   margin-bottom: 0;
-  border-bottom: 1px black solid;
+//border-bottom: 1px black solid;
 }
 .stock-table table th, .stock-table table td {
   font-family: 'Open Sans', Arial, sans-serif;
@@ -173,6 +173,18 @@ height: 50px;
 position: relative;
 top:10px;
 width: 350px;
+}
+td.stock-ordername {
+text-align: left;
+height: 50px;
+position: relative;
+top:10px;
+} 
+td.stock-watchname {
+text-align: left;
+height: 50px;
+position: relative;
+top:10px;
 } 
 td.stock-direction {
 width:70px;
@@ -243,16 +255,18 @@ margin: 10px 0 0 15px;
 }
 
 .close-all-button {
-  background-color: #4eb46b;
+  background-color: #f4f4f4;
   font-family: "Open Sans", Arial, sans-serif;
   font-weight: 700;
   font-size:0.66em;
-  color: white;
-  border: none;
-  border-bottom: 2px #368750 solid;
+  color: #333;
+  border: 1px solid #999;
+  border-bottom: 2px #999 solid;
   border-radius: 3px;
   padding: 0.33em 0.5em;
   margin: 0.5em 0;
+  position: relative;
+  
 }
 
 
@@ -321,18 +335,23 @@ text-align: right;
 
 
 /*fiddles for open orders */
-td.stock-ordername {width:220px;} 
-td.stock-order, td.stock-current {
-  position: relative;
-  top:-7px;
-}
+td.stock-ordername {width:2350px;}
+td.detail-type {vertical-align: middle;position: relative;top:-1px;}
 td.stock-quantity, td.stock-distance {
   position: relative;
-  top:-5px;
+  top:4px;
+  line-height: 1.13;
   width: 80px;
 }
-td.stock-delete {width:20px;}
-td.stock-delete .icon {margin-left:2px;}
+td.stock-order, td.stock-current {
+  position: relative;
+  top:4px;
+  line-height: 1.13;
+  width: 80px;
+}
+
+td.stock-delete {text-align:right;width:20px;}
+//td.stock-delete .icon {margin-left:2px;}
 
 
 
@@ -343,11 +362,10 @@ td.stock-delete .icon {margin-left:2px;}
 td.stock-market {width: 360px;}
 td.stock-short, td.stock-long {
   position: relative;
-  top:-7px;
+  top:2px;
 }
 td.stock-minichart {
-  position: relative;
-  top: -10px;
+
 }
 
 .positions-table polygon.long {
@@ -621,6 +639,13 @@ z-index: 1
   width: 12px;
   height: 10px;
 }
+.order-trade-icon {
+  position: relative;
+  top: 2px;
+  left:2px;
+  width: 12px;
+  height: 10px;
+}
 .trade-icon-detail {
   position: relative;
   top: 16px;
@@ -634,6 +659,13 @@ z-index: 1
   width: 13px;
   height: 13px;
 }
+.order-edit-icon {
+  position: relative;
+  top: 17px;
+  left:2px;
+  width: 13px;
+  height: 13px;
+}
 .close-icon {
   position: relative;
   top: 18px;
@@ -643,8 +675,8 @@ z-index: 1
 }
 .delete-icon {
   position: relative;
-  top: 1px;
-  left:3px;
+  top: 12px;
+  left:0;
   width: 14px;
   height: 14px;
 }
@@ -652,12 +684,12 @@ z-index: 1
   position: relative;
   top: 2px;
   width: 12px;
-  height: 12px;
+  height: 10px;
 }
 .clock-icon {
   position: relative;
   top: 0px;
-  left:11px;
+  right:0;
   width: 12px;
   height: 12px;
 }
@@ -687,7 +719,6 @@ fill: #2c7cb3;
 polygon.short {
 fill: #de4559;
 }
-
 
 
 
@@ -883,26 +914,33 @@ ul.header-nav li a:hover {
 /* A standard box to present price info. Is chunky and has a shadow – can be clicked on! */
 .pricebox {
 width: 95px;
+line-height: 1.1;
 margin-right: 20px;
-padding: 5px 0 8px 5px;
+padding: 4px 0 9px 5px;
 border-radius: 2px;
 -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.25);
 -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.25);
 box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.25);
 background-color: white;
+position: relative;
+top: 1px;
 }
 .lastmoveup {background: white url('/public/images/long-price-bg.png') repeat-y;}
 .lastmovedown {background: white url('/public/images/short-price-bg.png') repeat-y;}
 .lastmovenone {background: white url('/public/images/flat-price-bg.png') repeat-y;}
-
+.pricebox-long, .pricebox-short {
+  margin-left:5px;
+}
 /* A similar box to present numbers, that are not interactive so are chunk and clear but not clickable */
 .numberbox {
 margin-right: 20px;
 padding: 5px 5px 8px 5px;
 border-radius: 2px;
-background-color: #ffffee;
-  text-align: right;
-
+background-color: rgba(255, 255, 238, 0.2);
+text-align: right;
+}
+.numberbox:hover {
+background-color: rgba(255, 255, 238, 1);
 }
 span.number {
   font-size: 0.85em;
@@ -936,9 +974,28 @@ font-size: 0.6em;
 }
 
 
+/* this is the SHOW BUTTON for the PRICE BOXES in the WATCHLIST */
+button.show {
+  background:none;
+  font-size:1em;
+  font-weight:600;
+  font-family:'Open Sans',sans;
+  padding:0;
+  margin:0;
+}
 
 
-/* Ticket stuff */
+
+
+
+
+
+
+
+
+/* - - - - - - - - - - - - - - - */
+/* - - - - TICKET styles - - - - */
+
 .ticket {
   background-color: rgba(255,255,255,1);
   border-radius: 8px;
@@ -998,11 +1055,6 @@ color: #444;
 //font-size: 0.9em;
 padding-top:0.33em;
 }
-
-
-
-
-
 
 
 .primary-button {
@@ -1266,6 +1318,12 @@ color:#000066;
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {display:block;}
+
+
+
+
+
+
 
 
 /* TABS from http://alistapart.com/article/radio-controlled-web-design */
