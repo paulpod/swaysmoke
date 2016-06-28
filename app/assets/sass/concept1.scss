@@ -738,7 +738,7 @@ ol.news-list li.lead-story {
 }
 
 #news-story {
-  width: 600px;
+  width: 560px;
   display: inline-block;
 }
 #news-story h1,#news-story p {
@@ -1006,6 +1006,17 @@ font-size: 0.9em;
 content: 'add ';
 }
 
+/* positioning for the donut percentage */
+#marginpercent {
+width: 2.5em;
+position: relative;
+left:14px;
+top:-52px;
+text-align: center;
+color: #6AE656;
+font-size: 0.9em;
+font-weight: 600;
+}
 
 
 

@@ -103,6 +103,9 @@ function refreshNumbers() {
     $("#marginall").text('£' + currentMargin);
     $("#marginav").text('£' + marginav);
 
+    marginpercent = (100-((marginav / currentMargin)*100)).toFixed(0);
+    $("#marginpercent").text(marginpercent + '%');
+
     
     //available quantity = ((marginav / marginrate) × exchangerate) / price
     var quantav = ((((acc_marginav / marginrate) * exchangerate) / price) / 10000).toFixed(0);
