@@ -21,7 +21,20 @@ $(function() {
 });
 
 
-
+// THIS is a vertical slider for the experiemental tickets
+$(function() {
+$( "#slider-vertical" ).slider({
+  orientation: "vertical",
+  range: "min",
+  min: 0,
+  max: 100,
+  value: 60,
+  slide: function( event, ui ) {
+    $( "#amount" ).val( ui.value );
+  }
+});
+$( "#amount" ).val( $( "#slider-vertical" ).slider( "value" ) );
+});
 
 
 
@@ -105,6 +118,11 @@ function refreshNumbers() {
 
     marginpercent = (100-((marginav / currentMargin)*100)).toFixed(0);
     $("#marginpercent").text(marginpercent + '%');
+    var greentored = (150 - (marginpercent * 1.5)).toFixed(1);
+    // colour the % text from green to red
+    $("#marginpercent").css("color", 'hsla('+ greentored +',80%, 40%, 1)');
+    // colour the whole ring from green to red
+    $(".peity path:last-child").css("fill", 'hsla('+ greentored +',80%, 60%, 1)');
 
     
     //available quantity = ((marginav / marginrate) × exchangerate) / price
@@ -158,8 +176,8 @@ function refreshNumbers() {
 refreshNumbers(); // for initial display
 
 setInterval(function() {
- refreshNumbers(); // it excutes every 2sec
-},500);
+ refreshNumbers(); // it excutes every third of a sec
+},333);
 
 
 
@@ -175,11 +193,15 @@ $(document).ready(function(){
 });
 
 
+
+
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
 }
 
 
+
+// THIS draws ALL the small blue line graphs on the WATCHLIST
 $(".sparkline").peity("line", {
   width: 100,
   height: 40,
@@ -250,12 +272,7 @@ $(document).ready(function(){
 
             $("#marginreq").val('£' + v_marginpound);
 
-            $(".data-attributes span").peity("donut", {
-              fill: function(_, i, all) {
-                var g = parseInt((i / all.length) * 255)
-                return "rgb( " + g + "," + (g * 5) + "," + g + ")"
-              }
-            })
+            
         } else {
             // Otherwise put a 0 there
             $('input[name='+fieldName+']').val(0);
@@ -539,12 +556,7 @@ $(document).ready(function(){
 
             $("#marginreq").val('£' + v_marginpound);
 
-            $(".data-attributes span").peity("donut", {
-              fill: function(_, i, all) {
-                var g = parseInt((i / all.length) * 255)
-                return "rgb( " + g + "," + (g * 5) + "," + g + ")"
-              }
-            })
+        
         } else {
             // Otherwise put a 0 there
             $('input[name='+fieldName+']').val(0);

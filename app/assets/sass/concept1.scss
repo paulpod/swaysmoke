@@ -29,7 +29,7 @@ html {
   //zoom: 0.75;
 }
 .with-vgrid {
-  background: none url(/public/images/vgrid-10-10-blue.pngx) 10px 16px;
+  background:  url(/public/images/hoz10.png) 10px 16px;
   background-repeat: repeat;
 
 }
@@ -48,7 +48,7 @@ button.show  {
 .table-head {
   width: 576px;
   line-height: 1;
-  height: 40px;
+  height: 36px;
 
 }
 .table-head h4 {
@@ -58,7 +58,7 @@ font-weight: 600;
 font-size: 0.9em;
 padding: 0;
 margin-left:-17px;
-margin-bottom: 25px;
+margin-bottom: 10px;
 }
 .component-menu-icon {
   text-decoration: none;
@@ -105,7 +105,7 @@ span.component-menu {
 
 }
 .stock-table table th {
-line-height: 1;
+line-height: 1.08;
 font-size: 0.6em;
 font-weight: 700;
 color: #333;
@@ -117,6 +117,13 @@ top:1px;
   line-height: 1;
   vertical-align: top;
 }
+.positions-table th:first-child {
+  padding-top:2px;
+}
+.orders-table th:first-child {
+  padding-top:1px;
+}
+
 .stock-table th:first-child, .stock-table td:first-child {
 }
 .stock-table th:last-child, .stock-table td:last-child {
@@ -559,7 +566,6 @@ fill: #2c7cb3;
 polygon.short {
 fill: #de4559;
 }
-
 
 
 
@@ -1182,7 +1188,7 @@ body {
 header.tophead {
 background: #303030; /* Old browsers */
 background: linear-gradient(#303030, #202020);
-height: 50px;
+height: 56px;
 margin-left: -40px;
 overflow: hidden;
 }
