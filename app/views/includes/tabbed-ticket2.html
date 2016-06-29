@@ -41,7 +41,7 @@
           <!-- - - - - - MAIN SELL / BUY .... red / blue price buttons -->
           <div id="buysell-pair" style="margin-top:4px">
 
-            <button class="secondary-button sell buysell-inactive" style="margin-right:15px">
+            <button id="sellticketbutton" class="secondary-button sell" style="margin-right:15px">
               <p>Sell</p>
              
 
@@ -49,7 +49,7 @@
 
             </button>
 
-            <button class="secondary-button buy">
+            <button id="buyticketbutton" class="secondary-button buy">
               <p>Buy</p>
 
 
@@ -78,9 +78,16 @@
             <div id="pound-arrows" style="float:left;margin:43px 0 0 -30px;width:80px">
 
             <input type="image" value='+' class="arrow-button qtyplus" field='quantity' src="/public/images/number-arrow-up.png">
-            <input type="image" value='-' class="arrow-button qtyminus" field='quantity' src="/public/images/number-arrow-down.png">
+            
 
             <div id="slider-vertical" style="height:200px;"></div>
+
+            <input type="image" value='-' class="arrow-button qtyminus" field='quantity' src="/public/images/number-arrow-down.png">
+
+            <!-- <p>
+              <label for="amount">Volume:</label>
+              <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+            </p>-->
 
 
             </div>

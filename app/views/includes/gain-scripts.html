@@ -26,14 +26,14 @@ $(function() {
 $( "#slider-vertical" ).slider({
   orientation: "vertical",
   range: "min",
-  min: 0,
-  max: 100,
-  value: 60,
+  min: -51,
+  max: 51,
+  value: 0,
   slide: function( event, ui ) {
-    $( "#amount" ).val( ui.value );
+    $( "#quantity" ).val( ui.value );
   }
 });
-$( "#amount" ).val( $( "#slider-vertical" ).slider( "value" ) );
+$( "#quantity" ).val( $( "#slider-vertical" ).slider( "value" ) );
 });
 
 
@@ -66,11 +66,24 @@ function refreshNumbers() {
     $("#sellprice").val(sellnumber);
     $("#buyprice").val(buynumber);
 
+    //set the big BUY SELL numbers + buttons to active depending on trade direction
+    var tradedirection = $("#quantity").val();
+    if (tradedirection > 0) {
+      $("#sellticketbutton").addClass('buysell-inactive');
+      $("#buyticketbutton").removeClass('buysell-inactive');
+    } else if (tradedirection < 0) {
+      $("#buyticketbutton").addClass('buysell-inactive');
+      $("#sellticketbutton").removeClass('buysell-inactive');
+    } else if (tradedirection == 0) {
+      $("#sellticketbutton").addClass('buysell-inactive');
+      $("#buyticketbutton").addClass('buysell-inactive');
+    }
+
     //do the number wang quantity x price = total value of trade
     var v_pound = $("#quantity").val();
     var price = buynumber;
     var value = (v_pound * price * 10000).toFixed(0);
-    v_pound = numberWithCommas(value);
+    v_pound = numberWithCommas(Math.abs(value));
 
     $("#value").val('£' + v_pound);
 
@@ -103,20 +116,23 @@ function refreshNumbers() {
     marginreqraw = v_pound;
     v_marginpound = numberWithCommas(v_pound);
 
-    $("#marginreq").val('£' + v_marginpound);
+    $("#marginreq").val('£' + Math.abs(v_marginpound));
 
     // Do the numberwang for MARGIN AVAILABLE
     marginav = (parseFloat(currentMargin) - parseFloat(v_marginpound)).toFixed(0);
 
-    margindonut = (marginreqraw + ',' + marginav);
+    margindonut = (Math.abs(marginreqraw) + ',' + marginav);
+    margindonut = margindonut;
     $("#margindonut").text(margindonut);
     $(".data-attributes span").peity("donut")
 
+    marginav = Math.abs(marginav);
     marginav = numberWithCommas(marginav);
     $("#marginall").text('£' + currentMargin);
     $("#marginav").text('£' + marginav);
 
     marginpercent = (100-((marginav / currentMargin)*100)).toFixed(0);
+    marginpercent = Math.abs(marginpercent);
     $("#marginpercent").text(marginpercent + '%');
     var greentored = (150 - (marginpercent * 1.5)).toFixed(1);
     // colour the % text from green to red

@@ -1361,6 +1361,7 @@ ul.header-nav li a:hover {
 
 
 
+/* - - - - - - TABS for deal ticket - - - - - - */
 
 .js-tabs .tab {
   display: inline-block;
@@ -1397,3 +1398,26 @@ ul.header-nav li a:hover {
 .js-tabs .panel.active {
     display: block;
 }
+
+
+
+/* - - - - - - SLIDER Jquery styles - - - - - - */
+.ui-slider-vertical .ui-state-default {
+background: #108CFE;
+border-radius: 50%;
+border: 1px solid #105BC6;
+}
+
+.ui-slider .ui-slider-range {
+  background:none;
+  background-color: red;
+}
+
+.ui-widget-content {
+  background:none;
+  background-color: blue;
+}
+
+
+
+
