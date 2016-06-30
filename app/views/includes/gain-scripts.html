@@ -21,7 +21,7 @@ $(function() {
 });
 
 
-// THIS is a vertical slider for the experiemental tickets
+// vertical slider for the experiemental tickets
 $(function() {
 $( "#slider-vertical" ).slider({
   orientation: "vertical",
@@ -35,6 +35,38 @@ $( "#slider-vertical" ).slider({
 });
 $( "#quantity" ).val( $( "#slider-vertical" ).slider( "value" ) );
 });
+
+
+// HOZ slider for the experiemental tickets
+$(function() {
+$( "#slider-horizontal" ).slider({
+  orientation: "horizontal",
+  range: "min",
+  min: -51,
+  max: 51,
+  value: 0,
+  slide: function( event, ui ) {
+    $( "#quantity" ).val( ui.value );
+  }
+});
+$( "#quantity" ).val( $( "#slider-horizontal" ).slider( "value" ) );
+});
+
+
+$(function() {
+    $( "#slider-range" ).slider({
+      orientation: "vertical",
+      range: true,
+      min: -100,
+      max: 100,
+      values: [ -25, 75 ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      }
+    });
+    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+  });
 
 
 
@@ -119,14 +151,12 @@ function refreshNumbers() {
     $("#marginreq").val('£' + Math.abs(v_marginpound));
 
     // Do the numberwang for MARGIN AVAILABLE
-    marginav = (parseFloat(currentMargin) - parseFloat(v_marginpound)).toFixed(0);
+    marginav = (parseFloat(currentMargin) - parseFloat(Math.abs(v_marginpound))).toFixed(0);
 
     margindonut = (Math.abs(marginreqraw) + ',' + marginav);
-    margindonut = margindonut;
     $("#margindonut").text(margindonut);
     $(".data-attributes span").peity("donut")
 
-    marginav = Math.abs(marginav);
     marginav = numberWithCommas(marginav);
     $("#marginall").text('£' + currentMargin);
     $("#marginav").text('£' + marginav);
