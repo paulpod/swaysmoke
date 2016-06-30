@@ -1425,21 +1425,20 @@ border: 3px solid #105BC6;
 
 #stopper {
   background: none;
-    background: yellow url('/public/images/ticket-chart.png') no-repeat 0 -40px;
 background-size: 340px 250px;
 }
 
-#slider-range.ui-slider-handle .ui-state-default {
-  background: none;
-border-radius: 50%;
-border: 3px solid #105BC6;
-}
+
 #slider-range.ui-widget {
   background:none;
 }
 #slider-range.ui-widget .ui-slider-handle {
   background:none;
-  border:2px solid black;
+  border:none;
+  border-radius: 0;
+}
+#slider-range.ui-slider .ui-slider-handle {
+  width:350px;
 }
 #slider-range.ui-widget-content {
   background:none;

@@ -9,6 +9,8 @@ $('.tab').on('click', function (e) {
     $(this).focus();
 });
 
+
+// Jquery toggle visiblity 
 $(function() {
     $('.hide').click(function(){
         $('.toggle').hide();
@@ -90,8 +92,11 @@ function refreshNumbers() {
   var currentMargin = parseFloat($('input[name='+"margin"+']').val());
   // If is not undefined
   if (!isNaN(currentMid)) {
-    var number = (currentMid + Math.floor(Math.random() * 1000) / 1700077);
+    var change = 0.00029 - (Math.floor(Math.random() * 999) / 1712345).toFixed(7);
+    var number = (currentMid + change);
     currentSpread = currentSpread / 20000;
+    newMid = parseFloat((number).toFixed(7));
+    $("#price").val(newMid);
 
     sellnumber = (parseFloat(number) - parseFloat(currentSpread)).toFixed(5);
     buynumber = (parseFloat(number) + parseFloat(currentSpread)).toFixed(5);
@@ -216,6 +221,10 @@ function refreshNumbers() {
 
 
 
+    // Draw a line in the middle 
+d3.select("#stopper .peity").append("svg").append("line").attr("x1", 1).attr("y1", 110).attr("x2",320).attr("y2", 110).attr("stroke-width", 2).attr("stroke", "black");
+
+
   }
 }
 
@@ -223,7 +232,7 @@ refreshNumbers(); // for initial display
 
 setInterval(function() {
  refreshNumbers(); // it excutes every third of a sec
-},333);
+},2001);
 
 
 
@@ -246,6 +255,22 @@ function numberWithCommas(x) {
 }
 
 
+// *************************************************************
+
+// \            ///////  \\        //   /////\
+//  \          //         \\      //   //    \\
+//   \          //////\\   \\    //    ||
+//    —               ||    \\  //     ||  =====
+//     \       \\     //     \\//      ||    ||
+//      —       ///////       \\        \\\//||
+//       —_
+//         —_
+//           ——__
+//               ———___/\/\ CHART SVG TIME
+//                     
+
+
+// PEITY THINGS / SVG charts from tiny data spans 
 
 // THIS draws ALL the small blue line graphs on the WATCHLIST
 $(".sparkline").peity("line", {
@@ -256,6 +281,56 @@ $(".sparkline").peity("line", {
   strokeWidth: 1.2
 })
 
+
+
+// THIS draws an initial donut for MARGIN
+$(".data-attributes span").peity("donut", {
+  fill: function(_, i, all) {
+    var g = parseInt((i / all.length) * 255)
+    return "rgb( " + g + "," + (g * 5) + "," + g + ")"
+  }
+})
+
+
+
+// THIS draws the moving graph on the ticket
+var updatingChart = $(".updating-chart").peity("line", { 
+  max: 1.139,
+  min: 1.133,
+  width: 340,
+  height: 220,
+  fill: "#cbe0ed",
+  stroke: "#0378ba",
+  strokeWidth: 1.2, 
+  id: "movingchart"
+})
+
+setInterval(function() {
+  var priceMid = parseFloat($('input[name='+"price"+']').val());
+  var values = updatingChart.text().split(",");
+  values.shift();
+  values.push(priceMid);
+
+
+
+  updatingChart
+    .text(values.join(","))
+    .change()
+}, 2000)
+
+
+
+
+
+
+// ***********************************************************
+
+//
+//                   //       //
+///////   //   //  //////  //////    /////   //////    /////
+//    //  //   //    //      //     //   //  //   //  //____
+//    //  //   //    //      //     //   //  //   //       \\
+////////   //////     ///     ///    /////   //   //   /////
 
 
 // £POINT quantity buttons + calculator
@@ -707,13 +782,5 @@ $(document).ready(function(){
 
 
 
-
-
-$(".data-attributes span").peity("donut", {
-  fill: function(_, i, all) {
-    var g = parseInt((i / all.length) * 255)
-    return "rgb( " + g + "," + (g * 5) + "," + g + ")"
-  }
-})
 
 </script>
