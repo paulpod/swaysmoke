@@ -220,10 +220,31 @@ function refreshNumbers() {
     $("#order_limitvalue").val('£' + ov_limitpound);
 
 
+  // THIS draws the moving graph on the ticket
+  var updatingChart = $(".updating-chart").peity("line", { 
+    max: parseFloat(newMid * 1.001),
+    min: parseFloat(newMid * 0.999),
+    width: 340,
+    height: 220,
+    fill: "#cbe0ed",
+    stroke: "#0378ba",
+    strokeWidth: 1.2, 
+    id: "movingchart"
+  })
 
-    // Draw a line in the middle 
-d3.select("#stopper .peity").append("svg").append("line").attr("x1", 1).attr("y1", 110).attr("x2",320).attr("y2", 110).attr("stroke-width", 2).attr("stroke", "black");
+  var priceMid = parseFloat($('input[name='+"price"+']').val());
+    var values = updatingChart.text().split(",");
+    values.shift();
+    values.push(priceMid);
 
+    updatingChart.text(values.join(",")).change();
+
+
+  // Draw a line in the middle 
+  d3.select("#stopper .peity").append("svg").append("line").attr("x1", 1).attr("y1", 110).attr("x2",3420).attr("y2", 110).attr("stroke-width", 2).attr("stroke", "rgba(0, 0, 0, 0.5)");
+
+
+    
 
   }
 }
@@ -232,7 +253,7 @@ refreshNumbers(); // for initial display
 
 setInterval(function() {
  refreshNumbers(); // it excutes every third of a sec
-},2001);
+},2000);
 
 
 
@@ -293,30 +314,6 @@ $(".data-attributes span").peity("donut", {
 
 
 
-// THIS draws the moving graph on the ticket
-var updatingChart = $(".updating-chart").peity("line", { 
-  max: 1.139,
-  min: 1.133,
-  width: 340,
-  height: 220,
-  fill: "#cbe0ed",
-  stroke: "#0378ba",
-  strokeWidth: 1.2, 
-  id: "movingchart"
-})
-
-setInterval(function() {
-  var priceMid = parseFloat($('input[name='+"price"+']').val());
-  var values = updatingChart.text().split(",");
-  values.shift();
-  values.push(priceMid);
-
-
-
-  updatingChart
-    .text(values.join(","))
-    .change()
-}, 2000)
 
 
 
