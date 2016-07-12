@@ -1381,16 +1381,16 @@ ul.header-nav li a:hover {
     box-shadow: 0 0 3px 3px rgba(0,127,255,.5);
 }
 .js-tabs .tab:hover {
-    background-color: #fff;
+    //background-color: #fff;
 }
 .js-tabs .tab.active {
-    border-bottom: .3em solid #fff;
+    border-bottom: .2em solid #333;
     cursor: default;
     color: black;
 }
 
 .js-tabs .panels {
-    background-color: #fff;
+    //background-color: #fff;
 }
 
 .js-tabs .panel {
@@ -1399,6 +1399,13 @@ ul.header-nav li a:hover {
 .js-tabs .panel.active {
     display: block;
 }
+.js-tabs .tab.actives {
+    border-bottom: .2em solid #333;
+    cursor: default;
+    color: black;
+}
+
+
 
 
 

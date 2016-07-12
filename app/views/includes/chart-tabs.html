@@ -1,0 +1,165 @@
+
+
+
+<!-- - - - Start the Tabbed charts - - - -->
+<!-- One tab is added for each symbol    -->
+<!-- Multiple charts can be created on   -->
+<!-- each of the tabs, eg.5min + 1 hour  -->
+<!-- - - - - - - - - - - - - - - - - - - -->
+
+<div class=" toggle" id="chart-max" style="margin-top:0px;float:left;display:visible;position:absolute;top:100px;left:640px;width:980px;">
+
+    <button class="hide" style="background:none;border:0;padding:0;margin:0;float:right;position:relative;top:-20px">
+      <svg class="icon close-icon" viewBox="0 0 14 14" style="padding-top:5px">
+        <use xlink:href="#close-x"></use>
+      </svg>
+    </button>
+
+  
+    <div class="js-tabs">
+  
+      <div class="tabs" >
+
+        <a href="#chart-panel1" id="chart-tab1" class="tab active">EUR/USD</a>
+        <a href="#chart-panel2" id="chart-tab2" class="tab">FTSE 100</a>
+        <a href="#chart-panel3" id="chart-tab3" class="tab">Germany 30</a>
+        <a href="#add" id="chart-add" class="tab">+ chart</a>
+      </div>
+
+
+
+      <div class="panels">
+        <ul id="chart-panel1" class="panel active" role="tabpanel" aria-labelledby="chart-tab1" style="">
+            
+          <div id="market-name" style="margin-top:12px">
+
+          <h2 style="float:left;font-weight:300">EUR/USD</h2>
+
+          <svg class="icon chart-icon" viewBox="0 0 14 14" style="float:right;padding-top:6px">
+            <use xlink:href="#open-chart"></use>
+          </svg>
+
+          </div>
+
+          <br clear="all">
+
+          
+
+          <!-- - - - - - MAIN SELL / BUY .... red / blue price buttons -->
+          <div id="buysell-pair" style="margin-top:4px">
+
+            <button id="sellticketbutton" class="secondary-button sell" style="margin-right:15px">
+              <p>Sell</p>
+             
+
+             <input class="price-field upward" type="number" id="sellprice" name="sellprice" autocomplete="off" size="6" value="1.3544" style="text-align:center;width:140px;margin-top:-2px">
+
+            </button>
+
+            <button id="buyticketbutton" class="secondary-button buy">
+              <p>Buy</p>
+
+
+              <input class="price-field downward" type="number" id="buyprice" name="buyprice" autocomplete="off" size="6" value="1.3544" style="text-align:center;width:140px;margin-top:-2px">
+
+            </button>
+          </div>
+
+          <img src="/public/images/big-chart1.png" width="976">
+
+        </ul>
+
+
+
+
+        <ul id="chart-panel2" class="panel" role="tabpanel" aria-labelledby="chart-tab2">
+            
+          <div id="market-name" style="margin-top:12px">
+
+          <h2 style="float:left;font-weight:300">FTSE UK 100</h2>
+
+          <svg class="icon chart-icon" viewBox="0 0 14 14" style="float:right;padding-top:6px">
+            <use xlink:href="#open-chart"></use>
+          </svg>
+
+          </div>
+
+          <br clear="all">
+
+          <!-- - - - - - MAIN SELL / BUY .... red / blue price buttons -->
+          <div id="buysell-pair" style="margin-top:4px">
+
+            <button class="secondary-button sell buysell-inactive" style="margin-right:15px">
+              <p>Sell</p>
+             
+
+             <input class="price-field upward" type="number" id="sellprice" name="sellprice" autocomplete="off" size="6" value="1.3544" style="text-align:center;width:140px;margin-top:-2px">
+
+            </button>
+
+            <button class="secondary-button buy">
+              <p>Buy</p>
+
+
+              <input class="price-field downward" type="number" id="buyprice" name="buyprice" autocomplete="off" size="6" value="1.3544" style="text-align:center;width:140px;margin-top:-2px">
+
+            </button>
+          </div>
+
+          <img src="/public/images/big-chart2.png" width="513">
+
+        </ul>
+
+
+
+
+
+        <ul id="chart-panel3" class="panel" role="tabpanel" aria-labelledby="chart-tab3">
+            
+            <div id="market-name" style="margin-top:12px">
+
+          <h2 style="float:left;font-weight:300">EUR/USD (per 0.0001) CFD</h2>
+
+          <svg class="icon chart-icon" viewBox="0 0 14 14" style="float:right;padding-top:6px">
+            <use xlink:href="#open-chart"></use>
+          </svg>
+
+          </div>
+
+          <br clear="all">
+
+          <!-- - - - - - MAIN SELL / BUY .... red / blue price buttons -->
+          <div id="buysell-pair" style="margin-top:4px">
+
+            <button class="secondary-button sell buysell-inactive" style="margin-right:15px">
+              <p>Sell</p>
+             
+
+             <input class="price-field upward" type="number" id="sellprice" name="sellprice" autocomplete="off" size="6" value="1.3544" style="text-align:center;width:140px;margin-top:-2px">
+
+            </button>
+
+            <button class="secondary-button buy">
+              <p>Buy</p>
+
+
+              <input class="price-field downward" type="number" id="buyprice" name="buyprice" autocomplete="off" size="6" value="1.3544" style="text-align:center;width:140px;margin-top:-2px">
+
+            </button>
+          </div>
+
+
+
+        </ul>
+    </div>
+  </div><!-- end JS-tabs -->
+
+
+
+
+
+</div>
+<!-- end the tabbed charts  -->
+<!-- - - - - - - - - - - -  -->
+
+  
