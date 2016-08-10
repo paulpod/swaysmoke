@@ -147,7 +147,7 @@ function refreshNumbers() {
     // then * any currency conversions to base (eg. to USD, yesterday's close + 0.0125) 
     var exchangerate = 1.4453 + 0.0125;
     var marginrate = 0.0005;
-    var acc_marginav = 200;//account margin (trading resources)
+    var acc_marginav = 2000;//account margin (trading resources)
     
     v_pound = (value * marginrate / exchangerate).toFixed(2);
     marginreqraw = v_pound;
