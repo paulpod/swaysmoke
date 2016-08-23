@@ -1,0 +1,224 @@
+{{<layout}}
+
+{{$pageTitle}}
+  GAIN CAPITAL Design Kit
+{{/pageTitle}}
+
+
+{{$content}}
+<script type="text/javascript" src="/public/javascripts/jquery-1.11.0.min.js"></script>
+
+<script type="text/javascript" src="/public/javascripts/application.js"></script>
+
+<script type="text/javascript" src="/public/javascripts/selection-buttons.js"></script>
+
+<script type="text/javascript" src="/public/javascripts/common.js"></script>
+
+
+<link href="/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
+
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300' rel='stylesheet' type='text/css'>
+
+
+<body>
+<main id="content" role="main">
+<div class="grid-row">
+
+  <h1 class="heading-xlarge" style="margin-bottom:0.3em">Sprint Zero</h1>
+
+  <p><strong style="font-size:1.1em;">Putting it all together</strong></p>
+
+  <ul class="list-number" style="font-family:'Open Sans';max-width:720px;font-size:1.1em;margin-left:-1em"">
+
+    <li>Overview</li>
+    <li>Typical flows</li>
+    <li>Monitoring</li>
+    <li>Finding</li>
+    <li>Product pages</li>
+    <li>Tickets</li>
+
+  </ul>
+
+  <a id="overview">
+  <h2 class="heading-large">Overview</h2></a>
+
+  
+  <div style="float:left;width:500px;margin-right:20px">
+    <p style="max-width:520px">
+    We are replacing a flash-based single-window app with html-based web app. It will feel more like a website, within a scrolling window but will remain functional like an app.
+    </p>
+
+    <p style="max-width:520px;margin-top:3em">
+    We are replacing a fluid window style interface with a fixed workspace, where elements have positions that are not configurable.
+    </p>
+
+    <p style="max-width:720px;margin-top:3em">
+    Rather than allowing elements to be positioned and scaled anywhere or anysize, items are laid out according to rigid grid structure. Text across the whole screen conforms to a consistent baseline.
+    </p>
+
+    <p style="max-width:720px;margin-top:3em">
+    We are replacing an interface that allows many layers to be arranged on top of each other with a workspace that has a single flat background and a single floating layer for functional elements.
+    </p>
+
+
+    <p style="max-width:720px;margin-top:3em">
+    Where lots of information is presented, especially in tables we will prioritise on the 20% of information 80% of people need, the rest will be hidden but available with a click. 
+    </p>
+  </div>
+
+  <div style="float:left;width:260px">
+
+    <a href="/public/images/eg-windows.png"><img src="/public/images/eg-windows.png" style="width:260px;float:left"></a>
+
+    <img src="/public/images/eg-arrow.png" style="width:260px;float:left">
+
+    <a href="/public/images/eg-webapp.png"><img src="/public/images/eg-webapp.png" style="width:260px;float:left;margin-top:5px"></a>
+
+    <a href="/public/images/eg-layers.png"><img src="/public/images/eg-layers.png" style="width:268px;float:left;margin-top:10px"></a>
+
+    <a href="/public/images/eg-usersvsinfo.png"><img src="/public/images/eg-usersvsinfo.png" style="width:260px;float:left;margin-top:10px"></a>
+  
+    
+  <br clear="all">
+
+
+
+  </div>
+
+<br clear="all">
+
+  <a id="flows">
+  <h2 class="heading-large">Typical flows</h2></a>
+
+  <p>Basic trade flow principles</p>
+
+  <ul class="list-number" style="font-family:'Open Sans';max-width:720px;font-size:1.1em;margin-left:-1em">
+    <li>Search box available at all times</li>
+
+    <li>Smart search results to help find most relevant results and trade quickly</li>
+
+    <li>Direct access to simple deal ticket</li>
+
+    <li>Provide all the information on a market in one place</li>
+
+    <li>Open a chart from a ticket or an open position</li>
+
+    <li>Monitor and close, or be alerted if auto-closed from stops</li>
+  </ul>
+
+
+  <h3 class="heading-medium">Search box</h3>
+
+  <a href="/public/images/eg-searchhead.png"><img src="/public/images/eg-searchhead.png" style="width:260px;float:left;margin-right:20px"></a>
+
+  <p style="max-width:620px">It's fixed to the top of the page, in the header and visible all the time.</p>
+
+  <p style="max-width:620px">Scrolling down a longer page should keep the header locked to the top of the screen.</p>
+
+<br clear="all">
+
+  <h3 class="heading-medium">Smart search</h3>
+
+  <p style="max-width:720px">Before we have matched user input, we should use a large popover to provide inspiration to people looking for an opportunity. This might be calendar events, big movers, news or a user's previous searches.</p>
+
+  <a href="/public/images/eg-search-empty.png"><img src="/public/images/eg-search-empty.png" style="width:960px;float:left;margin-bottom:30px;margin-left:-10px"></a>
+
+
+
+  <p style="max-width:720px">We try to match user input as quickly and accurately as possible, so that means cross-referencing market names with alternate names, symbols, common mistakes and typos.</p>
+
+  <a href="/public/images/eg-search-seeking.png"><img src="/public/images/eg-search-seeking.png" style="width:960px;float:left;margin-bottom:30px;margin-left:-10px"></a>
+
+
+
+  <p style="max-width:720px">When we have a match we should swap out the broad inspiration with more specific details of events, news, pricing. Try to answer the user's need immediately.</p>
+
+  <a href="/public/images/eg-search-found.png"><img src="/public/images/eg-search-found.png" style="width:960px;float:left;margin-bottom:30px;margin-left:-10px"></a>
+
+
+
+  <h3 class="heading-medium">Deal ticket</h3>
+
+  <p style="max-width:720px">Wherever there is a price there is an opportunity to trade. As in IFE, prices should be presented in pairs and be actionable into a deal ticket.</p>
+
+  <p style="max-width:720px">Deal tickets should do the hard work for the user.</p>
+
+  <p style="max-width:720px">This means calculating meaningful values automatically: margin already used, remaining margin available and margin required, quantities to trade that fit this, profit/loss amounts that would the result of a stop of limit order and some indication of the real market value of the trade.</p>
+
+  <p style="max-width:720px">We are keen to test alternative tickets, especially possible designs that use the risk/margin as an active controller (rather than as a passive output).</p>
+
+  <p style="max-width:720px">For the simple ticket used by most people (80%) it should have clear access to the small number of options most used (20%).</p>
+
+  <p style="max-width:720px">Less widely used options should be made available on more specialised tickets or set as a user option for their account.</p>
+
+
+  <h3 class="heading-medium">All the information</h3>
+
+  <p style="max-width:720px">Where a link to a market is presented, either from news, search results or a watchlist there should be a single consistent destination.</p>
+
+  <p style="max-width:720px">This destination should pull together all the information previously in different windows: chart, price, ticket, news, trade history, pricing and contractual details.</p>
+
+
+
+  <h3 class="heading-medium">Charts</h3>
+
+  <p>TBD</p>
+
+
+
+  <h3 class="heading-medium">Monitor and close</h3>
+
+  <p style="max-width:720px">We know most of our users act on market prices and close trades manually, rather than using orders, stops and limits.</p>
+
+  <p style="max-width:720px">As such, we provide monitoring at all times as an integral part of the layout. Position is consistent and it is only obscured when performing a search (ie. briefly).</p>
+
+  <p style="max-width:720px">While we would like to encourage more strategic behaviour in trading, this will remain a key user need and should be accomodated.</p>
+
+
+<!--
+  <a href="/public/images/product-page-maxi-0.png"><img src="/public/images/product-page-maxi-0.png" style="width:960px"></a>
+
+  <p>+ showing baseline grid alignments</p>
+
+  <a href="/public/images/product-page-maxi-0-grid.png"><img src="/public/images/product-page-maxi-0-grid.png" style="width:560px"></a>
+
+
+  <p>Full size platform page, detail view of positions, orders expanded</p>
+
+  <a href="/public/images/product-page-maxi.png"><img src="/public/images/product-page-maxi.png" style="width:960px"></a>
+
+  <p>Full size platform page, list column minimised</p>
+
+
+  <a href="/public/images/product-page-mini.png"><img src="/public/images/product-page-mini.png" style="width:960px"></a>
+
+
+  <p>Mobile size platform pages</p>
+
+  <a href="/public/images/mobile-home.png"><img src="/public/images/mobile-home.png" style="width:260px"></a>
+
+  <a href="/public/images/mobile-lists.png"><img src="/public/images/mobile-lists.png" style="width:260px"></a>
+
+  <a href="/public/images/mobile-search.png"><img src="/public/images/mobile-search.png" style="width:260px"></a>
+
+  -->
+
+
+
+
+
+  
+
+
+
+
+  </div></div>
+
+  
+
+
+</main>
+
+{{/content}}
+
+{{/layout}}
