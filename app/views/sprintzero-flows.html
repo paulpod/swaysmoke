@@ -203,9 +203,9 @@
   </tr>
   </table> 
 
-  <p style="max-width:720px">Deal tickets should do the hard work for the user.</p>
+  <p style="max-width:720px;margin-top:1em"><strong>Deal tickets should do the hard work for the user.</strong></p>
 
-  <p style="max-width:720px">This means calculating meaningful values automatically: margin already used, remaining margin available and margin required, quantities to trade that fit this, profit/loss amounts that would the result of a stop of limit order and some indication of the real market value of the trade.</p>
+  <p style="max-width:720px">This means calculating meaningful values automatically: margin already used, remaining margin available and margin required, quantities to trade that fit this, actual profit/loss amounts that would the result of a stop of limit order and some indication of the real market value of the trade. Where meaningful, present values in the user's currency.</p>
 
   <p style="max-width:720px">We are keen to test alternative tickets, especially possible designs that use the risk/margin as an active controller (rather than as a passive output).</p>
 
@@ -249,7 +249,7 @@
 
   <p style="max-width:720px">The effect of this should be a consistent layer above all the elements that price buttons appear.</p>
 
-  <video controls="controls" autoplay="true" width="480" height="400" name="Video Name" src="/public/images/price-buttons.m4v"></video>
+  <video controls="controls" autoplay="true" loop="true" width="480" height="400" name="Video Name" src="/public/images/price-buttons.m4v"></video>
 
 
   <p style="max-width:720px">They should equally be functional – clicking on a price pair should open a deal ticket, with the default direction relating to the button clicked. On a single static price, eg. an order, the ticket should open to ammend that order.</p>
@@ -314,6 +314,9 @@
 
   <p style="color:white;max-width:300px;border-radius:8px;border:1px #0E3F5F solid;padding:2em;background-color:#157db1">Blue <strong>#157db1</strong> for Long/Buy content, as well as for links</p>
 
+  <p style="color:#065ed0;max-width:296px;border-radius:8px;border:3px #065ed0 solid;padding:2em;background-color:#EFF5FE">Bright Blue <strong>#065ed0</strong> for links.<br>
+  <a href="#" style="color:#065ed0">Underlined for clarity</a> where that makes sense</p>
+
   <p style="color:white;max-width:300px;border-radius:8px;border:1px #2A6B35 solid;padding:2em;background-color:#4eb46b">Green <strong>#4eb46b</strong> for positive action buttons, as well as profit accent colour</p>
 
   <p style="max-width:300px;border-radius:8px;border:1px #C3C494 solid;padding:1.3em 2em;background-color:#ffffcc">Yellow <strong>#ffffcc</strong> for main active search panels and field</p>
@@ -321,6 +324,25 @@
   <p style="z-index: -10; margin:-2em 0 0 1em;max-width:300px;border-radius:8px;border:1px #ddddaa solid;padding: 1.3em 2em;background-color:#ffffed">Yellow faded out for contrasting <strong>#ffffed</strong> search panels</p>
 
 
+
+
+  <h3 class="heading-medium">Pattern</h3>
+
+   <p style="max-width:720px">On some of the panels and tickets we introduce a 45º striped texture. The roots of this are the <a href="sprintzero-dealticket-1">printed deal tickets from 1918</a> and stock certificates we discovered in research.</p>
+
+   <div style="background: url('/public/images/stripe-red.png') repeat-x; width:400px;height:20px;-webkit-filter: saturate(0%);margin-bottom:1em"></div>
+
+   <p style="max-width:720px">This can be rendered in a number of colours depending on context - eg. the search popover is quite vibrant and colourful and has different coloured stripes for each of the main sections.</p>
+
+   <div style="background: url('/public/images/stripe-red.png') repeat-x; width:400px;height:20px;-webkit-filter: hue-rotate(90deg) saturate(50%)"></div>
+
+   <div style="background: url('/public/images/stripe-red.png') repeat-x; width:400px;height:20px;-webkit-filter: hue-rotate(180deg)  saturate(50%);margin-top:1em"></div>
+
+   <div style="background: url('/public/images/stripe-red.png') repeat-x; width:400px;height:20px;-webkit-filter: hue-rotate(10deg) saturate(50%);margin-top:1em"></div>
+
+   <p style="max-width:720px;margin-top:1em">It works nicely shrunk right down, especially on retina mobile and desktop screens.</p>
+
+   <div style="background: url('/public/images/stripe-red.png') repeat-x; background-size: 45px 10px; width:400px;height:20px;-webkit-filter: saturate(0%);margin-bottom:1em"></div>
 
 
 
