@@ -1,0 +1,143 @@
+{{<layout}}
+
+{{$pageTitle}}
+  INVEST in GREAT Design Kit
+{{/pageTitle}}
+
+
+{{$content}}
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+
+<!--<link href="/public/stylesheets/concept1.css" media="screen" rel="stylesheet" type="text/css" />-->
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+<script type="text/javascript" src="/public/javascripts/jquery.peity.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+
+  <link href="/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,600' rel='stylesheet' type='text/css'>
+  
+  <link href="/public/stylesheets/glyphicons.css" media="screen" rel="stylesheet" type="text/css" />
+
+
+<main id="content" role="main" style="font-family: 'Roboto', Arial, sans-serif;">
+
+<div class="great-topnav">
+  <span>Part of great.gov.uk</span>
+  <span style="float:right">International EN</span>
+<br clear="all">
+
+</div>
+
+
+
+<div class="invest-topnav" style="background-color: #f0f0f0;padding:10px 0 2px 0">
+  <span><img src="/public/images/iigb-logo.png" width="200px"></span>
+
+  <div style="float:right">
+  <span style="margin-right:1.5em">Home</span>
+  <span style="margin-right:1.5em">UK setup guide</span>
+  <span style="margin-right:1.5em">Industries</span>
+  <span style="margin-right:1.5em">Investment opportunities</span>
+  <span>Contact us</span>
+  </div>
+<br clear="all">
+  
+</div>
+
+
+
+
+<div class="invest-title">
+  <h2 class="heading-large" style="padding-top:0;margin-top:16px;margin-bottom:0" id="elements">Where to invest in the UK</h2>
+
+  <p>Find the most suitable places in the UK for your investment.</p>
+</div>
+
+
+<div class="grid-row">
+
+  <div class="column-half">
+ 
+
+  <div id="mixpanel-left" style="float:left;margin-right:2em;display:block;width=20%;background-color: #fff">
+    <p><strong>Industry</strong></p>
+
+      <ul class="mixpanel-list">
+        <li><a href="#">Aerospace</a></li>
+        <li><a href="#">Advanced manufacturing</a></li>
+        <li><a href="#">Automotive</a></li>
+        <li><a href="#">Creative</a></li>
+        <li><a href="#">Energy generation</a></li>
+        <li><a href="#">Financial services</a></li>
+        <li><a href="#">Food and drink<br>manufacturing</a></li>
+        <li><a href="#">Health and life sciences</a></li>
+        <li><a href="#">Retail</a></li>
+        <li><a href="#">Technology</a></li>
+        <br><br>
+      </ul>
+    </div><!-- end mixpanel-left -->
+
+    <div id="mixpanel-right" style="display:block;width=23%;background-color: #fff">
+    <p><strong>Where?</strong></p>
+
+      <ul class="mixpanel-list">
+        <li><a href="#">Scotland</a></li>
+        <li><a href="#">Northern Ireland</a></li>
+        <li><a href="#">North East England</a></li>
+        <li><a href="#">North West England</a></li>
+        <li><a href="#">Yorkshire and The Humber</a></li>
+        <li><a href="#">East Midlands</a></li>
+        <li><a href="#">West Midlands</a></li>
+        <li><a href="#">Wales</a></li>
+        <li><a href="#">London</a></li>
+        <li><a href="#">East of England</a></li>
+        <li><a href="#">South East England</a></li>
+        <li><a href="#">South West England</a></li>
+      </ul>
+    </div><!-- end mixpanel-right -->
+
+    <br clear="all">
+
+  </div><!-- end left hand column half -->
+
+
+
+
+
+  <div class="column-half">
+
+    <div style="padding:1em 0;margin-bottom:1em;font-size:90%">
+
+            {{>includes/mapmix-tabs}}
+
+        <br clear="all">
+
+    </div><!-- end box -->
+
+  </div><!-- end right hand column half -->
+</div>
+
+
+
+
+
+
+
+</main>
+
+{{/content}}
+
+
+{{$bodyEnd}}
+  {{>includes/gain-scripts}}
+{{/bodyEnd}}
+
+
+
+{{/layout}}

@@ -1,26 +1,34 @@
 {
   "_args": [
     [
-      "govuk_template_mustache@~0.12.0",
-      "/Users/paulpod/Dropbox/LIveWorkBackup/Gain/fin"
+      {
+        "raw": "govuk_template_mustache@~0.12.0",
+        "scope": null,
+        "escapedName": "govuk_template_mustache",
+        "name": "govuk_template_mustache",
+        "rawSpec": "~0.12.0",
+        "spec": ">=0.12.0 <0.13.0",
+        "type": "range"
+      },
+      "/Users/paulpod/Dropbox/LIveWorkBackup/DIT/inv"
     ]
   ],
   "_from": "govuk_template_mustache@>=0.12.0 <0.13.0",
   "_id": "govuk_template_mustache@0.12.0",
   "_inCache": true,
-  "_installable": true,
   "_location": "/govuk_template_mustache",
   "_npmUser": {
-    "email": "govuk-dev@digital.cabinet-office.gov.uk",
-    "name": "alphagov"
+    "name": "alphagov",
+    "email": "govuk-dev@digital.cabinet-office.gov.uk"
   },
   "_npmVersion": "1.4.28",
   "_phantomChildren": {},
   "_requested": {
-    "name": "govuk_template_mustache",
     "raw": "govuk_template_mustache@~0.12.0",
-    "rawSpec": "~0.12.0",
     "scope": null,
+    "escapedName": "govuk_template_mustache",
+    "name": "govuk_template_mustache",
+    "rawSpec": "~0.12.0",
     "spec": ">=0.12.0 <0.13.0",
     "type": "range"
   },
@@ -31,7 +39,7 @@
   "_shasum": "427fb4bc1a7b18a56c1523f82f6e6f55b6d08a0a",
   "_shrinkwrap": null,
   "_spec": "govuk_template_mustache@~0.12.0",
-  "_where": "/Users/paulpod/Dropbox/LIveWorkBackup/Gain/fin",
+  "_where": "/Users/paulpod/Dropbox/LIveWorkBackup/DIT/inv",
   "author": {
     "name": "Government Digital Service developers",
     "url": "https://gds.blog.gov.uk/"
@@ -45,7 +53,7 @@
   "directories": {},
   "dist": {
     "shasum": "427fb4bc1a7b18a56c1523f82f6e6f55b6d08a0a",
-    "tarball": "http://registry.npmjs.org/govuk_template_mustache/-/govuk_template_mustache-0.12.0.tgz"
+    "tarball": "https://registry.npmjs.org/govuk_template_mustache/-/govuk_template_mustache-0.12.0.tgz"
   },
   "gitHead": "ec9597fc9feea611a998e2dc5bff54844dd74508",
   "homepage": "https://github.com/alphagov/govuk_template_mustache",
@@ -58,8 +66,8 @@
   "license": "MIT",
   "maintainers": [
     {
-      "email": "govuk-dev@digital.cabinet-office.gov.uk",
-      "name": "alphagov"
+      "name": "alphagov",
+      "email": "govuk-dev@digital.cabinet-office.gov.uk"
     }
   ],
   "name": "govuk_template_mustache",
