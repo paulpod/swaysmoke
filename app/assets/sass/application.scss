@@ -91,19 +91,41 @@ color: #0b0c0c
 /* - - - - - - - - - - - - - - - - */
 
 .great-topnav {
-  background-color:#666;
+  background-color:#333;
   color: white;
+  font-size:0.75em;
+  padding:3px 2px;
 }
 
-
 .mixpanel-list {
+font-size:0.9em;
   line-height:1;
 }
 .mixpanel-list li {
-
   padding-bottom:0.86em;
 }
 
+.invest-topnav {
+  border-bottom: solid 1px #ccc;
+  padding:17px 0 10px 0
+}
+
+
+
+ul.hoznav li {
+  display: inline-block;
+  margin-left:1.6em;
+  font-size: 0.9em;
+}
+ul.hoznav li.active {
+  border-bottom: solid 2px #900;
+}
+ul.hoznav li.contact {
+  border-radius: 5px;
+  background-color:#00549F;
+  color:white;
+  padding:0.2em 0.75em;
+}
 
 
 /* - - - Multiple choice radio/checkboxes from latest gov.uk - - - */
