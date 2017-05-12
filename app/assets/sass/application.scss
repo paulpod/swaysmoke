@@ -27,7 +27,7 @@ strong {
   font-weight:700;
 }
 
-html, body, button, input, label, table, td, th, p {
+html, body, button, input, label, table, td, th, p, span {
   font-family: "Roboto", Arial, sans-serif !important;
 }
 h1, h2, h3, {
@@ -98,6 +98,8 @@ color: #0b0c0c
 }
 
 .mixpanel-list {
+  position: relative;
+  top:5.4em;
 font-size:0.9em;
   line-height:1;
 }
@@ -126,6 +128,38 @@ ul.hoznav li.contact {
   color:white;
   padding:0.2em 0.75em;
 }
+
+
+
+/* Picker boxes */
+#industry-picker-box {
+margin-bottom: 1em;
+float:left;
+z-index: 100;
+position:absolute;
+}
+
+#location-picker-box {
+margin-bottom: 1em;
+float:left;
+z-index: 101;
+position:absolute;
+}
+
+
+#industry-picker, #location-picker {
+  width: 230px;
+}
+
+input#industry-picker.autocomplete__input {
+}
+
+.picker-form-hint {
+  color:#666;
+  font-size: 0.9em;
+  font-weight: 400;
+}
+
 
 
 /* - - - Multiple choice radio/checkboxes from latest gov.uk - - - */
