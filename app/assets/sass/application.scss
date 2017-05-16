@@ -39,6 +39,13 @@ footer {
 }
 
 
+body, main {
+  padding:0;
+  margin:0;
+
+}
+
+
 /* Back from Register to Vote */
 /* - - - - - - - - - - - - - - - - - -  */
 
@@ -129,6 +136,56 @@ ul.hoznav li.contact {
   padding:0.2em 0.75em;
 }
 
+
+/* In research - industry lists, as mobile tablet, desktop */
+ul.industry-list {
+  margin-top:1em;
+}
+ul.industry-list li {
+  font-size: 1.2em;
+  margin-bottom: 1em;
+}
+ul.industry-list li a {
+color: #1E1348;
+}
+a.nounder {
+  text-decoration: none;
+}
+.mobile-list-img {
+  width: 100%;
+  display: inline-block;
+  margin: 0.3em 0 1.2em 0;
+}
+ul.image-list li  {
+    overflow: hidden;
+    height: 6em;
+    margin-top:1.5em;
+}
+.mobile-list-label {
+  padding-left: 1em;
+}
+
+/* Footer on all pages */
+/* note to make this responsive later? */
+ul.footerlinks {
+  margin-bottom:1.5em;
+}
+ul.footerlinks li {
+display: inline-block;
+margin-right:2em;
+color:#eee;
+font-weight: 300;
+}
+ul.footerlinks li a {
+color:#eee;
+text-decoration: none;
+}
+img#footer-hmglogo {
+  width:66%;
+}
+img#footer-iigblogo {
+  width:68%;
+}
 
 
 /* Picker boxes */

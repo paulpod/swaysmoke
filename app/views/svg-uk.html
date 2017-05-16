@@ -73,17 +73,17 @@ ul.mixpanel-list li:after {
 <div>
  <ul class="mixpanel-list">
         <li id="SCTa"><a href="#">Scotland</a></li>
-        <li><a href="#">Northern Ireland</a></li>
-        <li><a href="#">North East England</a></li>
-        <li><a href="#">North West England</a></li>
-        <li><a href="#">Yorkshire and The Humber</a></li>
-        <li><a href="#">East Midlands</a></li>
-        <li><a href="#">West Midlands</a></li>
-        <li><a href="#">Wales</a></li>
-        <li><a href="#">London</a></li>
-        <li><a href="#">East of England</a></li>
-        <li><a href="#">South East England</a></li>
-        <li><a href="#">South West England</a></li>
+        <li id="NIRa"><a href="#">Northern Ireland</a></li>
+        <li id="WLSa"><a href="#">North East England</a></li>
+        <li id="UKCa"><a href="#">North West England</a></li>
+        <li id="UKDa"><a href="#">Yorkshire and The Humber</a></li>
+        <li id="UKEa"><a href="#">East Midlands</a></li>
+        <li id="UKFa"><a href="#">West Midlands</a></li>
+        <li id="UKGa"><a href="#">Wales</a></li>
+        <li id="UKHa"><a href="#">London</a></li>
+        <li id="UKIa"><a href="#">East of England</a></li>
+        <li id="UKJa"><a href="#">South East England</a></li>
+        <li id="UKKa"><a href="#">South West England</a></li>
       </ul>
 </div>
 
@@ -96,6 +96,74 @@ $(document).ready(function(){
         }, function(){
         $(".map #SCT").css({'fill': 'blue'});
     });
+
+    $("#NIRa").hover(function(){
+        $(".map #NIR").css({'fill': 'yellow'});
+        }, function(){
+        $(".map #NIR").css({'fill': 'blue'});
+    });
+
+    $("#WLSa").hover(function(){
+        $(".map #WLS").css({'fill': 'yellow'});
+        }, function(){
+        $(".map #WLS").css({'fill': 'blue'});
+    });
+
+    $("#UKCa").hover(function(){
+        $(".map #UKC").css({'fill': 'yellow'});
+        }, function(){
+        $(".map #UKC").css({'fill': 'blue'});
+    });
+
+    $("#UKDa").hover(function(){
+        $(".map #UKD").css({'fill': 'yellow'});
+        }, function(){
+        $(".map #UKD").css({'fill': 'blue'});
+    });
+
+    $("#UKEa").hover(function(){
+        $(".map #UKE").css({'fill': 'yellow'});
+        }, function(){
+        $(".map #UKE").css({'fill': 'blue'});
+    });
+
+    $("#UKFa").hover(function(){
+        $(".map #UKF").css({'fill': 'yellow'});
+        }, function(){
+        $(".map #UKF").css({'fill': 'blue'});
+    });
+
+    $("#UKGa").hover(function(){
+        $(".map #UKG").css({'fill': 'yellow'});
+        }, function(){
+        $(".map #UKG").css({'fill': 'blue'});
+    });
+
+    $("#UKHa").hover(function(){
+        $(".map #UKH").css({'fill': 'yellow'});
+        }, function(){
+        $(".map #UKH").css({'fill': 'blue'});
+    });
+
+    $("#UKIa").hover(function(){
+        $(".map #UKI").css({'fill': 'yellow'});
+        }, function(){
+        $(".map #UKI").css({'fill': 'blue'});
+    });
+
+    $("#UKJa").hover(function(){
+        $(".map #UKJ").css({'fill': 'yellow'});
+        }, function(){
+        $(".map #UKJ").css({'fill': 'blue'});
+    });
+
+    $("#UKKa").hover(function(){
+        $(".map #UKK").css({'fill': 'yellow'});
+        }, function(){
+        $(".map #UKK").css({'fill': 'blue'});
+    });
+
+
 });
 </script>
 
@@ -168,67 +236,67 @@ $(document).ready(function(){
 
 var regions=[
     {
-        "region_name": "Lombardia",
+        "region_name": "Ireland",
         "region_code": "IRL",
         "population": 9794525
     },
     {
-        "region_name": "Campania",
+        "region_name": "Northern Ireland",
         "region_code": "NIR",
         "population": 5769750
     },
     {
-        "region_name": "Lazio",
+        "region_name": "Scotland",
         "region_code": "SCT",
         "population": 5557276
     },
     {
-        "region_name": "Sicilia",
+        "region_name": "Wales",
         "region_code": "WLS",
         "population": 4999932
     },
     {
-        "region_name": "Veneto",
+        "region_name": "North East England",
         "region_code": "UKC",
         "population": 4881756
     },
     {
-        "region_name": "Emilia-Romagna",
+        "region_name": "North West England",
         "region_code": "UKD",
         "population": 4377487
     },
     {
-        "region_name": "Piemonte",
+        "region_name": "Yorkshire and The Humber",
         "region_code": "UKE",
         "population": 4374052
     },
     {
-        "region_name": "Puglia",
+        "region_name": "East Midlands",
         "region_code": "UKF",
         "population": 4050803
     },
     {
-        "region_name": "Toscana",
+        "region_name": "West Midlands",
         "region_code": "UKG",
         "population": 3692828
     },
     {
-        "region_name": "Calabria",
+        "region_name": "East of England",
         "region_code": "UKH",
         "population": 1958238
     },
     {
-        "region_name": "Sardegna",
+        "region_name": "London",
         "region_code": "UKI",
         "population": 1640379
     },
     {
-        "region_name": "Liguria",
+        "region_name": "South East England",
         "region_code": "UKJ",
         "population": 1565127
     },
     {
-        "region_name": "Marche",
+        "region_name": "South West England",
         "region_code": "UKK",
         "population": 1545155
     }
