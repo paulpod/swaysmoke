@@ -10,7 +10,7 @@
         "spec": ">=3.1.0 <3.2.0",
         "type": "range"
       },
-      "/Users/paulpod/Dropbox/LIveWorkBackup/DIT/inv"
+      "/Users/paulpod/Dropbox/LIveWorkBackup/Sway/smoke"
     ]
   ],
   "_from": "govuk_frontend_toolkit@>=3.1.0 <3.2.0",
@@ -39,7 +39,7 @@
   "_shasum": "363b21e223f5ae51bc22f92f820e73f3ccc679ab",
   "_shrinkwrap": null,
   "_spec": "govuk_frontend_toolkit@~3.1.0",
-  "_where": "/Users/paulpod/Dropbox/LIveWorkBackup/DIT/inv",
+  "_where": "/Users/paulpod/Dropbox/LIveWorkBackup/Sway/smoke",
   "author": {
     "name": "Government Digital Service developers",
     "email": "govuk-dev@digital.cabinet-office.gov.uk"

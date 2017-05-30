@@ -10,7 +10,7 @@
         "spec": ">=0.12.0 <0.13.0",
         "type": "range"
       },
-      "/Users/paulpod/Dropbox/LIveWorkBackup/DIT/inv"
+      "/Users/paulpod/Dropbox/LIveWorkBackup/Sway/smoke"
     ]
   ],
   "_from": "govuk_template_mustache@>=0.12.0 <0.13.0",
@@ -39,7 +39,7 @@
   "_shasum": "427fb4bc1a7b18a56c1523f82f6e6f55b6d08a0a",
   "_shrinkwrap": null,
   "_spec": "govuk_template_mustache@~0.12.0",
-  "_where": "/Users/paulpod/Dropbox/LIveWorkBackup/DIT/inv",
+  "_where": "/Users/paulpod/Dropbox/LIveWorkBackup/Sway/smoke",
   "author": {
     "name": "Government Digital Service developers",
     "url": "https://gds.blog.gov.uk/"

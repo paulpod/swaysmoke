@@ -73,5 +73,5 @@ app.get(/^\/([^.]+)$/, function (req, res) {
 
 app.listen(port);
 console.log('');
-console.log('GAIN Design Toolkit - Listening on port ' + port);
+console.log('SWAY Design Toolkit - Listening on port ' + port);
 console.log('');
