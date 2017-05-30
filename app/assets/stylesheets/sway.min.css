@@ -177,6 +177,10 @@ body, html {
     line-height: 30px;
     padding-bottom: 10px;
 }
+.text h2#tagline {
+	font-size: 32px;
+	padding-bottom:32px;
+}
 .text h3 {
     font-family: Objectiv-Bold;
     font-size: 21px;
