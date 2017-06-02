@@ -12,6 +12,9 @@ var path = require('path'),
     // Moment to grab the date and do that in places
     var moment = require("moment");
 
+    //Nodemailer for sending the form details
+    var nodemailer = require('nodemailer');
+
 
 
 
