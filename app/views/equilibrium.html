@@ -106,7 +106,11 @@
   <p>We're still getting set up. If you'd like to be one of our founding members please leave your details below and we'll be in touch shortly.</p>
 
 
-  <form action="/action_page.php" method="get" id="form1">
+  <form action="contact" method="get" id="form1">
+
+
+  <input type="hidden" name="nextlink" value="democratising">
+
 
   <fieldset>
     <label class="form-label" for='name'> Name:</label>
@@ -127,7 +131,7 @@
 
     <br>
 
-    <button name='submit' form="form1" type='button' id='submit'>Send</button>
+    <button name='submit' form="form1" type='submit' id='submit'>Send</button>
 
   </fieldset>
 
